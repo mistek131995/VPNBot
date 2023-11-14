@@ -1,9 +1,8 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
-using VPNBot.Handler.UpdateHandler.Message.Model;
 
-namespace VPNBot.Handler.UpdateHandler.Message.MessageBuilder.MainMenu
+namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu
 {
-    internal class MainMenuMessage : IMessageBuilder
+    internal class MainMenuMessage
     {
         public static MessageModel Build()
         {
@@ -15,19 +14,18 @@ namespace VPNBot.Handler.UpdateHandler.Message.MessageBuilder.MainMenu
                 },
                 new KeyboardButton[]
                 {
-                    new KeyboardButton("Скачать приложение"),
+                    new KeyboardButton("Скачать приложение")
                 },
                 new KeyboardButton[]
                 {
-                    new KeyboardButton("Сообщить об ошибке"),
-                    new KeyboardButton("Вернуться назад")
+                    new KeyboardButton("Сообщить об ошибке")
                 }
             })
             {
                 ResizeKeyboard = true
             };
 
-            return new MessageModel("Выберите действие", replyKeyboard: keyboard, inlineKeyboard: null);
+            return new MessageModel("Выберите действие", keyboard);
         }
     }
 }

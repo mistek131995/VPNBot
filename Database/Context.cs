@@ -11,6 +11,6 @@ namespace Database
         }
 
         public DbSet<User> Users { get; set; }
-        internal DbSet<Access> Accesses { get; set; }
+        public DbSet<Access> Accesses { get; set; }
     }
 }

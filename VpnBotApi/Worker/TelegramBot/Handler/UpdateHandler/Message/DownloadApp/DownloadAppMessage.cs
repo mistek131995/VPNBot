@@ -1,9 +1,8 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
-using VPNBot.Handler.UpdateHandler.Message.Model;
 
-namespace VPNBot.Handler.UpdateHandler.Message.MessageBuilder.DownloadApp
+namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.DownloadApp
 {
-    internal class DownloadAppMessage : IMessageBuilder
+    internal class DownloadAppMessage
     {
         public static MessageModel Build()
         {
@@ -17,7 +16,7 @@ namespace VPNBot.Handler.UpdateHandler.Message.MessageBuilder.DownloadApp
                 }
             });
 
-            return new MessageModel("Выберите ОС устройства:", null, keyboard);
+            return new MessageModel("Выберите ОС устройства:", keyboard);
         }
     }
 }

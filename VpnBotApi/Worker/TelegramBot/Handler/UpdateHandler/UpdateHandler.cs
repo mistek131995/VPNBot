@@ -14,7 +14,7 @@ namespace VPNBot.Handler.UpdateHandler
             {
                 if (update.Type == UpdateType.Message)
                 {
-                    await MessageHandler.Handling(client, update);
+                    await MessageHandler.Handling(client, update, context);
                 }
             }
             catch (Exception ex)
