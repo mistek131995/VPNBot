@@ -6,7 +6,7 @@ namespace Database
 {
     public static class Dependency
     {
-        public static ServiceCollection RegisterDatabaseDependency(this ServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection RegisterDatabaseDependency(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration["ConnectionString"];
 

@@ -7,10 +7,10 @@ namespace Database
     {
         public Context(DbContextOptions<Context> options) : base(options)
         {
-
+            Database.MigrateAsync();
         }
 
-        internal DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
         internal DbSet<Access> Accesses { get; set; }
     }
 }
