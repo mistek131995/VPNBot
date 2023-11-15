@@ -2,14 +2,14 @@
 using Database.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.DatabaseHelper
+namespace VpnBotApi.Worker.TelegramBot.DatabaseHelper
 {
     public class AccessHelper
     {
-        public static async Task<List<Access>> GetAccessByTelegramUserId(long telegramUserId, Context context)
+        public static async Task<List<Access>> GetAccessesByTelegramUserId(long telegramUserId, Context context)
         {
             var user = await context.Users
-                .Include(x => x.Accesses)
+                .Include(x => x.Accesses.Where(x => x.EndDate > DateTime.Now))
                 .FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId);
 
             return user.Accesses.ToList();

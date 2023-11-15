@@ -25,7 +25,8 @@ namespace VpnBotApi.Worker.TelegramBot
             {
                 AllowedUpdates = new[]
                 {
-                    UpdateType.Message
+                    UpdateType.Message,
+                    UpdateType.CallbackQuery
                 },
 
                 // Параметр, отвечающий за обработку сообщений, пришедших за то время, когда ваш бот был оффлайн
@@ -36,8 +37,8 @@ namespace VpnBotApi.Worker.TelegramBot
             using var cts = new CancellationTokenSource();
 
             botClient.StartReceiving(
-                (ITelegramBotClient client, Update update, CancellationToken token) => UpdateHandler.Handling(client, update, token, context), 
-                ErrorHandler.Handling, 
+                (ITelegramBotClient client, Update update, CancellationToken token) => UpdateHandler.HandlingAsync(client, update, token, context), 
+                ErrorHandler.HandlingAsync, 
                 receiverOptions, 
                 cts.Token); // Запускаем бота
 

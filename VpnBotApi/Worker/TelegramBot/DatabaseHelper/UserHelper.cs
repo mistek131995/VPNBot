@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Database.Model;
 
-namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.DatabaseHelper
+namespace VpnBotApi.Worker.TelegramBot.DatabaseHelper
 {
     public class UserHelper
     {

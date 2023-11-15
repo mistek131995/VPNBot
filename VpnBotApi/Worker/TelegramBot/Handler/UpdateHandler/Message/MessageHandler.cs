@@ -1,7 +1,7 @@
 ﻿using Database;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.DatabaseHelper;
+using VpnBotApi.Worker.TelegramBot.DatabaseHelper;
 using VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.DownloadApp;
 using VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.GetAccess;
 using VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu;
@@ -10,7 +10,7 @@ namespace VPNBot.Handler.UpdateHandler.Message
 {
     internal class MessageHandler
     {
-        public static async Task Handling(ITelegramBotClient client, Update update, Context context)
+        public static async Task HandlingAsync(ITelegramBotClient client, Update update, Context context)
         {
             var message = update.Message;
             var chat = message.Chat;
@@ -32,9 +32,11 @@ namespace VPNBot.Handler.UpdateHandler.Message
             }
             else if(message.Text == "Получить доступ")
             {
-                var accesses = (await AccessHelper.GetAccessByTelegramUserId(message.From.Id, context)).Select(x => (x.Id, x.EndDate)).ToList();
+                var accesses = (await AccessHelper.GetAccessesByTelegramUserId(message.From.Id, context))
+                    .Select(x => (x.Id, x.EndDate))
+                    .ToList();
 
-                var replyMessage = GetAccessMessaage.Build(accesses);
+                var replyMessage = GetAccessMessage.Build(new List<(int id, DateTime endDate)>());
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
             }

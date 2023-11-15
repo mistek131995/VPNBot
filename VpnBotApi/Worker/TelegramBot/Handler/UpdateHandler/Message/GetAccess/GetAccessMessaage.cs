@@ -3,16 +3,19 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.GetAccess
 {
-    public class GetAccessMessaage
+    public class GetAccessMessage
     {
         public static MessageModel Build(List<(int id, DateTime endDate)> access)
         {
             var buttons = access.Select(x => InlineKeyboardButton.WithCallbackData($"{x.id} от {x.endDate.ToShortDateString()}")).ToList();
-            buttons.Insert(0, InlineKeyboardButton.WithCallbackData("Новый доступ"));
 
 
             var keyboard = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>()
             {
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Новый доступ", "new-access")
+                },
                 buttons.ToArray()
             });
 
