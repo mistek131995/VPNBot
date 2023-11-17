@@ -28,11 +28,9 @@ namespace VPNBot.Handler.UpdateHandler.Message
 
             if (message.Text == "/start")
             {
-                //await UserHelper.CreateUser(message.From.Id, context);
+                var replyMessage = await dispatcher.BuildHandler<MainMenu.Response, MainMenu.Query>(new MainMenu.Query());
 
-                var replyMessage = dispatcher.BuildHandler<MainMenu.MessageModel, MainMenu.Query>(new MainMenu.Query());
-
-                //await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
+                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
             }
             else if (message.Text == "Скачать приложение")
             {

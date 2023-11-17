@@ -1,12 +1,20 @@
-﻿using Telegram.Bot.Types.ReplyMarkups;
+﻿using Database;
+using Telegram.Bot.Types.ReplyMarkups;
+using VpnBotApi.Worker.TelegramBot.Common;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu
 {
-    internal class MainMenuMessage
+    public class Handler : IHandler<Query, Response>
     {
-        public static MessageModel Build()
+        private readonly Context context;
+        public Handler(Context context) => 
+            this.context = context;
+
+        public async Task<Response> HandlingAsync(Query query)
         {
-            var keyboard = new ReplyKeyboardMarkup(new List<KeyboardButton[]>()
+            var response = new Response();
+
+            response.ReplyKeyboard = new ReplyKeyboardMarkup(new List<KeyboardButton[]>()
             {
                 new KeyboardButton[]
                 {
@@ -25,7 +33,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu
                 ResizeKeyboard = true
             };
 
-            return new MessageModel();
+            return response;
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu
 {
-    public class Query : IQuery<MessageModel>
+    public class Query : IQuery<Response>
     {
     }
 }
