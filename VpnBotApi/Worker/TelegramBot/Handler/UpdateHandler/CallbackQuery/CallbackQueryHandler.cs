@@ -7,7 +7,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.CallbackQuery
 {
     public class CallbackQueryHandler
     {
-        public static async Task HandlingAsync(ITelegramBotClient client, Update update, Context context)
+        public static async Task HandlingAsync(ITelegramBotClient client, Update update)
         {
             var callbackQuery = update.CallbackQuery;
             var user = callbackQuery.From;
@@ -19,19 +19,19 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.CallbackQuery
 
             if (callbackQuery.Data == "new-access") 
             {
-                var replyMessage = await NewAccessService.GetNewAccess(user.Id, context);
+                //var replyMessage = await NewAccessService.GetNewAccess(user.Id, context);
 
-                await client.AnswerCallbackQueryAsync(callbackQuery.Id);
-                await client.SendTextMessageAsync(chat.Id, replyMessage.Text);
+                //await client.AnswerCallbackQueryAsync(callbackQuery.Id);
+                //await client.SendTextMessageAsync(chat.Id, replyMessage.Text);
 
-                if(replyMessage.AccessQrCode.Length > 0) 
-                { 
-                    using(Stream stream = new  MemoryStream(replyMessage.AccessQrCode))
-                    {
+                //if(replyMessage.AccessQrCode.Length > 0) 
+                //{ 
+                //    using(Stream stream = new  MemoryStream(replyMessage.AccessQrCode))
+                //    {
 
-                        await client.SendPhotoAsync(chat.Id, InputFile.FromStream(stream)); 
-                    }
-                }
+                //        await client.SendPhotoAsync(chat.Id, InputFile.FromStream(stream)); 
+                //    }
+                //}
  
             }
         }

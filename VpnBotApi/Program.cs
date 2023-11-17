@@ -17,7 +17,7 @@ namespace VpnBotApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
-            builder.Services.AddScoped<TelegramWorker>();
+            builder.Services.AddTelegramBot();
             builder.Services.AddDbContext<Context>(options => options.UseSqlServer(connectionString, x => x.MigrationsAssembly("Database")));
 
             var app = builder.Build();

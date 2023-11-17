@@ -1,16 +1,26 @@
 ﻿using Database;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using VpnBotApi.Worker.TelegramBot.Common;
 using VpnBotApi.Worker.TelegramBot.DatabaseHelper;
 using VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.DownloadApp;
 using VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.GetAccess;
-using VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu;
+using MainMenu = VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu;
 
 namespace VPNBot.Handler.UpdateHandler.Message
 {
     internal class MessageHandler
     {
-        public static async Task HandlingAsync(ITelegramBotClient client, Update update, Context context)
+        private readonly Context context;
+        private readonly HandlerDispatcher dispatcher;
+
+        public MessageHandler(Context context, HandlerDispatcher dispatcher) 
+        { 
+            this.context = context;
+            this.dispatcher = dispatcher;
+        }
+
+        public async Task HandlingAsync(ITelegramBotClient client, Update update)
         {
             var message = update.Message;
             var chat = message.Chat;
@@ -18,11 +28,11 @@ namespace VPNBot.Handler.UpdateHandler.Message
 
             if (message.Text == "/start")
             {
-                await UserHelper.CreateUser(message.From.Id, context);
+                //await UserHelper.CreateUser(message.From.Id, context);
 
-                var replyMessage = MainMenuMessage.Build();
+                var replyMessage = dispatcher.BuildHandler<MainMenu.MessageModel, MainMenu.Query>(new MainMenu.Query());
 
-                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
+                //await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
             }
             else if (message.Text == "Скачать приложение")
             {

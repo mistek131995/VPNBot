@@ -9,17 +9,24 @@ namespace VPNBot.Handler.UpdateHandler
 {
     internal class UpdateHandler
     {
-        public static async Task HandlingAsync(ITelegramBotClient client, Update update, CancellationToken token, Context context)
+        private readonly MessageHandler messageHandler;
+
+        public UpdateHandler(MessageHandler messageHandler)
+        {
+            this.messageHandler = messageHandler;
+        }
+
+        public async Task HandlingAsync(ITelegramBotClient client, Update update, CancellationToken token)
         {
             try
             {
                 if (update.Type == UpdateType.Message)
                 {
-                    await MessageHandler.HandlingAsync(client, update, context);
+                    await messageHandler.HandlingAsync(client, update);
                 }
                 else if(update.Type == UpdateType.CallbackQuery)
                 {
-                    await CallbackQueryHandler.HandlingAsync(client, update, context);
+                    await CallbackQueryHandler.HandlingAsync(client, update);
                 }
             }
             catch (Exception ex)

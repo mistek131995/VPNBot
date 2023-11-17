@@ -1,21 +1,22 @@
-﻿using Telegram.Bot.Polling;
+﻿using Telegram.Bot;
+using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot;
 using VPNBot.Handler.ErrorHandler;
 using VPNBot.Handler.UpdateHandler;
-using Telegram.Bot.Types;
-using Database;
 
 namespace VpnBotApi.Worker.TelegramBot
 {
-    public class TelegramWorker
+    internal class TelegramWorker
     {
         private static ITelegramBotClient botClient;
         private static ReceiverOptions receiverOptions;
-        private readonly Context context;
-
-        public TelegramWorker(Context context) => 
-            this.context = context;
+        private readonly UpdateHandler updateHandler;
+        private readonly ErrorHandler errorHandler;
+        public TelegramWorker(UpdateHandler updateHandler, ErrorHandler errorHandler)
+        {
+            this.updateHandler = updateHandler;
+            this.errorHandler = errorHandler;
+        }
 
         public async Task StartBotAsync(CancellationToken cancellationToken)
         {
@@ -36,11 +37,7 @@ namespace VpnBotApi.Worker.TelegramBot
 
             using var cts = new CancellationTokenSource();
 
-            botClient.StartReceiving(
-                (ITelegramBotClient client, Update update, CancellationToken token) => UpdateHandler.HandlingAsync(client, update, token, context), 
-                ErrorHandler.HandlingAsync, 
-                receiverOptions, 
-                cts.Token); // Запускаем бота
+            botClient.StartReceiving(updateHandler.HandlingAsync, errorHandler.HandlingAsync, receiverOptions, cts.Token); // Запускаем бота
 
             await Task.Delay(-1);
         }

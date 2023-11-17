@@ -25,7 +25,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu
                 ResizeKeyboard = true
             };
 
-            return new MessageModel("Выберите действие", keyboard);
+            return new MessageModel();
         }
     }
 }

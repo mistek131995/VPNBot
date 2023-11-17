@@ -7,10 +7,5 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu
         public string Text { get; set; }
         public ReplyKeyboardMarkup ReplyKeyboard { get; set; }
 
-        public MessageModel(string text, ReplyKeyboardMarkup replyKeyboard) 
-        { 
-            Text = text;
-            ReplyKeyboard = replyKeyboard;
-        }
     }
 }
