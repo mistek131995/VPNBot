@@ -4,11 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Database
 {
-    public static class Dependency
+    public static class DatabaseDependency
     {
-        public static IServiceCollection RegisterDatabaseDependency(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration["ConnectionString"];
+            var connectionString = configuration.GetConnectionString("mssql");
 
             services.AddDbContext<Context>(options => options.UseSqlServer(connectionString));
 
