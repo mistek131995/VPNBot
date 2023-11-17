@@ -2,15 +2,9 @@
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.DownloadApp
 {
-    internal class MessageModel
+    public class Response
     {
         public string Text { get; set; }
         public InlineKeyboardMarkup InlineKeyboard { get; set; }
-
-        public MessageModel(string text, InlineKeyboardMarkup inlineKeyboard) 
-        { 
-            Text = text;
-            InlineKeyboard = inlineKeyboard;
-        }
     }
 }

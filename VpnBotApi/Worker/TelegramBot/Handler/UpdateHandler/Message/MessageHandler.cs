@@ -2,10 +2,9 @@
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using VpnBotApi.Worker.TelegramBot.Common;
-using VpnBotApi.Worker.TelegramBot.DatabaseHelper;
-using VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.DownloadApp;
-using VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.GetAccess;
 using MainMenu = VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu;
+using DownloadApp = VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.DownloadApp;
+using GetAccess = VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.GetAccess;
 
 namespace VPNBot.Handler.UpdateHandler.Message
 {
@@ -14,8 +13,8 @@ namespace VPNBot.Handler.UpdateHandler.Message
         private readonly Context context;
         private readonly HandlerDispatcher dispatcher;
 
-        public MessageHandler(Context context, HandlerDispatcher dispatcher) 
-        { 
+        public MessageHandler(Context context, HandlerDispatcher dispatcher)
+        {
             this.context = context;
             this.dispatcher = dispatcher;
         }
@@ -28,23 +27,19 @@ namespace VPNBot.Handler.UpdateHandler.Message
 
             if (message.Text == "/start")
             {
-                var replyMessage = await dispatcher.BuildHandler<MainMenu.Response, MainMenu.Query>(new MainMenu.Query());
+                var replyMessage = await dispatcher.BuildHandler<MainMenu.Response, MainMenu.Query>(new MainMenu.Query(message.From.Id));
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
             }
             else if (message.Text == "Скачать приложение")
             {
-                var replyMessage = DownloadAppMessage.Build();
+                var replyMessage = await dispatcher.BuildHandler<DownloadApp.Response, DownloadApp.Query>(new DownloadApp.Query());
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
             }
-            else if(message.Text == "Получить доступ")
+            else if (message.Text == "Получить доступ")
             {
-                var accesses = (await AccessHelper.GetAccessesByTelegramUserId(message.From.Id, context))
-                    .Select(x => (x.Id, x.EndDate))
-                    .ToList();
-
-                var replyMessage = GetAccessMessage.Build(new List<(int id, DateTime endDate)>());
+                var replyMessage = await dispatcher.BuildHandler<GetAccess.Response, GetAccess.Query>(new GetAccess.Query(message.From.Id));
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
             }

@@ -1,12 +1,17 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
+using VpnBotApi.Worker.TelegramBot.Common;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.DownloadApp
 {
-    internal class DownloadAppMessage
+    public class Handler : IHandler<Query, Response>
     {
-        public static MessageModel Build()
+        public async Task<Response> HandlingAsync(Query query)
         {
-            var keyboard = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>()
+            var response = new Response();
+
+            response.Text = "Выберите ОС:";
+
+            response.InlineKeyboard = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>()
             {
                 new InlineKeyboardButton[]
                 {
@@ -16,7 +21,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.DownloadApp
                 }
             });
 
-            return new MessageModel("Выберите ОС устройства:", keyboard);
+            return response;
         }
     }
 }

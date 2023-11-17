@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Database.Model;
 
 namespace Database.Repository.Interface
 {
     public interface IAccessRepository
     {
+        public Task<Access> GetByTelegramUserIdAsync(long tlegramUserId);
     }
 }

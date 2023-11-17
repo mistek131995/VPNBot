@@ -7,6 +7,6 @@ namespace Database.Model
         [Key]
         public int Id { get; set; }
         public long TelegramUserId { get; set; }
-        public List<Access> Accesses { get; set; }
+        public Access Access { get; set; }
     }
 }

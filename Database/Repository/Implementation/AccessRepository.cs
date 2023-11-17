@@ -1,13 +1,20 @@
-﻿using Database.Repository.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Database.Model;
+using Database.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace Database.Repository.Implementation
 {
-    internal class AccessRepository : IAccessRepository
+    internal class AccessRepository(Context context) : IAccessRepository
     {
+        private readonly Context context = context;
+
+        public async Task<Access> GetByTelegramUserIdAsync(long telegramUserId)
+        {
+            var user = await context.Users
+                .Include(x => x.Access)
+                .FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId);
+
+            return user?.Access;
+        }
     }
 }

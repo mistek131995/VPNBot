@@ -1,6 +1,5 @@
 ﻿using Database;
 using QRCoder;
-using VpnBotApi.Worker.TelegramBot.DatabaseHelper;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.CallbackQuery.GetNewAccess
 {
@@ -8,10 +7,10 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.CallbackQuery.GetNe
     {
         public static async Task<MessageModel> GetNewAccess(long telegramUserId, Context context)
         {
-            var accesses = await AccessHelper.GetAccessesByTelegramUserId(telegramUserId, context);
+            //var accesses = await AccessHelper.GetAccessesByTelegramUserId(telegramUserId, context);
 
-            if (accesses.Count >= 1)
-                return new MessageModel("У вас уже есть активный доступ к VPN, используйте его.", null);
+            //if (accesses.Count >= 1)
+            //    return new MessageModel("У вас уже есть активный доступ к VPN, используйте его.", null);
 
             using var qrGenerator = new QRCodeGenerator();
             using var qrCodeData = qrGenerator.CreateQrCode("asdasdasd", QRCodeGenerator.ECCLevel.H);
