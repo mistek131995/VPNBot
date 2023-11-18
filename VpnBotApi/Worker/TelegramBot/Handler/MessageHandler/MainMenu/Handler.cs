@@ -4,7 +4,7 @@ using Database.Model;
 using Telegram.Bot.Types.ReplyMarkups;
 using VpnBotApi.Worker.TelegramBot.Common;
 
-namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu
+namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.MainMenu
 {
     public class Handler(IRepositoryProvider provider) : IHandler<Query, Response>
     {
@@ -17,7 +17,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu
             var user = await provider.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
 
             //Если его нет, регистрируем
-            if(user == null)
+            if (user == null)
             {
                 await provider.UserRepository.AddAsync(new User()
                 {

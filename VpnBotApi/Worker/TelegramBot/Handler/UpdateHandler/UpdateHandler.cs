@@ -2,8 +2,8 @@
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using VPNBot.Handler.UpdateHandler.Message;
-using VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.CallbackQuery;
+using VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler;
+using VpnBotApi.Worker.TelegramBot.Handler.MessageHandler;
 
 namespace VPNBot.Handler.UpdateHandler
 {

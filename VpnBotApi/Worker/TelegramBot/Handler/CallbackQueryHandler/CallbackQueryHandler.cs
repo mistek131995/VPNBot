@@ -1,9 +1,7 @@
-﻿using Database;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types;
-using VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.CallbackQuery.GetNewAccess;
 
-namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.CallbackQuery
+namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
 {
     public class CallbackQueryHandler
     {
@@ -17,7 +15,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.CallbackQuery
             // кнопка привязана к сообщению, то мы берем информацию от сообщения.
             var chat = callbackQuery.Message.Chat;
 
-            if (callbackQuery.Data == "new-access") 
+            if (callbackQuery.Data == "new-access")
             {
                 //var replyMessage = await NewAccessService.GetNewAccess(user.Id, context);
 
@@ -32,7 +30,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.CallbackQuery
                 //        await client.SendPhotoAsync(chat.Id, InputFile.FromStream(stream)); 
                 //    }
                 //}
- 
+
             }
         }
     }

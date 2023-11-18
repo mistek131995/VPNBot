@@ -2,11 +2,11 @@
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using VpnBotApi.Worker.TelegramBot.Common;
-using MainMenu = VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.MainMenu;
-using DownloadApp = VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.DownloadApp;
-using GetAccess = VpnBotApi.Worker.TelegramBot.Handler.UpdateHandler.Message.GetAccess;
+using MainMenu = VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.MainMenu;
+using DownloadApp = VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.DownloadApp;
+using GetAccess = VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess;
 
-namespace VPNBot.Handler.UpdateHandler.Message
+namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
 {
     internal class MessageHandler
     {
@@ -41,7 +41,17 @@ namespace VPNBot.Handler.UpdateHandler.Message
             {
                 var replyMessage = await dispatcher.BuildHandler<GetAccess.Response, GetAccess.Query>(new GetAccess.Query(message.From.Id));
 
-                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
+                //Тут отправляется QR код
+                if (replyMessage.AccessQrCode.Length > 0)
+                {
+                    using (Stream stream = new MemoryStream(replyMessage.AccessQrCode))
+                    {
+
+                        await client.SendPhotoAsync(chat.Id, InputFile.FromStream(stream));
+                    }
+                }
+
+                await client.SendTextMessageAsync(chat.Id, replyMessage.Text);
             }
         }
     }
