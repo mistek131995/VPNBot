@@ -2,22 +2,13 @@
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using VpnBotApi.Worker.TelegramBot.Common;
-using MainMenu = VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.MainMenu;
-using DownloadApp = VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.DownloadApp;
-using GetAccess = VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess;
+
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
 {
-    internal class MessageHandler
+    internal class MessageHandler(HandlerDispatcher dispatcher)
     {
-        private readonly Context context;
-        private readonly HandlerDispatcher dispatcher;
-
-        public MessageHandler(Context context, HandlerDispatcher dispatcher)
-        {
-            this.context = context;
-            this.dispatcher = dispatcher;
-        }
+        private readonly HandlerDispatcher dispatcher = dispatcher;
 
         public async Task HandlingAsync(ITelegramBotClient client, Update update)
         {
@@ -51,7 +42,13 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
                     }
                 }
 
-                await client.SendTextMessageAsync(chat.Id, replyMessage.Text);
+                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
+            }
+            else if (message.Text == "Управление подпиской")
+            {
+                var replyMessage = await dispatcher.BuildHandler<SubscribeManagement.Response, SubscribeManagement.Query>(new SubscribeManagement.Query(message.From.Id));
+
+                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
             }
         }
     }

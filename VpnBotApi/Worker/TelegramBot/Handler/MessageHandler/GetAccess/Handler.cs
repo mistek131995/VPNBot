@@ -1,6 +1,8 @@
 ﻿using Database.Common;
 using Database.Model;
+using Telegram.Bot.Types.ReplyMarkups;
 using VpnBotApi.Worker.TelegramBot.Common;
+using VpnBotApi.Worker.TelegramBot.WebClientRepository;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
 {
@@ -13,6 +15,22 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
             var response = new Response();
 
             var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
+
+            response.ReplyKeyboard = new ReplyKeyboardMarkup(new List<KeyboardButton[]>()
+            {
+                new KeyboardButton[]
+                {
+                    new KeyboardButton("Управление подпиской")
+                },
+                new KeyboardButton[]
+                {
+                    new KeyboardButton("Скачать приложение"),
+                    new KeyboardButton("Сообщить об ошибке")
+                }
+            })
+            {
+                ResizeKeyboard = true,
+            };
 
             if (access == null)
             {

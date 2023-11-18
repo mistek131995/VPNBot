@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using VpnBotApi.Worker.TelegramBot.WebClientRepository.Model;
 
-namespace VpnBotApi.Worker.TelegramBot.Common
+namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
 {
     public class TelegramBotWebClient(IConfiguration configuration)
     {

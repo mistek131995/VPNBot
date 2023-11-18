@@ -6,6 +6,6 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
     {
         public string Text { get; set; }
         public byte[] AccessQrCode { get; set; }
-        public InlineKeyboardMarkup InlineKeyboard { get; set; }
+        public ReplyKeyboardMarkup ReplyKeyboard { get; set; }
     }
 }
