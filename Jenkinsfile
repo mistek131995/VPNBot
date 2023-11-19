@@ -24,18 +24,16 @@ pipeline {
             steps {
                 script{
                     def containerId = sh (script: 'docker ps -q -f name=vpn-api', returnStdout: true)
-                    
-                    echo "ContainerId - ${containerId}"
 
                     if(containerId != ''){
-                        sh 'docker stop ${containerId}'                    
+                        sh "docker stop ${containerId}"           
                     }
                 }
             }
         }
 		stage('Start container') {
             steps {
-                sh 'docker run -d --name=vpn-api-${BUILD_NUMBER} --restart=always vpn-api-${BUILD_NUMBER}'
+                sh "docker run -d --name=vpn-api-${BUILD_NUMBER} --restart=always vpn-api-${BUILD_NUMBER}"
             }
         }
         stage('Delete source') {
