@@ -4,9 +4,11 @@ pipeline {
     stages {
         stage('Download source') {
             steps {
-				res = sh(script: "test -d /home/source && echo '1' || echo '0' ", returnStdout: true).trim()
-				if(res=='1'){
-					sh 'rm -R /home/source'
+				script {
+					res = sh(script: "test -d /home/source && echo '1' || echo '0' ", returnStdout: true).trim()
+					if(res=='1'){
+						sh 'rm -R /home/source'
+					}				
 				}
 			
                 sh 'mkdir /home/source'
