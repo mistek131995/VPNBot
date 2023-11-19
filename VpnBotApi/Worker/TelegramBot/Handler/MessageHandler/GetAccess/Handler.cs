@@ -54,7 +54,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
 
                 await provider.UserRepository.UpdateAsync(user);
 
-                response.Text = $"Получен тестовый доступ до {user.Access.EndDate.ToShortTimeString()}. Скачайте приложение и отсканируйте QR код. " +
+                response.Text = $"Получен тестовый доступ до {user.Access.EndDate.ToShortDateString()}. Скачайте приложение и отсканируйте QR код. " +
                     $"На данный момент бот работает в тестовом режиме, вы можете продлять подписку бесплатно на 7 дней.";
                 response.AccessQrCode = Helper.GetAccessQrCode(user.Access);
             }
@@ -80,7 +80,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
             }
             else
             {
-                response.Text = $"Доступ активен до {access.EndDate.ToShortTimeString()}. Скачайте приложение и отсканируйте QR код.";
+                response.Text = $"Доступ активен до {access.EndDate.ToShortDateString()}. Скачайте приложение и отсканируйте QR код.";
                 response.AccessQrCode = Helper.GetAccessQrCode(access);
             }
 

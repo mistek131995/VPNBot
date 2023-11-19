@@ -21,7 +21,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.SubscribeMan
             }
             else if (access.EndDate <= DateTime.Now)
             {
-                response.Text = $"Ваша подписка закончилась {access.EndDate.ToShortTimeString()} Чтобы продолжить использовать сервис, продлите подписку.";
+                response.Text = $"Ваша подписка закончилась {access.EndDate.ToShortDateString()} Чтобы продолжить использовать сервис, продлите подписку.";
                 response.InlineKeyboard = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>()
                 {
                     new InlineKeyboardButton[]
@@ -33,7 +33,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.SubscribeMan
             }
             else
             {
-                response.Text = $"Ваша подписка действительна до {access.EndDate.ToShortTimeString()}";
+                response.Text = $"Ваша подписка действительна до {access.EndDate.ToShortDateString()}";
                 response.InlineKeyboard = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>()
                 {
                     new InlineKeyboardButton[]
