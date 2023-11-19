@@ -1,6 +1,8 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using VpnBotApi.Worker.TelegramBot.Common;
+using SubscribeManagement = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.SubscribeManagement;
+using DownloadApp = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.DownloadApp;
 
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler

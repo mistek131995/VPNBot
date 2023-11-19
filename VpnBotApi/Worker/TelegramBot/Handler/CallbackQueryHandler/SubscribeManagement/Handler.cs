@@ -3,7 +3,7 @@ using Database.Model;
 using Telegram.Bot.Types.ReplyMarkups;
 using VpnBotApi.Worker.TelegramBot.Common;
 
-namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.SubscribeManagement
+namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.SubscribeManagement
 {
     public class Handler(IRepositoryProvider provider) : IHandler<Query, Response>
     {
@@ -15,11 +15,11 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.SubscribeManagemen
 
             var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
 
-            if(access == null)
+            if (access == null)
             {
                 response.Text = "Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.";
             }
-            else if(access.EndDate <= DateTime.Now)
+            else if (access.EndDate <= DateTime.Now)
             {
                 response.Text = $"Ваша подписка закончилась {access.EndDate.ToShortTimeString()} Чтобы продолжить использовать сервис, продлите подписку.";
                 response.InlineKeyboard = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>()

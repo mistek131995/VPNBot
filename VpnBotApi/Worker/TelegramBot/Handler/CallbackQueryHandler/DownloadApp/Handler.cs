@@ -1,7 +1,7 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
 using VpnBotApi.Worker.TelegramBot.Common;
 
-namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.DownloadApp
+namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.DownloadApp
 {
     public class Handler : IHandler<Query, Response>
     {
