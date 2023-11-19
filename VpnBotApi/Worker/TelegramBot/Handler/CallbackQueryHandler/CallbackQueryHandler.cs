@@ -24,6 +24,19 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
             {
                 var replyMessage = await dispatcher.BuildHandler<ExtendForWeek.Response, ExtendForWeek.Query>(new ExtendForWeek.Query(user.Id));
 
+                //Тут отправляется QR код
+                if (replyMessage.AccessQrCode.Length > 0)
+                {
+                    using (Stream stream = new MemoryStream(replyMessage.AccessQrCode))
+                    {
+
+                        await client.SendPhotoAsync(chat.Id, InputFile.FromStream(stream));
+                    }
+                }
+
+                await client.AnswerCallbackQueryAsync(callbackQuery.Id);
+                await client.SendTextMessageAsync(chat.Id, replyMessage.Text);
+
             }
             else if(callbackQuery.Data == "getQrCode")
             {
