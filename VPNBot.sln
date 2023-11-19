@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{9C133D02-4B60-4771-8BAB-826B47C02D97}"
 	ProjectSection(SolutionItems) = preProject
 		Dockerfile = Dockerfile
+		Jenkinsfile = Jenkinsfile
 	EndProjectSection
 EndProject
 Global
