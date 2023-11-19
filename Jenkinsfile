@@ -34,7 +34,9 @@ pipeline {
                         build = build.previousBuild
                     }
 
-                    if(lastSuccessfulBuildID > 0){
+                    def isContainerExist = sh (script: 'docker ps -q -f name=vpn-api-${lastSuccessfulBuildID}', returnStdout: true)
+
+                    if(lastSuccessfulBuildID > 0 && isContainerExist != ''){
                         sh 'docker stop vpn-api-${lastSuccessfulBuildID}'                    
                     }
                 }
