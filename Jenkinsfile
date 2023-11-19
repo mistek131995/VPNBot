@@ -8,7 +8,17 @@ pipeline {
 				sh 'git clone https://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@github.com/mistek131995/VPNBot.git /home/source'
             }
         }
-        stage('Create container') {
+        stage('Create image') {
+            steps {
+                sh 'docker build -f /home/source'
+            }
+        }
+		stage('Stop container') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+		stage('Start container') {
             steps {
                 echo 'Testing..'
             }
