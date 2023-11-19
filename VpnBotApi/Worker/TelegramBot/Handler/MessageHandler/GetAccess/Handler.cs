@@ -18,7 +18,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
 
             if(user == null)
             {
-                await provider.UserRepository.AddAsync(new User()
+                user = await provider.UserRepository.AddAsync(new User()
                 {
                     TelegramUserId = query.TelegramUserId,
                 });
@@ -44,8 +44,6 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
 
             if (access == null)
             {
-                var user = await provider.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
-
                 var newAccess = await webClient.CreateNewAccess(query.TelegramUserId, DateTime.Now.AddDays(7));
 
                 user.Access = new Access()
