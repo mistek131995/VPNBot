@@ -27,7 +27,7 @@ pipeline {
         }
 		stage('Start container') {
             steps {
-                echo 'Testing..'
+                sh 'docker run vpn-api-${BUILD_NUMBER}'
             }
         }
         stage('Delete source') {
