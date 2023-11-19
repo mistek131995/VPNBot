@@ -33,7 +33,7 @@ pipeline {
         }
 		stage('Start container') {
             steps {
-                sh "docker run -d --name=vpn-api-${BUILD_NUMBER} --restart=always vpn-api-${BUILD_NUMBER}"
+                sh "docker run -d -p 5000:5000 -p 5001:5001 --name=vpn-api-${BUILD_NUMBER} --restart=always vpn-api-${BUILD_NUMBER}"
             }
         }
         stage('Delete source') {
