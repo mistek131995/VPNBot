@@ -33,13 +33,16 @@ pipeline {
                         }
                         build = build.previousBuild
                     }
-                    println lastSuccessfulBuildID
+
+                    if(lastSuccessfulBuildID > 0){
+                        sh 'docker stop vpn-api-${lastSuccessfulBuildID}'                    
+                    }
                 }
             }
         }
 		stage('Start container') {
             steps {
-                sh 'docker run -d vpn-api-${BUILD_NUMBER}'
+                sh 'docker run -d --name=vpn-api-${BUILD_NUMBER} --restart=always vpn-api-${BUILD_NUMBER}'
             }
         }
         stage('Delete source') {
