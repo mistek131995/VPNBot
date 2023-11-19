@@ -23,23 +23,10 @@ pipeline {
 		stage('Stop container') {
             steps {
                 script{
-                    def lastSuccessfulBuildID = 0
-                    def build = currentBuild.previousBuild
-                    while (build != null) {
-                        if (build.result == "SUCCESS")
-                        {
-                            lastSuccessfulBuildID = build.id as Integer
-                            break
-                        }
-                        build = build.previousBuild
-                    }
+                    def containerId = sh (script: 'docker ps -q -f name=vpn-api', returnStdout: true)
 
-                    echo 'Last build ${lastSuccessfulBuildID}'
-
-                    def isContainerExist = sh (script: 'docker ps -q -f name=vpn-api-${lastSuccessfulBuildID}', returnStdout: true)
-
-                    if(lastSuccessfulBuildID > 0 && isContainerExist != ''){
-                        sh 'docker stop vpn-api-${lastSuccessfulBuildID}'                    
+                    if(containerId != ''){
+                        sh 'docker stop ${containerId}'                    
                     }
                 }
             }
