@@ -1,5 +1,4 @@
 ﻿using Database.Common;
-using Database.Model;
 using Telegram.Bot.Types.ReplyMarkups;
 using VpnBotApi.Worker.TelegramBot.Common;
 
@@ -13,8 +12,8 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.SubscribeMan
         {
             var response = new Response();
 
-            var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
-                ?? throw new UserOrAccessNotFountException("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ."); ;
+            var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId)
+                ?? throw new Exception("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ."); ;
 
             if (access.EndDate <= DateTime.Now)
             {

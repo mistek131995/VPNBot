@@ -1,17 +1,19 @@
 ﻿using Database.Common;
 using VpnBotApi.Worker.TelegramBot.Common;
+using VpnBotApi.Worker.TelegramBot.WebClientRepository;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForWeek
 {
-    public class Handler(IRepositoryProvider provider) : IHandler<Query, Response>
+    public class Handler(IRepositoryProvider provider, TelegramBotWebClient webClient) : IHandler<Query, Response>
     {
         private readonly IRepositoryProvider provider = provider;
+        private readonly TelegramBotWebClient webClient = webClient;
         public async Task<Response> HandlingAsync(Query query)
         {
             var response = new Response();
 
             var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
-                ?? throw new UserOrAccessNotFountException("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.");
+                ?? throw new Exception("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.");
 
             if((access.EndDate - DateTime.Now).TotalDays > 2)
             {
@@ -22,9 +24,11 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForWee
             else
             {
                 var user = await provider.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
-                    ?? throw new UserOrAccessNotFountException("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.");
+                    ?? throw new Exception("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.");
 
                 access.EndDate = access.EndDate.AddDays(7);
+
+                await webClient.UpdateAccessDateAsync(access.Guid, query.TelegramUserId, access.EndDate);
 
                 user.Access = access;
 
