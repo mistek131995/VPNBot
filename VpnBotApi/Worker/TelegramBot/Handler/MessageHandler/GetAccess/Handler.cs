@@ -60,7 +60,23 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
             }
             else if (access.EndDate.Date <= DateTime.Now.Date)
             {
-                //Предлагаем продлить доступ
+                response.ReplyKeyboard = new ReplyKeyboardMarkup(new List<KeyboardButton[]>()
+                {
+                    new KeyboardButton[]
+                    {
+                        new KeyboardButton("Продлить подписку")
+                    },
+                    new KeyboardButton[]
+                    {
+                        new KeyboardButton("Скачать приложение"),
+                        new KeyboardButton("Сообщить об ошибке")
+                    }
+                })
+                {
+                    ResizeKeyboard = true,
+                };
+
+                response.Text = "Действие подписки закончилось, для продолжения продлите доступ.";
             }
             else
             {

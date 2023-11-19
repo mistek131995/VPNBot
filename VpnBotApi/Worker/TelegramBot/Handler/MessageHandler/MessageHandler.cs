@@ -1,5 +1,4 @@
-﻿using Database;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using VpnBotApi.Worker.TelegramBot.Common;
 
@@ -49,6 +48,14 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
                 var replyMessage = await dispatcher.BuildHandler<SubscribeManagement.Response, SubscribeManagement.Query>(new SubscribeManagement.Query(message.From.Id));
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
+            }
+            else if (message.Text == "Продлить подписку")
+            {
+                
+            }
+            else
+            {
+                await client.SendTextMessageAsync(chat.Id, "Команда не распознана, выберите действие из меню.");
             }
         }
     }
