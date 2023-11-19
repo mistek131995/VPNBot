@@ -51,9 +51,9 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
             }
-            else if (message.Text == "Продлить подписку")
+            else if (message.Text == "Сообщить об ошибке")
             {
-                
+                await client.SendTextMessageAsync(chat.Id, "Временно недоступно.");
             }
             else
             {
