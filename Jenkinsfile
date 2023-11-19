@@ -34,6 +34,8 @@ pipeline {
                         build = build.previousBuild
                     }
 
+                    echo 'Last build ${lastSuccessfulBuildID}'
+
                     def isContainerExist = sh (script: 'docker ps -q -f name=vpn-api-${lastSuccessfulBuildID}', returnStdout: true)
 
                     if(lastSuccessfulBuildID > 0 && isContainerExist != ''){
