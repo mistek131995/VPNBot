@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Download source') {
             steps {
-                mkdir home/source
+                mkdir /home/source
             }
         }
         stage('Create container') {
@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Delete source') {
             steps {
-                rm -R home/source
+                rm -R /home/source
             }
         }
     }
