@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Create image') {
             steps {
-                sh 'docker build -f /home/source'
+                sh 'docker build /home/source'
             }
         }
 		stage('Stop container') {
