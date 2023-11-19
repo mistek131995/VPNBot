@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using System;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using VpnBotApi.Worker.TelegramBot.Common;
@@ -29,7 +30,11 @@ namespace VPNBot.Handler.UpdateHandler
             {
                 if(ex.GetType() == typeof(UserOrAccessNotFountException)) 
                 {
-                    var chatId = update.Message.From.Id;
+                    var chatId = 0l;
+                    if (update.Type == UpdateType.Message)
+                        chatId = update.Message.From.Id;
+                    else if (update.Type == UpdateType.CallbackQuery)
+                        chatId = update.CallbackQuery.Message.Chat.Id;
 
                     await client.SendTextMessageAsync(chatId, ex.Message);
                 }
