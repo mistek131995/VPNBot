@@ -2,19 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Download source') {
             steps {
-                echo 'Building..'
+                mkdir home/source
             }
         }
-        stage('Test') {
+        stage('Create container') {
             steps {
                 echo 'Testing..'
             }
         }
-        stage('Deploy') {
+        stage('Delete source') {
             steps {
-                echo 'Deploying....'
+                rm -R home/source
             }
         }
     }
