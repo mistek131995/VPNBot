@@ -12,7 +12,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForWee
 
             var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
 
-            if(access == null) { }
+            throw new UserOrAccessNotFountException("Обработка ошибок, тест.");
 
             return response;
         }
