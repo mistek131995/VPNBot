@@ -14,6 +14,16 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
         {
             var response = new Response();
 
+            var user = await provider.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
+
+            if(user == null)
+            {
+                await provider.UserRepository.AddAsync(new User()
+                {
+                    TelegramUserId = query.TelegramUserId,
+                });
+            }
+
             var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
 
             response.ReplyKeyboard = new ReplyKeyboardMarkup(new List<KeyboardButton[]>()
