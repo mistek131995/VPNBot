@@ -26,7 +26,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForWee
                 var user = await provider.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
                     ?? throw new Exception("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.");
 
-                access.EndDate = access.EndDate.AddDays(7);
+                access.EndDate = DateTime.Now.AddDays(7);
 
                 await webClient.UpdateAccessDateAsync(access.Guid, query.TelegramUserId, access.EndDate);
 
