@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Download source') {
             steps {
-                sh 'mkdir /home/source;
+                sh 'mkdir /home/source'
             }
         }
         stage('Create container') {
