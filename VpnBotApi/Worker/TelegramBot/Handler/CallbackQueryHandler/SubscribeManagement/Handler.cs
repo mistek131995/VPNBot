@@ -13,13 +13,10 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.SubscribeMan
         {
             var response = new Response();
 
-            var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
+            var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
+                ?? throw new UserOrAccessNotFountException("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ."); ;
 
-            if (access == null)
-            {
-                response.Text = "Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.";
-            }
-            else if (access.EndDate <= DateTime.Now)
+            if (access.EndDate <= DateTime.Now)
             {
                 response.Text = $"Ваша подписка закончилась {access.EndDate.ToString("dd.MM.yyyy")} Чтобы продолжить использовать сервис, продлите подписку.";
                 response.InlineKeyboard = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>()

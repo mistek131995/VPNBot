@@ -32,9 +32,14 @@ namespace VPNBot.Handler.UpdateHandler
                 {
                     var chatId = 0l;
                     if (update.Type == UpdateType.Message)
+                    {
                         chatId = update.Message.From.Id;
+                    }
                     else if (update.Type == UpdateType.CallbackQuery)
+                    {
                         chatId = update.CallbackQuery.Message.Chat.Id;
+                        await client.AnswerCallbackQueryAsync(update.CallbackQuery.Id);
+                    }
 
                     await client.SendTextMessageAsync(chatId, ex.Message);
                 }
