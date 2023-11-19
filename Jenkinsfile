@@ -22,7 +22,10 @@ pipeline {
         }
 		stage('Stop container') {
             steps {
-                echo 'Testing..'
+                script{
+                    def buildName = Jenkins.instance.getItem('jobName').lastSuccessfulBuild.displayName
+                    echo 'Testing.. ${buildName}'
+                }
             }
         }
 		stage('Start container') {
