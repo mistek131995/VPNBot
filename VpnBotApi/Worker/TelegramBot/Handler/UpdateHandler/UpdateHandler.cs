@@ -1,6 +1,7 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using VpnBotApi.Worker.TelegramBot.Common;
 using VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler;
 using VpnBotApi.Worker.TelegramBot.Handler.MessageHandler;
 
@@ -26,7 +27,12 @@ namespace VPNBot.Handler.UpdateHandler
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                if(ex.GetType() == typeof(UserOrAccessNotFountException)) 
+                {
+                    var chatId = update.Message.From.Id;
+
+                    await client.SendTextMessageAsync(chatId, ex.Message);
+                }
             }
         }
     }
