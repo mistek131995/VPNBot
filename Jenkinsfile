@@ -27,7 +27,7 @@ pipeline {
         }
 		stage('Start container') {
             steps {
-                sh 'docker run vpn-api-${BUILD_NUMBER}'
+                sh 'docker run vpn-api-${BUILD_NUMBER} -d'
             }
         }
         stage('Delete source') {
