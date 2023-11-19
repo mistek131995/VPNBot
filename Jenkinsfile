@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Create image') {
             steps {
-                sh 'docker build /home/source'
+                sh 'docker build -t VPNApi-${currentBuild.number} /home/source'
             }
         }
 		stage('Stop container') {
