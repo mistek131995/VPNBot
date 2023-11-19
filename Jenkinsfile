@@ -25,7 +25,7 @@ pipeline {
                 script{
                     def containerId = sh (script: 'docker ps -q -f name=vpn-api', returnStdout: true)
                     
-                    echo 'ContainerId - ${containerId}'
+                    echo "ContainerId - ${containerId}"
 
                     if(containerId != ''){
                         sh 'docker stop ${containerId}'                    
