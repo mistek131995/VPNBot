@@ -2,6 +2,7 @@
 using VPNBot.Handler.ErrorHandler;
 using VPNBot.Handler.UpdateHandler;
 using VpnBotApi.Worker.TelegramBot.Common;
+using VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler;
 using VpnBotApi.Worker.TelegramBot.Handler.MessageHandler;
 using VpnBotApi.Worker.TelegramBot.WebClientRepository;
 
@@ -15,6 +16,7 @@ namespace VpnBotApi.Worker.TelegramBot
             services.AddScoped<ErrorHandler>();
             services.AddScoped<UpdateHandler>();
             services.AddScoped<MessageHandler>();
+            services.AddScoped<CallbackQueryHandler>();
             services.AddSingleton<TelegramBotWebClient>();
 
             services.AddScoped<HandlerDispatcher>();

@@ -5,7 +5,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
 {
     public class CallbackQueryHandler
     {
-        public static async Task HandlingAsync(ITelegramBotClient client, Update update)
+        public async Task HandlingAsync(ITelegramBotClient client, Update update)
         {
             var callbackQuery = update.CallbackQuery;
             var user = callbackQuery.From;
@@ -15,7 +15,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
             // кнопка привязана к сообщению, то мы берем информацию от сообщения.
             var chat = callbackQuery.Message.Chat;
 
-            if (callbackQuery.Data == "new-access")
+            if (callbackQuery.Data == "payForMonth")
             {
                 //var replyMessage = await NewAccessService.GetNewAccess(user.Id, context);
 
@@ -30,6 +30,9 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
                 //        await client.SendPhotoAsync(chat.Id, InputFile.FromStream(stream)); 
                 //    }
                 //}
+            }
+            else if(callbackQuery.Data == "getQrCode")
+            {
 
             }
         }

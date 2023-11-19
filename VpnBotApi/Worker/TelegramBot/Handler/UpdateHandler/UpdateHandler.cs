@@ -1,5 +1,4 @@
-﻿using Database;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler;
@@ -7,14 +6,10 @@ using VpnBotApi.Worker.TelegramBot.Handler.MessageHandler;
 
 namespace VPNBot.Handler.UpdateHandler
 {
-    internal class UpdateHandler
+    internal class UpdateHandler(MessageHandler messageHandler, CallbackQueryHandler callbackQueryHandler)
     {
-        private readonly MessageHandler messageHandler;
-
-        public UpdateHandler(MessageHandler messageHandler)
-        {
-            this.messageHandler = messageHandler;
-        }
+        private readonly MessageHandler messageHandler = messageHandler;
+        private readonly CallbackQueryHandler callbackQueryHandler = callbackQueryHandler;
 
         public async Task HandlingAsync(ITelegramBotClient client, Update update, CancellationToken token)
         {
@@ -24,9 +19,9 @@ namespace VPNBot.Handler.UpdateHandler
                 {
                     await messageHandler.HandlingAsync(client, update);
                 }
-                else if(update.Type == UpdateType.CallbackQuery)
+                else if (update.Type == UpdateType.CallbackQuery)
                 {
-                    await CallbackQueryHandler.HandlingAsync(client, update);
+                    await callbackQueryHandler.HandlingAsync(client, update);
                 }
             }
             catch (Exception ex)
