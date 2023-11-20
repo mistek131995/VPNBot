@@ -55,7 +55,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
                 await provider.UserRepository.UpdateAsync(user);
 
                 response.Text = $"Получен тестовый доступ до {user.Access.EndDate.ToString("dd.MM.yyyy")}. Скачайте приложение и отсканируйте QR код. " +
-                    $"\n На данный момент бот работает в тестовом режиме, вы можете продлять подписку бесплатно на 1 месяц.";
+                    $"На данный момент бот работает в тестовом режиме, вы можете продлять подписку бесплатно на 1 месяц.";
                 response.AccessQrCode = Helper.GetAccessQrCode(user.Access);
             }
             else if (access.EndDate.Date <= DateTime.Now.Date)
