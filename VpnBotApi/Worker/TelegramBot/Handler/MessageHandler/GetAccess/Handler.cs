@@ -25,7 +25,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
                 new KeyboardButton[]
                 {
                     new KeyboardButton("Скачать приложение"),
-                    new KeyboardButton("Сообщить об ошибке")
+                    new KeyboardButton("Помощь")
                 }
             })
             {

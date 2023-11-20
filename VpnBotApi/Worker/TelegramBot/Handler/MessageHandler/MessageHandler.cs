@@ -3,6 +3,7 @@ using Telegram.Bot.Types;
 using VpnBotApi.Worker.TelegramBot.Common;
 using SubscribeManagement = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.SubscribeManagement;
 using DownloadApp = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.DownloadApp;
+using Help = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.Help;
 
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
@@ -51,9 +52,11 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
             }
-            else if (message.Text == "Сообщить об ошибке")
+            else if (message.Text == "Помощь")
             {
-                await client.SendTextMessageAsync(chat.Id, "Временно недоступно.");
+                var replyMessage = await dispatcher.BuildHandler<Help.Response, Help.Query>(new Help.Query());
+
+                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.);
             }
             else
             {
