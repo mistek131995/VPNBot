@@ -56,7 +56,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
             {
                 var replyMessage = await dispatcher.BuildHandler<Help.Response, Help.Query>(new Help.Query());
 
-                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.);
+                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
             }
             else
             {
