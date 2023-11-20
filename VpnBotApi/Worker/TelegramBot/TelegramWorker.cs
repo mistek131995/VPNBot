@@ -28,11 +28,7 @@ namespace VpnBotApi.Worker.TelegramBot
                 {
                     UpdateType.Message,
                     UpdateType.CallbackQuery
-                },
-
-                // Параметр, отвечающий за обработку сообщений, пришедших за то время, когда ваш бот был оффлайн
-                // True - не обрабатывать, False (стоит по умолчанию) - обрабатывать
-                ThrowPendingUpdates = true
+                }
             };
 
             using var cts = new CancellationTokenSource();
