@@ -34,7 +34,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForMon
 
                 await provider.UserRepository.UpdateAsync(user);
 
-                response.Text = $"Ваш доступ продлен до {access.EndDate.ToString("dd.MM.yyyy")}.";
+                response.Text = $"Ваш доступ продлен до {access.EndDate.ToString("dd.MM.yyyy")} (Настройки подключения не изменились, повторно сканировать QR код нет необходимости).";
                 response.AccessQrCode = Helper.GetAccessQrCode(access);
             }
 
