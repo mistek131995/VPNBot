@@ -1,4 +1,4 @@
-﻿namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForWeek
+﻿namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForMonth
 {
     public class Response
     {

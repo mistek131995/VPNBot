@@ -2,7 +2,7 @@
 using VpnBotApi.Worker.TelegramBot.Common;
 using VpnBotApi.Worker.TelegramBot.WebClientRepository;
 
-namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForWeek
+namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForMonth
 {
     public class Handler(IRepositoryProvider provider, TelegramBotWebClient webClient) : IHandler<Query, Response>
     {
@@ -26,7 +26,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForWee
                 var user = await provider.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
                     ?? throw new Exception("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.");
 
-                access.EndDate = DateTime.Now.AddDays(7);
+                access.EndDate = access.EndDate.AddMonths(1);
 
                 await webClient.UpdateAccessDateAsync(access.Guid, query.TelegramUserId, access.EndDate);
 

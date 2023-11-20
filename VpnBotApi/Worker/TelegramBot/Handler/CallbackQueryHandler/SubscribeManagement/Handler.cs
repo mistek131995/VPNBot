@@ -22,8 +22,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.SubscribeMan
                 {
                     new InlineKeyboardButton[]
                     {
-                        InlineKeyboardButton.WithCallbackData("Продлить на 7 дней (Бесплатно).", "extendForWeek"),
-                        //InlineKeyboardButton.WithCallbackData("1 месяц за 100руб.", "payForMonth")
+                        InlineKeyboardButton.WithCallbackData("Продлить на 1 месяц (Бесплатно).", "extendForMonth"),
                     }
                 });
             }
@@ -38,8 +37,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.SubscribeMan
                     },
                     new InlineKeyboardButton[]
                     {
-                        InlineKeyboardButton.WithCallbackData("Продлить на 7 дней (Бесплатно).", "extendForWeek"),
-                        //InlineKeyboardButton.WithCallbackData("1 месяц за 100руб.", "payForMonth")
+                        InlineKeyboardButton.WithCallbackData("Продлить на 1 месяц (Бесплатно).", "extendForMonth"),
                     }
                 });
             }
