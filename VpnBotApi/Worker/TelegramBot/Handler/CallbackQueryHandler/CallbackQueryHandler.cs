@@ -67,7 +67,11 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
             }
             else if(callbackQuery.Data == "helpIOS")
             {
-                var text = @"Будет позже, поскольку у меня нет яблока. Насколько я помню, там ничего сложного =).";
+                var text =  "1. Скачайте и откройте приложение. " +
+                            "\n2. Сохраните QR, полученный у бота в галерею. " +
+                            "\n3. В верхнем, правом углу нажмите на '+' и выберите 'Отсканировать QRCode'. " +
+                            "\n4. Выберите QR код и галереи. " +
+                            "\n5. Включите VPN на главной странице приложения.";
 
                 await client.SendTextMessageAsync(chat.Id, text);
             }
