@@ -3,6 +3,7 @@ using Telegram.Bot.Types;
 using VpnBotApi.Worker.TelegramBot.Common;
 using GetAccess = VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess;
 using ExtendForMonth = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForMonth;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
 {
@@ -34,7 +35,6 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
                     }
                 }
 
-                await client.AnswerCallbackQueryAsync(callbackQuery.Id);
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text);
 
             }
@@ -52,9 +52,27 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
                     }
                 }
 
-                await client.AnswerCallbackQueryAsync(callbackQuery.Id);
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
             }
+            else if(callbackQuery.Data == "helpAndroid")
+            {
+                var text = @"
+1. Скачайте и откройте приложение.
+2. Сохраните QR, полученный у бота в галерею.
+3. В верхнем, правом углу нажмите на '+' и выберите 'Импорт профиля из QR кода'.
+4. В верхнем, правом углу значок галереи и выберите сохранённый QR код.
+5. На главной странице приложения нажмите на круглую кнопку в правом, нижнем углу.";
+
+                await client.SendTextMessageAsync(chat.Id, text);
+            }
+            else if(callbackQuery.Data == "helpIOS")
+            {
+                var text = @"Будет позже, поскольку у меня нет яблока. Насколько я помню, там ничего сложного =).";
+
+                await client.SendTextMessageAsync(chat.Id, text);
+            }
+
+            await client.AnswerCallbackQueryAsync(callbackQuery.Id);
         }
     }
 }
