@@ -2,7 +2,7 @@
 using Telegram.Bot.Types;
 using VpnBotApi.Worker.TelegramBot.Common;
 using GetAccess = VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess;
-using ExtendForWeek = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForWeek;
+using ExtendForMonth = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForMonth;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
 {
@@ -20,9 +20,9 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
             // кнопка привязана к сообщению, то мы берем информацию от сообщения.
             var chat = callbackQuery.Message.Chat;
 
-            if (callbackQuery.Data == "extendForWeek")
+            if (callbackQuery.Data == "extendForMonth")
             {
-                var replyMessage = await dispatcher.BuildHandler<ExtendForWeek.Response, ExtendForWeek.Query>(new ExtendForWeek.Query(user.Id));
+                var replyMessage = await dispatcher.BuildHandler<ExtendForMonth.Response, ExtendForMonth.Query>(new ExtendForMonth.Query(user.Id));
 
                 //Тут отправляется QR код
                 if (replyMessage.AccessQrCode.Length > 0)
