@@ -1,8 +1,6 @@
-﻿using System;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using VpnBotApi.Worker.TelegramBot.Common;
 using VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler;
 using VpnBotApi.Worker.TelegramBot.Handler.MessageHandler;
 
