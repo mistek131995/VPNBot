@@ -1,13 +1,8 @@
 ﻿namespace VpnBotApi.Worker.TelegramBot.Common
 {
-    public class HandlerDispatcher
+    public class HandlerDispatcher(IServiceProvider provider)
     {
-        private readonly IServiceProvider provider;
-
-        public HandlerDispatcher(IServiceProvider serviceProvider)
-        {
-            this.provider = serviceProvider;
-        }
+        private readonly IServiceProvider provider = provider;
 
         public Task<TResponse> BuildHandler<TResponse, TQuery>(TQuery query) where TQuery : IQuery<TResponse>
         {
