@@ -5,15 +5,21 @@ namespace Database.Common
 {
     public class RepositoryProvider(Context context) : IRepositoryProvider
     {
-        private Context context = context;
-
         private IUserRepository userRepository;
         private IAccessRepository accessRepository;
+        private ISettingsRepository settingsRepository;
+        private IVpnServerRepository vpnServerRepository;
 
         public IUserRepository UserRepository =>
             userRepository ??= new UserRepository(context);
 
         public IAccessRepository AccessRepository =>
             accessRepository ??= new AccessRepository(context);
+
+        public ISettingsRepository SettingsRepository => 
+            settingsRepository ??= new SettingsRepository(context);
+
+        public IVpnServerRepository VpnServerRepository => 
+            vpnServerRepository ??= new VpnServerRepository(context);
     }
 }

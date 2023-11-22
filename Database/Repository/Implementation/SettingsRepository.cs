@@ -24,10 +24,11 @@ namespace Database.Repository.Implementation
             }
             else
             {
-                await context.Settings.AddAsync(newSetting);
-
-                return newSetting;
+                settings = newSetting;
+                await context.Settings.AddAsync(settings);
             }
+
+            await context.SaveChangesAsync();
 
             return settings;
         }

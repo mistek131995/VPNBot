@@ -5,5 +5,6 @@ namespace Database.Repository.Interface
     public interface IAccessRepository
     {
         public Task<Access> GetByTelegramUserIdAsync(long tlegramUserId);
+        public Task DeleteAccessAsync(long telegramUserId);
     }
 }

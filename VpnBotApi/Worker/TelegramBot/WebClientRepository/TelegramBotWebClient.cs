@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Database.Common;
+using Database.Model;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System.Net;
@@ -7,16 +9,16 @@ using VpnBotApi.Worker.TelegramBot.WebClientRepository.Model;
 
 namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
 {
-    public class TelegramBotWebClient(IConfiguration configuration)
+    public class TelegramBotWebClient(IRepositoryProvider repositoryProvider)
     {
-        private readonly string ip = configuration["IP"];
+        private VpnServer vpnServer;
         private Cookie authCookie;
 
         /// <summary>
         /// Получаем куку аутентификации
         /// </summary>
         /// <returns></returns>
-        private async Task GetAuthCookie()
+        private async Task GetAuthCookie(string ip, int port)
         {
             using (var handler = new HttpClientHandler())
             {
@@ -30,7 +32,7 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
 
                     });
 
-                    var result = await client.PostAsync($"http://{ip}:2001/login", content);
+                    var result = await client.PostAsync($"http://{ip}:{port}/login", content);
 
                     if (result.IsSuccessStatusCode)
                     {
@@ -44,9 +46,17 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
 
         public async Task<Inbound> CreateNewAccess(long telegramUserId, DateTime endDate)
         {
+            //Получаем сервер с наименьшим кол-вом пользователей
+            if(vpnServer == null)
+            {
+                vpnServer = await repositoryProvider.VpnServerRepository.GetWithMinUserCountAsync()
+                ?? throw new Exception("Произошла ошибка, не удалось получить VPN сервер.");
+            }
+
+            //Если кука не была получена, получаем ее
             if (authCookie == null)
             {
-                await GetAuthCookie();
+                await GetAuthCookie(vpnServer.Ip, vpnServer.Port);
             }
 
             //Тут добавляем пользователя в подключение в веб панели
@@ -107,11 +117,13 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
                         new KeyValuePair<string, string>("settings", JsonConvert.SerializeObject(settings, serializerSettings))
                     });
 
-                    var response = await client.PostAsync($"http://{ip}:2001/panel/api/inbounds/addClient", content);
+                    var response = await client.PostAsync($"http://{vpnServer.Ip}:{vpnServer.Port}/panel/api/inbounds/addClient", content);
 
+                    //Если мы успешно добавили пользователя, нужно увеличить кол-во в БД
                     if (response.IsSuccessStatusCode)
                     {
-                        //Тут возвращаем модель подключения для добавления доступа в БД
+                        vpnServer.UserCount += 1;
+                        await repositoryProvider.VpnServerRepository.UpdateVpnServerAsync(vpnServer);
                     }
                 }
             }
@@ -128,7 +140,7 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
             {
                 using (var client = new HttpClient(handler))
                 {
-                    var response = await client.GetAsync($"http://{ip}:2001/panel/api/inbounds/get/1");
+                    var response = await client.GetAsync($"http://{vpnServer.Ip}:{vpnServer.Port}/panel/api/inbounds/get/1");
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -138,7 +150,7 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
                         var obj = deserializeObject["obj"];
 
                         var inbound = JsonConvert.DeserializeObject<Inbound>(obj["streamSettings"].ToString());
-                        inbound.Ip = ip;
+                        inbound.Ip = vpnServer.Ip;
                         inbound.Port = int.Parse(obj["port"].ToString());
                         inbound.AccessName = obj["remark"].ToString();
 
@@ -155,18 +167,20 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
 
         #region Обновление доступа
 
-        public async Task UpdateAccessDateAsync(Guid guid, long telegramUserId, DateTime endDate)
+        public async Task UpdateAccessDateAsync(long telegramUserId, DateTime endDate)
         {
+            var access = await repositoryProvider.AccessRepository.GetByTelegramUserIdAsync(telegramUserId);
+
             if (authCookie == null)
             {
-                await GetAuthCookie();
+                //await GetAuthCookie(access.VpnServer.Ip, access.VpnServer.Port);
             }
 
             var expiryTime = endDate.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
 
             var vpnUser = new InboundUser
             {
-                Id = guid,
+                Id = access.Guid,
                 Flow = "",
                 Email = telegramUserId.ToString(),
                 LimitIp = 1,
@@ -201,12 +215,12 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
                         new KeyValuePair<string, string>("settings", JsonConvert.SerializeObject(settings, serializerSettings))
                     });
 
-                    var response = await client.PostAsync($"http://{ip}:2001/panel/api/inbounds/updateClient/{guid}", content);
+                    //var response = await client.PostAsync($"http://{access.VpnServer.Id}:{access.VpnServer.Port}/panel/api/inbounds/updateClient/{access.Guid}", content);
 
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        throw new Exception("Неудалось обновить подключение на VPN сервере.");
-                    }
+                    //if (!response.IsSuccessStatusCode)
+                    //{
+                    //    throw new Exception("Неудалось обновить подключение на VPN сервере.");
+                    //}
                 }
             }
         }

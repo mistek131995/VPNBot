@@ -17,7 +17,7 @@ namespace VpnBotApi.Worker.TelegramBot
             services.AddScoped<UpdateHandler>();
             services.AddScoped<MessageHandler>();
             services.AddScoped<CallbackQueryHandler>();
-            services.AddSingleton<TelegramBotWebClient>();
+            services.AddScoped<TelegramBotWebClient>();
 
             services.AddScoped<HandlerDispatcher>();
 

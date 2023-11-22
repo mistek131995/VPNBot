@@ -2,7 +2,7 @@
 
 namespace Database.Repository.Interface
 {
-    internal interface ISettingsRepository
+    public interface ISettingsRepository
     {
         public Task<Setting> GetSettingsAsync();
         public Task<Setting> UpdateSettingsAsync(Setting newSetting);

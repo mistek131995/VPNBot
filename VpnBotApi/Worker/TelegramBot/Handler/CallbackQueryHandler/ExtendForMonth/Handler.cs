@@ -1,18 +1,19 @@
 ﻿using Database.Common;
+using Database.Model;
 using VpnBotApi.Worker.TelegramBot.Common;
 using VpnBotApi.Worker.TelegramBot.WebClientRepository;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForMonth
 {
-    public class Handler(IRepositoryProvider provider, TelegramBotWebClient webClient) : IHandler<Query, Response>
+    public class Handler(IRepositoryProvider repositoryProvides, TelegramBotWebClient webClient) : IHandler<Query, Response>
     {
-        private readonly IRepositoryProvider provider = provider;
+        private readonly IRepositoryProvider repositoryProvides = repositoryProvides;
         private readonly TelegramBotWebClient webClient = webClient;
         public async Task<Response> HandlingAsync(Query query)
         {
             var response = new Response();
 
-            var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
+            var access = await repositoryProvides.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
                 ?? throw new Exception("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.");
 
             if((access.EndDate - DateTime.Now).TotalDays > 2)
@@ -23,19 +24,51 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForMon
             }
             else
             {
-                var user = await provider.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
+                var user = await repositoryProvides.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
                     ?? throw new Exception("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.");
 
-                access.EndDate = access.EndDate.AddMonths(1);
 
-                await webClient.UpdateAccessDateAsync(access.Guid, query.TelegramUserId, access.EndDate);
+                //Если доступ в БД устарел на более чем 7 дней, считаем его устаревшим
+                //Удаляем его из БД и создаем новое подключение
+                if((DateTime.Now - access.EndDate).TotalDays > 7)
+                {
+                    //Создаем новое подключение
+                    var newAccess = await webClient.CreateNewAccess(query.TelegramUserId, DateTime.Now.AddMonths(1));
 
-                user.Access = access;
+                    access.Ip = newAccess.Ip;
+                    access.Port = newAccess.Port;
+                    access.Network = newAccess.Network;
+                    access.Security = newAccess.Security;
+                    access.AccessName = newAccess.AccessName;
+                    access.Guid = newAccess.Guid;
+                    access.Fingerprint = newAccess.RealitySettings.Settings.Fingerprint;
+                    access.PublicKey = newAccess.RealitySettings.Settings.PublicKey;
+                    access.ServerName = newAccess.RealitySettings.ServerNames.First();
+                    access.ShortId = newAccess.RealitySettings.ShortIds.First();
+                    access.EndDate = newAccess.EndDate;
 
-                await provider.UserRepository.UpdateAsync(user);
+                    //Добавляем доступ к пользователю
+                    user.Access = access;
 
-                response.Text = $"Ваш доступ продлен до {access.EndDate.ToString("dd.MM.yyyy")} (Настройки подключения не изменились, повторно сканировать QR код нет необходимости).";
-                response.AccessQrCode = Helper.GetAccessQrCode(access);
+                    //Обновляем пользователя
+                    await repositoryProvides.UserRepository.UpdateAsync(user);
+
+                    response.Text = $"Ваш доступ продлен до {access.EndDate.ToString("dd.MM.yyyy")} (Настройки подключения изменились, необходимо повторно загрузить QR код в приложение).";
+                    response.AccessQrCode = Helper.GetAccessQrCode(user.Access);
+                }
+                else
+                {
+                    access.EndDate = access.EndDate.AddMonths(1);
+
+                    await webClient.UpdateAccessDateAsync(query.TelegramUserId, access.EndDate);
+
+                    user.Access = access;
+
+                    await repositoryProvides.UserRepository.UpdateAsync(user);
+
+                    response.Text = $"Ваш доступ продлен до {access.EndDate.ToString("dd.MM.yyyy")} (Настройки подключения не изменились, повторно сканировать QR код нет необходимости).";
+                    response.AccessQrCode = Helper.GetAccessQrCode(access);
+                }
             }
 
             return response;
