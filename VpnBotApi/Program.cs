@@ -1,5 +1,5 @@
 using Database;
-using VpnBotApi.Worker.Common;
+using VpnBotApi.Common;
 using VpnBotApi.Worker.TelegramBot;
 
 namespace VpnBotApi
@@ -13,9 +13,10 @@ namespace VpnBotApi
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
+            //builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
             builder.Services.AddDatabase(builder.Configuration);
             builder.Services.AddTelegramBot();
+            builder.Services.AddControllerHandler();
 
             var app = builder.Build();
 

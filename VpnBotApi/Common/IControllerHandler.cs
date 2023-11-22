@@ -2,7 +2,7 @@
 
 namespace VpnBotApi.Common
 {
-    public interface IControllerHandler<TResponse, TQuery>
+    public interface IControllerHandler<TQuery, TResponse>
     {
         public Task<TResponse> HandlingAsync(TQuery query);
     }

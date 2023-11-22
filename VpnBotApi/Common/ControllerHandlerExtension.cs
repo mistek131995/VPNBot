@@ -6,6 +6,11 @@ namespace VpnBotApi.Common
     {
         public static IServiceCollection AddControllerHandler(this IServiceCollection service)
         {
+
+            service.AddScoped<ControllerDispatcher>();
+
+            #region Регистрация обработчиков для контроллеров
+
             var handlers = Assembly.GetAssembly(typeof(ControllerHandlerExtension))
             .GetTypes()
             .Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IControllerHandler<,>)))
@@ -17,6 +22,8 @@ namespace VpnBotApi.Common
 
                 service.AddScoped(_interface, handler);
             });
+
+            #endregion
 
             return service;
         }
