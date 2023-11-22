@@ -107,7 +107,7 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
                         new KeyValuePair<string, string>("settings", JsonConvert.SerializeObject(settings, serializerSettings))
                     });
 
-                    var response = await client.PostAsync("http://163.5.207.114:2001/panel/api/inbounds/addClient", content);
+                    var response = await client.PostAsync($"http://{ip}:2001/panel/api/inbounds/addClient", content);
 
                     if (response.IsSuccessStatusCode)
                     {

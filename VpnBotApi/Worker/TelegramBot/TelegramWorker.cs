@@ -20,7 +20,7 @@ namespace VpnBotApi.Worker.TelegramBot
 
         public async Task StartBotAsync(CancellationToken cancellationToken)
         {
-            botClient = new TelegramBotClient("6619723942:AAHI2FPYo2P0ESn_9D1SHiaA1m0Mb3QwKq0");
+            botClient = new TelegramBotClient("6846861964:AAHM_mMcnAeeXhNoRYotK78-oy2-399w5y4");
 
             receiverOptions = new ReceiverOptions()
             {
