@@ -6,6 +6,8 @@ namespace Database.Repository.Implementation
 {
     public class VpnServerRepository(Context context) : IVpnServerRepository
     {
+        private readonly Context context = context;
+
         public async Task<VpnServer> GetWithMinUserCountAsync()
         {
             var vpnServers = await context.VpnServers.ToListAsync();

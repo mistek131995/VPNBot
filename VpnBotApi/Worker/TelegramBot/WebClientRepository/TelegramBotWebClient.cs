@@ -11,6 +11,8 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
 {
     public class TelegramBotWebClient(IRepositoryProvider repositoryProvider)
     {
+        private readonly IRepositoryProvider repositoryProvider = repositoryProvider;
+
         private VpnServer vpnServer;
         private Cookie authCookie;
 

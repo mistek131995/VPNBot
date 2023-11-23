@@ -5,6 +5,8 @@ namespace Database.Common
 {
     public class RepositoryProvider(Context context) : IRepositoryProvider
     {
+        private readonly Context context = context;
+
         private IUserRepository userRepository;
         private IAccessRepository accessRepository;
         private ISettingsRepository settingsRepository;

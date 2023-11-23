@@ -6,6 +6,8 @@ namespace Database.Repository.Implementation
 {
     internal class AccessRepository(Context context) : IAccessRepository
     {
+        private readonly Context context = context;
+
         public async Task<Access> GetByTelegramUserIdAsync(long telegramUserId)
         {
             var user = await context.Users
