@@ -61,6 +61,9 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
                 await GetAuthCookie(vpnServer.Ip, vpnServer.Port);
             }
 
+            //Тут удаляем старое подключение если оно есть
+            //await DeleteInbound(telegramUserId);
+
             //Тут добавляем пользователя в подключение в веб панели
             var guid = await AddUserToInbound(telegramUserId, endDate);
 
@@ -164,6 +167,20 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
             throw new Exception("Неудалось создать подключение.");
         }
 
+        private async Task DeleteInbound(Guid guid)
+        {
+            var cookieContainer = new CookieContainer();
+            cookieContainer.Add(authCookie);
+
+            using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
+            {
+                using (var client = new HttpClient(handler))
+                {
+                    var response = await client.PostAsync($"http://{vpnServer.Ip}:{vpnServer.Port}/panel/api/inbounds/1/delClient/{guid}", null);
+                }
+            }
+        }
+
         #endregion
 
 
@@ -217,7 +234,7 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
                         new KeyValuePair<string, string>("settings", JsonConvert.SerializeObject(settings, serializerSettings))
                     });
 
-                    var response = await client.PostAsync($"http://{access.VpnServer.Id}:{access.VpnServer.Port}/panel/api/inbounds/updateClient/{access.Guid}", content);
+                    var response = await client.PostAsync($"http://{access.VpnServer.Ip}:{access.VpnServer.Port}/panel/api/inbounds/updateClient/{access.Guid}", content);
 
                     if (!response.IsSuccessStatusCode)
                     {

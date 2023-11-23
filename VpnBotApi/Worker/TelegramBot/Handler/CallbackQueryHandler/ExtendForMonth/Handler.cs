@@ -1,5 +1,4 @@
 ﻿using Database.Common;
-using Database.Model;
 using VpnBotApi.Worker.TelegramBot.Common;
 using VpnBotApi.Worker.TelegramBot.WebClientRepository;
 
@@ -13,10 +12,10 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForMon
         {
             var response = new Response();
 
-            var access = await repositoryProvides.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
+            var access = await repositoryProvides.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId)
                 ?? throw new Exception("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.");
 
-            if((access.EndDate - DateTime.Now).TotalDays > 2)
+            if ((access.EndDate - DateTime.Now).TotalDays > 2)
             {
                 response.Text = $"Вы сможете продлить доступ {access.EndDate.AddDays(-1).ToString("dd.MM.yyyy")}. Воспользуйтесь текущим QR кодом.";
 
@@ -24,18 +23,18 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForMon
             }
             else
             {
-                var user = await repositoryProvides.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
+                var user = await repositoryProvides.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId)
                     ?? throw new Exception("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ.");
 
 
                 //Если доступ в БД устарел на более чем 7 дней, считаем его устаревшим
                 //Удаляем его из БД и создаем новое подключение
-                if((DateTime.Now - access.EndDate).TotalDays > 7)
+                if ((DateTime.Now - access.EndDate).TotalDays > 7)
                 {
                     //Создаем новое подключение
                     var newAccess = await webClient.CreateNewAccess(query.TelegramUserId, DateTime.Now.AddMonths(1));
+                    var vpnServer = await repositoryProvides.VpnServerRepository.GetByIp(newAccess.Ip);
 
-                    access.Ip = newAccess.Ip;
                     access.Port = newAccess.Port;
                     access.Network = newAccess.Network;
                     access.Security = newAccess.Security;
@@ -46,6 +45,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForMon
                     access.ServerName = newAccess.RealitySettings.ServerNames.First();
                     access.ShortId = newAccess.RealitySettings.ShortIds.First();
                     access.EndDate = newAccess.EndDate;
+                    access.VpnServerId = vpnServer.Id;
 
                     //Добавляем доступ к пользователю
                     user.Access = access;

@@ -8,6 +8,11 @@ namespace Database.Repository.Implementation
     {
         private readonly Context context = context;
 
+        public async Task<VpnServer> GetByIp(string ip)
+        {
+            return await context.VpnServers.FirstOrDefaultAsync(x => x.Ip == ip);
+        }
+
         public async Task<VpnServer> GetWithMinUserCountAsync()
         {
             var vpnServers = await context.VpnServers.ToListAsync();

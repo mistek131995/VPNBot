@@ -37,9 +37,10 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
                 var user = await provider.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
                 var newAccess = await webClient.CreateNewAccess(query.TelegramUserId, DateTime.Now.AddDays(7));
 
+                var vpnServer = await provider.VpnServerRepository.GetByIp(newAccess.Ip);
+
                 user.Access = new Access()
                 {
-                    Ip = newAccess.Ip,
                     Port = newAccess.Port,
                     Network = newAccess.Network,
                     Security = newAccess.Security,
@@ -50,6 +51,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
                     ServerName = newAccess.RealitySettings.ServerNames.First(),
                     ShortId = newAccess.RealitySettings.ShortIds.First(),
                     EndDate = newAccess.EndDate,
+                    VpnServerId = vpnServer.Id
                 };
 
                 await provider.UserRepository.UpdateAsync(user);

@@ -13,7 +13,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.SubscribeMan
             var response = new Response();
 
             var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId)
-                ?? throw new Exception("Ваш ползователь и доступ не найдены. Очистите чат с ботом и получите доступ."); ;
+                ?? throw new Exception("Ваш пользователь и доступ не найдены. Очистите чат с ботом и получите доступ."); ;
 
             if (access.EndDate <= DateTime.Now)
             {
