@@ -13,7 +13,7 @@ namespace Database
             var connectionString = configuration.GetConnectionString("mssql");
 
             services.AddDbContext<Context>(options => options.UseSqlServer(connectionString, options => options.EnableRetryOnFailure()));
-            services.AddScoped<IRepositoryProvider, RepositoryProvider>();
+            services.AddTransient<IRepositoryProvider, RepositoryProvider>();
 
             return services;
         }

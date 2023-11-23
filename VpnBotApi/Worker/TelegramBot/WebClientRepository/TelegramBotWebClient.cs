@@ -62,9 +62,11 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
             }
 
             //Тут удаляем старое подключение если оно есть
-            //await DeleteInbound(telegramUserId);
+            var oldAccess = await repositoryProvider.AccessRepository.GetByTelegramUserIdAsync(telegramUserId);
+            if (oldAccess != null)
+                await DeleteInbound(oldAccess.Guid);
 
-            //Тут добавляем пользователя в подключение в веб панели
+            //Тут добавляем новое подключение
             var guid = await AddUserToInbound(telegramUserId, endDate);
 
             var inbound = await GetInbound();

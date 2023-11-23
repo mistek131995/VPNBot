@@ -13,10 +13,10 @@ namespace VpnBotApi.Worker.TelegramBot
         public static IServiceCollection AddTelegramBot(this IServiceCollection services)
         {
             services.AddScoped<TelegramWorker>();
-            services.AddScoped<ErrorHandler>();
-            services.AddScoped<UpdateHandler>();
-            services.AddScoped<MessageHandler>();
-            services.AddScoped<CallbackQueryHandler>();
+            services.AddTransient<ErrorHandler>();
+            services.AddTransient<UpdateHandler>();
+            services.AddTransient<MessageHandler>();
+            services.AddTransient<CallbackQueryHandler>();
             services.AddScoped<TelegramBotWebClient>();
 
             services.AddScoped<HandlerDispatcher>();
