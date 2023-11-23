@@ -175,7 +175,7 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
 
             if (authCookie == null)
             {
-                //await GetAuthCookie(access.VpnServer.Ip, access.VpnServer.Port);
+                await GetAuthCookie(access.VpnServer.Ip, access.VpnServer.Port);
             }
 
             var expiryTime = endDate.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
@@ -217,12 +217,12 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
                         new KeyValuePair<string, string>("settings", JsonConvert.SerializeObject(settings, serializerSettings))
                     });
 
-                    //var response = await client.PostAsync($"http://{access.VpnServer.Id}:{access.VpnServer.Port}/panel/api/inbounds/updateClient/{access.Guid}", content);
+                    var response = await client.PostAsync($"http://{access.VpnServer.Id}:{access.VpnServer.Port}/panel/api/inbounds/updateClient/{access.Guid}", content);
 
-                    //if (!response.IsSuccessStatusCode)
-                    //{
-                    //    throw new Exception("Неудалось обновить подключение на VPN сервере.");
-                    //}
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception("Неудалось обновить подключение на VPN сервере.");
+                    }
                 }
             }
         }

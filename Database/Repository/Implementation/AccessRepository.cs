@@ -12,7 +12,7 @@ namespace Database.Repository.Implementation
         {
             var user = await context.Users
                 .Include(x => x.Access)
-                //.ThenInclude(x => x.VpnServer)
+                .ThenInclude(x => x.VpnServer)
                 .FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId);
 
             return user?.Access;

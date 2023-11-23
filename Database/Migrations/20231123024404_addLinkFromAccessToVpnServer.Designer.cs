@@ -4,6 +4,7 @@ using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20231123024404_addLinkFromAccessToVpnServer")]
+    partial class addLinkFromAccessToVpnServer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,8 +85,7 @@ namespace Database.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.HasIndex("VpnServerId")
-                        .IsUnique();
+                    b.HasIndex("VpnServerId");
 
                     b.ToTable("Accesses");
                 });
@@ -141,19 +143,11 @@ namespace Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Passsword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Port")
                         .HasColumnType("int");
 
                     b.Property<int>("UserCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -169,8 +163,8 @@ namespace Database.Migrations
                         .IsRequired();
 
                     b.HasOne("Database.Model.VpnServer", "VpnServer")
-                        .WithOne("Access")
-                        .HasForeignKey("Database.Model.Access", "VpnServerId")
+                        .WithMany()
+                        .HasForeignKey("VpnServerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -180,12 +174,6 @@ namespace Database.Migrations
                 });
 
             modelBuilder.Entity("Database.Model.User", b =>
-                {
-                    b.Navigation("Access")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Database.Model.VpnServer", b =>
                 {
                     b.Navigation("Access")
                         .IsRequired();
