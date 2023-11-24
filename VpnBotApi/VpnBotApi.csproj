@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Common\Repository\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
