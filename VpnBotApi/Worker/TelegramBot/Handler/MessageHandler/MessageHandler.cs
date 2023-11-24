@@ -1,7 +1,8 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 using VpnBotApi.Worker.TelegramBot.Common;
-using SubscribeManagement = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.SubscribeManagement;
+using AccountManagment = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.AccountManagment;
 using DownloadApp = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.DownloadApp;
 using Help = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.Help;
 
@@ -27,18 +28,12 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
             }
-            else if (message.Text == "Скачать приложение")
-            {
-                var replyMessage = await dispatcher.BuildHandler<DownloadApp.Response, DownloadApp.Query>(new DownloadApp.Query());
-
-                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
-            }
             else if (message.Text == "Получить доступ")
             {
                 var replyMessage = await dispatcher.BuildHandler<GetAccess.Response, GetAccess.Query>(new GetAccess.Query(message.From.Id));
 
                 //Тут отправляется QR код
-                if (replyMessage.AccessQrCode.Length > 0)
+                if (replyMessage.AccessQrCode != null && replyMessage.AccessQrCode.Length > 0)
                 {
                     using (Stream stream = new MemoryStream(replyMessage.AccessQrCode))
                     {
@@ -49,9 +44,15 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
             }
-            else if (message.Text == "Управление подпиской")
+            else if (message.Text == "Аккаунт")
             {
-                var replyMessage = await dispatcher.BuildHandler<SubscribeManagement.Response, SubscribeManagement.Query>(new SubscribeManagement.Query(message.From.Id));
+                var replyMessage = await dispatcher.BuildHandler<AccountManagment.Response, AccountManagment.Query>(new AccountManagment.Query(message.From.Id));
+
+                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
+            }
+            else if (message.Text == "Скачать приложение")
+            {
+                var replyMessage = await dispatcher.BuildHandler<DownloadApp.Response, DownloadApp.Query>(new DownloadApp.Query());
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
             }
@@ -63,7 +64,29 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
             }
             else
             {
-                await client.SendTextMessageAsync(chat.Id, "Команда не распознана, выберите действие из меню.");
+                //Если не удалось найти подходящий ответ, возможно обновилось меню, отправляем обновленное меню
+                var replyKeyboard  = new ReplyKeyboardMarkup(new List<KeyboardButton[]>
+                {
+                    new KeyboardButton[]
+                    {
+                        new KeyboardButton("Аккаунт")
+                    },
+                    new KeyboardButton[]
+                    {
+                        new KeyboardButton("Скачать приложение")
+                    },
+                    new KeyboardButton[]
+                    {
+                        new KeyboardButton("Помощь")
+                    }
+                })
+                {
+                    ResizeKeyboard = true
+                };
+
+
+                await client.SendTextMessageAsync(chat.Id, "Команда не распознана, выберите действие из меню.", replyMarkup: replyKeyboard);
+
             }
         }
     }

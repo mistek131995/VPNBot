@@ -6,12 +6,11 @@ namespace Database.Repository.Implementation
 {
     internal class SettingsRepository(Context context) : ISettingsRepository
     {
-        public Context context = context;
-
-
         public async Task<Setting> GetSettingsAsync()
         {
-            return await context.Settings.FirstOrDefaultAsync();
+            return await context.Settings
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Setting> UpdateSettingsAsync(Setting newSetting)

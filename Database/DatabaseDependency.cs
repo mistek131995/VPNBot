@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Database
 {
@@ -13,7 +12,7 @@ namespace Database
             var connectionString = configuration.GetConnectionString("mssql");
 
             services.AddDbContext<Context>(options => options.UseSqlServer(connectionString, options => options.EnableRetryOnFailure()));
-            services.AddTransient<IRepositoryProvider, RepositoryProvider>();
+            services.AddScoped<IRepositoryProvider, RepositoryProvider>();
 
             return services;
         }

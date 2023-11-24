@@ -37,6 +37,13 @@ namespace Database.Migrations
                 {
                     table.PrimaryKey("PK_VpnServers", x => x.Id);
                 });
+
+            migrationBuilder.Sql(@"
+                INSERT INTO VpnServers(Ip)
+                SELECT DISTINCT
+                a.Ip AS Ip
+                FROM Accesses a
+            ");
         }
 
         /// <inheritdoc />

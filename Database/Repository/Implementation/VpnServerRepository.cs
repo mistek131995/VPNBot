@@ -6,16 +6,18 @@ namespace Database.Repository.Implementation
 {
     public class VpnServerRepository(Context context) : IVpnServerRepository
     {
-        private readonly Context context = context;
-
         public async Task<VpnServer> GetByIp(string ip)
         {
-            return await context.VpnServers.FirstOrDefaultAsync(x => x.Ip == ip);
+            return await context.VpnServers
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Ip == ip);
         }
 
         public async Task<VpnServer> GetWithMinUserCountAsync()
         {
-            var vpnServers = await context.VpnServers.ToListAsync();
+            var vpnServers = await context.VpnServers
+                .AsNoTracking()
+                .ToListAsync();
 
             return vpnServers.FirstOrDefault(x => x.UserCount == vpnServers.Min(c => c.UserCount));
         }

@@ -1,5 +1,4 @@
-﻿using Database;
-using Database.Common;
+﻿using Database.Common;
 using Database.Model;
 using Telegram.Bot.Types.ReplyMarkups;
 using VpnBotApi.Worker.TelegramBot.Common;
@@ -8,7 +7,6 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.MainMenu
 {
     public class Handler(IRepositoryProvider provider) : IHandler<Query, Response>
     {
-        private readonly IRepositoryProvider provider = provider;
         public async Task<Response> HandlingAsync(Query query)
         {
             var response = new Response();

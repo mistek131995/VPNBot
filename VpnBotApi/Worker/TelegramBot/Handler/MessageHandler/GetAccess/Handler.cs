@@ -1,90 +1,79 @@
 ﻿using Database.Common;
 using Database.Model;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using VpnBotApi.Worker.TelegramBot.Common;
 using VpnBotApi.Worker.TelegramBot.WebClientRepository;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
 {
-    public class Handler(IRepositoryProvider provider, TelegramBotWebClient webClient) : IHandler<Query, Response>
+    public class Handler(IRepositoryProvider repositoryProvider, TelegramBotWebClient webClient) : IHandler<Query, Response>
     {
-        private readonly IRepositoryProvider provider = provider;
-        private readonly TelegramBotWebClient webClient = webClient;
         public async Task<Response> HandlingAsync(Query query)
         {
             var response = new Response();
 
-            var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
+            var access = await repositoryProvider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
 
-            response.ReplyKeyboard = new ReplyKeyboardMarkup(new List<KeyboardButton[]>()
+            if (access != null) 
             {
-                new KeyboardButton[]
+                if(access.EndDate.Date < DateTime.Now.Date)
                 {
-                    new KeyboardButton("Управление подпиской")
-                },
-                new KeyboardButton[]
-                {
-                    new KeyboardButton("Скачать приложение"),
-                    new KeyboardButton("Помощь")
+                    response.Text = $"Ваша подписка закончилась {access.EndDate.ToShortDateString()}. Для продления, перейдите в аккаунт и выберите срок новой подписки.";
                 }
-            })
-            {
-                ResizeKeyboard = true,
-            };
-
-            if (access == null)
-            {
-                var user = await provider.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
-                var newAccess = await webClient.CreateNewAccess(query.TelegramUserId, DateTime.Now.AddDays(7));
-
-                var vpnServer = await provider.VpnServerRepository.GetByIp(newAccess.Ip);
-
-                user.Access = new Access()
+                else
                 {
-                    Port = newAccess.Port,
-                    Network = newAccess.Network,
-                    Security = newAccess.Security,
-                    AccessName = newAccess.AccessName,
-                    Guid = newAccess.Guid,
-                    Fingerprint = newAccess.RealitySettings.Settings.Fingerprint,
-                    PublicKey = newAccess.RealitySettings.Settings.PublicKey,
-                    ServerName = newAccess.RealitySettings.ServerNames.First(),
-                    ShortId = newAccess.RealitySettings.ShortIds.First(),
-                    EndDate = newAccess.EndDate,
-                    VpnServerId = vpnServer.Id
-                };
-
-                await provider.UserRepository.UpdateAsync(user);
-
-                response.Text = $"Получен тестовый доступ до {user.Access.EndDate.ToString("dd.MM.yyyy")}. Сохраните QR код, скачайте приложение и загрузите в него QR код. " +
-                    $"\nНа данный момент бот работает в тестовом режиме, вы можете продлевать подписку бесплатно на 1 месяц.";
-                response.AccessQrCode = Helper.GetAccessQrCode(user.Access);
-            }
-            else if (access.EndDate.Date <= DateTime.Now.Date)
-            {
-                response.ReplyKeyboard = new ReplyKeyboardMarkup(new List<KeyboardButton[]>()
-                {
-                    new KeyboardButton[]
-                    {
-                        new KeyboardButton("Продлить подписку")
-                    },
-                    new KeyboardButton[]
-                    {
-                        new KeyboardButton("Скачать приложение"),
-                        new KeyboardButton("Сообщить об ошибке")
-                    }
-                })
-                {
-                    ResizeKeyboard = true,
-                };
-
-                response.Text = "Действие подписки закончилось, для продолжения продлите доступ.";
+                    response.Text = $"У вас есть активная подписка сроком до {access.EndDate.ToShortDateString()}, скачайте приложение и загрузите QR код в приложение.";
+                    response.AccessQrCode = Helper.GetAccessQrCode(access);
+                }
             }
             else
             {
-                response.Text = $"Доступ активен до {access.EndDate.ToString("dd.MM.yyyy")}. Скачайте приложение и отсканируйте QR код.";
-                response.AccessQrCode = Helper.GetAccessQrCode(access);
+                var newInboundUser = await webClient.CreateNewAccess(query.TelegramUserId, DateTime.Now.AddDays(7));
+
+                var user = await repositoryProvider.UserRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
+                    ?? throw new Exception("Пользователь не найден, очистите чат и попробуйте снова.");
+
+                var vpnServer = await repositoryProvider.VpnServerRepository.GetByIp(newInboundUser.Ip) 
+                    ?? throw new Exception("Не удалось получить VPN сервер, очистите чат и попробуйте снова.");
+
+                user.Access = new Access()
+                {
+                    Port = newInboundUser.Port,
+                    Network = newInboundUser.Network,
+                    Security = newInboundUser.Security,
+                    AccessName = newInboundUser.AccessName,
+                    Guid = newInboundUser.Guid,
+                    Fingerprint = newInboundUser.RealitySettings.Settings.Fingerprint,
+                    PublicKey = newInboundUser.RealitySettings.Settings.PublicKey,
+                    ServerName = newInboundUser.RealitySettings.ServerNames.First(),
+                    ShortId = newInboundUser.RealitySettings.ShortIds.First(),
+                    EndDate = newInboundUser.EndDate,
+                    VpnServerId = vpnServer.Id
+                };
+
+                response.Text = $"Получен пробный доступ сроком до {access.EndDate.ToShortDateString()}, скачайте приложение и загрузите QR код в приложение.";
             }
+
+            //Кнопки основного меню
+            response.ReplyKeyboard = new ReplyKeyboardMarkup(new List<KeyboardButton[]>
+            {
+                new KeyboardButton[]
+                {
+                    new KeyboardButton("Аккаунт")
+                },
+                new KeyboardButton[]
+                {
+                    new KeyboardButton("Скачать приложение")
+                },
+                new KeyboardButton[]
+                {
+                    new KeyboardButton("Помощь")
+                }
+            })
+            { 
+                ResizeKeyboard = true
+            };
 
             return response;
         }

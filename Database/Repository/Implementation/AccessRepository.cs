@@ -6,13 +6,12 @@ namespace Database.Repository.Implementation
 {
     internal class AccessRepository(Context context) : IAccessRepository
     {
-        private readonly Context context = context;
-
         public async Task<Access> GetByTelegramUserIdAsync(long telegramUserId)
         {
             var user = await context.Users
                 .Include(x => x.Access)
                 .ThenInclude(x => x.VpnServer)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId);
 
             return user?.Access;

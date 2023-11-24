@@ -1,6 +1,6 @@
 ﻿using VpnBotApi.Worker.TelegramBot.Common;
 
-namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.ExtendForMonth
+namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.AccountManagment
 {
     public class Query(long telegramUserId) : IQuery<Response>
     {

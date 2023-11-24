@@ -1,5 +1,6 @@
 using Database;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using VpnBotApi.Common;
 using VpnBotApi.Worker.Common;
 using VpnBotApi.Worker.TelegramBot;
@@ -12,6 +13,10 @@ namespace VpnBotApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("log.log", rollingInterval: RollingInterval.Month)
+                .CreateLogger();
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -19,6 +24,7 @@ namespace VpnBotApi
             builder.Services.AddDatabase(builder.Configuration);
             builder.Services.AddTelegramBot();
             builder.Services.AddControllerHandler();
+
 
             var app = builder.Build();
 
