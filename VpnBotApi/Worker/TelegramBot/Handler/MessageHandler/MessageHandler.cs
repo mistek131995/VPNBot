@@ -18,10 +18,6 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
             var message = update.Message;
             var chat = message.Chat;
 
-            var firstName = message.From.FirstName;
-            var lastName = message.From.LastName;
-            var userName = message.From.Username;
-
             if (message.Text == "/start")
             {
                 var replyMessage = await dispatcher.BuildHandler<MainMenu.Response, MainMenu.Query>(new MainMenu.Query(message.From.Id));

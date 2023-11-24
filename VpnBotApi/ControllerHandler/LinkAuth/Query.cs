@@ -1,6 +1,6 @@
 ﻿using VpnBotApi.Common;
 
-namespace VpnBotApi.ControllerHandler.Auth
+namespace VpnBotApi.ControllerHandler.LinkAuth
 {
     public class Query : IControllerQuery<Response>
     {

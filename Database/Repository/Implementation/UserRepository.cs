@@ -6,12 +6,12 @@ namespace Database.Repository.Implementation
 {
     internal class UserRepository(Context context) : IUserRepository
     {
-        public async Task<User> AddAsync(User user)
+        public async Task<User> GetByTelegramUserIdAndAccessGuidAsync(long telegramUserId, Guid accessGuid)
         {
-            await context.Users.AddAsync(user);
-            await context.SaveChangesAsync();
-
-            return user;
+            return await context.Users
+                .Include(x => x.Access)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId && x.Access.Guid == accessGuid);
         }
 
         public async Task<User> GetByTelegramUserIdAsync(long telegramUserId)
@@ -20,6 +20,14 @@ namespace Database.Repository.Implementation
                 .Include(x => x.Access)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId);
+        }
+
+        public async Task<User> AddAsync(User user)
+        {
+            await context.Users.AddAsync(user);
+            await context.SaveChangesAsync();
+
+            return user;
         }
 
         public async Task<User> UpdateAsync(User user)
