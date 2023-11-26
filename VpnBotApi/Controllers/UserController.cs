@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VpnBotApi.Common;
 using LinkAuth = VpnBotApi.ControllerHandler.LinkAuth;
+using SetLoginAndPassword = VpnBotApi.ControllerHandler.SetLoginAndPassword;
 
 namespace VpnBotApi.Controllers
 {
@@ -13,6 +14,14 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> LoginByLink([FromQuery] LinkAuth.Query query)
         {
             var response = await dispatcher.BuildHandler<LinkAuth.Response, LinkAuth.Query>(query);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> SetLoginAndPassword([FromBody] SetLoginAndPassword.Query query)
+        {
+            var response = await dispatcher.BuildHandler<bool, SetLoginAndPassword.Query>(query);
 
             return Json(response);
         }
