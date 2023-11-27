@@ -18,7 +18,7 @@ namespace Database.Repository.Implementation
 
         public async Task<User> GetByTelegramUserIdAsync(long telegramUserId)
         {
-            return await context.Users
+            return await context.Users.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId);
         }
 
