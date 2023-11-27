@@ -80,7 +80,7 @@ namespace VpnBotApi.Worker.TelegramBot.WebClientRepository
                 Email = telegramUserId.ToString(),
                 LimitIp = 1,
                 TotalGB = 0,
-                ExpiryTime = expiryTime,
+                ExpiryTime = (int)expiryTime,
                 Enable = true,
             };
 
