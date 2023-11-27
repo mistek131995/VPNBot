@@ -1,5 +1,9 @@
 ﻿using Database.Common;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using VpnBotApi.Common;
+using static VpnBotApi.Program;
 
 namespace VpnBotApi.ControllerHandler.Command.LinkAuth
 {
@@ -11,9 +15,22 @@ namespace VpnBotApi.ControllerHandler.Command.LinkAuth
                 ?? throw new Exception("Пользователь не найден.");
 
             if (user.Password != query.Password)
-                throw new Exception("Введен неверный пароль.");
+                throw new Exception("Введен неверный логин или пароль.");
 
-            return "Вы вошли в аккаунт.";
+            var claims = new List<Claim>()
+            {
+                new Claim("login", user.Login),
+                new Claim("role", "admin")
+            };
+
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    claims: claims,
+                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)), // время действия 2 минуты
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+
+            return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
     }
 }

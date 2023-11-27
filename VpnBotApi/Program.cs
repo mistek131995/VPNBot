@@ -1,6 +1,9 @@
 using Database;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text;
 using VpnBotApi.Common;
 using VpnBotApi.Common.ExceptionHandler;
 using VpnBotApi.Worker.Common;
@@ -26,6 +29,29 @@ namespace VpnBotApi
             builder.Services.AddTelegramBot();
             builder.Services.AddControllerHandler();
 
+            builder.Services.AddAuthorization();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        // указывает, будет ли валидироваться издатель при валидации токена
+                        ValidateIssuer = true,
+                        // строка, представляющая издателя
+                        ValidIssuer = AuthOptions.ISSUER,
+                        // будет ли валидироваться потребитель токена
+                        ValidateAudience = true,
+                        // установка потребителя токена
+                        ValidAudience = AuthOptions.AUDIENCE,
+                        // будет ли валидироваться время существования
+                        ValidateLifetime = true,
+                        // установка ключа безопасности
+                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        // валидация ключа безопасности
+                        ValidateIssuerSigningKey = true,
+                    };
+                });
+
 
             var app = builder.Build();
 
@@ -45,12 +71,24 @@ namespace VpnBotApi
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseAuthorization();
+
+
             app.MapControllers();
             app.UseMiddleware<ExceptionMiddleware>();
             app.MapFallbackToFile("/index.html");
 
             app.Run();
+        }
+
+        public class AuthOptions
+        {
+            public const string ISSUER = "LockVpn.Server"; // издатель токена
+            public const string AUDIENCE = "LockVpn.Client"; // потребитель токена
+            const string KEY = "asfdddskjjawiejaljslockvpnasdjkasdjlajdfjha41747849347*^*&%$";   // ключ для шифрации
+            public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
         }
     }
 }
