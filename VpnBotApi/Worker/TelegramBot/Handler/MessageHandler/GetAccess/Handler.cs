@@ -14,7 +14,8 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
         {
             var response = new Response();
 
-            var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId);
+            var access = await provider.AccessRepository.GetByTelegramUserIdAsync(query.TelegramUserId) 
+                ?? throw new Exception("Доступ устарел, продлите доступ в 'Управление подпиской'.");
 
             response.ReplyKeyboard = new ReplyKeyboardMarkup(new List<KeyboardButton[]>()
             {
