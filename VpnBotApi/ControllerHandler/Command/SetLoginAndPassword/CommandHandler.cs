@@ -1,13 +1,13 @@
 ﻿using Database.Common;
 using VpnBotApi.Common;
 
-namespace VpnBotApi.ControllerHandler.SetLoginAndPassword
+namespace VpnBotApi.ControllerHandler.Command.SetLoginAndPassword
 {
-    public class QueryHandler(IRepositoryProvider repositoryProvider) : IControllerHandler<Query, bool>
+    public class CommandHandler(IRepositoryProvider repositoryProvider) : IControllerHandler<Command, bool>
     {
-        public async Task<bool> HandlingAsync(Query query)
+        public async Task<bool> HandlingAsync(Command query)
         {
-            var user = await repositoryProvider.UserRepository.GetByTelegramUserIdAndAccessGuidAsync(query.TelegramUserId, query.AccessGuid) 
+            var user = await repositoryProvider.UserRepository.GetByTelegramUserIdAndAccessGuidAsync(query.TelegramUserId, query.AccessGuid)
                 ?? throw new Exception("Пользователь не найден.");
 
             if (!string.IsNullOrEmpty(user.Login) && !string.IsNullOrEmpty(user.Password))

@@ -4,7 +4,7 @@
     {
         private readonly IServiceProvider serviceProvider = serviceProvider;
 
-        public Task<TResponse> BuildHandler<TResponse, TQuery>(TQuery query) where TQuery : IControllerQuery<TResponse>
+        public Task<TResponse> BuildHandler<TResponse, TQuery>(TQuery query) where TQuery : IControllerRequest<TResponse>
         {
             var handler = (IControllerHandler<TQuery, TResponse>)serviceProvider.GetService(typeof(IControllerHandler<TQuery, TResponse>));
 

@@ -1,4 +1,4 @@
-﻿namespace VpnBotApi.ControllerHandler.LinkAuth
+﻿namespace VpnBotApi.ControllerHandler.Query.LinkAuth
 {
     public class Response
     {

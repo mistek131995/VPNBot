@@ -2,6 +2,7 @@ using Database;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using VpnBotApi.Common;
+using VpnBotApi.Common.ExceptionHandler;
 using VpnBotApi.Worker.Common;
 using VpnBotApi.Worker.TelegramBot;
 
@@ -44,11 +45,9 @@ namespace VpnBotApi
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
+            app.UseMiddleware<ExceptionMiddleware>();
             app.MapFallbackToFile("/index.html");
 
             app.Run();

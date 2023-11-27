@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VpnBotApi.Common;
-using LinkAuth = VpnBotApi.ControllerHandler.LinkAuth;
-using SetLoginAndPassword = VpnBotApi.ControllerHandler.SetLoginAndPassword;
+using LoginByLinkQuery = VpnBotApi.ControllerHandler.Query.LinkAuth;
+using LoginByLinkCommand = VpnBotApi.ControllerHandler.Command.LinkAuth;
+using SetLoginAndPasswordCommand = VpnBotApi.ControllerHandler.Command.SetLoginAndPassword;
 
 namespace VpnBotApi.Controllers
 {
@@ -11,17 +12,25 @@ namespace VpnBotApi.Controllers
     {
 
         [HttpGet]
-        public async Task<JsonResult> LoginByLink([FromQuery] LinkAuth.Query query)
+        public async Task<JsonResult> LoginByLink([FromQuery] LoginByLinkQuery.Query query)
         {
-            var response = await dispatcher.BuildHandler<LinkAuth.Response, LinkAuth.Query>(query);
+            var response = await dispatcher.BuildHandler<LoginByLinkQuery.Response, LoginByLinkQuery.Query>(query);
 
             return Json(response);
         }
 
         [HttpPost]
-        public async Task<JsonResult> SetLoginAndPassword([FromBody] SetLoginAndPassword.Query query)
+        public async Task<JsonResult> LoginByLink([FromBody]LoginByLinkCommand.Command command)
         {
-            var response = await dispatcher.BuildHandler<bool, SetLoginAndPassword.Query>(query);
+            var response = await dispatcher.BuildHandler<string, LoginByLinkCommand.Command>(command);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> SetLoginAndPassword([FromBody] SetLoginAndPasswordCommand.Command query)
+        {
+            var response = await dispatcher.BuildHandler<bool, SetLoginAndPasswordCommand.Command>(query);
 
             return Json(response);
         }

@@ -6,7 +6,7 @@ using System.Text;
 using Telegram.Bot.Extensions.LoginWidget;
 using VpnBotApi.Common;
 
-namespace VpnBotApi.ControllerHandler.LinkAuth
+namespace VpnBotApi.ControllerHandler.Query.LinkAuth
 {
     public class Handler(IRepositoryProvider repositoryProvider) : IControllerHandler<Query, Response>
     {
