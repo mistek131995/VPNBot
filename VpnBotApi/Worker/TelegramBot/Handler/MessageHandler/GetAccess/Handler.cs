@@ -64,7 +64,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
                 {
                     new KeyboardButton[]
                     {
-                        new KeyboardButton("Продлить подписку")
+                        new KeyboardButton("Управление подпиской")
                     },
                     new KeyboardButton[]
                     {
