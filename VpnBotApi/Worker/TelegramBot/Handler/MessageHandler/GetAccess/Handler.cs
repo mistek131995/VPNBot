@@ -76,7 +76,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess
                     ResizeKeyboard = true,
                 };
 
-                response.Text = "Действие подписки закончилось, для продолжения продлите доступ.";
+                response.Text = "Действие подписки закончилось, для продолжения продлите доступ в управлении подпиской.";
             }
             else
             {
