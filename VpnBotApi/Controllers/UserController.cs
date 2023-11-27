@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VpnBotApi.Common;
 using LoginByLinkQuery = VpnBotApi.ControllerHandler.Query.LinkAuth;
+using IndexQuery = VpnBotApi.ControllerHandler.Query.Index;
 using LoginByLinkCommand = VpnBotApi.ControllerHandler.Command.LinkAuth;
 using SetLoginAndPasswordCommand = VpnBotApi.ControllerHandler.Command.SetLoginAndPassword;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VpnBotApi.Controllers
 {
@@ -15,6 +17,21 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> LoginByLink([FromQuery] LoginByLinkQuery.Query query)
         {
             var response = await dispatcher.BuildHandler<LoginByLinkQuery.Response, LoginByLinkQuery.Query>(query);
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        //[Authorize]
+        public async Task<JsonResult> GetIndex()
+        {
+            var query = new IndexQuery.Query()
+            {
+
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            };
+
+            var response = await dispatcher.BuildHandler<IndexQuery.Response, IndexQuery.Query>(query);
 
             return Json(response);
         }

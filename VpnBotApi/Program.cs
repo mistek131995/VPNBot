@@ -1,6 +1,7 @@
 using Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
@@ -23,7 +24,10 @@ namespace VpnBotApi
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.CustomSchemaIds(type => type.FullName);
+            });
             builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
             builder.Services.AddDatabase(builder.Configuration);
             builder.Services.AddTelegramBot();

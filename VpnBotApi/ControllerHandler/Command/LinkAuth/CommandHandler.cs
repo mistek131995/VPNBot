@@ -19,8 +19,9 @@ namespace VpnBotApi.ControllerHandler.Command.LinkAuth
 
             var claims = new List<Claim>()
             {
+                new Claim("id", user.Id.ToString()),
                 new Claim("login", user.Login),
-                new Claim("role", "admin")
+                new Claim("role", user.Role.ToString())
             };
 
             var jwt = new JwtSecurityToken(

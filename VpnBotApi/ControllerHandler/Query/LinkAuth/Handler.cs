@@ -1,9 +1,4 @@
 ﻿using Database.Common;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Newtonsoft.Json.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using Telegram.Bot.Extensions.LoginWidget;
 using VpnBotApi.Common;
 
 namespace VpnBotApi.ControllerHandler.Query.LinkAuth
