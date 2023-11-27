@@ -1,4 +1,5 @@
 using Database;
+using Microsoft.EntityFrameworkCore;
 using VpnBotApi.Worker.Common;
 using VpnBotApi.Worker.TelegramBot;
 
@@ -18,6 +19,14 @@ namespace VpnBotApi
             builder.Services.AddTelegramBot();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider
+                    .GetRequiredService<Context>();
+
+                await dbContext.Database.MigrateAsync();
+            }
 
             if (app.Environment.IsDevelopment())
             {

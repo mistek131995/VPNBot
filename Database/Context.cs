@@ -7,7 +7,7 @@ namespace Database
     {
         public Context(DbContextOptions<Context> options) : base(options)
         {
-            Database.MigrateAsync();
+            //Database.MigrateAsync();
         }
 
         public DbSet<User> Users { get; set; }
