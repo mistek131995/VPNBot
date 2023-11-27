@@ -7,7 +7,7 @@
         public string Email { get; set; }
         public int LimitIp { get; set; }
         public int TotalGB { get; set; }
-        public int ExpiryTime { get; set; }
+        public double ExpiryTime { get; set; }
         public bool Enable {  get; set; }
     }
 }
