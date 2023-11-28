@@ -22,8 +22,8 @@ namespace Database.Migrations
 
                 INSERT INTO AccessPositions (Name, MonthCount, Description, Price) VALUES ('1 месяц', 1, '', 0)
                 INSERT INTO AccessPositions (Name, MonthCount, Description, Price) VALUES ('1 месяц', 1, '', 100)
-                INSERT INTO AccessPositions (Name, MonthCount, Description, Price) VALUES ('3 месяца', 3, '', 180)
-                INSERT INTO AccessPositions (Name, MonthCount, Description, Price) VALUES ('6 месяцев', 6, '', 260)
+                INSERT INTO AccessPositions (Name, MonthCount, Description, Price) VALUES ('3 месяца', 3, '', 250)
+                INSERT INTO AccessPositions (Name, MonthCount, Description, Price) VALUES ('6 месяцев', 6, '', 500)
 
             ");
         }
