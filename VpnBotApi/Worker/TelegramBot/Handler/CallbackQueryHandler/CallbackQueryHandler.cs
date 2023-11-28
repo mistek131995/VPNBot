@@ -2,6 +2,7 @@
 using Telegram.Bot.Types;
 using VpnBotApi.Worker.TelegramBot.Common;
 using GetAccess = VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess;
+using SubscribePositions = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.AccessPositions;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
 {
@@ -19,7 +20,14 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
             // кнопка привязана к сообщению, то мы берем информацию от сообщения.
             var chat = callbackQuery.Message.Chat;
 
-            if(callbackQuery.Data == "getQrCode")
+            if (callbackQuery.Data == "accessPositionList")
+            {
+                var replyMessage = await dispatcher.BuildHandler<SubscribePositions.Response, SubscribePositions.Query>(new SubscribePositions.Query());
+
+                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
+                await client.DeleteMessageAsync(chat.Id, callbackQuery.Message.MessageId);
+            }
+            else if(callbackQuery.Data == "getQrCode")
             {
                 var replyMessage = await dispatcher.BuildHandler<GetAccess.Response, GetAccess.Query>(new GetAccess.Query(user.Id));
 

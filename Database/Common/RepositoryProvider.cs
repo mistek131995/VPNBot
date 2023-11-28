@@ -9,6 +9,7 @@ namespace Database.Common
         private IAccessRepository accessRepository;
         private ISettingsRepository settingsRepository;
         private IVpnServerRepository vpnServerRepository;
+        private IAccessPositionRepository accessPositionRepository;
 
         public IUserRepository UserRepository =>
             userRepository ??= new UserRepository(context);
@@ -21,5 +22,8 @@ namespace Database.Common
 
         public IVpnServerRepository VpnServerRepository => 
             vpnServerRepository ??= new VpnServerRepository(context);
+
+        public IAccessPositionRepository AccessPositionRepository => 
+            accessPositionRepository ??= new AccessPositionRepository(context);
     }
 }

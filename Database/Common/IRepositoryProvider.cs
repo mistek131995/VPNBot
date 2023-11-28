@@ -8,5 +8,6 @@ namespace Database.Common
         public IAccessRepository AccessRepository { get; }
         public ISettingsRepository SettingsRepository { get; }
         public IVpnServerRepository VpnServerRepository { get; }
+        public IAccessPositionRepository AccessPositionRepository { get; }
     }
 }

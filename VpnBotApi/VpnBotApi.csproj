@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Worker\TelegramBot\Handler\CallbackQueryHandler\BuyAccess\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

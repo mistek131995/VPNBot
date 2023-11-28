@@ -31,7 +31,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.AccountManag
             //Общие кнопки 
             inlineKeyboard.Add([
                 InlineKeyboardButton.WithUrl("Личный кабинет", $"http://{domain}/login?TelegramUserId={user.TelegramUserId}&Guid={user.Access.Guid}"),
-                InlineKeyboardButton.WithUrl("Подписка", $"http://{domain}/subscribeManagement?TelegramUserId={user.TelegramUserId}&Guid={user.Access.Guid}")
+                InlineKeyboardButton.WithCallbackData("Подписка", "accessPositionList")
             ]);
 
             response.InlineKeyboard = new InlineKeyboardMarkup(inlineKeyboard);
