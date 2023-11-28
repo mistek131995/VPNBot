@@ -6,6 +6,14 @@ namespace Database.Repository.Implementation
 {
     internal class UserRepository(Context context) : IUserRepository
     {
+        public async Task<User> GetByIdAsync(int id)
+        {
+            return await context.Users
+                .Include(x => x.Access)
+                .Include(x => x.Payments)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<User> GetByTelegramUserIdAndAccessGuidAsync(long telegramUserId, Guid accessGuid)
         {
             return await context.Users

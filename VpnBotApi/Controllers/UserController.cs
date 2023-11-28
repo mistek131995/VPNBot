@@ -22,7 +22,7 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<JsonResult> GetIndex()
         {
             var query = new IndexQuery.Query()

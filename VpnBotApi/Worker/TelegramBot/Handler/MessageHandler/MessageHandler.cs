@@ -20,7 +20,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
 
             if (message.Text == "/start")
             {
-                var replyMessage = await dispatcher.BuildHandler<MainMenu.Response, MainMenu.Query>(new MainMenu.Query(message.From.Id));
+                var replyMessage = await dispatcher.BuildHandler<MainMenu.Response, MainMenu.Query>(new MainMenu.Query(message.From.Id, chat.Id));
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
             }
@@ -60,29 +60,10 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler
             }
             else
             {
-                //Если не удалось найти подходящий ответ, возможно обновилось меню, отправляем обновленное меню
-                var replyKeyboard  = new ReplyKeyboardMarkup(new List<KeyboardButton[]>
-                {
-                    new KeyboardButton[]
-                    {
-                        new KeyboardButton("Аккаунт")
-                    },
-                    new KeyboardButton[]
-                    {
-                        new KeyboardButton("Скачать приложение")
-                    },
-                    new KeyboardButton[]
-                    {
-                        new KeyboardButton("Помощь")
-                    }
-                })
-                {
-                    ResizeKeyboard = true
-                };
+                //Отсюда берем только основное меню
+                var replyMessage = await dispatcher.BuildHandler<GetAccess.Response, GetAccess.Query>(new GetAccess.Query(message.From.Id));
 
-
-                await client.SendTextMessageAsync(chat.Id, "Команда не распознана, выберите действие из меню.", replyMarkup: replyKeyboard);
-
+                await client.SendTextMessageAsync(chat.Id, "Команда не распознана, выберите действие из меню.", replyMarkup: replyMessage.ReplyKeyboard);
             }
         }
     }

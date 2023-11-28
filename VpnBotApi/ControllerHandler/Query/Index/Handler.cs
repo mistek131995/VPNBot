@@ -9,10 +9,14 @@ namespace VpnBotApi.ControllerHandler.Query.Index
         {
             var response = new Response();
 
+            var user = await repositoryProvider.UserRepository.GetByIdAsync(query.UserId);
+
+            response.Login = user.Login;
+            response.Email = user.Email;
+            response.RegisterDate = user.RegisterDate;
+            response.EndAccessDate = user.Access.EndDate;
 
             return response;
-
-            //var response = await repositoryProvider.UserRepository.fi
         }
     }
 }

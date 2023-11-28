@@ -12,8 +12,10 @@ namespace Database.Model
         public string Email { get; set; }
         public string Password { get; set; }
         public UserRole Role { get; set; }
+        public DateTime RegisterDate { get; set; }
 
         public Access Access { get; set; }
+        public List<Payment> Payments { get; set; }
 
         public enum UserRole
         {

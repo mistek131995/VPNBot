@@ -19,7 +19,9 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.MainMenu
             {
                 await provider.UserRepository.AddAsync(new User()
                 {
-                    TelegramUserId = query.TelegramUserId
+                    TelegramUserId = query.TelegramUserId,
+                    TelegramChatId = query.TelegramChatId,
+                    RegisterDate = DateTime.Now,
                 });
             }
 
