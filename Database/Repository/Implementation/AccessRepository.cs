@@ -8,7 +8,7 @@ namespace Database.Repository.Implementation
     {
         public async Task<Access> GetByTelegramUserIdAsync(long telegramUserId)
         {
-            var user = await context.Users.AsNoTracking()
+            var user = await context.Users
                 .Include(x => x.Access)
                 .ThenInclude(x => x.VpnServer)
                 .AsNoTracking()

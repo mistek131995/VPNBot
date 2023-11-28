@@ -12,6 +12,7 @@ namespace Database.Repository.Implementation
                 .Include(x => x.Access)
                 .Include(x => x.Payments)
                 .ThenInclude(x => x.AccessPosition)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
