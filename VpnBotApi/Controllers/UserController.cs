@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VpnBotApi.Common;
+using Microsoft.AspNetCore.Authorization;
+
 using LoginByLinkQuery = VpnBotApi.ControllerHandler.Query.LinkAuth;
 using IndexQuery = VpnBotApi.ControllerHandler.Query.Index;
+
 using LoginByLinkCommand = VpnBotApi.ControllerHandler.Command.LinkAuth;
 using SetLoginAndPasswordCommand = VpnBotApi.ControllerHandler.Command.SetLoginAndPassword;
-using Microsoft.AspNetCore.Authorization;
+using ChangePassword = VpnBotApi.ControllerHandler.Command.ChangePassword;
+
 
 namespace VpnBotApi.Controllers
 {
@@ -52,27 +56,14 @@ namespace VpnBotApi.Controllers
             return Json(response);
         }
 
-        //[HttpGet]
-        //public IActionResult Login([FromQuery] Auth.Query query)
-        //{
-        //    var telegramBotToken = configuration["TelegramBotToken"];
+        [HttpPost]
+        public async Task<JsonResult> ChangePassword([FromBody] ChangePassword.Command command)
+        {
+            command.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
 
-        //    var loginWidget = new LoginWidget(telegramBotToken);
+            var response = await dispatcher.BuildHandler<bool, ChangePassword.Command>(command);
 
-        //    var auth = loginWidget.CheckAuthorization(new SortedDictionary<string, string>()
-        //        {
-        //            {"id", query.id},
-        //            {"first_name", query.first_name},
-        //            {"username", query.username},
-        //            {"photo_url", query.photo_url},
-        //            {"auth_date", query.auth_date},
-        //            {"hash", query.hash},
-        //            {"last_name", query.last_name }
-        //        });
-
-        //    return Unauthorized();
-        //}
-
-
+            return Json(response);
+        }
     }
 }

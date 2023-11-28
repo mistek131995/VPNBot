@@ -16,6 +16,9 @@ namespace VpnBotApi.ControllerHandler.Command.SetLoginAndPassword
             user.Login = query.Login;
             user.Password = query.Password;
 
+            if(user.RegisterDate == DateTime.MinValue)
+                user.RegisterDate = DateTime.Now;
+
             await repositoryProvider.UserRepository.UpdateAsync(user);
 
             return true;

@@ -12,9 +12,19 @@ namespace VpnBotApi.ControllerHandler.Query.Index
             var user = await repositoryProvider.UserRepository.GetByIdAsync(query.UserId);
 
             response.Login = user.Login;
-            response.Email = user.Email;
             response.RegisterDate = user.RegisterDate;
             response.EndAccessDate = user.Access.EndDate;
+
+            if(user.Payments != null && user.Payments.Any())
+            {
+                response.Payments = user.Payments.Select(x => new Response.Payment()
+                {
+                    Id = x.Id,
+                    Date = x.Date,
+                    Range = $"{x.AccessPosition.MonthCount} месяц.",
+                    Price = $"{x.AccessPosition.Price} руб."
+                }).ToList();
+            }
 
             return response;
         }

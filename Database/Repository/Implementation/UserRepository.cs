@@ -11,6 +11,7 @@ namespace Database.Repository.Implementation
             return await context.Users
                 .Include(x => x.Access)
                 .Include(x => x.Payments)
+                .ThenInclude(x => x.AccessPosition)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 

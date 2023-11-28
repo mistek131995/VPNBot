@@ -9,6 +9,7 @@ namespace Database.Model
         public int Name { get; set; }
         public int MonthCount { get; set; }
         public int IpCount { get; set; }
+        public int Price { get; set; }
         public string Description { get; set; }
 
         public Payment Payment { get; set; }
