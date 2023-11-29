@@ -7,6 +7,7 @@ using Serilog;
 using System.Text;
 using VpnBotApi.Common;
 using VpnBotApi.Common.ExceptionHandler;
+using VpnBotApi.Worker.AccessCleaner;
 using VpnBotApi.Worker.Common;
 using VpnBotApi.Worker.TelegramBot;
 
@@ -32,6 +33,7 @@ namespace VpnBotApi
             builder.Services.AddDatabase(builder.Configuration);
             builder.Services.AddTelegramBot();
             builder.Services.AddControllerHandler();
+            builder.Services.AddAccessCleaner();
 
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

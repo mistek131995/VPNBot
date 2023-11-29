@@ -2,7 +2,8 @@
 using Telegram.Bot.Types;
 using VpnBotApi.Worker.TelegramBot.Common;
 using GetAccess = VpnBotApi.Worker.TelegramBot.Handler.MessageHandler.GetAccess;
-using SubscribePositions = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.AccessPositions;
+using SubscribePositionsList = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.AccessPositions;
+using BuyAccess = VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.BuyAccess;
 
 namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
 {
@@ -22,10 +23,9 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
 
             if (callbackQuery.Data == "accessPositionList")
             {
-                var replyMessage = await dispatcher.BuildHandler<SubscribePositions.Response, SubscribePositions.Query>(new SubscribePositions.Query());
+                var replyMessage = await dispatcher.BuildHandler<SubscribePositionsList.Response, SubscribePositionsList.Query>(new SubscribePositionsList.Query());
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
-                await client.DeleteMessageAsync(chat.Id, callbackQuery.Message.MessageId);
             }
             else if(callbackQuery.Data == "getQrCode")
             {
@@ -64,8 +64,27 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler
 
                 await client.SendTextMessageAsync(chat.Id, text);
             }
+            else if (callbackQuery.Data.Contains("buyAccess"))
+            {
+                var accessPositionId = int.Parse(callbackQuery.Data.Split('|')[1]);
+
+                var replyMessage = await dispatcher.BuildHandler<BuyAccess.Response, BuyAccess.Query>(new BuyAccess.Query(accessPositionId, user.Id));
+
+                //Тут отправляется QR код
+                if (replyMessage.AccessQrCode != null && replyMessage.AccessQrCode.Length > 0)
+                {
+                    using (Stream stream = new MemoryStream(replyMessage.AccessQrCode))
+                    {
+
+                        await client.SendPhotoAsync(chat.Id, InputFile.FromStream(stream));
+                    }
+                }
+
+                await client.SendTextMessageAsync(chat.Id, replyMessage.Text);
+            }
 
             await client.AnswerCallbackQueryAsync(callbackQuery.Id);
+            await client.DeleteMessageAsync(chat.Id, callbackQuery.Message.MessageId);
         }
     }
 }

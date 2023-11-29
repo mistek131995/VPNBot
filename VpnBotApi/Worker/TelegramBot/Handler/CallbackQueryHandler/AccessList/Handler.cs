@@ -19,7 +19,7 @@ namespace VpnBotApi.Worker.TelegramBot.Handler.CallbackQueryHandler.AccessPositi
             foreach (var accessPosition in accessPositions)
             {
                 //Добавляем массив позиций в список массивов (каждая с новой строки)
-                positionArrayList.Add([InlineKeyboardButton.WithCallbackData($"{accessPosition.Name} за {accessPosition.Price}руб.", $"accessPosition|{accessPosition.Id}") ]);
+                positionArrayList.Add([InlineKeyboardButton.WithCallbackData($"{accessPosition.Name} за {accessPosition.Price}руб.", $"buyAccess|{accessPosition.Id}") ]);
             }
 
             response.InlineKeyboard = positionArrayList.ToArray();

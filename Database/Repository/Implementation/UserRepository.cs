@@ -42,6 +42,17 @@ namespace Database.Repository.Implementation
 
         public async Task<User> UpdateAsync(User user)
         {
+
+            if(user.Access != null && user.Access.Id == 0)
+            {
+                var oldAccess = await context.Accesses.FirstOrDefaultAsync(x => x.UserId == user.Id);
+                if (oldAccess != null)
+                {
+                    context.Accesses.Remove(oldAccess);
+                }
+            }
+
+
             context.Update(user);
 
             await context.SaveChangesAsync();
