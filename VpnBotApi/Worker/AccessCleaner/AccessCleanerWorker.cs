@@ -1,33 +1,38 @@
-﻿
+﻿using Database.Common;
+
 namespace VpnBotApi.Worker.AccessCleaner
 {
-    public class AccessCleanerWorker : IHostedService, IDisposable
+    public class AccessCleanerWorker(IServiceProvider serviceProvider) : IHostedService, IDisposable
     {
-        private Timer? _timer = null;
+        private Timer timer;
 
         public Task StartAsync(CancellationToken stoppingToken)
         {
-            _timer = new Timer(DoWork, null, 0,
-               1000);
+            timer = new Timer(DoWork, null, 0, 86400000);
 
             return Task.CompletedTask;
         }
 
-        public static void DoWork(object obj)
+        public async void DoWork(object obj)
         {
-            Console.WriteLine("Work");
+            using(IServiceScope scope = serviceProvider.CreateScope())
+            {
+                var repositoryProvider = scope.ServiceProvider.GetService<IRepositoryProvider>();
+
+                var deprecatedAccess = await repositoryProvider.AccessRepository.GetDeprecatedAccessAsync(DateTime.Now.AddDays(-7));
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _timer?.Change(Timeout.Infinite, 0);
+            timer.Change(Timeout.Infinite, 0);
 
             return Task.CompletedTask;
         }
 
         public void Dispose()
         {
-            _timer?.Dispose();
+            timer.Dispose();
         }
     }
 }

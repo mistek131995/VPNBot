@@ -27,5 +27,20 @@ namespace Database.Repository.Implementation
 
             await context.SaveChangesAsync();
         }
+
+        public async Task<List<Access>> GetDeprecatedAccessAsync(DateTime deprecatedDate)
+        {
+            return await context.Accesses
+                .Where(x => x.EndDate.Date <= deprecatedDate.Date && x.IsDeprecated == false)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task UpdateManyAsync(List<Access> accessList)
+        {
+            context.Accesses.UpdateRange(accessList);
+
+            await context.SaveChangesAsync();
+        }
     }
 }

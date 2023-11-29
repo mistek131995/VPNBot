@@ -1,7 +1,6 @@
-﻿using VpnBotApi.Worker.AccessCleaner;
-using VpnBotApi.Worker.TelegramBot;
+﻿using VpnBotApi.Worker.TelegramBot;
 
-namespace VpnBotApi.Worker.Common
+namespace VpnBotApi.Common
 {
     public class ConsumeScopedServiceHostedService : BackgroundService
     {

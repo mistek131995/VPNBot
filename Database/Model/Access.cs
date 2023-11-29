@@ -18,9 +18,9 @@ namespace Database.Model
         public string ShortId { get; set; }
         public string AccessName { get; set; }
         public DateTime EndDate { get; set; }
+        public bool IsDeprecated { get; set; }
+
         public User User { get; set; }
-
-
         public VpnServer VpnServer { get; set; }
     }
 }
