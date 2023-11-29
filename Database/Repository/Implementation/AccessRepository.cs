@@ -31,6 +31,7 @@ namespace Database.Repository.Implementation
         public async Task<List<Access>> GetDeprecatedAccessAsync(DateTime deprecatedDate)
         {
             return await context.Accesses
+                .Include(x => x.VpnServer)
                 .Where(x => x.EndDate.Date <= deprecatedDate.Date && x.IsDeprecated == false)
                 .AsNoTracking()
                 .ToListAsync();

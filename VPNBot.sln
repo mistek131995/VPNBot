@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		Jenkinsfile = Jenkinsfile
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{AF71D393-8585-44DD-B641-7F68F965A44C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7CE887A3-3272-4D26-BFF1-BD58417C6BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CE887A3-3272-4D26-BFF1-BD58417C6BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CE887A3-3272-4D26-BFF1-BD58417C6BE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF71D393-8585-44DD-B641-7F68F965A44C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF71D393-8585-44DD-B641-7F68F965A44C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF71D393-8585-44DD-B641-7F68F965A44C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF71D393-8585-44DD-B641-7F68F965A44C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

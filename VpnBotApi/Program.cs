@@ -1,4 +1,5 @@
 using Database;
+using Domain.HttpClientService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -33,6 +34,7 @@ namespace VpnBotApi
             builder.Services.AddTelegramBot();
             builder.Services.AddControllerHandler();
             builder.Services.AddAccessCleaner();
+            builder.Services.AddHttpClientService();
 
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
