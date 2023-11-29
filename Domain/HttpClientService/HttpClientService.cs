@@ -11,7 +11,7 @@ namespace Domain.HttpClientService
         /// <param name="ip"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        private async Task<HttpClient> GetAuthCookie(string ip, int port)
+        private async Task<HttpClient> GetAuthCookie(string ip, int port, string userName, string password)
         {
             var httpClientHandler = new HttpClientHandler();
             var httpClient = new HttpClient(httpClientHandler);
@@ -19,8 +19,8 @@ namespace Domain.HttpClientService
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
             var content = new FormUrlEncodedContent(new[]
             {
-                new KeyValuePair<string, string>("username", "mistek"),
-                new KeyValuePair<string, string>("password", "Omega131995@")
+                new KeyValuePair<string, string>("username", userName),
+                new KeyValuePair<string, string>("password", password)
 
             });
 
@@ -39,9 +39,9 @@ namespace Domain.HttpClientService
             return httpClient;
         }
 
-        public async Task<List<Guid>> DeleteInboundUserAsync(List<Guid> guids, string ip, int port)
+        public async Task<List<Guid>> DeleteInboundUserAsync(List<Guid> guids, string ip, int port, string userName, string password)
         {
-            var httpClient = await GetAuthCookie(ip, port);
+            var httpClient = await GetAuthCookie(ip, port, userName, password);
 
             var successDelete = new List<Guid>();
 

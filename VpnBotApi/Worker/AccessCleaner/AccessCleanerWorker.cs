@@ -27,11 +27,13 @@ namespace VpnBotApi.Worker.AccessCleaner
                 if (deprecatedAccess.Any())
                 {
                     var groupedDeprecatedAccesses = deprecatedAccess
-                        .GroupBy(x => new { x.VpnServer.Ip, x.VpnServer.Port })
+                        .GroupBy(x => new { x.VpnServer.Ip, x.VpnServer.Port, x.VpnServer.UserName, x.VpnServer.Passsword })
                         .Select(x => new
                         {
                             x.Key.Ip,
                             x.Key.Port,
+                            x.Key.UserName,
+                            x.Key.Passsword,
                             Guids = x.Select(g => g.Guid).ToList()
                         })
                         .ToList();
@@ -40,11 +42,13 @@ namespace VpnBotApi.Worker.AccessCleaner
 
                     foreach(var access in groupedDeprecatedAccesses)
                     {
-                        var successDeleteGuids = await httpClientService.DeleteInboundUserAsync(access.Guids, access.Ip, access.Port);
+                        var successDeleteGuids = await httpClientService.DeleteInboundUserAsync(access.Guids, access.Ip, access.Port, access.UserName, access.Passsword);
                         allSuccessDeleteGuids.AddRange(successDeleteGuids);
                     }
 
-                    deprecatedAccess = deprecatedAccess.Where(x => allSuccessDeleteGuids.Contains(x.Guid)).ToList();
+                    deprecatedAccess = deprecatedAccess
+                        .Where(x => allSuccessDeleteGuids.Contains(x.Guid))
+                        .ToList();
 
                     deprecatedAccess.ForEach(access =>
                     {
