@@ -4,6 +4,7 @@ using Telegram.Bot.Types;
 using Start = Service.TelegramBotService.Service.Start;
 using GetAccess = Service.TelegramBotService.Service.GetAccess;
 using AccountManagment = Service.TelegramBotService.Service.AccountManagment;
+using UnknowCommand = Service.TelegramBotService.Service.UnknowCommand;
 using Service.TelegramBotService.Common;
 
 
@@ -69,9 +70,9 @@ namespace VpnBotApi.Worker.TelegramBot.MessageHandler
             else
             {
                 //Отсюда берем только основное меню
-                var replyKeyboard = ButtonTemplate.GetMainMenuButton();
+                var replyMessage = await dispatcher.GetService<UnknowCommand.Result, UnknowCommand.Request>(new UnknowCommand.Request(message.From.Id, chat.Id));
 
-                await client.SendTextMessageAsync(chat.Id, "Команда не распознана, выберите действие из меню.", replyMarkup: replyKeyboard);
+                await client.SendTextMessageAsync(chat.Id, "Команда не распознана, выберите действие из меню.", replyMarkup: replyMessage.ReplyKeyboard);
             }
         }
     }
