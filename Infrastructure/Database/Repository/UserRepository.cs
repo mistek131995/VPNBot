@@ -1,11 +1,24 @@
 ﻿using Model = Core.Model.User;
 using Core.Repository;
 using Microsoft.EntityFrameworkCore;
+using Core.Model.User;
 
 namespace Infrastructure.Database.Repository
 {
     public class UserRepository(Context context) : IUserRepository
     {
+        public async Task<List<User>> GetAllWithActiveAccessAsync()
+        {
+            var userIds = await context.Users
+                .Include(x => x.Access)
+                .Where(x => !x.Access.IsDeprecated)
+                .AsNoTracking()
+                .Select(x => x.Id)
+                .ToListAsync();
+
+            return await GetByIdsAsync(userIds);
+        }
+
         public async Task<Model.User> GetByIdAsync(int id)
         {
             return await context.Users

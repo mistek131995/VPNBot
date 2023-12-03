@@ -4,6 +4,7 @@ namespace Core.Repository
 {
     public interface IUserRepository
     {
+        public Task<List<User>> GetAllWithActiveAccessAsync();
         public Task<User> GetByIdAsync(int id);
         public Task<List<User>> GetByIdsAsync(List<int> ids);
         public Task<User> GetByTelegramUserIdAsync(long telegramUserId);

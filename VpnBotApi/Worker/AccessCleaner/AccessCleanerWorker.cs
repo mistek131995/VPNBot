@@ -21,7 +21,10 @@ namespace VpnBotApi.Worker.AccessCleaner
                 var repositoryProvider = scope.ServiceProvider.GetService<IRepositoryProvider>();
                 var httpClientService = scope.ServiceProvider.GetService<IHttpClientService>();
 
-                var users = await repositoryProvider.UserRepository.GetByAccessDateRangeAsync(DateTime.MinValue, DateTime.Now.AddDays(-7));
+                var users = (await repositoryProvider.UserRepository.GetByAccessDateRangeAsync(DateTime.MinValue, DateTime.Now.AddDays(-7)))
+                    .Where(x => !x.Access.IsDeprecated)
+                    .ToList();
+
                 var vpnServers = await repositoryProvider.VpnServerRepository.GetAll();
 
                 if (users.Any())
@@ -61,6 +64,21 @@ namespace VpnBotApi.Worker.AccessCleaner
                     });
 
                     await repositoryProvider.UserRepository.UpdateManyAsync(users);
+
+                    //Перерасчет активных пользователей
+                    var activeUsersByVpnServerId = (await repositoryProvider.UserRepository.GetAllWithActiveAccessAsync())
+                        .GroupBy(x => x.Access.VpnServerId)
+                        .Select(x => new {
+                            VpnServerId = x.Key, 
+                            ActiveUserCount = x.Count()
+                        }).ToList();
+
+                    foreach(var vpnServer in vpnServers)
+                    {
+                        vpnServer.UserCount = activeUsersByVpnServerId.Where(x => x.VpnServerId == vpnServer.Id).Count();
+                    }
+
+                    await repositoryProvider.VpnServerRepository.UpdateManyAsync(vpnServers);
                 }
             }
         }

@@ -49,5 +49,31 @@ namespace Infrastructure.Database.Repository
 
             return await GetByIdAsync(vpnServer?.Id ?? 0);
         }
+
+        public async Task UpdateManyAsync(List<VpnServer> vpnServers)
+        {
+            var vpnServerIds = vpnServers
+                .Select(x => x.Id)
+                .ToList();
+
+            var dbVpnServers = await context.VpnServers
+                .Where(x => vpnServerIds.Contains(x.Id))
+                .ToListAsync();
+
+            foreach(var dbVpnServer in dbVpnServers)
+            {
+                var vpnServer = vpnServers.FirstOrDefault(x => x.Id == dbVpnServer.Id);
+
+                dbVpnServer.Ip = vpnServer.Ip;
+                dbVpnServer.Name = vpnServer.Name;
+                dbVpnServer.Description = vpnServer.Description;
+                dbVpnServer.Port = vpnServer.Port;
+                dbVpnServer.UserCount = vpnServer.UserCount;
+                dbVpnServer.Passsword = vpnServer.Password;
+                dbVpnServer.UserName = vpnServer.UserName;
+            }
+
+            await context.SaveChangesAsync();
+        }
     }
 }
