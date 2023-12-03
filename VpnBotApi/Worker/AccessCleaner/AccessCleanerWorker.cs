@@ -1,6 +1,5 @@
-﻿using Database.Common;
-using Database.Model;
-using Domain.HttpClientService;
+﻿using Core.Common;
+using Infrastructure.HttpClientService;
 
 namespace VpnBotApi.Worker.AccessCleaner
 {
@@ -17,45 +16,44 @@ namespace VpnBotApi.Worker.AccessCleaner
 
         public async void DoWork(object obj)
         {
-            using(IServiceScope scope = serviceProvider.CreateScope())
+            using (IServiceScope scope = serviceProvider.CreateScope())
             {
                 var repositoryProvider = scope.ServiceProvider.GetService<IRepositoryProvider>();
                 var httpClientService = scope.ServiceProvider.GetService<IHttpClientService>();
 
-                var deprecatedAccess = await repositoryProvider.AccessRepository.GetDeprecatedAccessAsync(DateTime.Now.AddDays(-7));
+                var users = await repositoryProvider.UserRepository.GetByAccessDateRangeAsync(DateTime.MinValue, DateTime.Now.AddDays(-7));
+                var vpnServers = await repositoryProvider.VpnServerRepository.GetAll();
 
-                if (deprecatedAccess.Any())
+                if (users.Any())
                 {
-                    var groupedDeprecatedAccesses = deprecatedAccess
-                        .GroupBy(x => new { x.VpnServer.Ip, x.VpnServer.Port, x.VpnServer.UserName, x.VpnServer.Passsword })
+                    var groupedDeprecatedAccesses = users
+                        .GroupBy(x => x.Access.VpnServerId)
                         .Select(x => new
                         {
-                            x.Key.Ip,
-                            x.Key.Port,
-                            x.Key.UserName,
-                            x.Key.Passsword,
-                            Guids = x.Select(g => g.Guid).ToList()
+                            x.Key,
+                            Guids = x.Select(g => g.Access.Guid).ToList()
                         })
                         .ToList();
 
                     var allSuccessDeleteGuids = new List<Guid>();
 
-                    foreach(var access in groupedDeprecatedAccesses)
+                    foreach (var access in groupedDeprecatedAccesses)
                     {
-                        var successDeleteGuids = await httpClientService.DeleteInboundUserAsync(access.Guids, access.Ip, access.Port, access.UserName, access.Passsword);
+                        var vpnServer = vpnServers.FirstOrDefault(x => x.Id == access.Key);
+                        var successDeleteGuids = await httpClientService.DeleteInboundUserAsync(access.Guids, vpnServer);
                         allSuccessDeleteGuids.AddRange(successDeleteGuids);
                     }
 
-                    deprecatedAccess = deprecatedAccess
-                        .Where(x => allSuccessDeleteGuids.Contains(x.Guid))
+                    users = users
+                        .Where(x => allSuccessDeleteGuids.Contains(x.Access.Guid))
                         .ToList();
 
-                    deprecatedAccess.ForEach(access =>
+                    users.ForEach(access =>
                     {
-                        access.IsDeprecated = true;
+                        access.Access.IsDeprecated = true;
                     });
 
-                    await repositoryProvider.AccessRepository.UpdateManyAsync(deprecatedAccess);
+                    await repositoryProvider.UserRepository.UpdateManyAsync(users);
                 }
             }
         }

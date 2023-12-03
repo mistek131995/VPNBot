@@ -1,13 +1,12 @@
-using Database;
-using Domain.HttpClientService;
+using Infrastructure;
+using Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using Service;
 using System.Text;
 using VpnBotApi.Common;
-using VpnBotApi.Common.ExceptionHandler;
 using VpnBotApi.Worker.AccessCleaner;
 using VpnBotApi.Worker.TelegramBot;
 
@@ -18,6 +17,7 @@ namespace VpnBotApi
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var jwtOptions = builder.Configuration.GetSection("Jwt");
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File("log.log", rollingInterval: RollingInterval.Month)
@@ -29,12 +29,11 @@ namespace VpnBotApi
             {
                 options.CustomSchemaIds(type => type.FullName);
             });
-            builder.Services.AddHostedService<ConsumeScopedServiceHostedService>();
-            builder.Services.AddDatabase(builder.Configuration);
+            builder.Services.AddHostedService<ScopedHostedService>();
             builder.Services.AddTelegramBot();
-            builder.Services.AddControllerHandler();
             builder.Services.AddAccessCleaner();
-            builder.Services.AddHttpClientService();
+            builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddService();
 
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -45,15 +44,15 @@ namespace VpnBotApi
                         // указывает, будет ли валидироваться издатель при валидации токена
                         ValidateIssuer = true,
                         // строка, представляющая издателя
-                        ValidIssuer = AuthOptions.ISSUER,
+                        ValidIssuer = jwtOptions["ISSUER"],
                         // будет ли валидироваться потребитель токена
                         ValidateAudience = true,
                         // установка потребителя токена
-                        ValidAudience = AuthOptions.AUDIENCE,
+                        ValidAudience = jwtOptions["AUDIENCE"],
                         // будет ли валидироваться время существования
                         ValidateLifetime = true,
                         // установка ключа безопасности
-                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions["KEY"])),
                         // валидация ключа безопасности
                         ValidateIssuerSigningKey = true,
                     };
@@ -87,15 +86,6 @@ namespace VpnBotApi
             app.MapFallbackToFile("/index.html");
 
             app.Run();
-        }
-
-        public class AuthOptions
-        {
-            public const string ISSUER = "LockVpn.Server"; // издатель токена
-            public const string AUDIENCE = "LockVpn.Client"; // потребитель токена
-            const string KEY = "asfdddskjjawiejaljslockvpnasdjkasdjlajdfjha41747849347*^*&%$";   // ключ для шифрации
-            public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
         }
     }
 }

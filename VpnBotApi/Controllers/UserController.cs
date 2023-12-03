@@ -1,26 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VpnBotApi.Common;
 using Microsoft.AspNetCore.Authorization;
 
-using LoginByLinkQuery = VpnBotApi.ControllerHandler.Query.LinkAuth;
-using IndexQuery = VpnBotApi.ControllerHandler.Query.Index;
+using GetLinkAuth = Service.ControllerService.Service.GetLinkAuth;
+using GetIndex = Service.ControllerService.Service.GetIndex;
 
-using LoginByLinkCommand = VpnBotApi.ControllerHandler.Command.LinkAuth;
-using SetLoginAndPasswordCommand = VpnBotApi.ControllerHandler.Command.SetLoginAndPassword;
-using ChangePassword = VpnBotApi.ControllerHandler.Command.ChangePassword;
+using LoginByLink = Service.ControllerService.Service.AuthByLink;
+using SetLoginAndPassword = Service.ControllerService.Service.SetLoginAndPassword;
+using ChangePassword = Service.ControllerService.Service.ChangePassword;
+using Application.ControllerService.Common;
 
 
 namespace VpnBotApi.Controllers
 {
     [ApiController]
     [Route("[Controller]/[Action]")]
-    public class UserController(ControllerDispatcher dispatcher) : Controller
+    public class UserController(ControllerServiceDispatcher dispatcher) : Controller
     {
 
         [HttpGet]
-        public async Task<JsonResult> LoginByLink([FromQuery] LoginByLinkQuery.Query query)
+        public async Task<JsonResult> LoginByLink([FromQuery] GetLinkAuth.Request query)
         {
-            var response = await dispatcher.BuildHandler<LoginByLinkQuery.Response, LoginByLinkQuery.Query>(query);
+            var response = await dispatcher.GetService<GetLinkAuth.Result, GetLinkAuth.Request>(query);
 
             return Json(response);
         }
@@ -29,39 +29,39 @@ namespace VpnBotApi.Controllers
         [Authorize]
         public async Task<JsonResult> GetIndex()
         {
-            var query = new IndexQuery.Query()
+            var query = new GetIndex.Request()
             {
 
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             };
 
-            var response = await dispatcher.BuildHandler<IndexQuery.Response, IndexQuery.Query>(query);
+            var response = await dispatcher.GetService<GetIndex.Result, GetIndex.Request>(query);
 
             return Json(response);
         }
 
         [HttpPost]
-        public async Task<JsonResult> LoginByLink([FromBody]LoginByLinkCommand.Command command)
+        public async Task<JsonResult> LoginByLink([FromBody] LoginByLink.Request command)
         {
-            var response = await dispatcher.BuildHandler<string, LoginByLinkCommand.Command>(command);
+            var response = await dispatcher.GetService<string, LoginByLink.Request>(command);
 
             return Json(response);
         }
 
         [HttpPost]
-        public async Task<JsonResult> SetLoginAndPassword([FromBody] SetLoginAndPasswordCommand.Command query)
+        public async Task<JsonResult> SetLoginAndPassword([FromBody] SetLoginAndPassword.Request query)
         {
-            var response = await dispatcher.BuildHandler<bool, SetLoginAndPasswordCommand.Command>(query);
+            var response = await dispatcher.GetService<bool, SetLoginAndPassword.Request>(query);
 
             return Json(response);
         }
 
         [HttpPost]
-        public async Task<JsonResult> ChangePassword([FromBody] ChangePassword.Command command)
+        public async Task<JsonResult> ChangePassword([FromBody] ChangePassword.Request command)
         {
             command.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
 
-            var response = await dispatcher.BuildHandler<bool, ChangePassword.Command>(command);
+            var response = await dispatcher.GetService<bool, ChangePassword.Request>(command);
 
             return Json(response);
         }

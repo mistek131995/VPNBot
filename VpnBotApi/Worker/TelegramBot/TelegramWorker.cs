@@ -1,8 +1,6 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
-using VPNBot.Handler.ErrorHandler;
-using VPNBot.Handler.UpdateHandler;
 
 namespace VpnBotApi.Worker.TelegramBot
 {
@@ -10,9 +8,10 @@ namespace VpnBotApi.Worker.TelegramBot
     {
         private static ITelegramBotClient botClient;
         private static ReceiverOptions receiverOptions;
-        private readonly UpdateHandler updateHandler;
-        private readonly ErrorHandler errorHandler;
-        public TelegramWorker(UpdateHandler updateHandler, ErrorHandler errorHandler)
+        private readonly UpdateHandler.UpdateHandler updateHandler;
+        private readonly ErrorHandler.ErrorHandler errorHandler;
+
+        public TelegramWorker(UpdateHandler.UpdateHandler updateHandler, ErrorHandler.ErrorHandler errorHandler)
         {
             this.updateHandler = updateHandler;
             this.errorHandler = errorHandler;
