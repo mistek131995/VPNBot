@@ -33,7 +33,8 @@ namespace Service.TelegramBotService.Common
                 new KeyboardButton("Скачать приложение"),
                 new KeyboardButton("Помощь")
             }
-        });
+        })
+        { ResizeKeyboard = true };
 
 
         /// <summary>
@@ -125,16 +126,26 @@ namespace Service.TelegramBotService.Common
         /// </summary>
         /// <param name="accessPositions"></param>
         /// <returns></returns>
-        public static InlineKeyboardMarkup GetAccessPositionsButton(List<AccessPosition> accessPositions)
+        public static InlineKeyboardMarkup GetAccessPositionsButton(List<(AccessPosition position, string link)> accessPositions)
         {
             var inlineButtons = new List<InlineKeyboardButton[]>();
 
             foreach(var accessPosition in accessPositions)
             {
-                inlineButtons.Add(new InlineKeyboardButton[]
+                if(accessPosition.position.Price == 0)
                 {
-                    InlineKeyboardButton.WithCallbackData($"{accessPosition.Name} за {accessPosition.Price}руб.", $"buyAccess|{accessPosition.Id}")
-                });
+                    inlineButtons.Add(new InlineKeyboardButton[]
+                    {
+                        InlineKeyboardButton.WithCallbackData($"{accessPosition.position.Name} за {accessPosition.position.Price}руб.", "freeExtend")
+                    });
+                }
+                else
+                {
+                    inlineButtons.Add(new InlineKeyboardButton[]
+                    {
+                        InlineKeyboardButton.WithUrl($"{accessPosition.position.Name} за {accessPosition.position.Price}руб.", accessPosition.link)
+                    });
+                }
             }
 
             return new InlineKeyboardMarkup(inlineButtons);

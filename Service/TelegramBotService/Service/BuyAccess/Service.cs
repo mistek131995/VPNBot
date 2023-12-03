@@ -2,13 +2,15 @@
 using Core.Common;
 using Service.TelegramBotService.Common;
 
-namespace Service.TelegramBotService.Service.AccessPosition
+namespace Service.TelegramBotService.Service.BuyAccess
 {
     internal class Service(IRepositoryProvider repositoryProvider) : IBotService<Request, Result>
     {
         public async Task<Result> HandlingAsync(Request request)
         {
-            var accessPositions = await repositoryProvider.AccessPositionRepository.GetAllAsync();
+            var accessPositions = (await repositoryProvider.AccessPositionRepository.GetAllAsync())
+                .Select(x => (x, "http://lockvpn.local/"))
+                .ToList();
 
             var result = new Result();
             result.InlineKeyboard = ButtonTemplate.GetAccessPositionsButton(accessPositions);

@@ -61,6 +61,7 @@ namespace Infrastructure.Database.Repository
                         Date = p.Date,
                     }).ToList()
                 })
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -104,6 +105,7 @@ namespace Infrastructure.Database.Repository
                     }).ToList()
                 })
                 .Where(x => ids.Contains(x.Id))
+                .AsNoTracking()
                 .ToListAsync();
         }
 
@@ -111,6 +113,7 @@ namespace Infrastructure.Database.Repository
         {
             var ids = await context.Users
                 .Include(x => x.Access)
+                .AsNoTracking()
                 .Where(x => x.Access.EndDate > start && x.Access.EndDate < end)
                 .Select(x => x.Id)
                 .ToListAsync();
@@ -130,7 +133,7 @@ namespace Infrastructure.Database.Repository
 
         public async Task<Model.User> GetByTelegramUserIdAsync(long telegramUserId)
         {
-            var user = await context.Users.FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId);
+            var user = await context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId);
 
             return await GetByIdAsync(user?.Id ?? 0);
         }

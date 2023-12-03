@@ -1,7 +1,7 @@
 ﻿using Application.TelegramBotService.Common;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using AccessPositionsList = Service.TelegramBotService.Service.AccessPosition;
+using BuyAccess = Service.TelegramBotService.Service.BuyAccess;
 using GetQRCode = Service.TelegramBotService.Service.GetQRCode;
 
 namespace VpnBotApi.Worker.TelegramBot.CallbackQueryHandler
@@ -20,7 +20,7 @@ namespace VpnBotApi.Worker.TelegramBot.CallbackQueryHandler
 
             if (callbackQuery.Data == "accessPositionList")
             {
-                var replyMessage = await dispatcher.GetService<AccessPositionsList.Result, AccessPositionsList.Request>(new AccessPositionsList.Request());
+                var replyMessage = await dispatcher.GetService<BuyAccess.Result, BuyAccess.Request>(new BuyAccess.Request());
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
             }

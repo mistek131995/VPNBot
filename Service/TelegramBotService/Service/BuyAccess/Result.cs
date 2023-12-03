@@ -1,6 +1,6 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
 
-namespace Service.TelegramBotService.Service.AccessPosition
+namespace Service.TelegramBotService.Service.BuyAccess
 {
     public class Result
     {
