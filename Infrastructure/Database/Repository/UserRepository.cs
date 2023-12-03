@@ -1,19 +1,20 @@
-﻿using Core.Model.User;
+﻿using Model = Core.Model.User;
 using Core.Repository;
+using Entity = Infrastructure.Database.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database.Repository
 {
     public class UserRepository(Context context) : IUserRepository
     {
-        public async Task AddAsync(User user)
+        public async Task AddAsync(Model.User user)
         {
             await context.Users.AddAsync(new Entity.User()
             {
                 TelegramUserId = user.TelegramUserId,
                 TelegramChatId = user.TelegramChatId,
                 RegisterDate = user.RegisterDate,
-                Role = UserRole.User,
+                Role = Model.UserRole.User,
                 Login = user.Login,
                 Password = user.Password
             });
@@ -21,12 +22,12 @@ namespace Infrastructure.Database.Repository
             await context.SaveChangesAsync();
         }
 
-        public async Task<User> GetByIdAsync(int id)
+        public async Task<Model.User> GetByIdAsync(int id)
         {
             return await context.Users
                 .Include(x => x.Access)
                 .Include(x => x.Payments)
-                .Select(x => new User()
+                .Select(x => new Model.User()
                 {
                     Id = x.Id,
                     TelegramUserId = x.TelegramUserId,
@@ -35,7 +36,7 @@ namespace Infrastructure.Database.Repository
                     Password = x.Password,
                     RegisterDate = x.RegisterDate,
                     Role = x.Role,
-                    Access = new Access()
+                    Access = new Model.Access()
                     {
                         Id = x.Access.Id,
                         UserId = x.Access.UserId,
@@ -52,7 +53,7 @@ namespace Infrastructure.Database.Repository
                         VpnServerId = x.Access.VpnServerId,
                         IsDeprecated = x.Access.IsDeprecated
                     },
-                    Payments = x.Payments.Select(p => new Payment()
+                    Payments = x.Payments.Select(p => new Model.Payment()
                     {
                         Id = p.Id,
                         UserId = p.UserId,
@@ -63,12 +64,12 @@ namespace Infrastructure.Database.Repository
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<User>> GetByIdsAsync(List<int> ids)
+        public async Task<List<Model.User>> GetByIdsAsync(List<int> ids)
         {
             return await context.Users
                 .Include(x => x.Access)
                 .Include(x => x.Payments)
-                .Select(x => new User()
+                .Select(x => new Model.User()
                 {
                     Id = x.Id,
                     TelegramUserId = x.TelegramUserId,
@@ -77,7 +78,7 @@ namespace Infrastructure.Database.Repository
                     Password = x.Password,
                     RegisterDate = x.RegisterDate,
                     Role = x.Role,
-                    Access = new Access()
+                    Access = new Model.Access()
                     {
                         Id = x.Access.Id,
                         UserId = x.Access.UserId,
@@ -94,7 +95,7 @@ namespace Infrastructure.Database.Repository
                         VpnServerId = x.Access.VpnServerId,
                         IsDeprecated = x.Access.IsDeprecated
                     },
-                    Payments = x.Payments.Select(p => new Payment()
+                    Payments = x.Payments.Select(p => new Model.Payment()
                     {
                         Id = p.Id,
                         UserId = p.UserId,
@@ -106,7 +107,7 @@ namespace Infrastructure.Database.Repository
                 .ToListAsync();
         }
 
-        public async Task<List<User>> GetByAccessDateRangeAsync(DateTime start, DateTime end)
+        public async Task<List<Model.User>> GetByAccessDateRangeAsync(DateTime start, DateTime end)
         {
             var ids = await context.Users
                 .Include(x => x.Access)
@@ -117,7 +118,7 @@ namespace Infrastructure.Database.Repository
             return await GetByIdsAsync(ids);
         }
 
-        public async Task<User> GetByTelegramUserIdAndAccessGuidAsync(long telegramUserId, Guid accessGuid)
+        public async Task<Model.User> GetByTelegramUserIdAndAccessGuidAsync(long telegramUserId, Guid accessGuid)
         {
             var user = await context.Users
                 .Include(x => x.Access)
@@ -127,48 +128,93 @@ namespace Infrastructure.Database.Repository
             return await GetByIdAsync(user.Id);
         }
 
-        public async Task<User> GetByTelegramUserIdAsync(long telegramUserId)
+        public async Task<Model.User> GetByTelegramUserIdAsync(long telegramUserId)
         {
             var user = await context.Users.FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId);
 
             return await GetByIdAsync(user?.Id ?? 0);
         }
 
-        public async Task UpdateAsync(User user)
+        public async Task UpdateAsync(Model.User user)
         {
-            var dbUser = await context.Users
-                .Include(x => x.Access)
-                .FirstOrDefaultAsync(x => x.Id == user.Id);
+            var dbUser = new Entity.User()
+            {
+                Id = user.Id,
+                TelegramUserId = user.TelegramUserId,
+                TelegramChatId = user.TelegramChatId,
+                Login = user.Login,
+                Password = user.Password,
+                Role = user.Role,
+                RegisterDate = user.RegisterDate,
+            };
 
-            if (dbUser != null) 
-            { 
-                dbUser.Login = user.Login;
-                dbUser.Password = user.Password;
-                dbUser.Role = user.Role;
+            dbUser.Access = new Entity.Access()
+            {
+                Id = user.Access.Id,
+                EndDate = user.Access.EndDate,
+                AccessName = user.Access.AccessName,
+                Guid = user.Access.Guid,
+                Fingerprint = user.Access.Fingerprint,
+                Security = user.Access.Security,
+                Network = user.Access.Network,
+                PublicKey = user.Access.PublicKey,
+                ServerName = user.Access.ServerName,
+                ShortId = user.Access.ShortId,
+                Port = user.Access.Port,
+                VpnServerId = user.Access.VpnServerId,
+                IsDeprecated = user.Access.IsDeprecated,
+            };
 
-                user.Access = new Access()
-                {
-                    EndDate = user.Access.EndDate,
-                    AccessName = user.Access.AccessName,
-                    Guid = user.Access.Guid,
-                    Fingerprint = user.Access.Fingerprint,
-                    Security = user.Access.Security,
-                    Network = user.Access.Network,
-                    PublicKey = user.Access.PublicKey,
-                    ServerName = user.Access.ServerName,
-                    ShortId = user.Access.ShortId,
-                    Port = user.Access.Port,
-                    VpnServerId = user.Access.VpnServerId,
-                    IsDeprecated = user.Access.IsDeprecated,
-                };
+            dbUser.Payments = user.Payments.Select(x => new Entity.Payment()
+            {
+                Id = x.Id,
+                AccessPositionId = x.AccessPositionId,
+                UserId = x.UserId,
+                Date = x.Date,
+            }).ToList();
 
-                await context.SaveChangesAsync();
-            }
+            context.Users.Update(dbUser);
+            await context.SaveChangesAsync();
         }
 
-        public Task UpdateManyAsync(List<User> users)
+        public async Task UpdateManyAsync(List<Model.User> users)
         {
-            throw new NotImplementedException();
+            var dbUsers = users.Select(x => new Entity.User()
+            {
+                Id = x.Id,
+                TelegramUserId = x.TelegramUserId,
+                TelegramChatId = x.TelegramChatId,
+                Login = x.Login,
+                Password = x.Password,
+                Role = x.Role,
+                RegisterDate = x.RegisterDate,
+                Access = new Entity.Access()
+                {
+                    Id = x.Access.Id,
+                    EndDate = x.Access.EndDate,
+                    AccessName = x.Access.AccessName,
+                    Guid = x.Access.Guid,
+                    Fingerprint = x.Access.Fingerprint,
+                    Security = x.Access.Security,
+                    Network = x.Access.Network,
+                    PublicKey = x.Access.PublicKey,
+                    ServerName = x.Access.ServerName,
+                    ShortId = x.Access.ShortId,
+                    Port = x.Access.Port,
+                    VpnServerId = x.Access.VpnServerId,
+                    IsDeprecated = x.Access.IsDeprecated
+                },
+                Payments = x.Payments.Select(p => new Entity.Payment()
+                {
+                    Id = p.Id,
+                    AccessPositionId = p.AccessPositionId,
+                    Date = p.Date,
+                    UserId = p.UserId
+                }).ToList()
+            }).ToList();
+
+            context.Users.UpdateRange(dbUsers);
+            await context.SaveChangesAsync();
         }
     }
 }
