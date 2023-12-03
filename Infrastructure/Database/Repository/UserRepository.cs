@@ -1,27 +1,11 @@
 ﻿using Model = Core.Model.User;
 using Core.Repository;
-using Entity = Infrastructure.Database.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database.Repository
 {
     public class UserRepository(Context context) : IUserRepository
     {
-        public async Task AddAsync(Model.User user)
-        {
-            await context.Users.AddAsync(new Entity.User()
-            {
-                TelegramUserId = user.TelegramUserId,
-                TelegramChatId = user.TelegramChatId,
-                RegisterDate = user.RegisterDate,
-                Role = Model.UserRole.User,
-                Login = user.Login,
-                Password = user.Password
-            });
-
-            await context.SaveChangesAsync();
-        }
-
         public async Task<Model.User> GetByIdAsync(int id)
         {
             return await context.Users
@@ -113,8 +97,8 @@ namespace Infrastructure.Database.Repository
         {
             var ids = await context.Users
                 .Include(x => x.Access)
-                .AsNoTracking()
                 .Where(x => x.Access.EndDate > start && x.Access.EndDate < end)
+                .AsNoTracking()
                 .Select(x => x.Id)
                 .ToListAsync();
 
@@ -133,23 +117,41 @@ namespace Infrastructure.Database.Repository
 
         public async Task<Model.User> GetByTelegramUserIdAsync(long telegramUserId)
         {
-            var user = await context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId);
+            var user = await context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId);
 
             return await GetByIdAsync(user?.Id ?? 0);
         }
 
-        public async Task UpdateAsync(Model.User user)
+        public async Task AddAsync(Model.User user)
         {
-            var dbUser = new Entity.User()
+            await context.Users.AddAsync(new Entity.User()
             {
-                Id = user.Id,
                 TelegramUserId = user.TelegramUserId,
                 TelegramChatId = user.TelegramChatId,
-                Login = user.Login,
-                Password = user.Password,
-                Role = user.Role,
                 RegisterDate = user.RegisterDate,
-            };
+                Role = Model.UserRole.User,
+                Login = user.Login,
+                Password = user.Password
+            });
+
+            await context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Model.User user)
+        {
+            var dbUser = await context.Users
+                .Include(x => x.Access)
+                .Include(x => x.Payments)
+                .FirstOrDefaultAsync(x => x.Id == user.Id);
+
+            dbUser.TelegramUserId = user.TelegramUserId;
+            dbUser.TelegramChatId = user.TelegramChatId;
+            dbUser.Login = user.Login;
+            dbUser.Password = user.Password;
+            dbUser.Role = user.Role;
+            dbUser.RegisterDate = user.RegisterDate;
 
             dbUser.Access = new Entity.Access()
             {
@@ -168,13 +170,16 @@ namespace Infrastructure.Database.Repository
                 IsDeprecated = user.Access.IsDeprecated,
             };
 
-            dbUser.Payments = user.Payments.Select(x => new Entity.Payment()
-            {
-                Id = x.Id,
-                AccessPositionId = x.AccessPositionId,
-                UserId = x.UserId,
-                Date = x.Date,
-            }).ToList();
+            var newPayments = user.Payments
+                .Where(x => x.Id == 0)
+                .Select(x => new Entity.Payment()
+                {
+                    Id = x.Id,
+                    AccessPositionId = x.AccessPositionId,
+                    UserId = x.UserId,
+                    Date = x.Date,
+                })
+                .ToList();
 
             context.Users.Update(dbUser);
             await context.SaveChangesAsync();
@@ -182,39 +187,42 @@ namespace Infrastructure.Database.Repository
 
         public async Task UpdateManyAsync(List<Model.User> users)
         {
-            var dbUsers = users.Select(x => new Entity.User()
+            var userIds = users
+                .Select(x => x.Id)
+                .ToList();
+            var dbUsers = await context.Users
+                .Where(x => userIds.Contains(x.Id))
+                .ToListAsync();
+
+            foreach(var dbUser in dbUsers)
             {
-                Id = x.Id,
-                TelegramUserId = x.TelegramUserId,
-                TelegramChatId = x.TelegramChatId,
-                Login = x.Login,
-                Password = x.Password,
-                Role = x.Role,
-                RegisterDate = x.RegisterDate,
-                Access = new Entity.Access()
+                var user = users.FirstOrDefault(x => x.Id == dbUser.Id);
+
+                dbUser.Access = new Entity.Access()
                 {
-                    Id = x.Access.Id,
-                    EndDate = x.Access.EndDate,
-                    AccessName = x.Access.AccessName,
-                    Guid = x.Access.Guid,
-                    Fingerprint = x.Access.Fingerprint,
-                    Security = x.Access.Security,
-                    Network = x.Access.Network,
-                    PublicKey = x.Access.PublicKey,
-                    ServerName = x.Access.ServerName,
-                    ShortId = x.Access.ShortId,
-                    Port = x.Access.Port,
-                    VpnServerId = x.Access.VpnServerId,
-                    IsDeprecated = x.Access.IsDeprecated
-                },
-                Payments = x.Payments.Select(p => new Entity.Payment()
+                    Id = user.Access.Id,
+                    EndDate = user.Access.EndDate,
+                    AccessName = user.Access.AccessName,
+                    Guid = user.Access.Guid,
+                    Fingerprint = user.Access.Fingerprint,
+                    Security = user.Access.Security,
+                    Network = user.Access.Network,
+                    PublicKey = user.Access.PublicKey,
+                    ServerName = user.Access.ServerName,
+                    ShortId = user.Access.ShortId,
+                    Port = user.Access.Port,
+                    VpnServerId = user.Access.VpnServerId,
+                    IsDeprecated = user.Access.IsDeprecated
+                };
+
+                dbUser.Payments = user.Payments.Select(p => new Entity.Payment()
                 {
                     Id = p.Id,
                     AccessPositionId = p.AccessPositionId,
                     Date = p.Date,
                     UserId = p.UserId
-                }).ToList()
-            }).ToList();
+                }).ToList();
+            }
 
             context.Users.UpdateRange(dbUsers);
             await context.SaveChangesAsync();

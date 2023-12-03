@@ -140,6 +140,7 @@ namespace Infrastructure.HttpClientService
                     user.Access.PublicKey = inbound.RealitySettings.Settings.PublicKey;
                     user.Access.ServerName = inbound.RealitySettings.ServerNames.First();
                     user.Access.ShortId = inbound.RealitySettings.ShortIds.First();
+                    user.Access.IsDeprecated = false;
 
                     return user;
                 }

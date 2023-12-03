@@ -19,5 +19,10 @@ namespace Infrastructure.Common
 
         public IAccessPositionRepository AccessPositionRepository => 
             accessPositionsRepository ??= new AccessPositionRepository(context);
+
+        public void Dispose()
+        {
+            context.Dispose();
+        }
     }
 }

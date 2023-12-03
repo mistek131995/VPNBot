@@ -2,7 +2,7 @@
 
 namespace Core.Common
 {
-    public interface IRepositoryProvider
+    public interface IRepositoryProvider : IDisposable
     {
         public IUserRepository UserRepository { get; }
         public IVpnServerRepository VpnServerRepository { get; }
