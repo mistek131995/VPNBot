@@ -9,7 +9,7 @@ namespace VpnBotApi.Worker.AccessCleaner
 
         public Task StartAsync(CancellationToken stoppingToken)
         {
-            timer = new Timer(DoWork, null, 0, 86400000);
+            timer = new Timer(DoWork, null, 0, 86400000);     
 
             return Task.CompletedTask;
         }
@@ -40,8 +40,15 @@ namespace VpnBotApi.Worker.AccessCleaner
                     foreach (var access in groupedDeprecatedAccesses)
                     {
                         var vpnServer = vpnServers.FirstOrDefault(x => x.Id == access.Key);
-                        var successDeleteGuids = await httpClientService.DeleteInboundUserAsync(access.Guids, vpnServer);
-                        allSuccessDeleteGuids.AddRange(successDeleteGuids);
+
+                        try
+                        {
+                            var successDeleteGuids = await httpClientService.DeleteInboundUserAsync(access.Guids, vpnServer);
+                            allSuccessDeleteGuids.AddRange(successDeleteGuids);
+                        }catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
                     }
 
                     users = users
