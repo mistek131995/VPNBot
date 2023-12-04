@@ -23,6 +23,8 @@ namespace Infrastructure.Migrations
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
+
+            migrationBuilder.Sql("UPDATE VpnServers SET Port = 2001");
         }
 
         /// <inheritdoc />
