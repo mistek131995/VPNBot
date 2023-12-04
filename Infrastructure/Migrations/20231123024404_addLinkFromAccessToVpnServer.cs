@@ -14,20 +14,11 @@ namespace Infrastructure.Migrations
                 name: "Test",
                 table: "Accesses",
                 newName: "VpnServerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Accesses_VpnServerId",
-                table: "Accesses",
-                column: "VpnServerId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Accesses_VpnServerId",
-                table: "Accesses");
-
             migrationBuilder.RenameColumn(
                 name: "VpnServerId",
                 table: "Accesses",

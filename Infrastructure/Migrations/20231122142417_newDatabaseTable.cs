@@ -39,9 +39,11 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.Sql(@"
-                INSERT INTO VpnServers(Ip)
+                INSERT INTO VpnServers(Ip, Name, Description)
                 SELECT DISTINCT
-                a.Ip AS Ip
+                a.Ip AS Ip,
+				'' AS Name,
+				'' AS Description
                 FROM Accesses a
             ");
         }

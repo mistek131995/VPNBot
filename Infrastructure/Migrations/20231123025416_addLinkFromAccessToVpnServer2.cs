@@ -17,10 +17,6 @@ namespace Infrastructure.Migrations
               JOIN VpnServers vs ON a.Ip = vs.Ip
             ");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Accesses_VpnServerId",
-                table: "Accesses");
-
             migrationBuilder.AddColumn<string>(
                 name: "Passsword",
                 table: "VpnServers",
@@ -34,22 +30,11 @@ namespace Infrastructure.Migrations
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Accesses_VpnServerId",
-                table: "Accesses",
-                column: "VpnServerId",
-                unique: true);
-
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Accesses_VpnServerId",
-                table: "Accesses");
-
             migrationBuilder.DropColumn(
                 name: "Passsword",
                 table: "VpnServers");
@@ -57,11 +42,6 @@ namespace Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "UserName",
                 table: "VpnServers");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Accesses_VpnServerId",
-                table: "Accesses",
-                column: "VpnServerId");
         }
     }
 }
