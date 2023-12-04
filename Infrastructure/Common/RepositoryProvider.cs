@@ -10,6 +10,7 @@ namespace Infrastructure.Common
         private IUserRepository userRepository;
         private IVpnServerRepository vpnServerRepository;
         private IAccessPositionRepository accessPositionsRepository;
+        private ISettingsRepositroy settingsRepositroy;
 
         public IUserRepository UserRepository =>
             userRepository ??= new UserRepository(context);
@@ -19,6 +20,9 @@ namespace Infrastructure.Common
 
         public IAccessPositionRepository AccessPositionRepository => 
             accessPositionsRepository ??= new AccessPositionRepository(context);
+
+        public ISettingsRepositroy SettingsRepositroy => 
+            settingsRepositroy ??= new SettingsRepository(context);
 
         public void Dispose()
         {

@@ -45,6 +45,8 @@ namespace Infrastructure.Migrations
 				'' AS Name,
 				'' AS Description
                 FROM Accesses a
+
+                INSERT INTO Settings (TelegramToken) VALUES ('')
             ");
         }
 

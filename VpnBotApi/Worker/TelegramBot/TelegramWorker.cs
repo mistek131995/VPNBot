@@ -1,25 +1,20 @@
-﻿using Telegram.Bot;
+﻿using Core.Common;
+using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 
 namespace VpnBotApi.Worker.TelegramBot
 {
-    internal class TelegramWorker
+    internal class TelegramWorker(UpdateHandler.UpdateHandler updateHandler, ErrorHandler.ErrorHandler errorHandler, IRepositoryProvider repositoryProvider)
     {
         private static ITelegramBotClient botClient;
         private static ReceiverOptions receiverOptions;
-        private readonly UpdateHandler.UpdateHandler updateHandler;
-        private readonly ErrorHandler.ErrorHandler errorHandler;
-
-        public TelegramWorker(UpdateHandler.UpdateHandler updateHandler, ErrorHandler.ErrorHandler errorHandler)
-        {
-            this.updateHandler = updateHandler;
-            this.errorHandler = errorHandler;
-        }
 
         public async Task StartBotAsync(CancellationToken cancellationToken)
         {
-            botClient = new TelegramBotClient("6846861964:AAHM_mMcnAeeXhNoRYotK78-oy2-399w5y4");
+            var token = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
+
+            botClient = new TelegramBotClient(token.TelegramToken);
 
             receiverOptions = new ReceiverOptions()
             {
