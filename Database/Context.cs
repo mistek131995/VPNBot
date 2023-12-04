@@ -12,5 +12,10 @@ namespace Database
 
         public DbSet<User> Users { get; set; }
         public DbSet<Access> Accesses { get; set; }
+        public DbSet<VpnServer> VpnServers { get; set; }
+        public DbSet<Setting> Settings { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<AccessPosition> AccessPositions { get; set; }
+
     }
 }

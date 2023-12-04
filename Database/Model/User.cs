@@ -7,6 +7,20 @@ namespace Database.Model
         [Key]
         public int Id { get; set; }
         public long TelegramUserId { get; set; }
+        public long TelegramChatId { get; set; }
+        public string Login {  get; set; }
+        public string Password { get; set; }
+        public UserRole Role { get; set; }
+        public DateTime RegisterDate { get; set; }
+
         public Access Access { get; set; }
+        public List<Payment> Payments { get; set; }
+
+        public enum UserRole
+        {
+            Blocked = 0,
+            User = 1,
+            Admin = 2
+        }
     }
 }

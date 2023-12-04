@@ -33,7 +33,7 @@ pipeline {
         }
 		stage('Start container') {
             steps {
-                sh "docker run -d -p 5000:5000 -p 5001:5001 --name=vpn-api-${BUILD_NUMBER} --network=mssql --restart=always vpn-api-${BUILD_NUMBER}"
+                sh "docker run -d -p 80:80 -p 443:443 --name=vpn-api-${BUILD_NUMBER} --network=mssql --restart=always vpn-api-${BUILD_NUMBER}"
             }
         }
         stage('Clear images') {

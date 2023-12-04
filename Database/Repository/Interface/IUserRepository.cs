@@ -4,7 +4,9 @@ namespace Database.Repository.Interface
 {
     public interface IUserRepository
     {
+        public Task<User> GetByIdAsync(int id);
         public Task<User> GetByTelegramUserIdAsync(long telegramUserId);
+        public Task<User> GetByTelegramUserIdAndAccessGuidAsync(long telegramUserId, Guid accessGuid);
         public Task<User> AddAsync(User user);
 
         /// <summary>
