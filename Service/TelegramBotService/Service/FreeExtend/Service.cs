@@ -34,6 +34,9 @@ namespace Service.TelegramBotService.Service.FreeExtend
 
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
+                vpnServer.UserCount += 1;
+                await repositoryProvider.VpnServerRepository.UpdateManyAsync(new List<Core.Model.VpnServer.VpnServer>() { vpnServer });
+
                 result.QRCode = Helper.GetAccessQrCode(user.Access, vpnServer.Ip);
                 result.Text = $"Получен новый доступ сроком до {user.Access.EndDate.ToShortDateString()}, необходимо загрузить новый QR код в приложение.";
             }
