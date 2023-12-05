@@ -12,7 +12,7 @@ namespace Service.TelegramBotService.Service.BuyAccess
                 ?? throw new Exception("Пользователь не найден.");
 
             var accessPositions = (await repositoryProvider.AccessPositionRepository.GetAllAsync())
-                .Select(x => (x, $"https://pay.freekassa.ru/?m=42964&oa={x.Price}&currency=RUB&o={user.Id}&s=42964:{x.Price}:EKihy9@J{{))vZUt:RUB:{user.Id}"))
+                .Select(x => (x, $"https://pay.freekassa.ru/?m=42964&oa={x.Price}&currency=RUB&o={user.Id}&s={Helper.GetMD5Hash($"42964:{x.Price}:EKihy9@J{{))vZUt:RUB:{user.Id}")}"))
                 .ToList();
 
             var result = new Result();
