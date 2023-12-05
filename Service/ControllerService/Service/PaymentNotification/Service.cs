@@ -10,9 +10,10 @@ namespace Service.ControllerService.Service.PaymentNotification
 
             if (sign == request.SIGN)
             {
+                Console.WriteLine("Прошло успешно");
                 return true;
             }
-
+            Console.WriteLine("Ошибка");
             return false;
         }
     }
