@@ -49,7 +49,9 @@ namespace Service.TelegramBotService.Service.Start
                 TelegramUserId = telegramUserId,
                 TelegramChatId = telegramChatId,
                 RegisterDate = DateTime.Now,
-                Role = UserRole.User
+                Role = UserRole.User,
+                Login = string.Empty,
+                Password = string.Empty,
             });
         }
     }
