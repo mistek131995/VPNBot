@@ -2,9 +2,9 @@
 {
     public class ControllerServiceDispatcher(IServiceProvider serviceProvider)
     {
-        public Task<TResponse> GetService<TResponse, TRequest>(TRequest query) where TRequest : IRequest<TResponse>
+        public Task<TResult> GetService<TResult, TRequest>(TRequest query) where TRequest : IRequest<TResult>
         {
-            var handler = (IControllerService<TRequest, TResponse>)serviceProvider.GetService(typeof(IControllerService<TRequest, TResponse>));
+            var handler = (IControllerService<TRequest, TResult>)serviceProvider.GetService(typeof(IControllerService<TRequest, TResult>));
 
             return handler.HandlingAsync(query);
         }

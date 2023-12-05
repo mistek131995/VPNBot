@@ -1,15 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.ControllerService.Common;
+using Microsoft.AspNetCore.Mvc;
+
+using PaymentNotification = Service.ControllerService.Service.PaymentNotification;
 
 namespace VpnBotApi.Controllers
 {
     [ApiController]
     [Route("[Controller]/[Action]")]
-    public class PaymentController : Controller
+    public class PaymentController(ControllerServiceDispatcher dispatcher) : Controller
     {
         [HttpPost]
-        public async Task<JsonResult> Notification()
+        public async Task<JsonResult> Notification(PaymentNotification.Request request)
         {
-            return Json(new { });
+            var response = await dispatcher.GetService<PaymentNotification.Result, PaymentNotification.Request>(request);
+
+            return Json(response);
         }
 
         [HttpGet]
