@@ -7,17 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\img\**" />
-    <Compile Remove="wwwroot\static\**" />
-    <Content Remove="wwwroot\img\**" />
-    <Content Remove="wwwroot\static\**" />
-    <EmbeddedResource Remove="wwwroot\img\**" />
-    <EmbeddedResource Remove="wwwroot\static\**" />
-    <None Remove="wwwroot\img\**" />
-    <None Remove="wwwroot\static\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="wwwroot\index.html" />
   </ItemGroup>
 
