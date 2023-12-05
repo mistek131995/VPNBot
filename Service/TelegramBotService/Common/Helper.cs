@@ -19,10 +19,13 @@ namespace Application.TelegramBotService.Common
 
         public static string GetMD5Hash(string value)
         {
-            var md5 = MD5.Create();
-            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(value));
+            byte[] encodedPassword = new UTF8Encoding().GetBytes(value);
 
-            return Convert.ToBase64String(hash);
+            byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+
+            return BitConverter.ToString(hash)
+               .Replace("-", string.Empty)
+               .ToLower();
         }
     }
 }
