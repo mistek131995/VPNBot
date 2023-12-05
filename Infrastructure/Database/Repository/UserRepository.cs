@@ -33,7 +33,7 @@ namespace Infrastructure.Database.Repository
                     Password = x.Password,
                     RegisterDate = x.RegisterDate,
                     Role = x.Role,
-                    Access = new Model.Access()
+                    Access = x.Access != null ? new Model.Access()
                     {
                         Id = x.Access.Id,
                         UserId = x.Access.UserId,
@@ -49,7 +49,7 @@ namespace Infrastructure.Database.Repository
                         Port = x.Access.Port,
                         VpnServerId = x.Access.VpnServerId,
                         IsDeprecated = x.Access.IsDeprecated
-                    },
+                    } : null,
                     Payments = x.Payments.Select(p => new Model.Payment()
                     {
                         Id = p.Id,
