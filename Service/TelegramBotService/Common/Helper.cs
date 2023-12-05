@@ -1,5 +1,7 @@
 ﻿using Core.Model.User;
 using QRCoder;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Application.TelegramBotService.Common
 {
@@ -17,13 +19,10 @@ namespace Application.TelegramBotService.Common
 
         public static string GetMD5Hash(string value)
         {
-            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
-            {
-                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(value);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
+            var md5 = MD5.Create();
+            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(value));
 
-                return Convert.ToHexString(hashBytes);
-            }
+            return Convert.ToBase64String(hash);
         }
     }
 }
