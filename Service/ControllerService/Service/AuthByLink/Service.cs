@@ -18,6 +18,9 @@ namespace Service.ControllerService.Service.AuthByLink
             if (user.Password != request.Password)
                 throw new Exception("Введен неверный логин или пароль.");
 
+            if (user.Role != Core.Model.User.UserRole.Admin)
+                throw new Exception("Личный кабинет находится в разработке, пока в него нельзя попасть.");
+
             var claims = new List<Claim>()
             {
                 new Claim("id", user.Id.ToString()),
