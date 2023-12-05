@@ -12,7 +12,7 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<JsonResult> Notification(PaymentNotification.Request request)
         {
-            var response = await dispatcher.GetService<PaymentNotification.Result, PaymentNotification.Request>(request);
+            var response = await dispatcher.GetService<bool, PaymentNotification.Request>(request);
 
             return Json(response);
         }

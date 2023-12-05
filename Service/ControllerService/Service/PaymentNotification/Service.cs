@@ -1,19 +1,19 @@
 ﻿using Application.ControllerService.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
-    internal class Service : IControllerService<Request, Result>
+    internal class Service : IControllerService<Request, bool>
     {
-        public async Task<Result> HandlingAsync(Request request)
+        public async Task<bool> HandlingAsync(Request request)
         {
-            var result = new Result();
+            var sign = $"{request.MERCHANT_ID}:{request.AMOUNT}:-V9V(-Bb}}UXdAB}}:{request.MERCHANT_ORDER_ID}";
 
-            return result;
+            if (sign == request.SIGN)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
