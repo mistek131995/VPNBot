@@ -2,7 +2,8 @@
 
 namespace Service.TelegramBotService.Service.BuyAccess
 {
-    public class Request : IRequest<Result>
+    public class Request(long telegramUserrId) : IRequest<Result>
     {
+        public long TelegramUserId = telegramUserrId;
     }
 }

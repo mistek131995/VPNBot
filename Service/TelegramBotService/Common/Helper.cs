@@ -14,5 +14,16 @@ namespace Application.TelegramBotService.Common
             var qRCode = new PngByteQRCode(qrCodeData);
             return qRCode.GetGraphic(20);
         }
+
+        public static string GetMD5Hash(string value)
+        {
+            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            {
+                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(value);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                return Convert.ToHexString(hashBytes);
+            }
+        }
     }
 }
