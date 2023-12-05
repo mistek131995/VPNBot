@@ -66,16 +66,18 @@ namespace VpnBotApi.Worker.AccessCleaner
                     await repositoryProvider.UserRepository.UpdateManyAsync(users);
 
                     //Перерасчет активных пользователей
-                    var activeUsersByVpnServerId = (await repositoryProvider.UserRepository.GetAllWithActiveAccessAsync())
+                    var activeUsersCounts = (await repositoryProvider.UserRepository.GetAllWithActiveAccessAsync())
                         .GroupBy(x => x.Access.VpnServerId)
                         .Select(x => new {
-                            VpnServerId = x.Key, 
+                            VpnServerId = x.Key,
                             ActiveUserCount = x.Count()
                         }).ToList();
 
-                    foreach(var vpnServer in vpnServers)
+                    foreach (var vpnServer in vpnServers)
                     {
-                        vpnServer.UserCount = activeUsersByVpnServerId.Where(x => x.VpnServerId == vpnServer.Id).Count();
+                        var activeUsersCount = activeUsersCounts.FirstOrDefault(x => x.VpnServerId == vpnServer.Id);
+
+                        vpnServer.UserCount = activeUsersCount?.ActiveUserCount ?? 0;
                     }
 
                     await repositoryProvider.VpnServerRepository.UpdateManyAsync(vpnServers);
