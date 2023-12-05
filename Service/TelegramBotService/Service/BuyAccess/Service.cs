@@ -1,5 +1,6 @@
 ﻿using Application.TelegramBotService.Common;
 using Core.Common;
+using MD5Hash;
 using Service.TelegramBotService.Common;
 
 namespace Service.TelegramBotService.Service.BuyAccess
@@ -12,7 +13,7 @@ namespace Service.TelegramBotService.Service.BuyAccess
                 ?? throw new Exception("Пользователь не найден.");
 
             var accessPositions = (await repositoryProvider.AccessPositionRepository.GetAllAsync())
-                .Select(x => (x, $"https://pay.freekassa.ru/?m=42964&oa={x.Price}&currency=RUB&o={user.Id}&s=79126779fcff62a23e1b81b8997bf3ed"))
+                .Select(x => (x, $"https://pay.freekassa.ru/?m=42964&oa={x.Price}&currency=RUB&o={user.Id}&s={$"42964:{x.Price}:EKihy9@J{{))vZUt:RUB:{user.Id}".GetMD5()}"))
                 .ToList();
 
             var result = new Result();
