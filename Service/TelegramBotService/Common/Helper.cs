@@ -2,7 +2,6 @@
 using QRCoder;
 using System.Security.Cryptography;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Application.TelegramBotService.Common
 {
