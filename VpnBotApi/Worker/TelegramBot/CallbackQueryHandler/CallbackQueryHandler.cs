@@ -23,7 +23,7 @@ namespace VpnBotApi.Worker.TelegramBot.CallbackQueryHandler
 
             if (callbackQuery.Data == "accessPositionList")
             {
-                var replyMessage = await dispatcher.GetService<BuyAccess.Result, BuyAccess.Request>(new BuyAccess.Request());
+                var replyMessage = await dispatcher.GetService<BuyAccess.Result, BuyAccess.Request>(new BuyAccess.Request(user.Id));
 
                 await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
             }
