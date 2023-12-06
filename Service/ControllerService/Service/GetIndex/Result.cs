@@ -2,6 +2,11 @@
 {
     public class Result
     {
+        public Result()
+        {
+            Payments = new List<Payment>();
+        }
+
         public string Login { get; set; }
         public string Email { get; set; }
         public DateTime RegisterDate { get; set; }
