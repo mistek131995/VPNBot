@@ -194,6 +194,8 @@ namespace Infrastructure.Database.Repository
                 })
                 .ToList();
 
+            dbUser.Payments.AddRange(newPayments);
+
             context.Users.Update(dbUser);
             await context.SaveChangesAsync();
         }
