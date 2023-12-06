@@ -28,8 +28,12 @@ namespace Service.ControllerService.Service.PaymentNotification
 
                 await telegramBotClient.SendTextMessageAsync(user.TelegramChatId, $"Подписка сроком до {user.Access.EndDate.ToString("dd.MM.yyyy")} успешно оплачена и активирована.");
 
+                Console.WriteLine("Успешно");
+
                 return true;
             }
+
+            Console.WriteLine("Ошибка");
 
             return false;
         }
