@@ -1,8 +1,10 @@
 ﻿using Application.ControllerService.Common;
+using Core.Common;
+using Core.Model.User;
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
-    internal class Service : IControllerService<Request, bool>
+    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
     {
         public async Task<bool> HandlingAsync(Request request)
         {
@@ -10,10 +12,21 @@ namespace Service.ControllerService.Service.PaymentNotification
 
             if (sign == request.SIGN)
             {
-                Console.WriteLine("Прошло успешно");
+                var user = await repositoryProvider.UserRepository.GetByIdAsync(request.MERCHANT_ORDER_ID);
+                var accessPosition = await repositoryProvider.AccessPositionRepository.GetByPriceAsync(request.AMOUNT);
+
+                user.Payments.Add(new Payment()
+                {
+                    AccessPositionId = accessPosition.Id,
+                    Date = DateTime.Now,
+                    UserId = user.Id,
+                });
+
+                await repositoryProvider.UserRepository.UpdateAsync(user);
+
                 return true;
             }
-            Console.WriteLine("Ошибка");
+
             return false;
         }
     }

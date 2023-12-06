@@ -29,5 +29,19 @@ namespace Infrastructure.Database.Repository
                 Price = x.Price,
             }).FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task<AccessPosition> GetByPriceAsync(int price)
+        {
+            return await context.AccessPositions.Select(x => new AccessPosition()
+            {
+                Id = x.Id,
+                Price = x.Price,
+                Description = x.Description,
+                MonthCount = x.MonthCount,
+                Name = x.Name,
+            })
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Price == price);
+        }
     }
 }
