@@ -11,6 +11,6 @@ namespace Infrastructure.Database.Entity
         public int Price { get; set; }
         public string Description { get; set; }
 
-        public Payment Payment { get; set; }
+        public List<Payment> Payment { get; set; }
     }
 }
