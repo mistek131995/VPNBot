@@ -50,7 +50,7 @@ namespace Service.TelegramBotService.Common
             new InlineKeyboardButton[]
             {
                 InlineKeyboardButton.WithCallbackData("Приложение Android", "helpAndroid"),
-                InlineKeyboardButton.WithCallbackData("Приложение IOS", "helpIOS"),
+                InlineKeyboardButton.WithCallbackData("Приложение IOS", "helpIOSFoxRay"),
             }
         });
 
