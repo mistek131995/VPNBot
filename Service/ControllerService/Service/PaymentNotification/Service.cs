@@ -2,19 +2,15 @@
 using Application.TelegramBotService.Common;
 using Core.Common;
 using Core.Model.User;
+using Telegram.Bot;
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
-    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
+    internal class Service(IRepositoryProvider repositoryProvider, ITelegramBotClient telegramBotClient) : IControllerService<Request, bool>
     {
         public async Task<bool> HandlingAsync(Request request)
         {
             var sign = Helper.GetMD5Hash($"{request.MERCHANT_ID}:{request.AMOUNT}:-V9V(-Bb}}UXdAB}}:{request.MERCHANT_ORDER_ID}");
-
-            Console.WriteLine($"{request.MERCHANT_ID}:{request.AMOUNT}:-V9V(-Bb}}UXdAB}}:{request.MERCHANT_ORDER_ID}");
-            Console.WriteLine();
-            Console.WriteLine(sign);
-            Console.WriteLine(request.SIGN);
 
             if (sign == request.SIGN)
             {
@@ -29,6 +25,8 @@ namespace Service.ControllerService.Service.PaymentNotification
                 });
 
                 await repositoryProvider.UserRepository.UpdateAsync(user);
+
+                await telegramBotClient.SendTextMessageAsync(user.TelegramChatId, $"Подписка сроком до {user.Access.EndDate.ToString("dd.MM.yyyy")} успешно оплачена и активирована.");
 
                 return true;
             }
