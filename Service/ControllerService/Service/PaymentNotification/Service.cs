@@ -1,4 +1,5 @@
 ﻿using Application.ControllerService.Common;
+using Application.TelegramBotService.Common;
 using Core.Common;
 using Core.Model.User;
 
@@ -8,7 +9,7 @@ namespace Service.ControllerService.Service.PaymentNotification
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            var sign = $"{request.MERCHANT_ID}:{request.AMOUNT}:-V9V(-Bb}}UXdAB}}:{request.MERCHANT_ORDER_ID}";
+            var sign = Helper.GetMD5Hash($"{request.MERCHANT_ID}:{request.AMOUNT}:-V9V(-Bb}}UXdAB}}:{request.MERCHANT_ORDER_ID}");
 
             if (sign == request.SIGN)
             {
