@@ -111,12 +111,17 @@ namespace Service.TelegramBotService.Common
         {
             new InlineKeyboardButton[]
             {
-                InlineKeyboardButton.WithUrl("Android", "https://play.google.com/store/apps/details?id=com.v2ray.ang"),
+                InlineKeyboardButton.WithUrl("Android (Рекомендовано)", "https://play.google.com/store/apps/details?id=com.v2ray.ang"),
                 InlineKeyboardButton.WithCallbackData("Инструкция", "helpAndroid")
             },
             new InlineKeyboardButton[]
             {
-                InlineKeyboardButton.WithUrl("IOS", "https://apps.apple.com/us/app/streisand/id6450534064"),
+                InlineKeyboardButton.WithUrl("IOS (Рекомендовано)", "https://apps.apple.com/us/app/foxray/id6448898396"),
+                InlineKeyboardButton.WithCallbackData("Инструкция", "helpIOSFoxRay")
+            },
+            new InlineKeyboardButton[]
+            {
+                InlineKeyboardButton.WithUrl("IOS (Запасное)", "https://apps.apple.com/us/app/streisand/id6450534064"),
                 InlineKeyboardButton.WithCallbackData("Инструкция", "helpIOS")
             }
         });

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using GetLinkAuth = Service.ControllerService.Service.GetLinkAuth;
 using GetIndex = Service.ControllerService.Service.GetIndex;
+using GetAccessPositions = Service.ControllerService.Service.GetAccessPositions;
 
 using LoginByLink = Service.ControllerService.Service.AuthByLink;
 using SetLoginAndPassword = Service.ControllerService.Service.SetLoginAndPassword;
@@ -57,6 +58,7 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<JsonResult> ChangePassword([FromBody] ChangePassword.Request command)
         {
             command.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
@@ -64,6 +66,13 @@ namespace VpnBotApi.Controllers
             var response = await dispatcher.GetService<bool, ChangePassword.Request>(command);
 
             return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> GetAccessPositions()
+        {
+            return Json(new { });
         }
     }
 }
