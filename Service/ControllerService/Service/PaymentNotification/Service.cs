@@ -11,19 +11,21 @@ namespace Service.ControllerService.Service.PaymentNotification
         {
             var sign = Helper.GetMD5Hash($"{request.MERCHANT_ID}:{request.AMOUNT}:-V9V(-Bb}}UXdAB}}:{request.MERCHANT_ORDER_ID}");
 
+            Console.WriteLine("Test");
+
             if (sign == request.SIGN)
             {
-                var user = await repositoryProvider.UserRepository.GetByIdAsync(request.MERCHANT_ORDER_ID);
-                var accessPosition = await repositoryProvider.AccessPositionRepository.GetByPriceAsync(request.AMOUNT);
+                //var user = await repositoryProvider.UserRepository.GetByIdAsync(request.MERCHANT_ORDER_ID);
+                //var accessPosition = await repositoryProvider.AccessPositionRepository.GetByPriceAsync(request.AMOUNT);
 
-                user.Payments.Add(new Payment()
-                {
-                    AccessPositionId = accessPosition.Id,
-                    Date = DateTime.Now,
-                    UserId = user.Id,
-                });
+                //user.Payments.Add(new Payment()
+                //{
+                //    AccessPositionId = accessPosition.Id,
+                //    Date = DateTime.Now,
+                //    UserId = user.Id,
+                //});
 
-                await repositoryProvider.UserRepository.UpdateAsync(user);
+                //await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 return true;
             }
