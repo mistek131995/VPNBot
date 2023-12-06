@@ -70,9 +70,11 @@ namespace VpnBotApi.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<JsonResult> GetAccessPositions()
+        public async Task<JsonResult> AccessPositions()
         {
-            return Json(new { });
+            var response = await dispatcher.GetService< GetAccessPositions.Result, GetAccessPositions.Request>(new GetAccessPositions.Request());
+
+            return Json(response);
         }
     }
 }
