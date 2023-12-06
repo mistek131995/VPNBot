@@ -135,7 +135,7 @@ namespace Infrastructure.HttpClientService
                     user.Access.Port = int.Parse(obj["port"].ToString());
                     user.Access.Network = inbound.Network;
                     user.Access.Security = inbound.Security;
-                    user.Access.AccessName = obj["remark"].ToString();
+                    user.Access.AccessName = obj["remark"].ToString() + "-" + user.TelegramUserId;
                     user.Access.Fingerprint = inbound.RealitySettings.Settings.Fingerprint;
                     user.Access.PublicKey = inbound.RealitySettings.Settings.PublicKey;
                     user.Access.ServerName = inbound.RealitySettings.ServerNames.First();
