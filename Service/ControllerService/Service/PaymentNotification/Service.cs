@@ -6,7 +6,7 @@ using Telegram.Bot;
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
-    internal class Service(IRepositoryProvider repositoryProvider, ITelegramBotClient telegramBotClient) : IControllerService<Request, bool>
+    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
     {
         public async Task<bool> HandlingAsync(Request request)
         {
@@ -14,6 +14,7 @@ namespace Service.ControllerService.Service.PaymentNotification
 
             if (sign == request.SIGN)
             {
+                var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
                 var user = await repositoryProvider.UserRepository.GetByIdAsync(request.MERCHANT_ORDER_ID);
                 var accessPosition = await repositoryProvider.AccessPositionRepository.GetByPriceAsync(request.AMOUNT);
 
@@ -26,6 +27,7 @@ namespace Service.ControllerService.Service.PaymentNotification
 
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
+                var telegramBotClient = new TelegramBotClient(settings.TelegramToken);
                 await telegramBotClient.SendTextMessageAsync(user.TelegramChatId, $"Подписка сроком до {user.Access.EndDate.ToString("dd.MM.yyyy")} успешно оплачена и активирована.");
 
                 Console.WriteLine("Успешно");
