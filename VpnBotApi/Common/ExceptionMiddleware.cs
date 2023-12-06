@@ -28,7 +28,7 @@ namespace VpnBotApi.Common
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.Conflict;
 
-            await context.Response.WriteAsync(exception.Message);
+            await context.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new { exception.Message, exception.StackTrace }));
         }
     }
 }
