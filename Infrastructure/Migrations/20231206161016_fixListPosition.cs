@@ -10,13 +10,13 @@ namespace Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Payments_AccessPositionId",
-                table: "Payments");
+            //migrationBuilder.DropIndex(
+            //    name: "IX_Payments_AccessPositionId",
+            //    table: "Payments");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Accesses_VpnServerId",
-                table: "Accesses");
+            //migrationBuilder.DropIndex(
+            //    name: "IX_Accesses_VpnServerId",
+            //    table: "Accesses");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_AccessPositionId",
@@ -40,17 +40,17 @@ namespace Infrastructure.Migrations
                 name: "IX_Accesses_VpnServerId",
                 table: "Accesses");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Payments_AccessPositionId",
-                table: "Payments",
-                column: "AccessPositionId",
-                unique: true);
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_Payments_AccessPositionId",
+            //    table: "Payments",
+            //    column: "AccessPositionId",
+            //    unique: true);
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Accesses_VpnServerId",
-                table: "Accesses",
-                column: "VpnServerId",
-                unique: true);
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_Accesses_VpnServerId",
+            //    table: "Accesses",
+            //    column: "VpnServerId",
+            //    unique: true);
         }
     }
 }
