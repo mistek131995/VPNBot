@@ -7,19 +7,19 @@ namespace Service.ControllerService.Service.PaymentNotification
         /// <summary>
         /// ID Вашего магазина
         /// </summary>
-        public int? MERCHANT_ID { get; set; }
+        public int MERCHANT_ID { get; set; }
         /// <summary>
         /// Сумма платежа
         /// </summary>
-        public int? AMOUNT { get; set; }
+        public int AMOUNT { get; set; }
         /// <summary>
         /// Номер операции Free-Kassa
         /// </summary>
-        public int? intid { get; set; }
+        public int intid { get; set; }
         /// <summary>
         /// Ваш номер заказа
         /// </summary>
-        public int? MERCHANT_ORDER_ID { get; set; }
+        public int MERCHANT_ORDER_ID { get; set; }
         /// <summary>
         /// Email плательщика
         /// </summary>
@@ -31,18 +31,18 @@ namespace Service.ControllerService.Service.PaymentNotification
         /// <summary>
         /// ID электронной валюты
         /// </summary>
-        public int? CUR_ID { get; set; }
+        public int CUR_ID { get; set; }
         /// <summary>
         /// Подпись запроса
         /// </summary>
-        public string? SIGN { get; set; }
+        public string SIGN { get; set; }
         /// <summary>
         /// Номер счета/карты плательщика
         /// </summary>
-        public string? payer_account { get; set; }
+        public string payer_account { get; set; }
         /// <summary>
         /// Сумма комиссии в валюте платежа
         /// </summary>
-        public decimal? commission { get; set; }
+        public decimal commission { get; set; }
     }
 }

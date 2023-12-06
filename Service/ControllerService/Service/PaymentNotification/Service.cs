@@ -15,17 +15,17 @@ namespace Service.ControllerService.Service.PaymentNotification
 
             if (sign == request.SIGN)
             {
-                //var user = await repositoryProvider.UserRepository.GetByIdAsync(request.MERCHANT_ORDER_ID);
-                //var accessPosition = await repositoryProvider.AccessPositionRepository.GetByPriceAsync(request.AMOUNT);
+                var user = await repositoryProvider.UserRepository.GetByIdAsync(request.MERCHANT_ORDER_ID);
+                var accessPosition = await repositoryProvider.AccessPositionRepository.GetByPriceAsync(request.AMOUNT);
 
-                //user.Payments.Add(new Payment()
-                //{
-                //    AccessPositionId = accessPosition.Id,
-                //    Date = DateTime.Now,
-                //    UserId = user.Id,
-                //});
+                user.Payments.Add(new Payment()
+                {
+                    AccessPositionId = accessPosition.Id,
+                    Date = DateTime.Now,
+                    UserId = user.Id,
+                });
 
-                //await repositoryProvider.UserRepository.UpdateAsync(user);
+                await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 return true;
             }
