@@ -35,11 +35,11 @@ namespace Service.ControllerService.Service.PaymentNotification
         /// <summary>
         /// Подпись запроса
         /// </summary>
-        public string SIGN { get; set; }
+        public string? SIGN { get; set; }
         /// <summary>
         /// Номер счета/карты плательщика
         /// </summary>
-        public string payer_account { get; set; }
+        public string? payer_account { get; set; }
         /// <summary>
         /// Сумма комиссии в валюте платежа
         /// </summary>
