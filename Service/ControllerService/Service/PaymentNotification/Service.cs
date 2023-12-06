@@ -12,6 +12,8 @@ namespace Service.ControllerService.Service.PaymentNotification
             var sign = Helper.GetMD5Hash($"{request.MERCHANT_ID}:{request.AMOUNT}:-V9V(-Bb}}UXdAB}}:{request.MERCHANT_ORDER_ID}");
 
             Console.WriteLine($"{request.MERCHANT_ID}:{request.AMOUNT}:-V9V(-Bb}}UXdAB}}:{request.MERCHANT_ORDER_ID}");
+            Console.WriteLine();
+            Console.WriteLine(sign);
             Console.WriteLine(request.SIGN);
 
             if (sign == request.SIGN)
