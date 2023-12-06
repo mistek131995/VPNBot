@@ -20,7 +20,7 @@ namespace Service.TelegramBotService.Service.AccountManagment
             }
             else
             {
-                result.Text = $"Ваша подписка активна до {user.Access.EndDate.ToShortDateString()}.";
+                result.Text = $"Ваша подписка активна до {user.Access.EndDate.ToString("dd.MM.yyyy")}.";
             }
 
             result.InlineKeyboard = ButtonTemplate.GetAccountManegment(user.Access.EndDate, configuration["Domain"], user.TelegramUserId, user.Access.Guid);
