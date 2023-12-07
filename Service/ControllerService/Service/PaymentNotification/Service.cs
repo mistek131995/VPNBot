@@ -2,11 +2,12 @@
 using Application.TelegramBotService.Common;
 using Core.Common;
 using Core.Model.User;
+using Serilog;
 using Telegram.Bot;
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
-    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
+    internal class Service(IRepositoryProvider repositoryProvider, ILogger logger) : IControllerService<Request, bool>
     {
         public async Task<bool> HandlingAsync(Request request)
         {
@@ -30,12 +31,12 @@ namespace Service.ControllerService.Service.PaymentNotification
                 var telegramBotClient = new TelegramBotClient(settings.TelegramToken);
                 await telegramBotClient.SendTextMessageAsync(user.TelegramChatId, $"Подписка сроком до {user.Access.EndDate.ToString("dd.MM.yyyy")} успешно оплачена и активирована.");
 
-                Console.WriteLine("Успешно");
+                logger.Information($"Успешная оплата, пользователь {user.Id}, на сумуу {request.AMOUNT}.");
 
                 return true;
             }
 
-            Console.WriteLine("Ошибка");
+            //logger.Error($ {request.MERCHANT_ORDER_ID}, на сумуу {request.AMOUNT}.");
 
             return false;
         }

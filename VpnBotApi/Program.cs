@@ -24,6 +24,8 @@ namespace VpnBotApi
                 .WriteTo.MSSqlServer(builder.Configuration.GetConnectionString("mssql"), "Logs", autoCreateSqlTable: true)
                 .CreateLogger();
 
+            builder.Services.AddSingleton(Log.Logger);
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
