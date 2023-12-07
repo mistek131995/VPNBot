@@ -32,21 +32,19 @@ namespace Service.TelegramBotService.Service.GetAccess
             }
             else
             {
-                var vpnServer = await repositoryProvider.VpnServerRepository.GetWithMinimalUserCountAsync() 
-                    ?? throw new Exception("Не удалось получить VPN сервер, очистите чат и попробуйте снова.");
+                var vpnServers = await repositoryProvider.VpnServerRepository.GetAll();
 
                 user.Access = new Access()
                 {
                     Guid = Guid.NewGuid(),
-                    EndDate = DateTime.Now.AddDays(14),
-                    VpnServerId = vpnServer.Id,
+                    EndDate = DateTime.Now.AddDays(14)
                 };
 
-                user = await httpClient.CreateInboundUserAsync(user, vpnServer) 
-                    ?? throw new Exception("Ошибка при создании пользователя в VPN подключении.");
+                user = await httpClient.CreateInboundUserAsync(user, vpnServers);
 
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
+                var vpnServer = await repositoryProvider.VpnServerRepository.GetByIdAsync(user.Access.VpnServerId);
                 vpnServer.UserCount += 1;
                 await repositoryProvider.VpnServerRepository.UpdateManyAsync(new List<Core.Model.VpnServer.VpnServer>() { vpnServer });
 

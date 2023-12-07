@@ -1,24 +1,26 @@
-﻿using Azure;
-using Core.Model.User;
+﻿using Core.Model.User;
 using Core.Model.VpnServer;
 using Infrastructure.HttpClientService.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using Serilog;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 
 namespace Infrastructure.HttpClientService
 {
-    public class HttpClientService  : IHttpClientService
+    public class HttpClientService(ILogger logger) : IHttpClientService
     {
+
         /// <summary>
         /// Получаем куку
         /// </summary>
         /// <param name="ip"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        private async Task<HttpClient> GetAuthCookie(string ip, int port, string userName, string password)
+        private async Task<HttpClient> GetAuthCookie(VpnServer vpnServer)
         {
             var httpClientHandler = new HttpClientHandler();
             var httpClient = new HttpClient(httpClientHandler);
@@ -26,16 +28,16 @@ namespace Infrastructure.HttpClientService
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
             var content = new FormUrlEncodedContent(new[]
             {
-                new KeyValuePair<string, string>("username", userName),
-                new KeyValuePair<string, string>("password", password)
+                new KeyValuePair<string, string>("username", vpnServer.UserName),
+                new KeyValuePair<string, string>("password", vpnServer.Password)
 
             });
 
-            var result = await httpClient.PostAsync($"http://{ip}:{port}/login", content);
+            var result = await httpClient.PostAsync($"http://{vpnServer.Ip}:{vpnServer.Port}/login", content);
 
             if (result.IsSuccessStatusCode)
             {
-                var authCookie = httpClientHandler.CookieContainer.GetCookies(new Uri($"http://{ip}:2001")).FirstOrDefault();
+                var authCookie = httpClientHandler.CookieContainer.GetCookies(new Uri($"http://{vpnServer.Ip}:{vpnServer.Port}")).FirstOrDefault();
 
                 var cookieContainer = new CookieContainer();
                 cookieContainer.Add(authCookie);
@@ -54,7 +56,16 @@ namespace Infrastructure.HttpClientService
         /// <returns>Возвращаем список успешно удаленных пользователей</returns>
         public async Task<List<Guid>> DeleteInboundUserAsync(List<Guid> guids, VpnServer vpnServer)
         {
-            var httpClient = await GetAuthCookie(vpnServer.Ip, vpnServer.Port, vpnServer.UserName, vpnServer.Password);
+            //Проверяет доступность сервера перед обновлением пользователя
+            var isAvailable = CheckAvailabilityServer(vpnServer);
+
+            if (!isAvailable)
+            {
+                logger.Error($"Доступ не был обновлен, VPN сервер {vpnServer.Ip} недоступен.");
+                throw new Exception("VPN сервер временно недоступен, мы уже работаем на устранением этой проблемы.");
+            }
+
+            var httpClient = await GetAuthCookie(vpnServer);
 
             var successDelete = new List<Guid>();
 
@@ -77,9 +88,12 @@ namespace Infrastructure.HttpClientService
         /// <param name="user">Пользователь с частично заполненным подключением(Guid, EndDate, VpnServerId)</param>
         /// <param name="vpnServer">Сервер на котором создаем пользователя</param>
         /// <returns>Возвращает пользователя с полностью заполненным подключением</returns>
-        public async Task<User> CreateInboundUserAsync(User user, VpnServer vpnServer)
+        public async Task<User> CreateInboundUserAsync(User user, List<VpnServer> vpnServers)
         {
-            var httpClient = await GetAuthCookie(vpnServer.Ip, vpnServer.Port, vpnServer.UserName, vpnServer.Password);
+            //Ищет достустпный сервер с нименьшим кол-вом пользователей
+            var vpnServer = FindAvailabilityServer(vpnServers);
+
+            var httpClient = await GetAuthCookie(vpnServer);
 
             //Удаляем старое подключение
             await httpClient.PostAsync($"http://{vpnServer.Ip}:{vpnServer.Port}/panel/api/inbounds/1/delClient/{user.Access.Guid}", null);
@@ -119,7 +133,7 @@ namespace Infrastructure.HttpClientService
 
             var addClientResponse = await httpClient.PostAsync($"http://{vpnServer.Ip}:{vpnServer.Port}/panel/api/inbounds/addClient", content);
 
-            if(addClientResponse.IsSuccessStatusCode)
+            if (addClientResponse.IsSuccessStatusCode)
             {
                 var inboundResponse = await httpClient.GetAsync($"http://{vpnServer.Ip}:{vpnServer.Port}/panel/api/inbounds/get/1");
 
@@ -132,6 +146,7 @@ namespace Infrastructure.HttpClientService
 
                     var inbound = JsonConvert.DeserializeObject<Inbound>(obj["streamSettings"].ToString());
 
+                    user.Access.VpnServerId = vpnServer.Id;
                     user.Access.Port = int.Parse(obj["port"].ToString());
                     user.Access.Network = inbound.Network;
                     user.Access.Security = inbound.Security;
@@ -156,7 +171,16 @@ namespace Infrastructure.HttpClientService
         /// <param name="vpnServer">Сервер на котором обновляем пользователя</param>
         public async Task UpdateInboundUserAsync(User user, VpnServer vpnServer)
         {
-            var httpClient = await GetAuthCookie(vpnServer.Ip, vpnServer.Port, vpnServer.UserName, vpnServer.Password);
+            //Проверяет доступность сервера перед обновлением пользователя
+            var isAvailable = CheckAvailabilityServer(vpnServer);
+
+            if (!isAvailable)
+            {
+                logger.Error($"Доступ не был обновлен, VPN сервер {vpnServer.Ip} недоступен.");
+                throw new Exception("VPN сервер временно недоступен, мы уже работаем на устранением этой проблемы.");
+            }
+
+            var httpClient = await GetAuthCookie(vpnServer);
 
             var expiryTime = user.Access.EndDate.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
 
@@ -196,6 +220,59 @@ namespace Infrastructure.HttpClientService
             {
                 throw new Exception("Неудалось обновить подключение на VPN сервере.");
             }
+        }
+
+
+        /// <summary>
+        /// Ищет наиболее подходящий сервер в списке
+        /// </summary>
+        /// <param name="vpnServers"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private VpnServer FindAvailabilityServer(List<VpnServer> vpnServers)
+        {
+            vpnServers = vpnServers.OrderBy(x => x.UserCount).ToList();
+
+            foreach (var vpnServer in vpnServers)
+            {
+                var isAvailable = CheckAvailabilityServer(vpnServer);
+
+                if (isAvailable)
+                {
+                    return vpnServer;
+                }
+            }
+
+            //Если в цикле не был найден доступный сервер, доходим до сюда и кидаем ошибку
+            logger.Error("Не удалось найти доступный VPN сервер.");
+            throw new Exception("VPN сервер временно недоступен, мы уже работаем на устранением этой проблемы.");
+        }
+
+
+        /// <summary>
+        /// Провреяет доступность сервера
+        /// </summary>
+        /// <param name="vpnServer"></param>
+        /// <returns></returns>
+        private bool CheckAvailabilityServer(VpnServer vpnServer)
+        {
+            var test = vpnServer.Ip
+                .Split('.').ToList();
+
+            var ipAddrss = vpnServer.Ip
+                .Split('.')
+                .Select(x => byte.Parse(x))
+                .ToArray();
+
+            var ping = new Ping();
+            var reply = ping.Send(new IPAddress(ipAddrss), 2000);
+
+            if (reply.Status == IPStatus.Success)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
