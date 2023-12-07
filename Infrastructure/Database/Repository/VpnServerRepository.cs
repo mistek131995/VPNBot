@@ -42,14 +42,6 @@ namespace Infrastructure.Database.Repository
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<VpnServer> GetWithMinimalUserCountAsync()
-        {
-            var minUserCount = await context.VpnServers.AsNoTracking().MinAsync(x => x.UserCount);
-            var vpnServer = await context.VpnServers.AsNoTracking().FirstOrDefaultAsync(x => x.UserCount == minUserCount);
-
-            return await GetByIdAsync(vpnServer?.Id ?? 0);
-        }
-
         public async Task UpdateManyAsync(List<VpnServer> vpnServers)
         {
             var vpnServerIds = vpnServers

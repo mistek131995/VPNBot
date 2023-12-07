@@ -6,7 +6,6 @@ namespace Core.Repository
     {
         public Task<List<VpnServer>> GetAll();
         public Task<VpnServer> GetByIdAsync(int id);
-        public Task<VpnServer> GetWithMinimalUserCountAsync();
         public Task UpdateManyAsync(List<VpnServer> vpnServers);
     }
 }
