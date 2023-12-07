@@ -161,6 +161,7 @@ namespace Infrastructure.HttpClientService
                 }
             }
 
+            logger.Error($"Ошибка создания подключения на сервере для пользователя {user.Id}. \n{addClientResponse.StatusCode} \n{addClientResponse.Content}");
             throw new Exception("Ошибка добавления пользоваеля на VPN сервер.");
         }
 
@@ -218,6 +219,7 @@ namespace Infrastructure.HttpClientService
 
             if (!response.IsSuccessStatusCode)
             {
+                logger.Error($"Не удалось обновить подключение {user.Access.Guid} пользователя {user.Id}. \n{response.StatusCode} \n{response.Content}");
                 throw new Exception("Неудалось обновить подключение на VPN сервере.");
             }
         }
