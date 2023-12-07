@@ -20,7 +20,8 @@ namespace VpnBotApi
             var jwtOptions = builder.Configuration.GetSection("Jwt");
 
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File("log.log", rollingInterval: RollingInterval.Month)
+                .MinimumLevel.Information()
+                .WriteTo.MSSqlServer(builder.Configuration.GetConnectionString("mssql"), "Logs", autoCreateSqlTable: true)
                 .CreateLogger();
 
             builder.Services.AddControllers();
