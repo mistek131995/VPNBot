@@ -25,7 +25,7 @@ namespace Service.ControllerService.Service.AuthByLink
             {
                 new Claim("id", user.Id.ToString()),
                 new Claim("login", user.Login),
-                new Claim("role", user.Role.ToString())
+                new Claim("role", ((int)user.Role).ToString())
             };
 
             var jwtOptions = configuration.GetSection("JWT");
