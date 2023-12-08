@@ -49,8 +49,9 @@ namespace Service.TelegramBotService.Service.GetAccess
                 await repositoryProvider.VpnServerRepository.UpdateManyAsync(new List<Core.Model.VpnServer.VpnServer>() { vpnServer });
 
                 result.QRCode = Helper.GetAccessQrCode(user.Access, vpnServer.Ip);
-                result.Text = $"Получен пробный доступ сроком до {user.Access.EndDate.ToShortDateString()}, скачайте приложение и загрузите QR код в приложение. " +
-                    $"\nБот работает в тестовом режиме, дальнейшие продления бесплатны. Для продления подписки, перейдите 'Аккаунт' -> 'Подписка' -> '1 месяц за 0руб.' ";
+                result.Text = $"Получен пробный доступ сроком до {user.Access.EndDate.ToString("dd.MM.yyyy")}, скачайте приложение и загрузите QR код в приложение. " +
+                    $"\nБот работает в тестовом режиме, дальнейшие продления бесплатны. " +
+                    $"\nДля продления подписки, перейдите 'Аккаунт' -> 'Подписка' -> '1 месяц за 0руб.' ";
             }
 
             result.ReplyKeyboard = ButtonTemplate.GetMainMenuButton();

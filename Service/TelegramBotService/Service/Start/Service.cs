@@ -18,7 +18,7 @@ namespace Service.TelegramBotService.Service.Start
             {
                 await CreateUserAsync(request.TelegramUserId, request.TelegramChatId);
 
-                result.Text = "У вас нет активного доступа. Вы можете получить пробный доступ сроком на 14 дней, для этого воспользуйтесь кнопкой ниже.";
+                result.Text = "У вас нет активного доступа. Вы можете получить пробный доступ сроком на 14 дней (продление бесплатное), для этого воспользуйтесь кнопкой ниже.";
                 result.ReplyKeyboard = ButtonTemplate.GetAccessButton();
             }
             else
