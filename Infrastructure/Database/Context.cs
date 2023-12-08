@@ -11,5 +11,6 @@ namespace Infrastructure.Database
         internal DbSet<Setting> Settings { get; set; }
         internal DbSet<Payment> Payments { get; set; }
         internal DbSet<AccessPosition> AccessPositions { get; set; }
+        internal DbSet<Log> Logs { get; set; }
     }
 }

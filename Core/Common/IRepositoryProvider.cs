@@ -8,5 +8,6 @@ namespace Core.Common
         public IVpnServerRepository VpnServerRepository { get; }
         public IAccessPositionRepository AccessPositionRepository { get; }
         public ISettingsRepositroy SettingsRepositroy { get; }
+        public ILogRepository LogRepository { get; }
     }
 }

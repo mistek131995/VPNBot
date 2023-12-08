@@ -11,6 +11,7 @@ namespace Infrastructure.Common
         private IVpnServerRepository vpnServerRepository;
         private IAccessPositionRepository accessPositionsRepository;
         private ISettingsRepositroy settingsRepositroy;
+        private ILogRepository logRepository;
 
         public IUserRepository UserRepository =>
             userRepository ??= new UserRepository(context);
@@ -23,6 +24,9 @@ namespace Infrastructure.Common
 
         public ISettingsRepositroy SettingsRepositroy => 
             settingsRepositroy ??= new SettingsRepository(context);
+
+        public ILogRepository LogRepository => 
+            logRepository ??= new LogRepository(context);
 
         public void Dispose()
         {
