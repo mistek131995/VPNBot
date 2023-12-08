@@ -1,12 +1,10 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using VpnBotApi.Worker.TelegramBot.CallbackQueryHandler;
-using VpnBotApi.Worker.TelegramBot.MessageHandler;
 
 namespace VpnBotApi.Worker.TelegramBot.UpdateHandler
 {
-    internal class UpdateHandler(MessageHandler.MessageHandler messageHandler, CallbackQueryHandler.CallbackQueryHandler callbackQueryHandler)
+    internal class UpdateHandler(MessageHandler.MessageHandler messageHandler, CallbackQueryHandler.CallbackQueryHandler callbackQueryHandler, Serilog.ILogger logger)
     {
 
         public async Task HandlingAsync(ITelegramBotClient client, Update update, CancellationToken token)
@@ -35,7 +33,8 @@ namespace VpnBotApi.Worker.TelegramBot.UpdateHandler
                     await client.AnswerCallbackQueryAsync(update.CallbackQuery.Id);
                 }
 
-                await client.SendTextMessageAsync(chatId, ex.Message);
+                logger.Error($"В воркере телеграм бота произошла ошибка у пользователя {chatId}. \n {ex.Message}.");
+                await client.SendTextMessageAsync(chatId, "Произошла ошибка, мы уже получили уведомление об этом и работаем на ее устранением. Попробуйте повторить попытку через некоторое время.");
             }
         }
     }
