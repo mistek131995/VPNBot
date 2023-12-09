@@ -24,7 +24,8 @@ namespace Service.ControllerService.Service.AuthByLink
             var claims = new List<Claim>()
             {
                 new Claim("id", user.Id.ToString()),
-                new Claim("login", user.Login),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.ToString()),
                 new Claim("role", ((int)user.Role).ToString())
             };
 

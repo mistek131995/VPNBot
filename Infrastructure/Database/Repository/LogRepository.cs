@@ -35,5 +35,16 @@ namespace Infrastructure.Database.Repository
                 })
                 .ToListAsync();
         }
+
+        public async Task<Log> GetByIdAsync(int id)
+        {
+            return await context.Logs.Select(x => new Log()
+            {
+                Id = x.Id,
+                Message = x.Message,
+                Level = x.Level,
+                TimeStamp = x.TimeStamp,
+            }).FirstOrDefaultAsync();
+        }
     }
 }
