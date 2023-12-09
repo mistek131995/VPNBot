@@ -34,7 +34,7 @@ namespace VpnBotApi.Worker.TelegramBot.UpdateHandler
                 }
 
                 logger.Error($"В воркере телеграм бота произошла ошибка у пользователя {chatId}. \n {ex.Message}.");
-                await client.SendTextMessageAsync(chatId, "Произошла ошибка, мы уже получили уведомление об этом и работаем на ее устранением. Попробуйте повторить попытку через некоторое время.");
+                await client.SendTextMessageAsync(chatId, "Произошла ошибка, мы уже получили уведомление об этом и работаем над ее устранением. Попробуйте повторить попытку через некоторое время.");
             }
         }
     }
