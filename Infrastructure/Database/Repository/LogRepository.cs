@@ -39,13 +39,16 @@ namespace Infrastructure.Database.Repository
 
         public async Task<Log> GetByIdAsync(int id)
         {
-            return await context.Logs.Select(x => new Log()
-            {
-                Id = x.Id,
-                Message = x.Message,
-                Level = x.Level,
-                TimeStamp = x.TimeStamp ?? DateTime.MinValue,
-            }).FirstOrDefaultAsync(x => x.Id == id);
+            return await context.Logs
+                .Select(x => new Log()
+                {
+                    Id = x.Id,
+                    Message = x.Message,
+                    Level = x.Level,
+                    TimeStamp = x.TimeStamp ?? DateTime.MinValue,
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }
