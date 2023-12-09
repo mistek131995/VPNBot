@@ -20,7 +20,7 @@ namespace VpnBotApi.Controllers
             return Json(response);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<JsonResult> DeleteLog(DeleteLog.Request request)
         {
