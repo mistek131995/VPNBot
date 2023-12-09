@@ -50,7 +50,7 @@ namespace Service.TelegramBotService.Service.GetAccess
 
                 result.QRCode = Helper.GetAccessQrCode(user.Access, vpnServer.Ip);
                 result.Text = $"Получен пробный доступ сроком до {user.Access.EndDate.ToString("dd.MM.yyyy")}, скачайте приложение и загрузите QR код в приложение. " +
-                    $"\n\nБот работает в тестовом режиме, дальнейшие продления бесплатны. " +
+                    $"\nБот работает в тестовом режиме, дальнейшие продления бесплатны. " +
                     $"\nДля продления подписки, перейдите 'Аккаунт' -> 'Подписка' -> '1 месяц за 0руб.' ";
             }
 
