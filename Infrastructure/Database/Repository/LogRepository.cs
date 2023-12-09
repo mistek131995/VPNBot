@@ -16,10 +16,11 @@ namespace Infrastructure.Database.Repository
 
         public async Task DeleteByIdAsync(int id)
         {
-            var log = await context.Logs.FirstOrDefaultAsync(log => log.Id == id);
+            var log = await context.Logs.FirstOrDefaultAsync(x => x.Id == id);
+
             context.Logs.Remove(log);
 
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task<List<Log>> GetAllAsync()
@@ -31,7 +32,7 @@ namespace Infrastructure.Database.Repository
                     Id = x.Id,
                     Message = x.Message,
                     Level = x.Level,
-                    TimeStamp = x.TimeStamp,
+                    TimeStamp = x.TimeStamp ?? DateTime.MinValue,
                 })
                 .ToListAsync();
         }
@@ -43,8 +44,8 @@ namespace Infrastructure.Database.Repository
                 Id = x.Id,
                 Message = x.Message,
                 Level = x.Level,
-                TimeStamp = x.TimeStamp,
-            }).FirstOrDefaultAsync();
+                TimeStamp = x.TimeStamp ?? DateTime.MinValue,
+            }).FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

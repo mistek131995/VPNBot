@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using GetLogs = Service.ControllerService.Service.GetLogs;
+using DeleteLog = Service.ControllerService.Service.DeleteLog;
 
 namespace VpnBotApi.Controllers
 {
@@ -15,6 +16,13 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> GetLogs()
         {
             var response = await dispatcher.GetService<GetLogs.Result, GetLogs.Request>(new GetLogs.Request());
+            return Json(response);
+        }
+
+        public async Task<JsonResult> DeleteLog(DeleteLog.Request request)
+        {
+            var response = await dispatcher.GetService<bool, DeleteLog.Request>(request);
+
             return Json(response);
         }
     }
