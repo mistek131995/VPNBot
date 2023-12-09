@@ -1,24 +1,19 @@
-﻿using System.Net;
+﻿using Serilog;
+using System.Net;
 
 namespace VpnBotApi.Common
 {
-    public class ExceptionMiddleware
+    public class ExceptionMiddleware(RequestDelegate next, Serilog.ILogger logger)
     {
-        private readonly RequestDelegate _next;
-
-        public ExceptionMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
-
         public async Task InvokeAsync(HttpContext httpContext)
         {
             try
             {
-                await _next(httpContext);
+                await next(httpContext);
             }
             catch (Exception ex)
             {
+                logger.Error(ex.StackTrace ?? ex.Message);
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
