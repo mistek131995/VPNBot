@@ -29,9 +29,23 @@ namespace VpnBotApi.Controllers
         [HttpGet]
         public async Task<JsonResult> GetAccess()
         {
-            var access = "vless://4a2cc04a-2184-4311-be9c-15216ac09461@2.59.183.140:443?type=tcp&security=reality&fp=chrome&pbk=K3aNlmMC_2WU39eLkUGcp4arcNpc8ze1aKTnpcS-tAc&sni=yahoo.com&sid=ab2cc97b&spx=%2F#subscribe-access-vpn2";
-
-            return Json(access);
+            return Json(new
+            {
+                protocol = "vless",
+                guid = "4a2cc04a-2184-4311-be9c-15216ac09461",
+                ip = "2.59.183.140",
+                port = 443,
+                type = "tcp",
+                security = "reality",
+                fingerPrint = "chrome",
+                publicKey = "K3aNlmMC_2WU39eLkUGcp4arcNpc8ze1aKTnpcS-tAc",
+                serverNames = new[] { 
+                    "yahoo.com", 
+                    "www.yahoo.com" 
+                },
+                shortId = "ab2cc97b",
+                connectionName = "%2F#subscribe-access-vpn2"
+            });
         }
 
         [HttpGet]
