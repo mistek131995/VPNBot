@@ -27,6 +27,14 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpGet]
+        public async Task<JsonResult> GetAccess()
+        {
+            var access = "vless://4a2cc04a-2184-4311-be9c-15216ac09461@2.59.183.140:443?type=tcp&security=reality&fp=chrome&pbk=K3aNlmMC_2WU39eLkUGcp4arcNpc8ze1aKTnpcS-tAc&sni=yahoo.com&sid=ab2cc97b&spx=%2F#subscribe-access-vpn2";
+
+            return Json(access);
+        }
+
+        [HttpGet]
         [Authorize]
         public async Task<JsonResult> GetIndex()
         {
