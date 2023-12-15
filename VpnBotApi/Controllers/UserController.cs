@@ -59,7 +59,7 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> LoginByLogin([FromBody] LoginByLogin.Request request)
+        public async Task<JsonResult> LoginByLogin([FromForm] LoginByLogin.Request request)
         {
             var response = await dispatcher.GetService<string, LoginByLogin.Request>(request);
 
