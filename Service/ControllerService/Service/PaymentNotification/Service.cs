@@ -1,8 +1,8 @@
 ﻿using Application.ControllerService.Common;
-using Application.TelegramBotService.Common;
 using Core.Common;
 using Core.Model.User;
 using Serilog;
+using Service.ControllerService.Common;
 using Telegram.Bot;
 
 namespace Service.ControllerService.Service.PaymentNotification

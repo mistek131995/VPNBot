@@ -2,6 +2,7 @@
 using Core.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Service.ControllerService.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -21,24 +22,7 @@ namespace Service.ControllerService.Service.AuthByLink
             if (user.Role != Core.Model.User.UserRole.Admin)
                 throw new Exception("Личный кабинет находится в разработке, пока в него нельзя попасть.");
 
-            var claims = new List<Claim>()
-            {
-                new Claim("id", user.Id.ToString()),
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.ToString()),
-                new Claim("role", ((int)user.Role).ToString())
-            };
-
-            var jwtOptions = configuration.GetSection("JWT");
-
-            var jwt = new JwtSecurityToken(
-                    issuer: jwtOptions["ISSUER"],
-                    audience: jwtOptions["AUDIENCE"],
-                    claims: claims,
-                    expires: DateTime.UtcNow.Add(TimeSpan.FromDays(1)), // время действия 1 день
-                    signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions["KEY"])), SecurityAlgorithms.HmacSha256));
-
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
+            return Helper.CreateJwtToken(user, configuration);
         }
     }
 }

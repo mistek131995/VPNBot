@@ -1,5 +1,6 @@
 ﻿using Application.TelegramBotService.Common;
 using Core.Common;
+using Service.ControllerService.Common;
 
 namespace Service.TelegramBotService.Service.GetQRCode
 {

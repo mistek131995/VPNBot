@@ -2,6 +2,7 @@
 using Core.Common;
 using Core.Model.User;
 using Infrastructure.HttpClientService;
+using Service.ControllerService.Common;
 using Service.TelegramBotService.Common;
 
 namespace Service.TelegramBotService.Service.GetAccess

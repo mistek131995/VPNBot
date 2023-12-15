@@ -1,6 +1,7 @@
 ﻿using Application.TelegramBotService.Common;
 using Core.Common;
 using Core.Model.User;
+using Service.ControllerService.Common;
 using Service.TelegramBotService.Common;
 
 namespace Service.TelegramBotService.Service.Start

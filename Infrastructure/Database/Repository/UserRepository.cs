@@ -242,5 +242,12 @@ namespace Infrastructure.Database.Repository
             context.Users.UpdateRange(dbUsers);
             await context.SaveChangesAsync();
         }
+
+        public async Task<User> GetByLoginAndPasswordAsync(string login, string password)
+        {
+            var userId = (await context.Users.FirstOrDefaultAsync(x => x.Login == login && x.Password == password))?.Id ?? 0;
+
+            return await GetByIdAsync(userId);
+        }
     }
 }

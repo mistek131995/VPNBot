@@ -2,6 +2,7 @@
 using Core.Common;
 using Core.Model.User;
 using Infrastructure.HttpClientService;
+using Service.ControllerService.Common;
 
 namespace Service.TelegramBotService.Service.FreeExtend
 {
