@@ -6,9 +6,16 @@ namespace VpnBotApi.Controllers
     [Route("[Controller]/[Action]")]
     public class AppController : Controller
     {
-        public async Task<string> AppVersion()
+        public async Task<JsonResult> AppVersion()
         {
-            return "1.0.0";
+            return Json("1.0.0");
         } 
+
+        public async Task<JsonResult> CheckCoreHash(string hash)
+        {
+
+
+            return Json(new { });
+        }
     }
 }

@@ -22,20 +22,6 @@ namespace Service.ControllerService.Common
             return qRCode.GetGraphic(20);
         }
 
-        public static string GetMD5Hash(string value)
-        {
-            MD5CryptoServiceProvider mD5CryptoServiceProvider = new MD5CryptoServiceProvider();
-            mD5CryptoServiceProvider.ComputeHash(Encoding.ASCII.GetBytes(value));
-            byte[] hash = mD5CryptoServiceProvider.Hash;
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
-                stringBuilder.Append(hash[i].ToString("x2"));
-            }
-
-            return stringBuilder.ToString();
-        }
-
         public static string CreateJwtToken(User user, IConfiguration configuration)
         {
             var claims = new List<Claim>()

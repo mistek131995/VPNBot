@@ -11,7 +11,7 @@ namespace Service.ControllerService.Service.PaymentNotification
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            var sign = Helper.GetMD5Hash($"{request.MERCHANT_ID}:{request.AMOUNT}:-V9V(-Bb}}UXdAB}}:{request.MERCHANT_ORDER_ID}");
+            var sign = MD5Hash.Hash.GetMD5($"{request.MERCHANT_ID}:{request.AMOUNT}:-V9V(-Bb}}UXdAB}}:{request.MERCHANT_ORDER_ID}");
 
             if (sign == request.SIGN)
             {
