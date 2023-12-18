@@ -12,6 +12,7 @@ namespace Infrastructure.Common
         private IAccessPositionRepository accessPositionsRepository;
         private ISettingsRepositroy settingsRepositroy;
         private ILogRepository logRepository;
+        private IFileRepository fileRepository;
 
         public IUserRepository UserRepository =>
             userRepository ??= new UserRepository(context);
@@ -28,9 +29,8 @@ namespace Infrastructure.Common
         public ILogRepository LogRepository => 
             logRepository ??= new LogRepository(context);
 
-        public void Dispose()
-        {
-            context.Dispose();
-        }
+        public IFileRepository FileRepository => 
+            fileRepository ??= new FileRepository(context);
+
     }
 }

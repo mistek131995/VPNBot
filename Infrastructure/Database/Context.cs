@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Database.Entity;
 using Microsoft.EntityFrameworkCore;
+using File = Infrastructure.Database.Entity.File;
 
 namespace Infrastructure.Database
 {
@@ -12,5 +13,6 @@ namespace Infrastructure.Database
         internal DbSet<Payment> Payments { get; set; }
         internal DbSet<AccessPosition> AccessPositions { get; set; }
         internal DbSet<Log> Logs { get; set; }
+        internal DbSet<File> Files { get; set; }
     }
 }

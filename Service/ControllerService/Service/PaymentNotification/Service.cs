@@ -36,8 +36,6 @@ namespace Service.ControllerService.Service.PaymentNotification
                 return true;
             }
 
-            //logger.Error($ {request.MERCHANT_ORDER_ID}, на сумуу {request.AMOUNT}.");
-
             return false;
         }
     }
