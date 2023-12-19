@@ -19,24 +19,18 @@ namespace Service.ControllerService.Service.UploadFile
                     settings.SSHServerPassword)
                 );
 
-            using (var client = new SftpClient(connectionInfo))
-            {
-                try
-                {
-                    client.Connect();
+            using var client = new SftpClient(connectionInfo);
+            using var stream = new MemoryStream(request.Data);
 
-                    using var stream = new MemoryStream(request.Data);
+            client.Connect();
 
-                    //FileBasePath - /home/build/wwwroot/files
-                    client.UploadFile(stream, $"{settings.FileBasePath}/{request.Tag}/{request.Name}", null);
+            if (!client.Exists($"{settings.FileBasePath}/{request.Tag}"))
+                client.CreateDirectory($"{settings.FileBasePath}/{request.Tag}");
 
-                    client.Disconnect();
-                }catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
+            //FileBasePath - /home/build/wwwroot/files
+            client.UploadFile(stream, $"{settings.FileBasePath}/{request.Tag}/{request.Name}", null);
 
-            }
+            client.Disconnect();
 
             return true;
         }

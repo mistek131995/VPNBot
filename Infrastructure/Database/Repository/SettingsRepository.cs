@@ -12,7 +12,11 @@ namespace Infrastructure.Database.Repository
                 .Select(x => new Settings
                 {
                     Id = x.Id,
-                    TelegramToken = x.TelegramToken
+                    TelegramToken = x.TelegramToken,
+                    SSHServerIP = x.SSHServerIP,
+                    SSHServerLogin = x.SSHServerLogin,
+                    SSHServerPassword = x.SSHServerPassword,
+                    FileBasePath = x.FileBasePath,
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync();

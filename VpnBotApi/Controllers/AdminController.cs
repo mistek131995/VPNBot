@@ -43,7 +43,7 @@ namespace VpnBotApi.Controllers
 
         [HttpPost]
         //[Authorize(Roles = "Admin")]
-        public async Task<JsonResult> UploadFile([FromForm]IFormFile file, [FromForm]string version)
+        public async Task<JsonResult> UploadFile([FromForm]IFormFile file, [FromForm]string version, [FromForm] string tag)
         {
             using (var ms = new MemoryStream())
             {
@@ -52,8 +52,8 @@ namespace VpnBotApi.Controllers
 
                 var response = await dispatcher.GetService<bool, UploadFile.Request>(new UploadFile.Request()
                 {
-                    Tag = file.FileName.Trim().Replace(" ", "_"),
-                    Name = file.FileName,
+                    Tag = tag,
+                    Name = file.FileName.Replace(" ", "_"),
                     ContentType = file.ContentType,
                     Data = ms.ToArray(),
                     Version = version
