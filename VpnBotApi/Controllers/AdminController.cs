@@ -41,10 +41,9 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<JsonResult> UploadFile(IFormFile file)
         {
-
             using (var ms = new MemoryStream())
             {
                 file.CopyTo(ms);
