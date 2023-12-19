@@ -33,7 +33,7 @@ pipeline {
         }
 		stage('Start container') {
             steps {
-                sh "docker run -d -p 80:80 -p 443:443 -v /home/build/wwwroot/app/:/home/build/wwwroot/app/ --name=vpn-api-${BUILD_NUMBER} --network=mssql --restart=always vpn-api-${BUILD_NUMBER}"
+                sh "docker run -d -p 80:80 -p 443:443 -v /home/build/wwwroot/files/:/home/build/wwwroot/files/ --name=vpn-api-${BUILD_NUMBER} --network=mssql --restart=always vpn-api-${BUILD_NUMBER}"
             }
         }
         stage('Clear images') {

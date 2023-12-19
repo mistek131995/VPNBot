@@ -43,11 +43,24 @@ namespace VpnBotApi.Controllers
 
         [HttpPost]
         //[Authorize(Roles = "Admin")]
-        public async Task<JsonResult> UploadFile()
+        public async Task<JsonResult> UploadFile([FromForm]IFormFile file, [FromForm]string version)
         {
-            Directory.CreateDirectory("/home/build/wwwroot/app/test");
+            using (var ms = new MemoryStream())
+            {
+                file.CopyTo(ms);
+                var fileBytes = ms.ToArray();
 
-            return Json(new { });
+                var response = await dispatcher.GetService<bool, UploadFile.Request>(new UploadFile.Request()
+                {
+                    Tag = file.FileName.Trim().Replace(" ", "_"),
+                    Name = file.FileName,
+                    ContentType = file.ContentType,
+                    Data = ms.ToArray(),
+                    Version = version
+                });
+
+                return Json(response);
+            }
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Infrastructure.Database.Repository
             {
                 Name = file.Name,
                 ContentType = file.ContentType,
-                Data = file.Data,
                 Tag = file.Tag,
                 Version = file.Version,
             };
