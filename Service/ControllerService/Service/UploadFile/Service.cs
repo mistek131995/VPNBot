@@ -8,7 +8,7 @@ namespace Service.ControllerService.Service.UploadFile
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            await repositoryProvider.FileRepository.AddAsync(new File(0, request.Tag, request.Name, request.Data, request.ContentType, ""));
+            await repositoryProvider.FileRepository.AddAsync(new File(0, request.Tag, request.Name, request.Data, request.ContentType, request.Version));
 
             return true;
         }

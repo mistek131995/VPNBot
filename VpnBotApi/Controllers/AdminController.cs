@@ -7,6 +7,7 @@ using GetVpnServers = Service.ControllerService.Service.GetServers;
 using DeleteLog = Service.ControllerService.Service.DeleteLog;
 
 using UploadFile = Service.ControllerService.Service.UploadFile;
+using System;
 
 namespace VpnBotApi.Controllers
 {
@@ -42,7 +43,7 @@ namespace VpnBotApi.Controllers
 
         [HttpPost]
         //[Authorize(Roles = "Admin")]
-        public async Task<JsonResult> UploadFile(IFormFile file)
+        public async Task<JsonResult> UploadFile([FromForm]IFormFile file, [FromForm]string version)
         {
             using (var ms = new MemoryStream())
             {
@@ -54,7 +55,8 @@ namespace VpnBotApi.Controllers
                     Tag = file.FileName.Trim().Replace(" ", "_"),
                     Name = file.FileName,
                     ContentType = file.ContentType,
-                    Data = ms.ToArray()
+                    Data = ms.ToArray(),
+                    Version = version
                 });
 
                 return Json(response);
