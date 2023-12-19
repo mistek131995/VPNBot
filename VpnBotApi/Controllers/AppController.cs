@@ -8,7 +8,7 @@ namespace VpnBotApi.Controllers
     {
 
         [HttpGet]
-        public async Task<JsonResult> AppVersion()
+        public async Task<JsonResult> AppVersion(string tag)
         {
             return Json("1.0.0");
         }

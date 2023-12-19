@@ -32,6 +32,8 @@ namespace Service.ControllerService.Service.UploadFile
 
             client.Disconnect();
 
+            await repositoryProvider.FileRepository.AddAsync(new File(0, request.Tag, request.Name, request.ContentType, request.Version));
+
             return true;
         }
     }
