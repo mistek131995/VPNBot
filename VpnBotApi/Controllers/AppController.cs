@@ -1,24 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.ControllerService.Common;
+using Microsoft.AspNetCore.Mvc;
+using Update = Service.ControllerService.Service.UpdateByTag;
 
 namespace VpnBotApi.Controllers
 {
     [ApiController]
     [Route("[Controller]/[Action]")]
-    public class AppController : Controller
+    public class AppController(ControllerServiceDispatcher dispatcher) : Controller
     {
-
         [HttpGet]
-        public async Task<JsonResult> AppVersion(string tag)
+        public async Task<JsonResult> UpdateByTag(string tag, string version)
         {
-            return Json("1.0.0");
-        }
+            var response = await dispatcher.GetService<Update.Result, Update.Request>(new Update.Request()
+            {
+                Tag = tag,
+                Version = version
+            });
 
-        [HttpGet]
-        public async Task<JsonResult> CheckCoreHash(string hash)
-        {
-
-
-            return Json(new { });
+            return Json(response);
         }
     }
 }

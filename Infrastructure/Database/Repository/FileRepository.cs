@@ -1,4 +1,5 @@
 ﻿using Core.Repository;
+using Microsoft.EntityFrameworkCore;
 using File = Core.Model.File.File;
 
 namespace Infrastructure.Database.Repository
@@ -21,9 +22,16 @@ namespace Infrastructure.Database.Repository
             return newFile.Id;
         }
 
-        public Task<File> GetByShortNameAsync(string shortName)
+        public async Task<File> GetByTagAsync(string shortName)
         {
-            throw new NotImplementedException();
+            return await context.Files
+                .Select(x => new File(
+                    x.Id, 
+                    x.Tag, 
+                    x.Name, 
+                    x.ContentType, 
+                    x.Version)
+                ).FirstOrDefaultAsync();
         }
     }
 }

@@ -9,6 +9,10 @@ namespace Service.ControllerService.Service.UploadFile
     {
         public async Task<bool> HandlingAsync(Request request)
         {
+            var file = await repositoryProvider.FileRepository.GetByTagAsync(request.Tag);
+            if (file == null)
+                throw new Exception("Файл с такой меткой уже существует.");
+
             var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
 
             var connectionInfo = new ConnectionInfo(
