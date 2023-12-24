@@ -9,12 +9,11 @@ namespace VpnBotApi.Controllers
     public class AppController(ControllerServiceDispatcher dispatcher) : Controller
     {
         [HttpGet]
-        public async Task<JsonResult> UpdateByTag(string tag, string version)
+        public async Task<JsonResult> UpdateByTag(string tag)
         {
             var response = await dispatcher.GetService<Update.Result, Update.Request>(new Update.Request()
             {
-                Tag = tag,
-                Version = version
+                Tag = tag
             });
 
             return Json(response);

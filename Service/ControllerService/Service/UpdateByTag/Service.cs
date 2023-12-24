@@ -12,9 +12,6 @@ namespace Service.ControllerService.Service.UpdateByTag
             var file = await repositoryProvider.FileRepository.GetByTagAsync(request.Tag)
                 ?? throw new Exception("Файл с такой меткой не найден.");
 
-            if (file.Version == request.Version)
-                throw new Exception("У вас последняя версия, обновление не требуется.");
-
             result.FileName = file.Name;
             result.Version = file.Version;
             result.DownloadLink = $"https://lockvpn.me/files/{file.Tag}/{file.Name}";
