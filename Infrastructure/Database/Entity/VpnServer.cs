@@ -13,7 +13,9 @@ namespace Infrastructure.Database.Entity
         public string Name { get; set; }
         public string Description { get; set; }
         public int UserCount { get; set; }
+        public int CountryId { get; set; }
 
         public List<Access> Access { get; set; }
+        public Country Country { get; set; }
     }
 }
