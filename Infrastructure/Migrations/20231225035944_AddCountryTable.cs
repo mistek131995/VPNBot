@@ -36,9 +36,9 @@ namespace Infrastructure.Migrations
                 column: "CountryId");
 
             migrationBuilder.Sql(@"
-                INSERT INTO Countries (Name) VALUES ('Нидерладнды')
-                INSERT INTO Countries (Name) VALUES ('Франция')
-                INSERT INTO Countries (Name) VALUES ('Латвия')
+                INSERT INTO Countries (Name) VALUES (N'Нидерладнды')
+                INSERT INTO Countries (Name) VALUES (N'Франция')
+                INSERT INTO Countries (Name) VALUES (N'Латвия')
             ");
         }
 
