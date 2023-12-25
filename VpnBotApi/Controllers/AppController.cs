@@ -26,7 +26,7 @@ namespace VpnBotApi.Controllers
         {
             var response = await dispatcher.GetService<GetCountries.Result, GetCountries.Request>(new GetCountries.Request());
 
-            return Json(response);
+            return Json(response.Countries);
         }
     }
 }
