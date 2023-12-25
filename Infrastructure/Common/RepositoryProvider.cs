@@ -13,6 +13,7 @@ namespace Infrastructure.Common
         private ISettingsRepositroy settingsRepositroy;
         private ILogRepository logRepository;
         private IFileRepository fileRepository;
+        private ICountryRepository countryRepository;
 
         public IUserRepository UserRepository =>
             userRepository ??= new UserRepository(context);
@@ -32,5 +33,7 @@ namespace Infrastructure.Common
         public IFileRepository FileRepository => 
             fileRepository ??= new FileRepository(context);
 
+        public ICountryRepository CountryRepository => 
+            countryRepository ??= new CountryRepository(context);
     }
 }

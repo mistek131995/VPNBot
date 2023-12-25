@@ -1,9 +1,8 @@
 ﻿using Application.ControllerService.Common;
 
-namespace Service.ControllerService.Service.UpdateByTag
+namespace Service.ControllerService.Service.GetVpnCountries
 {
     public class Request : IRequest<Result>
     {
-        public string Tag { get; set; }
     }
 }

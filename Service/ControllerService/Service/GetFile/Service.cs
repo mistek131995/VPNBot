@@ -1,7 +1,7 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 
-namespace Service.ControllerService.Service.UpdateByTag
+namespace Service.ControllerService.Service.GetFile
 {
     internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, Result>
     {

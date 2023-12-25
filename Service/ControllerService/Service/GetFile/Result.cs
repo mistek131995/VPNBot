@@ -1,4 +1,4 @@
-﻿namespace Service.ControllerService.Service.UpdateByTag
+﻿namespace Service.ControllerService.Service.GetFile
 {
     public class Result
     {

@@ -10,5 +10,6 @@ namespace Core.Common
         public ISettingsRepositroy SettingsRepositroy { get; }
         public ILogRepository LogRepository { get; }
         public IFileRepository FileRepository { get; }
+        public ICountryRepository CountryRepository { get; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Application.ControllerService.Common;
 using Microsoft.AspNetCore.Mvc;
-using Update = Service.ControllerService.Service.UpdateByTag;
+
+using GetFile = Service.ControllerService.Service.GetFile;
+using GetCountries = Service.ControllerService.Service.GetVpnCountries;
 
 namespace VpnBotApi.Controllers
 {
@@ -9,12 +11,20 @@ namespace VpnBotApi.Controllers
     public class AppController(ControllerServiceDispatcher dispatcher) : Controller
     {
         [HttpGet]
-        public async Task<JsonResult> UpdateByTag(string tag)
+        public async Task<JsonResult> GetFile(string tag)
         {
-            var response = await dispatcher.GetService<Update.Result, Update.Request>(new Update.Request()
+            var response = await dispatcher.GetService<GetFile.Result, GetFile.Request>(new GetFile.Request()
             {
                 Tag = tag
             });
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetCountries()
+        {
+            var response = await dispatcher.GetService<GetCountries.Result, GetCountries.Request>(new GetCountries.Request());
 
             return Json(response);
         }
