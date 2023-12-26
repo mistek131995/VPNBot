@@ -32,7 +32,7 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<JsonResult> GetConnection(int countryId)
         {
             var response = await dispatcher.GetService<GetVpnConnection.Result, GetVpnConnection.Request>(new GetVpnConnection.Request()
