@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using GetFile = Service.ControllerService.Service.GetFile;
 using GetCountries = Service.ControllerService.Service.GetVpnCountries;
+using GetVpnConnection = Service.ControllerService.Service.GetConnection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VpnBotApi.Controllers
 {
@@ -27,6 +29,18 @@ namespace VpnBotApi.Controllers
             var response = await dispatcher.GetService<GetCountries.Result, GetCountries.Request>(new GetCountries.Request());
 
             return Json(response.Countries);
+        }
+
+        [HttpGet]
+        //[Authorize]
+        public async Task<JsonResult> GetConnection(int countryId)
+        {
+            var response = await dispatcher.GetService<GetVpnConnection.Result, GetVpnConnection.Request>(new GetVpnConnection.Request()
+            {
+                CountryId = countryId
+            });
+
+            return Json(response);
         }
     }
 }

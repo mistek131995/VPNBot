@@ -33,7 +33,7 @@ namespace Service.TelegramBotService.Service.GetAccess
             }
             else
             {
-                var vpnServers = await repositoryProvider.VpnServerRepository.GetAll();
+                var vpnServers = await repositoryProvider.VpnServerRepository.GetAllAsync();
 
                 user.Access = new Access()
                 {

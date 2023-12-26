@@ -21,7 +21,7 @@ namespace Service.TelegramBotService.Service.FreeExtend
             else if (user.Access.IsDeprecated)
             {
                 //Тут генерируем новый доступ, потому что он был удален очисткой устаревших доступов
-                var vpnServers = await repositoryProvider.VpnServerRepository.GetAll();
+                var vpnServers = await repositoryProvider.VpnServerRepository.GetAllAsync();
 
                 user.Access = new Access()
                 {

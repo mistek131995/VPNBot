@@ -25,7 +25,7 @@ namespace VpnBotApi.Worker.AccessCleaner
                     .Where(x => !x.Access.IsDeprecated)
                     .ToList();
 
-                var vpnServers = await repositoryProvider.VpnServerRepository.GetAll();
+                var vpnServers = await repositoryProvider.VpnServerRepository.GetAllAsync();
 
                 if (users.Any())
                 {

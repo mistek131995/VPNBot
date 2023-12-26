@@ -6,40 +6,39 @@ namespace Infrastructure.Database.Repository
 {
     public class VpnServerRepository(Context context) : IVpnServerRepository
     {
-        public async Task<List<VpnServer>> GetAll()
+        public async Task<List<VpnServer>> GetAllAsync()
         {
             return await context.VpnServers
-                .Select(x => new VpnServer
-                {
-                    Id = x.Id,
-                    Ip = x.Ip,
-                    Name = x.Name,
-                    Description = x.Description,
-                    Port = x.Port,
-                    UserName = x.UserName,
-                    Password = x.Passsword,
-                    UserCount = x.UserCount,
-                })
+                .Select(x => new VpnServer(x.Id, x.Ip, x.Name, x.Description, x.Port, x.UserCount, x.UserName, x.Passsword, x.CountryId))
                 .AsNoTracking()
                 .ToListAsync();
+        }
+
+        public async Task<List<VpnServer>> GetByCountryIdAsync(int countryId)
+        {
+            var vpnServerIds = await context.VpnServers
+                .Where(x => x.CountryId == countryId)
+                .Select(x => x.Id)
+                .ToListAsync();
+
+            return await GetByIdsAsync(vpnServerIds);
         }
 
         public async Task<VpnServer> GetByIdAsync(int id)
         {
             return await context.VpnServers
-                .Select(x => new VpnServer
-                {
-                    Id = x.Id,
-                    Ip = x.Ip,
-                    Name = x.Name,
-                    Description = x.Description,
-                    Port = x.Port,
-                    UserName = x.UserName,
-                    Password = x.Passsword,
-                    UserCount = x.UserCount,
-                })
+                .Select(x => new VpnServer(x.Id, x.Ip, x.Name, x.Description, x.Port, x.UserCount, x.UserName, x.Passsword, x.CountryId))
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<List<VpnServer>> GetByIdsAsync(List<int> ids)
+        {
+            return await context.VpnServers
+                .AsNoTracking()
+                .Where(x => ids.Contains(x.Id))
+                .Select(x => new VpnServer(x.Id, x.Ip, x.Name, x.Description, x.Port, x.UserCount, x.UserName, x.Passsword, x.CountryId))
+                .ToListAsync();
         }
 
         public async Task UpdateManyAsync(List<VpnServer> vpnServers)

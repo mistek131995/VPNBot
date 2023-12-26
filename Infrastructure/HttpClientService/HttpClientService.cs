@@ -13,40 +13,7 @@ namespace Infrastructure.HttpClientService
 {
     public class HttpClientService(ILogger logger) : IHttpClientService
     {
-
-        /// <summary>
-        /// Получаем куку
-        /// </summary>
-        /// <param name="ip"></param>
-        /// <param name="port"></param>
-        /// <returns></returns>
-        private async Task<HttpClient> GetAuthCookie(VpnServer vpnServer)
-        {
-            var httpClientHandler = new HttpClientHandler();
-            var httpClient = new HttpClient(httpClientHandler);
-
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
-            var content = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("username", vpnServer.UserName),
-                new KeyValuePair<string, string>("password", vpnServer.Password)
-
-            });
-
-            var result = await httpClient.PostAsync($"http://{vpnServer.Ip}:{vpnServer.Port}/login", content);
-
-            if (result.IsSuccessStatusCode)
-            {
-                var authCookie = httpClientHandler.CookieContainer.GetCookies(new Uri($"http://{vpnServer.Ip}:{vpnServer.Port}")).FirstOrDefault();
-
-                var cookieContainer = new CookieContainer();
-                cookieContainer.Add(authCookie);
-
-                httpClientHandler.CookieContainer.Add(authCookie);
-            }
-
-            return httpClient;
-        }
+        private record OnlineResponse(bool success, string msg, List<string> obj);
 
         /// <summary>
         /// Удаляет список пользователей из подключения
@@ -81,6 +48,7 @@ namespace Infrastructure.HttpClientService
 
             return successDelete;
         }
+
 
         /// <summary>
         /// Создаем пользователя в подключении
@@ -165,6 +133,7 @@ namespace Infrastructure.HttpClientService
             throw new Exception("Ошибка добавления пользоваеля на VPN сервер.");
         }
 
+
         /// <summary>
         /// Обновляет существующее подключение
         /// </summary>
@@ -223,6 +192,74 @@ namespace Infrastructure.HttpClientService
                 throw new Exception("Неудалось обновить подключение на VPN сервере.");
             }
         }
+        
+
+        /// <summary>
+        /// Получаем кол-во пользователей на каждом сервере
+        /// </summary>
+        /// <param name="vpnServers"></param>
+        /// <returns></returns>
+        public async Task<List<(VpnServer vpnServer, int onlineUser)>> GetOnlineUser(List<VpnServer> vpnServers)
+        {
+            var result = new List<(VpnServer vpnServer, int OnlineUser)>();
+            using var httpClient = new HttpClient();
+
+            foreach(var vpnServer in vpnServers)
+            {
+                var ipAddrss = vpnServer.Ip
+                    .Split('.')
+                    .Select(x => byte.Parse(x))
+                    .ToArray();
+                var ping = new Ping();
+                var reply = ping.Send(new IPAddress(ipAddrss), 2000);
+
+                if (reply.Status == IPStatus.Success)
+                {
+                    var response = await httpClient.PostAsync($"http://{vpnServer.Ip}:{vpnServer.Port}/panel/api/inbounds/onlines", null);
+                    var contentString = await response.Content.ReadAsStringAsync();
+                    var content = JsonConvert.DeserializeObject<OnlineResponse>(contentString);
+
+                    result.Add((vpnServer, content?.obj.Count ?? 0));
+                }
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Получаем куку
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
+        private async Task<HttpClient> GetAuthCookie(VpnServer vpnServer)
+        {
+            var httpClientHandler = new HttpClientHandler();
+            var httpClient = new HttpClient(httpClientHandler);
+
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("username", vpnServer.UserName),
+                new KeyValuePair<string, string>("password", vpnServer.Password)
+
+            });
+
+            var result = await httpClient.PostAsync($"http://{vpnServer.Ip}:{vpnServer.Port}/login", content);
+
+            if (result.IsSuccessStatusCode)
+            {
+                var authCookie = httpClientHandler.CookieContainer.GetCookies(new Uri($"http://{vpnServer.Ip}:{vpnServer.Port}")).FirstOrDefault();
+
+                var cookieContainer = new CookieContainer();
+                cookieContainer.Add(authCookie);
+
+                httpClientHandler.CookieContainer.Add(authCookie);
+            }
+
+            return httpClient;
+        }
 
 
         /// <summary>
@@ -258,9 +295,6 @@ namespace Infrastructure.HttpClientService
         /// <returns></returns>
         private bool CheckAvailabilityServer(VpnServer vpnServer)
         {
-            var test = vpnServer.Ip
-                .Split('.').ToList();
-
             var ipAddrss = vpnServer.Ip
                 .Split('.')
                 .Select(x => byte.Parse(x))

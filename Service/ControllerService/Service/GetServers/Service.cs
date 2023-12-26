@@ -9,7 +9,7 @@ namespace Service.ControllerService.Service.GetServers
         {
             var result = new Result();
 
-            result.Servers = (await repositoryProvider.VpnServerRepository.GetAll()).Select(x => new Result.Server()
+            result.Servers = (await repositoryProvider.VpnServerRepository.GetAllAsync()).Select(x => new Result.Server()
             {
                 Id = x.Id,
                 Name = x.Name,
