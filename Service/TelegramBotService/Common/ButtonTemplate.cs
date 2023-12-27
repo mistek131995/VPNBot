@@ -146,10 +146,10 @@ namespace Service.TelegramBotService.Common
                 }
                 else
                 {
-                    inlineButtons.Add(new InlineKeyboardButton[]
-                    {
-                        InlineKeyboardButton.WithUrl($"{accessPosition.position.Name} за {accessPosition.position.Price}руб.", accessPosition.link)
-                    });
+                    //inlineButtons.Add(new InlineKeyboardButton[]
+                    //{
+                    //    InlineKeyboardButton.WithUrl($"{accessPosition.position.Name} за {accessPosition.position.Price}руб.", accessPosition.link)
+                    //});
                 }
             }
 
