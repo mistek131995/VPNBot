@@ -30,6 +30,9 @@ namespace Infrastructure.Database.Repository
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
+            if(vpnServer == null)
+                return null;
+
             return new VpnServer(
                 vpnServer.Id, 
                 vpnServer.Ip, 
