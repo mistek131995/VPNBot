@@ -8,26 +8,36 @@ namespace Infrastructure.Database.Repository
     {
         public async Task<List<AccessPosition>> GetAllAsync()
         {
-            return await context.AccessPositions.AsNoTracking().Select(x => new AccessPosition()
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                MonthCount = x.MonthCount,
-                Price = x.Price,
-            }).ToListAsync();
+            return await context.AccessPositions
+                .AsNoTracking()
+                .Select(x => new AccessPosition()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    MonthCount = x.MonthCount,
+                    Price = x.Price,
+                })
+                .ToListAsync();
         }
 
         public async Task<AccessPosition> GetByIdAsync(int id)
         {
-            return await context.AccessPositions.AsNoTracking().Select(x => new AccessPosition()
+            var accessPosition = await context.AccessPositions
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if(accessPosition == null)
+                return null;
+
+            return new AccessPosition()
             {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                MonthCount = x.MonthCount,
-                Price = x.Price,
-            }).FirstOrDefaultAsync(x => x.Id == id);
+                Id = accessPosition.Id,
+                Name = accessPosition.Name,
+                Description = accessPosition.Description,
+                MonthCount = accessPosition.MonthCount,
+                Price = accessPosition.Price,
+            };
         }
 
         public async Task<AccessPosition> GetByPriceAsync(int price)

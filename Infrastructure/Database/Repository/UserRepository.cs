@@ -21,45 +21,49 @@ namespace Infrastructure.Database.Repository
 
         public async Task<Model.User> GetByIdAsync(int id)
         {
-            return await context.Users
+            var user = await context.Users
                 .Include(x => x.Access)
                 .Include(x => x.Payments)
-                .Select(x => new Model.User()
-                {
-                    Id = x.Id,
-                    TelegramUserId = x.TelegramUserId,
-                    TelegramChatId = x.TelegramChatId,
-                    Login = x.Login,
-                    Password = x.Password,
-                    RegisterDate = x.RegisterDate,
-                    Role = x.Role,
-                    Access = x.Access != null ? new Model.Access()
-                    {
-                        Id = x.Access.Id,
-                        UserId = x.Access.UserId,
-                        EndDate = x.Access.EndDate,
-                        AccessName = x.Access.AccessName,
-                        Guid = x.Access.Guid,
-                        Fingerprint = x.Access.Fingerprint,
-                        Security = x.Access.Security,
-                        Network = x.Access.Network,
-                        PublicKey = x.Access.PublicKey,
-                        ServerName = x.Access.ServerName,
-                        ShortId = x.Access.ShortId,
-                        Port = x.Access.Port,
-                        VpnServerId = x.Access.VpnServerId,
-                        IsDeprecated = x.Access.IsDeprecated
-                    } : null,
-                    Payments = x.Payments.Select(p => new Model.Payment()
-                    {
-                        Id = p.Id,
-                        UserId = p.UserId,
-                        AccessPositionId = p.AccessPositionId,
-                        Date = p.Date,
-                    }).ToList()
-                })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (user == null)
+                return null;
+
+            return new User()
+            {
+                Id = user.Id,
+                TelegramUserId = user.TelegramUserId,
+                TelegramChatId = user.TelegramChatId,
+                Login = user.Login,
+                Password = user.Password,
+                RegisterDate = user.RegisterDate,
+                Role = user.Role,
+                Access = user.Access != null ? new Access()
+                {
+                    Id = user.Access.Id,
+                    UserId = user.Access.UserId,
+                    EndDate = user.Access.EndDate,
+                    AccessName = user.Access.AccessName,
+                    Guid = user.Access.Guid,
+                    Fingerprint = user.Access.Fingerprint,
+                    Security = user.Access.Security,
+                    Network = user.Access.Network,
+                    PublicKey = user.Access.PublicKey,
+                    ServerName = user.Access.ServerName,
+                    ShortId = user.Access.ShortId,
+                    Port = user.Access.Port,
+                    VpnServerId = user.Access.VpnServerId,
+                    IsDeprecated = user.Access.IsDeprecated
+                } : null,
+                Payments = user.Payments.Select(p => new Payment()
+                {
+                    Id = p.Id,
+                    UserId = p.UserId,
+                    AccessPositionId = p.AccessPositionId,
+                    Date = p.Date,
+                }).ToList()
+            };
         }
 
         public async Task<List<Model.User>> GetByIdsAsync(List<int> ids)
