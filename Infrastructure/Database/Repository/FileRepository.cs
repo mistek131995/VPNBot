@@ -22,16 +22,21 @@ namespace Infrastructure.Database.Repository
             return newFile.Id;
         }
 
-        public async Task<File> GetByTagAsync(string shortName)
+        public Task<List<File>> GetAllAsync()
         {
-            return await context.Files
-                .Select(x => new File(
-                    x.Id, 
-                    x.Tag, 
-                    x.Name, 
-                    x.ContentType, 
-                    x.Version)
-                ).FirstOrDefaultAsync();
+            return context.Files
+                .Select(x => new File(x.Id, x.Tag, x.Name, x.ContentType, x.Version))
+                .ToListAsync();
+        }
+
+        public async Task<File> GetByTagAsync(string tag)
+        {
+            var file = await context.Files.FirstOrDefaultAsync(f => f.Tag == tag);
+
+            if (file == null)
+                return null;
+
+            return new File(file.Id, file.Tag, file.Name, file.ContentType, file.Version);
         }
     }
 }

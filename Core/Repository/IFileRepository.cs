@@ -4,6 +4,7 @@ namespace Core.Repository
 {
     public interface IFileRepository
     {
+        public Task<List<File>> GetAllAsync();
         public Task<File> GetByTagAsync(string tag);
         public Task<int> AddAsync(File file);
     }

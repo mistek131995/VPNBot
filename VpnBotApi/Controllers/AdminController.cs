@@ -1,13 +1,11 @@
 ﻿using Application.ControllerService.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using DeleteLog = Service.ControllerService.Service.DeleteLog;
 using GetLogs = Service.ControllerService.Service.GetLogs;
 using GetVpnServers = Service.ControllerService.Service.GetServers;
-using DeleteLog = Service.ControllerService.Service.DeleteLog;
-
 using UploadFile = Service.ControllerService.Service.UploadFile;
-using System;
+using GetFiles = Service.ControllerService.Service.GetFiles;
 
 namespace VpnBotApi.Controllers
 {
@@ -36,14 +34,14 @@ namespace VpnBotApi.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<JsonResult> GetServers()
         {
-            var response = await dispatcher.GetService< GetVpnServers.Result, GetVpnServers.Request>(new GetVpnServers.Request());
+            var response = await dispatcher.GetService<GetVpnServers.Result, GetVpnServers.Request>(new GetVpnServers.Request());
 
             return Json(response);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<JsonResult> UploadFile([FromForm]IFormFile file, [FromForm]string version, [FromForm] string tag)
+        public async Task<JsonResult> UploadFile([FromForm] IFormFile file, [FromForm] string version, [FromForm] string tag)
         {
             using (var ms = new MemoryStream())
             {
@@ -61,6 +59,15 @@ namespace VpnBotApi.Controllers
 
                 return Json(response);
             }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetFiles()
+        {
+            var response = await dispatcher.GetService<GetFiles.Result, GetFiles.Request>(new GetFiles.Request());
+
+            return Json(response);
         }
     }
 }
