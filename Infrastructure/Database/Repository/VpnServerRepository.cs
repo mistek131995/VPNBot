@@ -26,10 +26,20 @@ namespace Infrastructure.Database.Repository
 
         public async Task<VpnServer> GetByIdAsync(int id)
         {
-            return await context.VpnServers
-                .Select(x => new VpnServer(x.Id, x.Ip, x.Name, x.Description, x.Port, x.UserCount, x.UserName, x.Passsword, x.CountryId))
+            var vpnServer = await context.VpnServers
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
+
+            return new VpnServer(
+                vpnServer.Id, 
+                vpnServer.Ip, 
+                vpnServer.Name, 
+                vpnServer.Description, 
+                vpnServer.Port, 
+                vpnServer.UserCount, 
+                vpnServer.UserName, 
+                vpnServer.Passsword, 
+                vpnServer.CountryId);
         }
 
         public async Task<List<VpnServer>> GetByIdsAsync(List<int> ids)

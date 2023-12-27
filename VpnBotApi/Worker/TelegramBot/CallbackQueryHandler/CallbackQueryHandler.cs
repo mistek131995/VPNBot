@@ -19,7 +19,7 @@ namespace VpnBotApi.Worker.TelegramBot.CallbackQueryHandler
             // кнопка привязана к сообщению, то мы берем информацию от сообщения.
             var chat = callbackQuery.Message.Chat;
 
-            await client.AnswerCallbackQueryAsync(callbackQuery.Id);
+            //await client.AnswerCallbackQueryAsync(callbackQuery.Id);
 
             if (callbackQuery.Data == "accessPositionList")
             {
