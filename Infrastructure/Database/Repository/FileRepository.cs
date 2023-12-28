@@ -38,5 +38,16 @@ namespace Infrastructure.Database.Repository
 
             return new File(file.Id, file.Tag, file.Name, file.ContentType, file.Version);
         }
+
+        public async Task UpdateAsync(File file)
+        {
+            var fileInDb = await context.Files.FirstOrDefaultAsync(x => x.Id == file.Id);
+
+            fileInDb.Name = file.Name;
+            fileInDb.ContentType = file.ContentType;
+            fileInDb.Version = file.Version;
+
+            await context.SaveChangesAsync();
+        }
     }
 }
