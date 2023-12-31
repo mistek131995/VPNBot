@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DeleteLog = Service.ControllerService.Service.DeleteLog;
 using GetLogs = Service.ControllerService.Service.GetLogs;
+using AddLogs = Service.ControllerService.Service.AddLog;
 using GetVpnServers = Service.ControllerService.Service.GetServers;
 using UploadFile = Service.ControllerService.Service.UploadFile;
 using GetFiles = Service.ControllerService.Service.GetFiles;
@@ -11,7 +12,7 @@ namespace VpnBotApi.Controllers
 {
     [ApiController]
     [Route("[Controller]/[Action]")]
-    public class AdminController(ControllerServiceDispatcher dispatcher) : Controller
+    public class AdminController(ControllerServiceDispatcher dispatcher, Serilog.ILogger logger) : Controller
     {
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -28,6 +29,12 @@ namespace VpnBotApi.Controllers
             var response = await dispatcher.GetService<bool, DeleteLog.Request>(request);
 
             return Json(response);
+        }
+
+        [HttpPost]
+        public void AddLog(AddLogs.Request request)
+        {
+            logger.Error(request.Title, request.StackTrace);
         }
 
         [HttpGet]
