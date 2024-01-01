@@ -6,12 +6,27 @@ namespace Infrastructure.Database.Repository
 {
     public class LogRepository(Context context) : ILogRepository
     {
+        public async Task<bool> AddAsync(Log log)
+        {
+            await context.Logs.AddAsync(new Entity.Log()
+            {
+                Message = log.Message,
+                MessageTemplate = log.MessageTemplate,
+                Level = log.Level,
+                TimeStamp = log.TimeStamp
+            });
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task DeleteAllAsync()
         {
             var logs = await context.Logs.ToListAsync();
             context.Logs.RemoveRange(logs);
 
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task DeleteByIdAsync(int id)

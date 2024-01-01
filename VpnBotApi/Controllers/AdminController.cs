@@ -32,9 +32,11 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        public void AddLog(AddLogs.Request request)
+        public async Task<JsonResult> AddLog(AddLogs.Request request)
         {
-            logger.Error(request.Title, request.StackTrace);
+            var response = await dispatcher.GetService<bool, AddLogs.Request>(request);
+
+            return Json(response);
         }
 
         [HttpGet]

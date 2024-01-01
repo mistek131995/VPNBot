@@ -6,6 +6,7 @@ namespace Core.Repository
     {
         public Task<Log> GetByIdAsync(int id);
         public Task<List<Log>> GetAllAsync();
+        public Task<bool> AddAsync(Log log);
         public Task DeleteAllAsync();
         public Task DeleteByIdAsync(int id);
     }

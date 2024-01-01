@@ -13,7 +13,7 @@ namespace VpnBotApi.Common
             }
             catch (Exception ex)
             {
-                logger.Error(ex.StackTrace ?? ex.Message);
+                logger.Error(ex, ex.StackTrace);
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
