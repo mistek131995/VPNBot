@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using GetFile = Service.ControllerService.Service.GetFile;
 using GetCountries = Service.ControllerService.Service.GetVpnCountries;
 using GetVpnConnection = Service.ControllerService.Service.GetConnection;
-using GetXRayConfig = Service.ControllerService.Service.GetXRayConfig;
 using Microsoft.AspNetCore.Authorization;
 
 namespace VpnBotApi.Controllers
@@ -33,21 +32,9 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<JsonResult> GetConnection(int countryId)
         {
             var response = await dispatcher.GetService<GetVpnConnection.Result, GetVpnConnection.Request>(new GetVpnConnection.Request()
-            {
-                CountryId = countryId
-            });
-
-            return Json(response);
-        }
-
-        [HttpGet]
-        public async Task<JsonResult> GetXRayConfig(int countryId)
-        {
-            var response = await dispatcher.GetService<GetXRayConfig.Result, GetXRayConfig.Request>(new GetXRayConfig.Request()
             {
                 CountryId = countryId
             });
