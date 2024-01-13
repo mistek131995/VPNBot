@@ -75,15 +75,6 @@ namespace Service.ControllerService.Service.GetConnection
             {
                 return testConnections.FirstOrDefault(x => x.Ip == "185.9.55.87");
             }
-
-            //var vpnServers = await repositoryProvider.VpnServerRepository.GetByCountryIdAsync(request.CountryId);
-
-            //var vpnServersWithOnline = (await httpClientService.GetOnlineUser(vpnServers))
-            //    .OrderBy(x => x.onlineUser)
-            //    .FirstOrDefault();
-
-
-            return result;
         }
 
     }
