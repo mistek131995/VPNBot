@@ -6,7 +6,7 @@ namespace Infrastructure.Database.Entity
     {
         [Key]
         public int Id { get; set; }
-        public int Tag {  get; set; }
+        public string Tag {  get; set; }
         public string Name { get; set; }
 
         public List<VpnServer> VpnServers { get; set; }

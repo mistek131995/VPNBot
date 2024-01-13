@@ -14,6 +14,7 @@ namespace Infrastructure.Database.Repository
                 .Select(x => new Country()
                 {
                     Id = x.Id,
+                    Tag = x.Tag,
                     Name = x.Name
                 })
                 .ToListAsync();
