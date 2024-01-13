@@ -14,6 +14,7 @@ namespace Service.ControllerService.Service.GetVpnCountries
             result.Countries = countries.Select(x => new Result.Country()
             {
                 Id = x.Id,
+                Tag = x.Tag,
                 Name = x.Name,
             }).ToList();
 
