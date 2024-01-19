@@ -24,6 +24,7 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<JsonResult> GetCountries()
         {
             var response = await dispatcher.GetService<GetCountries.Result, GetCountries.Request>(new GetCountries.Request());
