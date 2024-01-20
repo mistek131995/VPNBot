@@ -8,6 +8,8 @@ namespace Core.Repository
         public Task<User> GetByIdAsync(int id);
         public Task<List<User>> GetByIdsAsync(List<int> ids);
         public Task<User> GetByTelegramUserIdAsync(long telegramUserId);
+        public Task<User> GetByLoginAsync(string login);
+        public Task<User> GetByEmailAsync(string email);
         public Task<User> GetByTelegramUserIdAndAccessGuidAsync(long telegramUserId, Guid accessGuid);
         public Task<User> GetByLoginAndPasswordAsync(string login, string password);
         public Task<List<User>> GetByAccessDateRangeAsync(DateTime start, DateTime end);

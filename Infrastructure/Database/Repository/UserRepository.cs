@@ -1,7 +1,7 @@
-﻿using Model = Core.Model.User;
+﻿using Core.Model.User;
 using Core.Repository;
 using Microsoft.EntityFrameworkCore;
-using Core.Model.User;
+using Model = Core.Model.User;
 
 namespace Infrastructure.Database.Repository
 {
@@ -19,7 +19,7 @@ namespace Infrastructure.Database.Repository
             return await GetByIdsAsync(userIds);
         }
 
-        public async Task<Model.User> GetByIdAsync(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
             var user = await context.Users
                 .Include(x => x.Access)
@@ -36,8 +36,10 @@ namespace Infrastructure.Database.Repository
                 TelegramUserId = user.TelegramUserId,
                 TelegramChatId = user.TelegramChatId,
                 Login = user.Login,
+                Email = user.Email,
                 Password = user.Password,
                 RegisterDate = user.RegisterDate,
+                AccessEndDate = user.AccessEndDate,
                 Role = user.Role,
                 Access = user.Access != null ? new Access()
                 {
@@ -66,7 +68,7 @@ namespace Infrastructure.Database.Repository
             };
         }
 
-        public async Task<List<Model.User>> GetByIdsAsync(List<int> ids)
+        public async Task<List<User>> GetByIdsAsync(List<int> ids)
         {
             return await context.Users
                 .Include(x => x.Access)
@@ -77,8 +79,10 @@ namespace Infrastructure.Database.Repository
                     TelegramUserId = x.TelegramUserId,
                     TelegramChatId = x.TelegramChatId,
                     Login = x.Login,
+                    Email = x.Email,
                     Password = x.Password,
                     RegisterDate = x.RegisterDate,
+                    AccessEndDate = x.AccessEndDate,
                     Role = x.Role,
                     Access = new Model.Access()
                     {
@@ -110,7 +114,7 @@ namespace Infrastructure.Database.Repository
                 .ToListAsync();
         }
 
-        public async Task<List<Model.User>> GetByAccessDateRangeAsync(DateTime start, DateTime end)
+        public async Task<List<User>> GetByAccessDateRangeAsync(DateTime start, DateTime end)
         {
             var ids = await context.Users
                 .Include(x => x.Access)
@@ -122,7 +126,7 @@ namespace Infrastructure.Database.Repository
             return await GetByIdsAsync(ids);
         }
 
-        public async Task<Model.User> GetByTelegramUserIdAndAccessGuidAsync(long telegramUserId, Guid accessGuid)
+        public async Task<User> GetByTelegramUserIdAndAccessGuidAsync(long telegramUserId, Guid accessGuid)
         {
             var user = await context.Users
                 .Include(x => x.Access)
@@ -132,7 +136,7 @@ namespace Infrastructure.Database.Repository
             return await GetByIdAsync(user.Id);
         }
 
-        public async Task<Model.User> GetByTelegramUserIdAsync(long telegramUserId)
+        public async Task<User> GetByTelegramUserIdAsync(long telegramUserId)
         {
             var user = await context.Users
                 .AsNoTracking()
@@ -141,7 +145,7 @@ namespace Infrastructure.Database.Repository
             return await GetByIdAsync(user?.Id ?? 0);
         }
 
-        public async Task AddAsync(Model.User user)
+        public async Task AddAsync(User user)
         {
             await context.Users.AddAsync(new Entity.User()
             {
@@ -156,7 +160,7 @@ namespace Infrastructure.Database.Repository
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Model.User user)
+        public async Task UpdateAsync(User user)
         {
             var dbUser = await context.Users
                 .Include(x => x.Access)
@@ -167,8 +171,10 @@ namespace Infrastructure.Database.Repository
             dbUser.TelegramChatId = user.TelegramChatId;
             dbUser.Login = user.Login;
             dbUser.Password = user.Password;
+            dbUser.Email = user.Email;
             dbUser.Role = user.Role;
             dbUser.RegisterDate = user.RegisterDate;
+            dbUser.AccessEndDate = user.AccessEndDate;
 
             dbUser.Access = new Entity.Access()
             {
@@ -204,7 +210,7 @@ namespace Infrastructure.Database.Repository
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateManyAsync(List<Model.User> users)
+        public async Task UpdateManyAsync(List<User> users)
         {
             var userIds = users
                 .Select(x => x.Id)
@@ -213,7 +219,7 @@ namespace Infrastructure.Database.Repository
                 .Where(x => userIds.Contains(x.Id))
                 .ToListAsync();
 
-            foreach(var dbUser in dbUsers)
+            foreach (var dbUser in dbUsers)
             {
                 var user = users.FirstOrDefault(x => x.Id == dbUser.Id);
 
@@ -250,6 +256,20 @@ namespace Infrastructure.Database.Repository
         public async Task<User> GetByLoginAndPasswordAsync(string login, string password)
         {
             var userId = (await context.Users.FirstOrDefaultAsync(x => x.Login == login && x.Password == password))?.Id ?? 0;
+
+            return await GetByIdAsync(userId);
+        }
+
+        public async Task<User> GetByLoginAsync(string login)
+        {
+            var userId = (await context.Users.FirstOrDefaultAsync(x => x.Login == login))?.Id ?? 0;
+
+            return await GetByIdAsync(userId);
+        }
+
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            var userId = (await context.Users.FirstOrDefaultAsync(x => x.Email == email))?.Id ?? 0;
 
             return await GetByIdAsync(userId);
         }
