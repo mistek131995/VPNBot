@@ -178,6 +178,7 @@ namespace Infrastructure.Database.Repository
             dbUser.Password = user.Password;
             dbUser.Email = user.Email;
             dbUser.Role = user.Role;
+            dbUser.Sost = user.Sost;
             dbUser.RegisterDate = user.RegisterDate;
             dbUser.AccessEndDate = user.AccessEndDate;
 

@@ -1,17 +1,23 @@
 ﻿using Application.ControllerService.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Core.Common;
 
 namespace Service.ControllerService.Service.ActivateUser
 {
-    internal class Service : IControllerService<Request, bool>
+    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
     {
-        public Task<bool> HandlingAsync(Request request)
+        public async Task<bool> HandlingAsync(Request request)
         {
-            throw new NotImplementedException();
+            var activation = await repositoryProvider.ActiovationRepository.GetByGuidAsync(request.Guid);
+
+            if (activation == null)
+                return false;
+
+            var user = await repositoryProvider.UserRepository.GetByIdAsync(activation.UserId);
+            user.Sost = UserSost.Active;
+            user.AccessEndDate = DateTime.Now.AddDays(7);
+            await repositoryProvider.UserRepository.UpdateAsync(user);
+
+            return true;
         }
     }
 }

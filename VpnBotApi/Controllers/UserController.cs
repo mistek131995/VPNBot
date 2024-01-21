@@ -6,6 +6,7 @@ using GetIndex = Service.ControllerService.Service.GetIndex;
 using GetAccessPositions = Service.ControllerService.Service.GetAccessPositions;
 
 using Register = Service.ControllerService.Service.Register;
+using Activation = Service.ControllerService.Service.ActivateUser;
 using LoginByLink = Service.ControllerService.Service.AuthByLink;
 using LoginByLogin = Service.ControllerService.Service.AuthByLogin;
 using SetLoginAndPassword = Service.ControllerService.Service.SetLoginAndPassword;
@@ -19,6 +20,17 @@ namespace VpnBotApi.Controllers
     [Route("[Controller]/[Action]")]
     public class UserController(ControllerServiceDispatcher dispatcher) : Controller
     {
+        [HttpGet]
+        public async Task<JsonResult> Activation(Guid guid)
+        {
+            var response = await dispatcher.GetService<bool, Activation.Request>(new Activation.Request()
+            {
+                Guid = guid
+            });
+
+            return Json(response);
+        }
+
         [HttpPost]
         public async Task<JsonResult> Register(Register.Request request)
         {
@@ -26,7 +38,6 @@ namespace VpnBotApi.Controllers
 
             return Json(response);
         }
-
 
         [HttpGet]
         public async Task<JsonResult> LoginByLink([FromQuery] GetLinkAuth.Request request)

@@ -1,12 +1,13 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 using Infrastructure.MailService;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;
 
 namespace Service.ControllerService.Service.Register
 {
-    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
+    internal class Service(IRepositoryProvider repositoryProvider, IConfiguration configuration) : IControllerService<Request, bool>
     {
         public async Task<bool> HandlingAsync(Request request)
         {
@@ -45,7 +46,7 @@ namespace Service.ControllerService.Service.Register
             var mailService = new MailService(repositoryProvider);
             await mailService.SendEmailAsync(request.Email, "Активация аккаунта", @$"
                 Благодарим Вас, за регистрацию на нашем сервисе. 
-                Для активации аккаунта передйите по <a href='https://lockvpn.me/activate?giud=${guid}'>ссылке</a>
+                Для активации аккаунта передйите по <a href='https://${configuration["Domain"]}/Activation?giud=${guid}'>ссылке</a>
             ");
 
             return true;
