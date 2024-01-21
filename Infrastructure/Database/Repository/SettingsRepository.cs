@@ -13,10 +13,14 @@ namespace Infrastructure.Database.Repository
                 {
                     Id = x.Id,
                     TelegramToken = x.TelegramToken,
+
                     SSHServerIP = x.SSHServerIP,
                     SSHServerLogin = x.SSHServerLogin,
                     SSHServerPassword = x.SSHServerPassword,
                     FileBasePath = x.FileBasePath,
+
+                    CaptchaPrivateKey = x.CaptchaPrivateKey,
+                    CaptchaPublicKey = x.CaptchaPublicKey,
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync();

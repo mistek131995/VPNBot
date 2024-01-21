@@ -7,6 +7,7 @@ using AddLogs = Service.ControllerService.Service.AddLog;
 using GetVpnServers = Service.ControllerService.Service.GetServers;
 using UploadFile = Service.ControllerService.Service.UploadFile;
 using GetFiles = Service.ControllerService.Service.GetFiles;
+using GetSettings = Service.ControllerService.Service.GetSettings;
 
 namespace VpnBotApi.Controllers
 {
@@ -14,6 +15,13 @@ namespace VpnBotApi.Controllers
     [Route("[Controller]/[Action]")]
     public class AdminController(ControllerServiceDispatcher dispatcher, Serilog.ILogger logger) : Controller
     {
+        [HttpGet]
+        public async Task<JsonResult> GetSettings()
+        {
+            var response = await dispatcher.GetService<GetSettings.Result, GetSettings.Request>(new GetSettings.Request());
+            return Json(response);
+        } 
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<JsonResult> GetLogs()

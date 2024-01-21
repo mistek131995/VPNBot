@@ -19,7 +19,6 @@ namespace VpnBotApi.Controllers
     [Route("[Controller]/[Action]")]
     public class UserController(ControllerServiceDispatcher dispatcher) : Controller
     {
-
         [HttpPost]
         public async Task<JsonResult> Register(Register.Request request)
         {
