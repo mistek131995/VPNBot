@@ -8,7 +8,7 @@ namespace Core.Model.User
 {
     public enum UserRole
     {
-        Blocked = 0,
+        None = 0,
         User = 1,
         Admin = 2
     }

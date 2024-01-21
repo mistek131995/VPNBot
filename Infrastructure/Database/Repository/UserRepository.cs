@@ -152,9 +152,11 @@ namespace Infrastructure.Database.Repository
                 TelegramUserId = user.TelegramUserId,
                 TelegramChatId = user.TelegramChatId,
                 RegisterDate = user.RegisterDate,
-                Role = Model.UserRole.User,
+                Role = UserRole.User,
                 Login = user.Login,
-                Password = user.Password
+                Password = user.Password,
+                Email = user.Email,
+                Sost = user.Sost
             });
 
             await context.SaveChangesAsync();

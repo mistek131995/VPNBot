@@ -5,6 +5,7 @@ using GetLinkAuth = Service.ControllerService.Service.GetLinkAuth;
 using GetIndex = Service.ControllerService.Service.GetIndex;
 using GetAccessPositions = Service.ControllerService.Service.GetAccessPositions;
 
+using Register = Service.ControllerService.Service.Register;
 using LoginByLink = Service.ControllerService.Service.AuthByLink;
 using LoginByLogin = Service.ControllerService.Service.AuthByLogin;
 using SetLoginAndPassword = Service.ControllerService.Service.SetLoginAndPassword;
@@ -19,10 +20,19 @@ namespace VpnBotApi.Controllers
     public class UserController(ControllerServiceDispatcher dispatcher) : Controller
     {
 
-        [HttpGet]
-        public async Task<JsonResult> LoginByLink([FromQuery] GetLinkAuth.Request query)
+        [HttpPost]
+        public async Task<JsonResult> Register(Register.Request request)
         {
-            var response = await dispatcher.GetService<GetLinkAuth.Result, GetLinkAuth.Request>(query);
+            var response = await dispatcher.GetService<bool, Register.Request>(request);
+
+            return Json(response);
+        }
+
+
+        [HttpGet]
+        public async Task<JsonResult> LoginByLink([FromQuery] GetLinkAuth.Request request)
+        {
+            var response = await dispatcher.GetService<GetLinkAuth.Result, GetLinkAuth.Request>(request);
 
             return Json(response);
         }
