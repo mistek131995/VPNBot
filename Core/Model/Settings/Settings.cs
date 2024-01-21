@@ -14,5 +14,10 @@ namespace Core.Model.Settings
 
         public string CaptchaPublicKey { get; set; }
         public string CaptchaPrivateKey { get; set; }
+
+        public string SMTPServer {  get; set; }
+        public int SMTPPort { get; set; }
+        public string SMTPLogin { get; set;}
+        public string SMTPPassword { get; set;}
     }
 }

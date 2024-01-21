@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Infrastructure.MailService;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;
 
@@ -40,6 +41,12 @@ namespace Service.ControllerService.Service.Register
             //Добавляем активацию
             var guid = Guid.NewGuid();
             await repositoryProvider.ActiovationRepository.AddAsync(new Core.Model.User.Activation(0, newUser.Id, guid));
+
+            var mailService = new MailService(repositoryProvider);
+            await mailService.SendEmailAsync(request.Email, "Активация аккаунта", @$"
+                Благодарим Вас, за регистрацию на нашем сервисе. 
+                Для активации аккаунта передйите по <a href='https://lockvpn.me/activate?giud=${guid}'>ссылке</a>
+            ");
 
             return true;
         }

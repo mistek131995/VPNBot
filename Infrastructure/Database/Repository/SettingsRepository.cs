@@ -21,6 +21,11 @@ namespace Infrastructure.Database.Repository
 
                     CaptchaPrivateKey = x.CaptchaPrivateKey,
                     CaptchaPublicKey = x.CaptchaPublicKey,
+
+                    SMTPServer = x.SMTPServer,
+                    SMTPPort = x.SMTPPort,
+                    SMTPLogin = x.SMTPLogin,
+                    SMTPPassword = x.SMTPPassword,
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
