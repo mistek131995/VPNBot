@@ -15,5 +15,6 @@ namespace Infrastructure.Database
         internal DbSet<Log> Logs { get; set; }
         internal DbSet<File> Files { get; set; }
         internal DbSet<Country> Countries { get; set; }
+        internal DbSet<Activation> Activations { get; set; }
     }
 }

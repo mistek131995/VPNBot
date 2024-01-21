@@ -11,5 +11,6 @@ namespace Core.Common
         public ILogRepository LogRepository { get; }
         public IFileRepository FileRepository { get; }
         public ICountryRepository CountryRepository { get; }
+        public IActiovationRepository ActiovationRepository { get; }
     }
 }
