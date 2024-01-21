@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;
 
 namespace Service.ControllerService.Service.Register
@@ -8,7 +9,9 @@ namespace Service.ControllerService.Service.Register
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            await CheckCaptchaTokenAsync(request.Token);
+            var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
+
+            await CheckCaptchaTokenAsync(request.Token, settings?.CaptchaPrivateKey);
 
             if (string.IsNullOrEmpty(request.Login) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
                 throw new ValidationException("Заполните обязательные поля");
@@ -23,7 +26,8 @@ namespace Service.ControllerService.Service.Register
             if (user != null)
                 throw new ValidationException("Пользователь с таким адресом электронной почты уже зарегистрирован");
 
-            await repositoryProvider.UserRepository.AddAsync(new Core.Model.User.User()
+            //Добавляем пользователя
+            var newUser = await repositoryProvider.UserRepository.AddAsync(new Core.Model.User.User()
             {
                 Login = request.Login,
                 Email = request.Email,
@@ -33,15 +37,31 @@ namespace Service.ControllerService.Service.Register
                 Sost = UserSost.NotActive
             });
 
+            //Добавляем активацию
+            var guid = Guid.NewGuid();
+            await repositoryProvider.ActiovationRepository.AddAsync(new Core.Model.User.Activation(0, newUser.Id, guid));
+
             return true;
         }
 
-        private async Task<bool> CheckCaptchaTokenAsync(string token)
+        private async Task CheckCaptchaTokenAsync(string token, string privateKey)
         {
             if (string.IsNullOrEmpty(token))
-                throw new ValidationException("Каптча не прошла проверку");
+                throw new ValidationException("Не удалось получить токен капчи");
 
-            return true;
+            var httpClient = new HttpClient();
+            var content = new FormUrlEncodedContent([
+                new KeyValuePair<string, string>("secret", privateKey),
+                new KeyValuePair<string, string>("response", token)
+            ]);
+
+            var response = await httpClient.PostAsync("https://www.google.com/recaptcha/api/siteverify", content);
+            var reponseString = await response.Content.ReadAsStringAsync();
+
+            var result = bool.Parse(JObject.Parse(reponseString)["success"].ToString());
+
+            if (!result)
+                throw new ValidationException("Каптча не прошла проверку");
         }
     }
 }

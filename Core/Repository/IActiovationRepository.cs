@@ -6,7 +6,7 @@ namespace Core.Repository
     {
         public Task<Activation> GetByGuidAsync(Guid guid);
         public Task<Activation> GetByUserIdAsync(int userId);
-        public Task AddActivationAsync(Activation activation);
+        public Task AddAsync(Activation activation);
         public Task DeleteByGuid(Guid guid);
     }
 }

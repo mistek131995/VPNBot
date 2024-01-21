@@ -145,9 +145,9 @@ namespace Infrastructure.Database.Repository
             return await GetByIdAsync(user?.Id ?? 0);
         }
 
-        public async Task AddAsync(User user)
+        public async Task<User> AddAsync(User user)
         {
-            await context.Users.AddAsync(new Entity.User()
+            var newUser = new Entity.User()
             {
                 TelegramUserId = user.TelegramUserId,
                 TelegramChatId = user.TelegramChatId,
@@ -157,9 +157,12 @@ namespace Infrastructure.Database.Repository
                 Password = user.Password,
                 Email = user.Email,
                 Sost = user.Sost
-            });
+            };
 
+            await context.Users.AddAsync(newUser);
             await context.SaveChangesAsync();
+
+            return await GetByIdAsync(newUser.Id);
         }
 
         public async Task UpdateAsync(User user)

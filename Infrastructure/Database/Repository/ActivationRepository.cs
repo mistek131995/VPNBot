@@ -7,7 +7,7 @@ namespace Infrastructure.Database.Repository
 {
     internal class ActivationRepository(Context context) : IActiovationRepository
     {
-        public async Task AddActivationAsync(Activation activation)
+        public async Task AddAsync(Activation activation)
         {
             await context.AddAsync(new Entity.Activation()
             {
