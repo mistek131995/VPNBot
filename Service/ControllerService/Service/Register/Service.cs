@@ -46,7 +46,7 @@ namespace Service.ControllerService.Service.Register
             var mailService = new MailService(repositoryProvider);
             await mailService.SendEmailAsync(request.Email, "Активация аккаунта", @$"
                 Благодарим Вас, за регистрацию на нашем сервисе. 
-                Для активации аккаунта передйите по <a href='https://${configuration["Domain"]}/Activation?giud=${guid}'>ссылке</a>
+                Для активации аккаунта передйите по <a href='https://{configuration["Domain"]}/Activation?giud={guid}'>ссылке</a>
             ");
 
             return true;
