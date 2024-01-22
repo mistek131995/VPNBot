@@ -17,6 +17,8 @@ namespace Service.ControllerService.Service.ActivateUser
             user.AccessEndDate = DateTime.Now.AddDays(7);
             await repositoryProvider.UserRepository.UpdateAsync(user);
 
+            await repositoryProvider.ActiovationRepository.DeleteByGuid(request.Guid);
+
             return true;
         }
     }
