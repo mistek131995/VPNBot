@@ -41,6 +41,7 @@ namespace Infrastructure.Database.Repository
                 RegisterDate = user.RegisterDate,
                 AccessEndDate = user.AccessEndDate,
                 Role = user.Role,
+                Sost = user.Sost,
                 Access = user.Access != null ? new Access()
                 {
                     Id = user.Access.Id,
@@ -81,6 +82,7 @@ namespace Infrastructure.Database.Repository
                     Login = x.Login,
                     Email = x.Email,
                     Password = x.Password,
+                    Sost = x.Sost,
                     RegisterDate = x.RegisterDate,
                     AccessEndDate = x.AccessEndDate,
                     Role = x.Role,
