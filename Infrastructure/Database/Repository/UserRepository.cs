@@ -184,22 +184,28 @@ namespace Infrastructure.Database.Repository
             dbUser.RegisterDate = user.RegisterDate;
             dbUser.AccessEndDate = user.AccessEndDate;
 
-            dbUser.Access = new Entity.Access()
+
+            //Потом удалить
+            if(user.Access != null)
             {
-                Id = user.Access.Id,
-                EndDate = user.Access.EndDate,
-                AccessName = user.Access.AccessName,
-                Guid = user.Access.Guid,
-                Fingerprint = user.Access.Fingerprint,
-                Security = user.Access.Security,
-                Network = user.Access.Network,
-                PublicKey = user.Access.PublicKey,
-                ServerName = user.Access.ServerName,
-                ShortId = user.Access.ShortId,
-                Port = user.Access.Port,
-                VpnServerId = user.Access.VpnServerId,
-                IsDeprecated = user.Access.IsDeprecated,
-            };
+                dbUser.Access = new Entity.Access()
+                {
+                    Id = user.Access.Id,
+                    EndDate = user.Access.EndDate,
+                    AccessName = user.Access.AccessName,
+                    Guid = user.Access.Guid,
+                    Fingerprint = user.Access.Fingerprint,
+                    Security = user.Access.Security,
+                    Network = user.Access.Network,
+                    PublicKey = user.Access.PublicKey,
+                    ServerName = user.Access.ServerName,
+                    ShortId = user.Access.ShortId,
+                    Port = user.Access.Port,
+                    VpnServerId = user.Access.VpnServerId,
+                    IsDeprecated = user.Access.IsDeprecated,
+                };
+            }
+
 
             var newPayments = user.Payments
                 .Where(x => x.Id == 0)
