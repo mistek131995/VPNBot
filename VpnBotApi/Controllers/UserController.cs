@@ -17,6 +17,7 @@ namespace VpnBotApi.Controllers
     [Route("[Controller]/[Action]")]
     public class UserController(ControllerServiceDispatcher dispatcher) : Controller
     {
+
         [HttpGet]
         public async Task<JsonResult> Activation(Guid guid)
         {
