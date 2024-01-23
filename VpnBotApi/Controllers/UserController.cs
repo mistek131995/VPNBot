@@ -9,6 +9,7 @@ using Activation = Service.ControllerService.Service.ActivateUser;
 using Login = Service.ControllerService.Service.AuthByLogin;
 using ChangePassword = Service.ControllerService.Service.ChangePassword;
 using Application.ControllerService.Common;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 
 namespace VpnBotApi.Controllers
@@ -83,7 +84,10 @@ namespace VpnBotApi.Controllers
         [Authorize]
         public async Task<JsonResult> AccessPositions()
         {
-            var response = await dispatcher.GetService< GetAccessPositions.Result, GetAccessPositions.Request>(new GetAccessPositions.Request());
+            var response = await dispatcher.GetService< GetAccessPositions.Result, GetAccessPositions.Request>(new GetAccessPositions.Request()
+            {
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
 
             return Json(response);
         }

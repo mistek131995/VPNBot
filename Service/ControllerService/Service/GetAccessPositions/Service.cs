@@ -15,6 +15,7 @@ namespace Service.ControllerService.Service.GetAccessPositions
                 Name = x.Name,
                 Description = x.Description,
                 Price = x.Price,
+                Link = $"https://pay.freekassa.ru/?m=45506&oa={x.Price}&currency=RUB&o={request.UserId}&s={MD5Hash.Hash.GetMD5($"45506:{x.Price}:B3/4d&cy&r__.Xk:RUB:{request.UserId}")}"
             }).ToList();
 
             return result;
