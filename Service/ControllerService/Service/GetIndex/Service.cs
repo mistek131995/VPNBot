@@ -13,8 +13,9 @@ namespace Service.ControllerService.Service.GetIndex
             var accessPositions = await repositoryProvider.AccessPositionRepository.GetAllAsync();
 
             result.Login = user.Login;
+            result.Email = user.Email;
             result.RegisterDate = user.RegisterDate;
-            result.EndAccessDate = user.Access.EndDate;
+            result.EndAccessDate = user.AccessEndDate;
 
             if (user.Payments != null && user.Payments.Any())
             {
