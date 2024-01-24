@@ -9,6 +9,7 @@ namespace Infrastructure.Database.Repository
         public async Task<List<Country>> GetAllAsync()
         {
             return await context.Countries
+                .AsNoTracking()
                 .Include(x => x.VpnServers)
                 .Where(x => x.VpnServers.Any())
                 .Select(x => new Country()
