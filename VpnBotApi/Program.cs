@@ -34,7 +34,7 @@ namespace VpnBotApi
             });
             builder.Services.AddHostedService<ScopedHostedService>();
             builder.Services.AddTelegramBot();
-            builder.Services.AddAccessCleaner();
+            //builder.Services.AddAccessCleaner();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddService();
 
