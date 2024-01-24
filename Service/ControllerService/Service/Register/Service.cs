@@ -11,11 +11,8 @@ namespace Service.ControllerService.Service.Register
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            if (!string.IsNullOrEmpty(request.Token))
-            {
-                var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
-                await Helper.CheckCaptchaTokenAsync(request.Token, settings?.CaptchaPrivateKey);
-            }
+            var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
+            await Helper.CheckCaptchaTokenAsync(request.Token, settings?.CaptchaPrivateKey);
 
             if (string.IsNullOrEmpty(request.Login) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
                 throw new ValidationException("Заполните обязательные поля");
