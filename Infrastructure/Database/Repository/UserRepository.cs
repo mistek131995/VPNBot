@@ -170,7 +170,6 @@ namespace Infrastructure.Database.Repository
         public async Task UpdateAsync(User user)
         {
             var dbUser = await context.Users
-                .Include(x => x.Access)
                 .Include(x => x.Payments)
                 .FirstOrDefaultAsync(x => x.Id == user.Id);
 
@@ -183,29 +182,6 @@ namespace Infrastructure.Database.Repository
             dbUser.Sost = user.Sost;
             dbUser.RegisterDate = user.RegisterDate;
             dbUser.AccessEndDate = user.AccessEndDate;
-
-
-            //Потом удалить
-            if(user.Access != null)
-            {
-                dbUser.Access = new Entity.Access()
-                {
-                    Id = user.Access.Id,
-                    EndDate = user.Access.EndDate,
-                    AccessName = user.Access.AccessName,
-                    Guid = user.Access.Guid,
-                    Fingerprint = user.Access.Fingerprint,
-                    Security = user.Access.Security,
-                    Network = user.Access.Network,
-                    PublicKey = user.Access.PublicKey,
-                    ServerName = user.Access.ServerName,
-                    ShortId = user.Access.ShortId,
-                    Port = user.Access.Port,
-                    VpnServerId = user.Access.VpnServerId,
-                    IsDeprecated = user.Access.IsDeprecated,
-                };
-            }
-
 
             var newPayments = user.Payments
                 .Where(x => x.Id == 0)

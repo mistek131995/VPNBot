@@ -2,7 +2,6 @@
 using Core.Common;
 using Core.Model.User;
 using Serilog;
-using Telegram.Bot;
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
@@ -14,23 +13,28 @@ namespace Service.ControllerService.Service.PaymentNotification
 
             if (sign == request.SIGN)
             {
-                //var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
-                //var user = await repositoryProvider.UserRepository.GetByIdAsync(request.MERCHANT_ORDER_ID);
-                //var accessPosition = await repositoryProvider.AccessPositionRepository.GetByPriceAsync(request.AMOUNT);
+                var user = await repositoryProvider.UserRepository.GetByIdAsync(request.MERCHANT_ORDER_ID);
+                var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.us_position_id);
 
-                //user.Payments.Add(new Payment()
-                //{
-                //    AccessPositionId = accessPosition.Id,
-                //    Date = DateTime.Now,
-                //    UserId = user.Id,
-                //});
+                user.Payments.Add(new Payment()
+                {
+                    AccessPositionId = accessPosition.Id,
+                    Date = DateTime.Now,
+                    UserId = user.Id,
+                });
 
-                //await repositoryProvider.UserRepository.UpdateAsync(user);
+                if(user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
+                {
+                    user.AccessEndDate = DateTime.Now.AddMonths(accessPosition.MonthCount).Date;
+                }
+                else
+                {
+                    user.AccessEndDate = user.AccessEndDate?.AddMonths(accessPosition.MonthCount).Date;
+                }
 
-                //var telegramBotClient = new TelegramBotClient(settings.TelegramToken);
-                //await telegramBotClient.SendTextMessageAsync(user.TelegramChatId, $"Подписка сроком до {user.Access.EndDate.ToString("dd.MM.yyyy")} успешно оплачена и активирована.");
+                await repositoryProvider.UserRepository.UpdateAsync(user);
 
-                //logger.Information($"Успешная оплата, пользователь {user.Id}, на сумуу {request.AMOUNT}.");
+                logger.Information($"Успешная оплата, пользователь {user.Id}, на сумуу {request.AMOUNT}.");
 
                 return true;
             }

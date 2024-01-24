@@ -1,11 +1,8 @@
 ﻿using Application.TelegramBotService.Common;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using Start = Service.TelegramBotService.Service.Start;
-using GetAccess = Service.TelegramBotService.Service.GetAccess;
-using AccountManagment = Service.TelegramBotService.Service.AccountManagment;
 using UnknowCommand = Service.TelegramBotService.Service.UnknowCommand;
-using Service.TelegramBotService.Common;
+using Telegram.Bot.Types.ReplyMarkups;
 
 
 namespace VpnBotApi.Worker.TelegramBot.MessageHandler
@@ -17,63 +14,24 @@ namespace VpnBotApi.Worker.TelegramBot.MessageHandler
             var message = update.Message;
             var chat = message.Chat;
 
-            if (message.Text == "/start")
-            {
-                var replyMessage = await dispatcher.GetService<Start.Result, Start.Request>(new Start.Request(message.From.Id, chat.Id));
+            //Отсюда берем только основное меню
+            var replyMessage = await dispatcher.GetService<UnknowCommand.Result, UnknowCommand.Request>(new UnknowCommand.Request(message.From.Id, chat.Id));
 
-                if (replyMessage.QRCode != null && replyMessage.QRCode.Length > 0)
+            var replyKeyboard = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>()
+            {
+                new InlineKeyboardButton[]
                 {
-                    using (Stream stream = new MemoryStream(replyMessage.QRCode))
-                    {
-
-                        await client.SendPhotoAsync(chat.Id, InputFile.FromStream(stream));
-                    }
+                    InlineKeyboardButton.WithUrl("Сайт", "https://lockvpn.me/"),
+                    InlineKeyboardButton.WithUrl("Вход", "https://lockvpn.me/login"),
+                    InlineKeyboardButton.WithUrl("Регистрация", "https://lockvpn.me/register"),
                 }
+            });
 
-                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
-            }
-            else if (message.Text == "Получить доступ")
-            {
-                var replyMessage = await dispatcher.GetService<GetAccess.Result, GetAccess.Request>(new GetAccess.Request(message.From.Id));
-
-                if (replyMessage.QRCode != null && replyMessage.QRCode.Length > 0)
-                {
-                    using (Stream stream = new MemoryStream(replyMessage.QRCode))
-                    {
-
-                        await client.SendPhotoAsync(chat.Id, InputFile.FromStream(stream));
-                    }
-                }
-
-                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.ReplyKeyboard);
-            }
-            else if (message.Text == "Аккаунт")
-            {
-                var replyMessage = await dispatcher.GetService<AccountManagment.Result, AccountManagment.Request>(new AccountManagment.Request(message.From.Id));
-
-                await client.SendTextMessageAsync(chat.Id, replyMessage.Text, replyMarkup: replyMessage.InlineKeyboard);
-            }
-            else if (message.Text == "Скачать приложение")
-            {
-                var inlineKeyboard = ButtonTemplate.GetDownloadButton();
-                var text = "Выберите приложение для скачивания:";
-
-                await client.SendTextMessageAsync(chat.Id, text, replyMarkup: inlineKeyboard);
-            }
-            else if (message.Text == "Помощь")
-            {
-                var inlineKeyboard = ButtonTemplate.GetHelpButton();
-                var text = "Выберите раздел:";
-
-                await client.SendTextMessageAsync(chat.Id, text, replyMarkup: inlineKeyboard);
-            }
-            else
-            {
-                //Отсюда берем только основное меню
-                var replyMessage = await dispatcher.GetService<UnknowCommand.Result, UnknowCommand.Request>(new UnknowCommand.Request(message.From.Id, chat.Id));
-
-                await client.SendTextMessageAsync(chat.Id, "Команда не распознана, выберите действие из меню.", replyMarkup: replyMessage.ReplyKeyboard);
-            }
+            await client.SendTextMessageAsync(chat.Id, @"Телеграм бот ушел на залуженный отдых, его функционал будет пересмотрен. 
+                На данный момент VPN доступен только по платной подписке и только для устройств на Windows и Android (Все подписки продолжат действовать до конца срока). 
+                Купить подписку можно в личном кабинете. Что касается IOS, ситуация доконца не ясна. 
+                Возможно, я прикручу старый способ с QR кодами к личному кабинету или оставлю это до лучших времен. 
+                (Приложения под IOS можно писать только на MacOS, а выкидывать 60к для этого я не готов, пока что).", replyMarkup: replyKeyboard);
         }
     }
 }
