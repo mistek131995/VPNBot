@@ -16,7 +16,6 @@ namespace Core.Model.User
         public DateTime? AccessEndDate { get; set; }
         public UserSost Sost { get; set; }
 
-        public Access Access { get; set; }
         public List<Payment> Payments { get; set; }
 
     }

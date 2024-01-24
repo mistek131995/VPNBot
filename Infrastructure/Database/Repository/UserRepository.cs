@@ -7,18 +7,6 @@ namespace Infrastructure.Database.Repository
 {
     public class UserRepository(Context context) : IUserRepository
     {
-        public async Task<List<User>> GetAllWithActiveAccessAsync()
-        {
-            var userIds = await context.Users
-                .Include(x => x.Access)
-                .Where(x => !x.Access.IsDeprecated)
-                .AsNoTracking()
-                .Select(x => x.Id)
-                .ToListAsync();
-
-            return await GetByIdsAsync(userIds);
-        }
-
         public async Task<User> GetByIdAsync(int id)
         {
             var user = await context.Users
@@ -78,28 +66,6 @@ namespace Infrastructure.Database.Repository
                 .Where(x => ids.Contains(x.Id))
                 .AsNoTracking()
                 .ToListAsync();
-        }
-
-        public async Task<List<User>> GetByAccessDateRangeAsync(DateTime start, DateTime end)
-        {
-            var ids = await context.Users
-                .Include(x => x.Access)
-                .Where(x => x.Access.EndDate > start && x.Access.EndDate < end)
-                .AsNoTracking()
-                .Select(x => x.Id)
-                .ToListAsync();
-
-            return await GetByIdsAsync(ids);
-        }
-
-        public async Task<User> GetByTelegramUserIdAndAccessGuidAsync(long telegramUserId, Guid accessGuid)
-        {
-            var user = await context.Users
-                .Include(x => x.Access)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.TelegramUserId == telegramUserId && x.Access.Guid == accessGuid);
-
-            return await GetByIdAsync(user.Id);
         }
 
         public async Task<User> GetByTelegramUserIdAsync(long telegramUserId)
@@ -176,23 +142,6 @@ namespace Infrastructure.Database.Repository
             foreach (var dbUser in dbUsers)
             {
                 var user = users.FirstOrDefault(x => x.Id == dbUser.Id);
-
-                dbUser.Access = new Entity.Access()
-                {
-                    Id = user.Access.Id,
-                    EndDate = user.Access.EndDate,
-                    AccessName = user.Access.AccessName,
-                    Guid = user.Access.Guid,
-                    Fingerprint = user.Access.Fingerprint,
-                    Security = user.Access.Security,
-                    Network = user.Access.Network,
-                    PublicKey = user.Access.PublicKey,
-                    ServerName = user.Access.ServerName,
-                    ShortId = user.Access.ShortId,
-                    Port = user.Access.Port,
-                    VpnServerId = user.Access.VpnServerId,
-                    IsDeprecated = user.Access.IsDeprecated
-                };
 
                 dbUser.Payments = user.Payments.Select(p => new Entity.Payment()
                 {

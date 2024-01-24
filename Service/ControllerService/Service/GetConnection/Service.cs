@@ -4,7 +4,7 @@ using Infrastructure.HttpClientService;
 
 namespace Service.ControllerService.Service.GetConnection
 {
-    internal class Service(IRepositoryProvider repositoryProvider, IHttpClientService httpClientService) : IControllerService<Request, Result>
+    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, Result>
     {
         public async Task<Result> HandlingAsync(Request request)
         {

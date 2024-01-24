@@ -17,7 +17,6 @@ namespace Infrastructure.Database.Entity
         public DateTime RegisterDate { get; set; }
         public DateTime? AccessEndDate { get; set; }
 
-        public Access Access { get; set; }
         public List<Payment> Payments { get; set; }
     }
 }

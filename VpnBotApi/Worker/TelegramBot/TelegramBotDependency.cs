@@ -8,7 +8,6 @@
             services.AddScoped<ErrorHandler.ErrorHandler>();
             services.AddScoped<UpdateHandler.UpdateHandler>();
             services.AddScoped<MessageHandler.MessageHandler>();
-            services.AddScoped<CallbackQueryHandler.CallbackQueryHandler>();
 
             return services;
         }

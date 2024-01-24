@@ -4,7 +4,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace VpnBotApi.Worker.TelegramBot.UpdateHandler
 {
-    internal class UpdateHandler(MessageHandler.MessageHandler messageHandler, CallbackQueryHandler.CallbackQueryHandler callbackQueryHandler, Serilog.ILogger logger)
+    internal class UpdateHandler(MessageHandler.MessageHandler messageHandler, Serilog.ILogger logger)
     {
 
         public async Task HandlingAsync(ITelegramBotClient client, Update update, CancellationToken token)

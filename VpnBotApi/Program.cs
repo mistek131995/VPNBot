@@ -7,7 +7,6 @@ using Serilog;
 using Service;
 using System.Text;
 using VpnBotApi.Common;
-using VpnBotApi.Worker.AccessCleaner;
 using VpnBotApi.Worker.TelegramBot;
 
 namespace VpnBotApi
