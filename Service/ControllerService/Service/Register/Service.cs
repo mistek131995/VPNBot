@@ -2,8 +2,8 @@
 using Core.Common;
 using Infrastructure.MailService;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;
+using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.Register
 {
@@ -13,7 +13,7 @@ namespace Service.ControllerService.Service.Register
         {
             var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
 
-            await CheckCaptchaTokenAsync(request.Token, settings?.CaptchaPrivateKey);
+            await Helper.CheckCaptchaTokenAsync(request.Token, settings?.CaptchaPrivateKey);
 
             if (string.IsNullOrEmpty(request.Login) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
                 throw new ValidationException("Заполните обязательные поля");
@@ -50,26 +50,6 @@ namespace Service.ControllerService.Service.Register
             ");
 
             return true;
-        }
-
-        private async Task CheckCaptchaTokenAsync(string token, string privateKey)
-        {
-            if (string.IsNullOrEmpty(token))
-                throw new ValidationException("Не удалось получить токен капчи");
-
-            var httpClient = new HttpClient();
-            var content = new FormUrlEncodedContent([
-                new KeyValuePair<string, string>("secret", privateKey),
-                new KeyValuePair<string, string>("response", token)
-            ]);
-
-            var response = await httpClient.PostAsync("https://www.google.com/recaptcha/api/siteverify", content);
-            var reponseString = await response.Content.ReadAsStringAsync();
-
-            var result = bool.Parse(JObject.Parse(reponseString)["success"].ToString());
-
-            if (!result)
-                throw new ValidationException("Каптча не прошла проверку");
         }
     }
 }

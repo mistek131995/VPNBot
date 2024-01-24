@@ -9,6 +9,10 @@ namespace Service.ControllerService.Service.AuthByLogin
     {
         public async Task<string> HandlingAsync(Request request)
         {
+            var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
+
+            await Helper.CheckCaptchaTokenAsync(request.Token, settings.CaptchaPrivateKey);
+
             var user = await repositoryProvider.UserRepository.GetByLoginAndPasswordAsync(request.Login, request.Password) ??
                 throw new Exception("Пользователь с таким логином и паролем не найден.");
 
