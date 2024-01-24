@@ -14,7 +14,6 @@ namespace Service.ControllerService.Service.Register
             if (!string.IsNullOrEmpty(request.Token))
             {
                 var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
-
                 await Helper.CheckCaptchaTokenAsync(request.Token, settings?.CaptchaPrivateKey);
             }
 
