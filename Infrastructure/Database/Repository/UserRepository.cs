@@ -22,7 +22,6 @@ namespace Infrastructure.Database.Repository
         public async Task<User> GetByIdAsync(int id)
         {
             var user = await context.Users
-                .Include(x => x.Access)
                 .Include(x => x.Payments)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -42,23 +41,6 @@ namespace Infrastructure.Database.Repository
                 AccessEndDate = user.AccessEndDate,
                 Role = user.Role,
                 Sost = user.Sost,
-                Access = user.Access != null ? new Access()
-                {
-                    Id = user.Access.Id,
-                    UserId = user.Access.UserId,
-                    EndDate = user.Access.EndDate,
-                    AccessName = user.Access.AccessName,
-                    Guid = user.Access.Guid,
-                    Fingerprint = user.Access.Fingerprint,
-                    Security = user.Access.Security,
-                    Network = user.Access.Network,
-                    PublicKey = user.Access.PublicKey,
-                    ServerName = user.Access.ServerName,
-                    ShortId = user.Access.ShortId,
-                    Port = user.Access.Port,
-                    VpnServerId = user.Access.VpnServerId,
-                    IsDeprecated = user.Access.IsDeprecated
-                } : null,
                 Payments = user.Payments.Select(p => new Payment()
                 {
                     Id = p.Id,
@@ -72,7 +54,6 @@ namespace Infrastructure.Database.Repository
         public async Task<List<User>> GetByIdsAsync(List<int> ids)
         {
             return await context.Users
-                .Include(x => x.Access)
                 .Include(x => x.Payments)
                 .Select(x => new Model.User()
                 {
@@ -86,23 +67,6 @@ namespace Infrastructure.Database.Repository
                     RegisterDate = x.RegisterDate,
                     AccessEndDate = x.AccessEndDate,
                     Role = x.Role,
-                    Access = new Model.Access()
-                    {
-                        Id = x.Access.Id,
-                        UserId = x.Access.UserId,
-                        EndDate = x.Access.EndDate,
-                        AccessName = x.Access.AccessName,
-                        Guid = x.Access.Guid,
-                        Fingerprint = x.Access.Fingerprint,
-                        Security = x.Access.Security,
-                        Network = x.Access.Network,
-                        PublicKey = x.Access.PublicKey,
-                        ServerName = x.Access.ServerName,
-                        ShortId = x.Access.ShortId,
-                        Port = x.Access.Port,
-                        VpnServerId = x.Access.VpnServerId,
-                        IsDeprecated = x.Access.IsDeprecated
-                    },
                     Payments = x.Payments.Select(p => new Model.Payment()
                     {
                         Id = p.Id,
