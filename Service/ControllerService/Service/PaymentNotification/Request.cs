@@ -44,5 +44,9 @@ namespace Service.ControllerService.Service.PaymentNotification
         /// Сумма комиссии в валюте платежа
         /// </summary>
         public decimal commission { get; set; }
+        /// <summary>
+        /// Id позиции
+        /// </summary>
+        public int us_position_id { get; set; }
     }
 }
