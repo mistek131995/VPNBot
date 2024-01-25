@@ -1,6 +1,7 @@
 using Infrastructure;
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -81,7 +82,14 @@ namespace VpnBotApi
                 app.UseHttpsRedirection();
             }
 
-            app.UseStaticFiles();
+
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".apk"] = "application/vnd.android.package-archive";
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = provider
+            });
 
             app.UseAuthorization();
 
