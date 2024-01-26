@@ -2,7 +2,6 @@
 using Core.Common;
 using Infrastructure.MailService;
 using Microsoft.Extensions.Configuration;
-using System.ComponentModel.DataAnnotations;
 using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.Register
@@ -15,17 +14,17 @@ namespace Service.ControllerService.Service.Register
             await Helper.CheckCaptchaTokenAsync(request.Token, settings?.CaptchaPrivateKey);
 
             if (string.IsNullOrEmpty(request.Login) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
-                throw new ValidationException("Заполните обязательные поля");
+                throw new Exception("Заполните обязательные поля");
 
             var user = await repositoryProvider.UserRepository.GetByLoginAsync(request.Login);
 
             if (user != null)
-                throw new ValidationException("Пользователь с таким логином уже зарегистрирован");
+                throw new Exception("Пользователь с таким логином уже зарегистрирован");
 
             user = await repositoryProvider.UserRepository.GetByEmailAsync(request.Email);
 
             if (user != null)
-                throw new ValidationException("Пользователь с таким адресом электронной почты уже зарегистрирован");
+                throw new Exception("Пользователь с таким адресом электронной почты уже зарегистрирован");
 
             //Добавляем пользователя
             var newUser = await repositoryProvider.UserRepository.AddAsync(new Core.Model.User.User()

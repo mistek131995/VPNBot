@@ -64,6 +64,8 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<JsonResult> Login([FromBody] Login.Request request)
         {
+            var test = HttpContext.Connection.RemoteIpAddress;
+
             var response = await dispatcher.GetService<string, Login.Request>(request);
 
             return Json(response);
