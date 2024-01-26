@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using Service.ControllerService.Common;
 using System.Net;
 
 namespace VpnBotApi.Common
@@ -13,8 +14,11 @@ namespace VpnBotApi.Common
             }
             catch (Exception ex)
             {
-                logger.Error(ex, ex.StackTrace);
-                await HandleExceptionAsync(httpContext, ex);
+                if(typeof(HandledExeption) != ex.GetType())
+                {
+                    logger.Error(ex, ex.StackTrace);
+                    await HandleExceptionAsync(httpContext, ex);
+                }
             }
         }
 

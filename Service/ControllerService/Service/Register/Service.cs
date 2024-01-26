@@ -11,20 +11,22 @@ namespace Service.ControllerService.Service.Register
         public async Task<bool> HandlingAsync(Request request)
         {
             var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
-            await Helper.CheckCaptchaTokenAsync(request.Token, settings?.CaptchaPrivateKey);
+
+            if(!string.IsNullOrEmpty(request.Token))
+                await Helper.CheckCaptchaTokenAsync(request.Token, settings?.CaptchaPrivateKey);
 
             if (string.IsNullOrEmpty(request.Login) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
-                throw new Exception("Заполните обязательные поля");
+                throw new HandledExeption("Заполните обязательные поля");
 
             var user = await repositoryProvider.UserRepository.GetByLoginAsync(request.Login);
 
             if (user != null)
-                throw new Exception("Пользователь с таким логином уже зарегистрирован");
+                throw new HandledExeption("Пользователь с таким логином уже зарегистрирован");
 
             user = await repositoryProvider.UserRepository.GetByEmailAsync(request.Email);
 
             if (user != null)
-                throw new Exception("Пользователь с таким адресом электронной почты уже зарегистрирован");
+                throw new HandledExeption("Пользователь с таким адресом электронной почты уже зарегистрирован");
 
             //Добавляем пользователя
             var newUser = await repositoryProvider.UserRepository.AddAsync(new Core.Model.User.User()

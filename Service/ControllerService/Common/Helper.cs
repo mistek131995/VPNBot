@@ -46,9 +46,6 @@ namespace Service.ControllerService.Common
 
         public static async Task CheckCaptchaTokenAsync(string token, string privateKey)
         {
-            if (string.IsNullOrEmpty(token))
-                throw new ValidationException("Не удалось получить токен капчи");
-
             var httpClient = new HttpClient();
             var content = new FormUrlEncodedContent([
                 new KeyValuePair<string, string>("secret", privateKey),
