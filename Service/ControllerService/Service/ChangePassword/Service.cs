@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.ChangePassword
 {
@@ -8,10 +9,10 @@ namespace Service.ControllerService.Service.ChangePassword
         public async Task<bool> HandlingAsync(Request request)
         {
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId)
-                ?? throw new Exception("Пользователь не найден.");
+                ?? throw new HandledExeption("Пользователь не найден.");
 
             if (user.Password != request.OldPassword)
-                throw new Exception("Введен неверный пароль.");
+                throw new HandledExeption("Введен неверный пароль.");
 
             user.Password = request.Password;
 

@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.GetFile
 {
@@ -10,7 +11,7 @@ namespace Service.ControllerService.Service.GetFile
             var result = new Result();
 
             var file = await repositoryProvider.FileRepository.GetByTagAsync(request.Tag)
-                ?? throw new Exception("Файл с такой меткой не найден.");
+                ?? throw new HandledExeption("Файл с такой меткой не найден.");
 
             result.FileName = file.Name;
             result.Version = file.Version;

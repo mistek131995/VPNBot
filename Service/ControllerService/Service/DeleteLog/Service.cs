@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.DeleteLog
 {
@@ -8,7 +9,7 @@ namespace Service.ControllerService.Service.DeleteLog
         public async Task<bool> HandlingAsync(Request request)
         {
             var log = await repositoryProvider.LogRepository.GetByIdAsync(request.Id) 
-                ?? throw new Exception("Лог не найден.");
+                ?? throw new HandledExeption("Лог не найден.");
 
             await repositoryProvider.LogRepository.DeleteByIdAsync(request.Id);
 
