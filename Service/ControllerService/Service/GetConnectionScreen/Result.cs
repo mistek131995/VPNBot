@@ -2,6 +2,6 @@
 {
     public class Result
     {
-        public DateTime AccessEndDate { get; set; }
+        public string AccessEndDate { get; set; }
     }
 }
