@@ -1,6 +1,5 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
-using Infrastructure.HttpClientService;
 
 namespace Service.ControllerService.Service.GetConnection
 {
@@ -70,13 +69,14 @@ namespace Service.ControllerService.Service.GetConnection
                 }
             };
 
-            if(request.CountryId == 0)
+            if (request.CountryId == 0)
             {
 
                 var index = new Random().Next(0, 2);
                 return testConnections.ElementAtOrDefault(index);
 
-            }else if(request.CountryId == 1)
+            }
+            else if (request.CountryId == 1)
             {
                 return testConnections.FirstOrDefault(x => x.Ip == "2.59.183.140");
             }
