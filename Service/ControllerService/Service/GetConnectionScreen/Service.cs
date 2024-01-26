@@ -16,7 +16,7 @@ namespace Service.ControllerService.Service.GetConnectionScreen
 
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
 
-            result.AccessEndDate = user.AccessEndDate?.ToString("dd.mm.yyyy");
+            result.AccessEndDate = user.AccessEndDate?.ToString("dd.MM.yyyy");
 
             return result;
         }
