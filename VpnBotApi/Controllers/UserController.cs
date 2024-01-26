@@ -31,7 +31,7 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> Register(Register.Request request)
+        public async Task<JsonResult> Register([FromBody] Register.Request request)
         {
             var response = await dispatcher.GetService<bool, Register.Request>(request);
 
