@@ -106,7 +106,7 @@ namespace Service.ControllerService.Service.GetConnection
             {
                 return testConnections.FirstOrDefault(x => x.Ip == "195.211.96.156");
             } 
-            else if (request.CountryId == 5)
+            else
             {
                 return testConnections.FirstOrDefault(x => x.Ip == "193.233.48.66");
             }
