@@ -80,6 +80,34 @@ namespace Service.ControllerService.Service.GetConnection
                     ServerName =  "yahoo.com",
                     ShortId = "b542ecdb",
                     Guid = "1b1299a5-ba86-4015-9f94-f82e678f16f3"
+                },
+                new Result()
+                {
+                    Name = "%2F#subscribe-access-vpn6",
+                    Ip = "78.153.139.17",
+                    Port = 443,
+                    Network = "tcp",
+                    Protocol = "vless",
+                    Security = "reality",
+                    PublicKey = "3h2QHYeRQqiisb8PqlTgz2vh1L-FOp-cUPOyT4lgK1k",
+                    Fingerprint = "chrome",
+                    ServerName =  "yahoo.com",
+                    ShortId = "77eaf6e8",
+                    Guid = "28bcfea1-53d0-4f3c-9f06-2df96ceef89c"
+                },
+                new Result()
+                {
+                    Name = "%2F#subscribe-access-vpn7",
+                    Ip = "185.39.204.15",
+                    Port = 443,
+                    Network = "tcp",
+                    Protocol = "vless",
+                    Security = "reality",
+                    PublicKey = "ZTxzbg5IzS_BFIiwWT_k3G5o_T56_Wh3S-DQ1XsQgCw",
+                    Fingerprint = "chrome",
+                    ServerName =  "yahoo.com",
+                    ShortId = "a8cafa07",
+                    Guid = "8454cdb5-eaca-4bcf-aa18-22a14ec15407"
                 }
             };
 
@@ -106,9 +134,17 @@ namespace Service.ControllerService.Service.GetConnection
             {
                 return testConnections.FirstOrDefault(x => x.Ip == "195.211.96.156");
             } 
-            else
+            else if (request.CountryId == 5)
             {
                 return testConnections.FirstOrDefault(x => x.Ip == "193.233.48.66");
+            }
+            else if (request.CountryId == 6)
+            {
+                return testConnections.FirstOrDefault(x => x.Ip == "78.153.139.17");
+            }
+            else
+            {
+                return testConnections.FirstOrDefault(x => x.Ip == "185.39.204.15");
             }
         }
 
