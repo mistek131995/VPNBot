@@ -8,6 +8,7 @@ using GetVpnServers = Service.ControllerService.Service.GetServers;
 using UploadFile = Service.ControllerService.Service.UploadFile;
 using GetFiles = Service.ControllerService.Service.GetFiles;
 using GetSettings = Service.ControllerService.Service.GetSettings;
+using AddCountry = Service.ControllerService.Service.AddCountry;
 
 namespace VpnBotApi.Controllers
 {
@@ -52,6 +53,15 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> GetServers()
         {
             var response = await dispatcher.GetService<GetVpnServers.Result, GetVpnServers.Request>(new GetVpnServers.Request());
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> AddCountry(AddCountry.Request request)
+        {
+            var response = await dispatcher.GetService<bool, AddCountry.Request>(request);
 
             return Json(response);
         }
