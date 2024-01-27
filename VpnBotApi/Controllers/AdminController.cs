@@ -5,10 +5,12 @@ using DeleteLog = Service.ControllerService.Service.DeleteLog;
 using GetLogs = Service.ControllerService.Service.GetLogs;
 using AddLogs = Service.ControllerService.Service.AddLog;
 using GetVpnServers = Service.ControllerService.Service.GetServers;
+using GetAddEditServer = Service.ControllerService.Service.GetAddEditServer;
 using UploadFile = Service.ControllerService.Service.UploadFile;
 using GetFiles = Service.ControllerService.Service.GetFiles;
 using GetSettings = Service.ControllerService.Service.GetSettings;
 using AddCountry = Service.ControllerService.Service.AddCountry;
+using AddServer = Service.ControllerService.Service.AddServer;
 
 namespace VpnBotApi.Controllers
 {
@@ -53,6 +55,27 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> GetServers()
         {
             var response = await dispatcher.GetService<GetVpnServers.Result, GetVpnServers.Request>(new GetVpnServers.Request());
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetAddEditServer(int id)
+        {
+            var response = await dispatcher.GetService<GetAddEditServer.Result, GetAddEditServer.Request>(new GetAddEditServer.Request()
+            {
+                ServerId = id
+            });
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> AddServer(AddServer.Request request)
+        {
+            var response = await dispatcher.GetService<bool, AddServer.Request>(request);
 
             return Json(response);
         }

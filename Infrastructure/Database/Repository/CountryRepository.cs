@@ -21,6 +21,19 @@ namespace Infrastructure.Database.Repository
         {
             return await context.Countries
                 .AsNoTracking()
+                .Select(x => new Country()
+                {
+                    Id = x.Id,
+                    Tag = x.Tag,
+                    Name = x.Name
+                })
+                .ToListAsync();
+        }
+
+        public async Task<List<Country>> GetAllWithServersAsync()
+        {
+            return await context.Countries
+                .AsNoTracking()
                 .Include(x => x.VpnServers)
                 .Where(x => x.VpnServers.Any())
                 .Select(x => new Country()

@@ -9,7 +9,7 @@ namespace Service.ControllerService.Service.GetVpnCountries
         {
             var result = new Result();
 
-            var countries = await repositoryProvider.CountryRepository.GetAllAsync();
+            var countries = await repositoryProvider.CountryRepository.GetAllWithServersAsync();
 
             result.Countries = countries.Select(x => new Result.Country()
             {

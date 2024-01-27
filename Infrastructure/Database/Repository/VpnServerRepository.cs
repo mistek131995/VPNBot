@@ -6,10 +6,26 @@ namespace Infrastructure.Database.Repository
 {
     public class VpnServerRepository(Context context) : IVpnServerRepository
     {
+        public async Task AddAsync(VpnServer vpnServer)
+        {
+            await context.VpnServers.AddAsync(new Entity.VpnServer()
+            {
+                Ip = vpnServer.Ip,
+                Port = vpnServer.Port,
+                Name = vpnServer.Name,
+                Description = vpnServer.Description,
+                CountryId = vpnServer.CountryId,
+                UserName = vpnServer.UserName,
+                Password = vpnServer.Password
+            });
+
+            await context.SaveChangesAsync();
+        }
+
         public async Task<List<VpnServer>> GetAllAsync()
         {
             return await context.VpnServers
-                .Select(x => new VpnServer(x.Id, x.Ip, x.Name, x.Description, x.Port, x.UserCount, x.UserName, x.Passsword, x.CountryId))
+                .Select(x => new VpnServer(x.Id, x.Ip, x.Name, x.Description, x.Port, x.UserCount, x.UserName, x.Password, x.CountryId))
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -41,7 +57,7 @@ namespace Infrastructure.Database.Repository
                 vpnServer.Port, 
                 vpnServer.UserCount, 
                 vpnServer.UserName, 
-                vpnServer.Passsword, 
+                vpnServer.Password, 
                 vpnServer.CountryId);
         }
 
@@ -50,7 +66,7 @@ namespace Infrastructure.Database.Repository
             return await context.VpnServers
                 .AsNoTracking()
                 .Where(x => ids.Contains(x.Id))
-                .Select(x => new VpnServer(x.Id, x.Ip, x.Name, x.Description, x.Port, x.UserCount, x.UserName, x.Passsword, x.CountryId))
+                .Select(x => new VpnServer(x.Id, x.Ip, x.Name, x.Description, x.Port, x.UserCount, x.UserName, x.Password, x.CountryId))
                 .ToListAsync();
         }
 
@@ -73,7 +89,7 @@ namespace Infrastructure.Database.Repository
                 dbVpnServer.Description = vpnServer.Description;
                 dbVpnServer.Port = vpnServer.Port;
                 dbVpnServer.UserCount = vpnServer.UserCount;
-                dbVpnServer.Passsword = vpnServer.Password;
+                dbVpnServer.Password = vpnServer.Password;
                 dbVpnServer.UserName = vpnServer.UserName;
             }
 

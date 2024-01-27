@@ -6,6 +6,7 @@ namespace Core.Repository
     {
         public Task<Country> GetById(int id);
         public Task<List<Country>> GetAllAsync();
+        public Task<List<Country>> GetAllWithServersAsync();
         public Task<Country> GetByNameAsync(string name);
         public Task AddAsync(Country country);
     }

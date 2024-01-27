@@ -9,5 +9,6 @@ namespace Core.Repository
         public Task<List<VpnServer>> GetByIdsAsync(List<int> ids);
         public Task<List<VpnServer>> GetByCountryIdAsync(int countryId);
         public Task UpdateManyAsync(List<VpnServer> vpnServers);
+        public Task AddAsync(VpnServer vpnServer);
     }
 }
