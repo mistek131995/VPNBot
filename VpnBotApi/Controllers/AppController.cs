@@ -39,7 +39,8 @@ namespace VpnBotApi.Controllers
         {
             var response = await dispatcher.GetService<GetVpnConnection.Result, GetVpnConnection.Request>(new GetVpnConnection.Request()
             {
-                CountryId = countryId
+                CountryId = countryId,
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             });
 
             return Json(response);

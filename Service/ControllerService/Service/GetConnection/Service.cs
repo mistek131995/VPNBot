@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.GetConnection
 {
@@ -8,6 +9,11 @@ namespace Service.ControllerService.Service.GetConnection
         public async Task<Result> HandlingAsync(Request request)
         {
             var result = new Result();
+
+            var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
+
+            if (user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
+                throw new HandledExeption("Ваша подписка закончилась");
 
             var testConnections = new List<Result>()
             {
