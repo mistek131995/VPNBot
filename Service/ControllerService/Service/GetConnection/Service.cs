@@ -140,11 +140,11 @@ namespace Service.ControllerService.Service.GetConnection
             }
             else if (request.CountryId == 6)
             {
-                return testConnections.FirstOrDefault(x => x.Ip == "78.153.139.17");
+                return testConnections.FirstOrDefault(x => x.Ip == "185.39.204.15");
             }
             else
             {
-                return testConnections.FirstOrDefault(x => x.Ip == "185.39.204.15");
+                return testConnections.FirstOrDefault(x => x.Ip == "78.153.139.17");
             }
         }
 
