@@ -16,7 +16,7 @@ namespace Service.ControllerService.Service.AuthByLogin
                 await Helper.CheckCaptchaTokenAsync(request.Token, settings?.CaptchaPrivateKey);
             }
 
-            var user = await repositoryProvider.UserRepository.GetByLoginAndPasswordAsync(request.Login, request.Password) ??
+            var user = await repositoryProvider.UserRepository.GetByLoginAndPasswordAsync(request.Login.Trim().ToLower(), request.Password) ??
                 throw new HandledExeption("Пользователь с таким логином и паролем не найден.");
 
             if(user.Sost == UserSost.Blocked)

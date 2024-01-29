@@ -18,12 +18,12 @@ namespace Service.ControllerService.Service.Register
             if (string.IsNullOrEmpty(request.Login) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
                 throw new HandledExeption("Заполните обязательные поля");
 
-            var user = await repositoryProvider.UserRepository.GetByLoginAsync(request.Login);
+            var user = await repositoryProvider.UserRepository.GetByLoginAsync(request.Login.Trim().ToLower());
 
             if (user != null)
                 throw new HandledExeption("Пользователь с таким логином уже зарегистрирован");
 
-            user = await repositoryProvider.UserRepository.GetByEmailAsync(request.Email);
+            user = await repositoryProvider.UserRepository.GetByEmailAsync(request.Email.Trim().ToLower());
 
             if (user != null)
                 throw new HandledExeption("Пользователь с таким адресом электронной почты уже зарегистрирован");
@@ -31,8 +31,8 @@ namespace Service.ControllerService.Service.Register
             //Добавляем пользователя
             var newUser = await repositoryProvider.UserRepository.AddAsync(new Core.Model.User.User()
             {
-                Login = request.Login,
-                Email = request.Email,
+                Login = request.Login.Trim().ToLower(),
+                Email = request.Email.Trim().ToLower(),
                 Password = request.Password,
                 Role = Core.Model.User.UserRole.User,
                 RegisterDate = DateTime.Now,
