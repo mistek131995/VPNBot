@@ -13,6 +13,8 @@ namespace VpnBotApi.Common
                 context.Response.Headers.Append("androidVersion", androidApp.Version);
                 context.Response.Headers.Append("androidLink", $"https://{configuration["Domain"]}/files/{androidApp.Tag}/{androidApp.Name}");
             }
+
+            await next(context);
         }
     }
 }
