@@ -8,6 +8,8 @@ namespace VpnBotApi.Common
     {
         public async Task InvokeAsync(HttpContext httpContext)
         {
+            httpContext.Response.Headers.Append("test", "test");
+
             try
             {
                 await next(httpContext);
