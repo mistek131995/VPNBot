@@ -4,7 +4,7 @@ namespace VpnBotApi.Common
 {
     public class AppVersionMiddleware(RequestDelegate next, IConfiguration configuration)
     {
-        public async Task InvoiceAsync(HttpContext context, IRepositoryProvider repositoryProvider)
+        public async Task InvokeAsync(HttpContext context, IRepositoryProvider repositoryProvider)
         {
             var androidApp = await repositoryProvider.FileRepository.GetByTagAsync("android_app");
 
