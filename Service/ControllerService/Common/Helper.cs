@@ -38,7 +38,7 @@ namespace Service.ControllerService.Common
                     issuer: jwtOptions["ISSUER"],
                     audience: jwtOptions["AUDIENCE"],
                     claims: claims,
-                    expires: DateTime.UtcNow.Add(TimeSpan.FromDays(30)), // время действия 1 день
+                    expires: DateTime.UtcNow.Add(TimeSpan.FromDays(30)), // время действия 30 день
                     signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions["KEY"])), SecurityAlgorithms.HmacSha256));
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);
@@ -52,7 +52,7 @@ namespace Service.ControllerService.Common
                 new KeyValuePair<string, string>("response", token)
             ]);
 
-            var response = await httpClient.PostAsync("https://www.google.com/recaptcha/api/siteverify", content);
+            var response = await httpClient.PostAsync("https://api.hcaptcha.com/siteverify", content);
             var reponseString = await response.Content.ReadAsStringAsync();
 
             var result = bool.Parse(JObject.Parse(reponseString)["success"].ToString());

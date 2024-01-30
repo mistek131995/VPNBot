@@ -13,7 +13,7 @@ namespace Service.ControllerService.Service.Register
             var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
 
             if(!string.IsNullOrEmpty(request.Token))
-                await Helper.CheckCaptchaTokenAsync(request.Token, settings?.CaptchaPrivateKey);
+                await Helper.CheckCaptchaTokenAsync(request.Token, settings.CaptchaPrivateKey);
 
             if (string.IsNullOrEmpty(request.Login) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
                 throw new HandledExeption("Заполните обязательные поля");
