@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Application.ControllerService.Common;
+using CreateTicket = Service.ControllerService.Service.CreateTicket;
 
 using GetIndex = Service.ControllerService.Service.GetIndex;
 using GetAccessPositions = Service.ControllerService.Service.GetAccessPositions;
@@ -8,8 +10,6 @@ using Register = Service.ControllerService.Service.Register;
 using Activation = Service.ControllerService.Service.ActivateUser;
 using Login = Service.ControllerService.Service.AuthByLogin;
 using ChangePassword = Service.ControllerService.Service.ChangePassword;
-using Application.ControllerService.Common;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 
 namespace VpnBotApi.Controllers
@@ -82,6 +82,15 @@ namespace VpnBotApi.Controllers
             {
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             });
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<JsonResult> CreateTicket([FromBody] CreateTicket.Request request)
+        {
+            var response = await dispatcher.GetService<int, CreateTicket.Request>(new CreateTicket.Request());
 
             return Json(response);
         }
