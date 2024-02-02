@@ -16,6 +16,8 @@ namespace Infrastructure.Database.Entity
         public UserRole Role { get; set; }
         public DateTime RegisterDate { get; set; }
         public DateTime? AccessEndDate { get; set; }
+        public Guid Guid { get; set; }
+        public int ParentUserId { get; set; }
 
         public List<Payment> Payments { get; set; }
     }

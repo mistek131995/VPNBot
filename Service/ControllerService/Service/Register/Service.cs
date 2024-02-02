@@ -36,7 +36,8 @@ namespace Service.ControllerService.Service.Register
                 Password = request.Password,
                 Role = Core.Model.User.UserRole.User,
                 RegisterDate = DateTime.Now,
-                Sost = UserSost.NotActive
+                Sost = UserSost.NotActive,
+                Guid = Guid.NewGuid(),
             });
 
             //Добавляем активацию

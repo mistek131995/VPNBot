@@ -29,6 +29,8 @@ namespace Infrastructure.Database.Repository
                 AccessEndDate = user.AccessEndDate,
                 Role = user.Role,
                 Sost = user.Sost,
+                Guid = user.Guid,
+                ParentUserId = user.ParentUserId,
                 Payments = user.Payments.Select(p => new Payment()
                 {
                     Id = p.Id,
@@ -55,6 +57,8 @@ namespace Infrastructure.Database.Repository
                     RegisterDate = x.RegisterDate,
                     AccessEndDate = x.AccessEndDate,
                     Role = x.Role,
+                    Guid = x.Guid,
+                    ParentUserId = x.ParentUserId,
                     Payments = x.Payments.Select(p => new Model.Payment()
                     {
                         Id = p.Id,
