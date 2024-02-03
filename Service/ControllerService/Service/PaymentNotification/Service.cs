@@ -35,6 +35,13 @@ namespace Service.ControllerService.Service.PaymentNotification
 
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
+                if (user.ParentUserId > 0)
+                {
+                    var parentUser = await repositoryProvider.UserRepository.GetByIdAsync(user.ParentUserId);
+                    parentUser.Balance += request.AMOUNT * 0.1m;
+                    await repositoryProvider.UserRepository.UpdateAsync(parentUser);
+                }
+
                 logger.Information($"Успешная оплата, пользователь {user.Id}, на сумуу {request.AMOUNT}.");
 
                 return true;

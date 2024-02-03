@@ -31,6 +31,7 @@ namespace Infrastructure.Database.Repository
                 Sost = user.Sost,
                 Guid = user.Guid,
                 ParentUserId = user.ParentUserId,
+                Balance = user.Balance,
                 Payments = user.Payments.Select(p => new Payment()
                 {
                     Id = p.Id,
@@ -61,6 +62,7 @@ namespace Infrastructure.Database.Repository
                     Role = x.Role,
                     Guid = x.Guid,
                     ParentUserId = x.ParentUserId,
+                    Balance = x.Balance,
                     Payments = x.Payments.Select(p => new Model.Payment()
                     {
                         Id = p.Id,
@@ -96,6 +98,7 @@ namespace Infrastructure.Database.Repository
                 Email = user.Email,
                 Sost = user.Sost,
                 Guid = user.Guid,
+                Balance = user.Balance,
                 ParentUserId = user.ParentUserId,
             };
 
@@ -117,6 +120,7 @@ namespace Infrastructure.Database.Repository
             dbUser.Email = user.Email;
             dbUser.Role = user.Role;
             dbUser.Sost = user.Sost;
+            dbUser.Balance = user.Balance;
             dbUser.AccessEndDate = user.AccessEndDate;
 
             dbUser.Payments = user.Payments
@@ -153,6 +157,7 @@ namespace Infrastructure.Database.Repository
                 dbUser.Email = user.Email;
                 dbUser.Role = user.Role;
                 dbUser.Sost = user.Sost;
+                dbUser.Balance = user.Balance;
                 dbUser.AccessEndDate = user.AccessEndDate;
 
                 dbUser.Payments = user.Payments.Select(p => new Entity.Payment()

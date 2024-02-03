@@ -17,6 +17,7 @@ namespace Core.Model.User
         public UserSost Sost { get; set; }
         public Guid Guid { get; set; }
         public int ParentUserId {  get; set; }
+        public decimal Balance { get; set; }
 
         public List<Payment> Payments { get; set; }
 

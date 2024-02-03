@@ -1,4 +1,5 @@
 ﻿using Core.Model.User;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Database.Entity
@@ -18,6 +19,8 @@ namespace Infrastructure.Database.Entity
         public DateTime? AccessEndDate { get; set; }
         public Guid Guid { get; set; }
         public int ParentUserId { get; set; }
+        [Precision(18, 3)]
+        public decimal Balance { get; set; }
 
         public List<Payment> Payments { get; set; }
     }
