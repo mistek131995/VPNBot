@@ -10,11 +10,11 @@ namespace VpnBotApi.Controllers
     public class PaymentController(ControllerServiceDispatcher dispatcher) : Controller
     {
         [HttpPost]
-        public async Task<string> Notification([FromForm]PaymentNotification.Request request)
+        public async Task<JsonResult> Notification([FromForm]PaymentNotification.Request request)
         {
             var response = await dispatcher.GetService<bool, PaymentNotification.Request>(request);
 
-            return "YES";
+            return Json(response);
         }
 
         [HttpGet]
