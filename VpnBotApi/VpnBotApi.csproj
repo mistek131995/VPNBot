@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Ssl\cert.pem" />
-    <None Remove="Ssl\key.pem" />
+    <None Remove="Ssl\cert.crt.pem" />
+    <None Remove="Ssl\cert.key.pem" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,8 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Ssl\cert.pem" />
-    <Resource Include="Ssl\key.pem" />
+    <Resource Include="Ssl\cert.crt.pem" />
+    <Resource Include="Ssl\cert.key.pem" />
   </ItemGroup>
 
 </Project>
