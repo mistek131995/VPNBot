@@ -31,8 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Ssl\cert.pem" />
-    <Resource Include="Ssl\key.pem" />
+    <None Update="Ssl\cert.crt.pem">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Ssl\cert.key.pem">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
