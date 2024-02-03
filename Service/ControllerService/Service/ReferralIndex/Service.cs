@@ -12,10 +12,16 @@ namespace Service.ControllerService.Service.ReferralIndex
 
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
 
-            //var childUsers = null;
+            var childUsers = await repositoryProvider.UserRepository.GetByParentIdAsync(request.UserId);
 
             result.ReferralLink = $"https://{configuration["Domain"]}/Register?parent={user.Guid}";
-            result.Referrals = new List<Result.Referral>();
+            result.Referrals = childUsers
+                .Select(x => new Result.Referral()
+                {
+                    Name = x.Login,
+                    TopupTotal = x.Payments.Sum(s => s.Amount * 0.1m)
+                })
+                .ToList();
 
             return result;
         }

@@ -36,6 +36,7 @@ namespace Infrastructure.Database.Repository
                     Id = p.Id,
                     UserId = p.UserId,
                     AccessPositionId = p.AccessPositionId,
+                    Amount = p.Amount,
                     Date = p.Date,
                 }).ToList()
             };
@@ -45,6 +46,7 @@ namespace Infrastructure.Database.Repository
         {
             return await context.Users
                 .Include(x => x.Payments)
+                .AsNoTracking()
                 .Select(x => new Model.User()
                 {
                     Id = x.Id,
@@ -64,11 +66,11 @@ namespace Infrastructure.Database.Repository
                         Id = p.Id,
                         UserId = p.UserId,
                         AccessPositionId = p.AccessPositionId,
+                        Amount = p.Amount,
                         Date = p.Date,
                     }).ToList()
                 })
                 .Where(x => ids.Contains(x.Id))
-                .AsNoTracking()
                 .ToListAsync();
         }
 

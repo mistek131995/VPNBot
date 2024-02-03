@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Database.Entity
 {
@@ -8,6 +9,8 @@ namespace Infrastructure.Database.Entity
         public int Id { get; set; }
         public int UserId { get; set; }
         public int AccessPositionId { get; set; }
+        [Precision(18, 3)]
+        public decimal Amount { get; set; }
         public DateTime Date { get; set; }
 
         public AccessPosition AccessPosition { get; set; }
