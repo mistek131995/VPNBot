@@ -21,6 +21,7 @@ namespace Service.ControllerService.Service.PaymentNotification
                     AccessPositionId = accessPosition.Id,
                     Date = DateTime.Now,
                     UserId = user.Id,
+                    Amount = accessPosition.Price
                 });
 
                 if(user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
