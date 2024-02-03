@@ -131,6 +131,7 @@ namespace Infrastructure.Database.Repository
                     AccessPositionId = x.AccessPositionId,
                     UserId = x.UserId,
                     Date = x.Date,
+                    Amount = x.Amount,
                 })
                 .ToList();
 
@@ -165,7 +166,8 @@ namespace Infrastructure.Database.Repository
                     Id = p.Id,
                     AccessPositionId = p.AccessPositionId,
                     Date = p.Date,
-                    UserId = p.UserId
+                    UserId = p.UserId,
+                    Amount = p.Amount,
                 }).ToList();
             }
 
