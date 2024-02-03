@@ -28,8 +28,7 @@ namespace Service.ControllerService.Service.Register
             if (user != null)
                 throw new HandledExeption("Пользователь с таким адресом электронной почты уже зарегистрирован");
 
-            //Добавляем пользователя
-            var newUser = await repositoryProvider.UserRepository.AddAsync(new Core.Model.User.User()
+            var newUser = new Core.Model.User.User()
             {
                 Login = request.Login.Trim().ToLower(),
                 Email = request.Email.Trim().ToLower(),
@@ -38,7 +37,18 @@ namespace Service.ControllerService.Service.Register
                 RegisterDate = DateTime.Now,
                 Sost = UserSost.NotActive,
                 Guid = Guid.NewGuid(),
-            });
+            };
+
+            if (request.Guid != null)
+            {
+                var parentUser = await repositoryProvider.UserRepository.GetByGuidAsync(request.Guid ?? new Guid()) 
+                    ?? throw new HandledExeption("Не удалось найти пользователя для привязки реферальной программы.");
+
+                newUser.ParentUserId = parentUser.Id;
+            }
+
+            //Добавляем пользователя
+            newUser = await repositoryProvider.UserRepository.AddAsync(newUser);
 
             //Добавляем активацию
             var guid = Guid.NewGuid();

@@ -94,7 +94,9 @@ namespace Infrastructure.Database.Repository
                 Login = user.Login,
                 Password = user.Password,
                 Email = user.Email,
-                Sost = user.Sost
+                Sost = user.Sost,
+                Guid = user.Guid,
+                ParentUserId = user.ParentUserId,
             };
 
             await context.Users.AddAsync(newUser);
@@ -111,15 +113,13 @@ namespace Infrastructure.Database.Repository
 
             dbUser.TelegramUserId = user.TelegramUserId;
             dbUser.TelegramChatId = user.TelegramChatId;
-            dbUser.Login = user.Login;
             dbUser.Password = user.Password;
             dbUser.Email = user.Email;
             dbUser.Role = user.Role;
             dbUser.Sost = user.Sost;
-            dbUser.RegisterDate = user.RegisterDate;
             dbUser.AccessEndDate = user.AccessEndDate;
 
-            var newPayments = user.Payments
+            dbUser.Payments = user.Payments
                 .Where(x => x.Id == 0)
                 .Select(x => new Entity.Payment()
                 {
@@ -129,8 +129,6 @@ namespace Infrastructure.Database.Repository
                     Date = x.Date,
                 })
                 .ToList();
-
-            dbUser.Payments.AddRange(newPayments);
 
             context.Users.Update(dbUser);
             await context.SaveChangesAsync();
@@ -148,6 +146,14 @@ namespace Infrastructure.Database.Repository
             foreach (var dbUser in dbUsers)
             {
                 var user = users.FirstOrDefault(x => x.Id == dbUser.Id);
+
+                dbUser.TelegramUserId = user.TelegramUserId;
+                dbUser.TelegramChatId = user.TelegramChatId;
+                dbUser.Password = user.Password;
+                dbUser.Email = user.Email;
+                dbUser.Role = user.Role;
+                dbUser.Sost = user.Sost;
+                dbUser.AccessEndDate = user.AccessEndDate;
 
                 dbUser.Payments = user.Payments.Select(p => new Entity.Payment()
                 {
@@ -192,6 +198,16 @@ namespace Infrastructure.Database.Repository
                 .ToListAsync();
 
             return await GetByIdsAsync(userIds);
+        }
+
+        public async Task<User> GetByGuidAsync(Guid guid)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(x => x.Guid == guid);
+
+            if (user == null)
+                return null;
+
+            return await GetByIdAsync(user.Id);
         }
     }
 }
