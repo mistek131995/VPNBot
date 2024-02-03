@@ -180,5 +180,16 @@ namespace Infrastructure.Database.Repository
 
             return await GetByIdAsync(userId);
         }
+
+        public async Task<List<User>> GetByParentIdAsync(int parentId)
+        {
+            var userIds = await context.Users
+                .AsNoTracking()
+                .Where(x => x.ParentUserId == parentId)
+                .Select(x => x.Id)
+                .ToListAsync();
+
+            return await GetByIdsAsync(userIds);
+        }
     }
 }

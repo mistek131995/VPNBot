@@ -12,7 +12,9 @@ namespace Service.ControllerService.Service.ReferralIndex
 
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
 
-            result.ReferralLink = $"https://{configuration["Domain"]}/User/Register?parent={user.Guid}";
+            //var childUsers = null;
+
+            result.ReferralLink = $"https://{configuration["Domain"]}/Register?parent={user.Guid}";
             result.Referrals = new List<Result.Referral>();
 
             return result;
