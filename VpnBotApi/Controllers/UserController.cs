@@ -11,6 +11,8 @@ using Activation = Service.ControllerService.Service.ActivateUser;
 using Login = Service.ControllerService.Service.AuthByLogin;
 using ChangePassword = Service.ControllerService.Service.ChangePassword;
 
+using ReferralIndex = Service.ControllerService.Service.ReferralIndex;
+
 
 namespace VpnBotApi.Controllers
 {
@@ -91,6 +93,18 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> CreateTicket([FromBody] CreateTicket.Request request)
         {
             var response = await dispatcher.GetService<int, CreateTicket.Request>(new CreateTicket.Request());
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> GetReferralIndex()
+        {
+            var response = await dispatcher.GetService<ReferralIndex.Result, ReferralIndex.Request>(new ReferralIndex.Request()
+            {
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
 
             return Json(response);
         }
