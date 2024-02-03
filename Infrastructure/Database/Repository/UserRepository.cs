@@ -124,7 +124,6 @@ namespace Infrastructure.Database.Repository
             dbUser.AccessEndDate = user.AccessEndDate;
 
             dbUser.Payments = user.Payments
-                .Where(x => x.Id == 0)
                 .Select(x => new Entity.Payment()
                 {
                     Id = x.Id,
@@ -161,14 +160,16 @@ namespace Infrastructure.Database.Repository
                 dbUser.Balance = user.Balance;
                 dbUser.AccessEndDate = user.AccessEndDate;
 
-                dbUser.Payments = user.Payments.Select(p => new Entity.Payment()
-                {
-                    Id = p.Id,
-                    AccessPositionId = p.AccessPositionId,
-                    Date = p.Date,
-                    UserId = p.UserId,
-                    Amount = p.Amount,
-                }).ToList();
+                dbUser.Payments = user.Payments
+                    .Select(p => new Entity.Payment()
+                    {
+                        Id = p.Id,
+                        AccessPositionId = p.AccessPositionId,
+                        Date = p.Date,
+                        UserId = p.UserId,
+                        Amount = p.Amount,
+                    })
+                    .ToList();
             }
 
             context.Users.UpdateRange(dbUsers);
