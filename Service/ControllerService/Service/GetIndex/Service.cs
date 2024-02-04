@@ -16,6 +16,7 @@ namespace Service.ControllerService.Service.GetIndex
             result.Email = user.Email;
             result.RegisterDate = user.RegisterDate;
             result.EndAccessDate = user.AccessEndDate;
+            result.Balance = user.Balance;
 
             if (user.Payments != null && user.Payments.Any())
             {

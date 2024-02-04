@@ -4,7 +4,6 @@ using Application.ControllerService.Common;
 using CreateTicket = Service.ControllerService.Service.CreateTicket;
 
 using GetIndex = Service.ControllerService.Service.GetIndex;
-using GetAccessPositions = Service.ControllerService.Service.GetAccessPositions;
 
 using Register = Service.ControllerService.Service.Register;
 using Activation = Service.ControllerService.Service.ActivateUser;
@@ -72,18 +71,6 @@ namespace VpnBotApi.Controllers
             command.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
 
             var response = await dispatcher.GetService<bool, ChangePassword.Request>(command);
-
-            return Json(response);
-        }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<JsonResult> AccessPositions()
-        {
-            var response = await dispatcher.GetService< GetAccessPositions.Result, GetAccessPositions.Request>(new GetAccessPositions.Request()
-            {
-                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
-            });
 
             return Json(response);
         }

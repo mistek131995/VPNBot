@@ -5,16 +5,21 @@ using Serilog;
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
-    internal class Service(IRepositoryProvider repositoryProvider, ILogger logger) : IControllerService<Request, bool>
+    internal class Service(IRepositoryProvider repositoryProvider, ILogger logger) : IControllerService<Request, string>
     {
-        public async Task<bool> HandlingAsync(Request request)
+        public async Task<string> HandlingAsync(Request request)
         {
             var sign = MD5Hash.Hash.GetMD5($"{request.MERCHANT_ID}:{request.AMOUNT}:T52ClLdiMg){{0!L:{request.MERCHANT_ORDER_ID}");
+
+            return "NO";
 
             if (sign == request.SIGN)
             {
                 var user = await repositoryProvider.UserRepository.GetByIdAsync(request.MERCHANT_ORDER_ID);
                 var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.us_position_id);
+
+                if (accessPosition.Price != request.AMOUNT + request.us_sale)
+                    return "NO";
 
                 user.Payments.Add(new Payment()
                 {
@@ -44,10 +49,10 @@ namespace Service.ControllerService.Service.PaymentNotification
 
                 logger.Information($"Успешная оплата, пользователь {user.Id}, на сумуу {request.AMOUNT}.");
 
-                return true;
+                return "YES";
             }
 
-            return false;
+            return "NO";
         }
     }
 }

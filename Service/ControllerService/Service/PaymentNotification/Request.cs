@@ -2,7 +2,7 @@
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
-    public class Request : IRequest<bool>
+    public class Request : IRequest<string>
     {
         /// <summary>
         /// ID Вашего магазина
@@ -48,5 +48,9 @@ namespace Service.ControllerService.Service.PaymentNotification
         /// Id позиции
         /// </summary>
         public int us_position_id { get; set; }
+        /// <summary>
+        /// Id позиции
+        /// </summary>
+        public decimal us_sale { get; set; }
     }
 }

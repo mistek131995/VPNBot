@@ -11,6 +11,7 @@
         public string Email { get; set; }
         public DateTime RegisterDate { get; set; }
         public DateTime? EndAccessDate { get; set; }
+        public decimal Balance { get; set; }
 
         public List<Payment> Payments { get; set; }
 
