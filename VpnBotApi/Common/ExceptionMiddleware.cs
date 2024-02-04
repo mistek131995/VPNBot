@@ -22,7 +22,7 @@ namespace VpnBotApi.Common
                 else if(typeof(PaymentException) == ex.GetType())
                 {
                     httpContext.Response.ContentType = "application/json";
-                    httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.BadGateway;
                 }
                 else
                 {
