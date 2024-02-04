@@ -12,5 +12,7 @@ namespace Core.Common
         public IFileRepository FileRepository { get; }
         public ICountryRepository CountryRepository { get; }
         public IActiovationRepository ActiovationRepository { get; }
+        public ITicketRepository TicketRepository { get; }
+        public ITicketCategoryRepository TicketCategoryRepository { get; }
     }
 }

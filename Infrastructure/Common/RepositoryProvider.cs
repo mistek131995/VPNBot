@@ -15,6 +15,8 @@ namespace Infrastructure.Common
         private IFileRepository fileRepository;
         private ICountryRepository countryRepository;
         private IActiovationRepository actiovationRepository;
+        private ITicketRepository ticketRepository;
+        private ITicketCategoryRepository ticketCategoryRepository;
 
         public IUserRepository UserRepository =>
             userRepository ??= new UserRepository(context);
@@ -39,5 +41,11 @@ namespace Infrastructure.Common
 
         public IActiovationRepository ActiovationRepository => 
             actiovationRepository ??= new ActivationRepository(context);
+
+        public ITicketRepository TicketRepository => 
+            ticketRepository ??= new TicketRepository(context);
+
+        public ITicketCategoryRepository TicketCategoryRepository => 
+            ticketCategoryRepository ??= new TicketCategoryRepository(context);
     }
 }

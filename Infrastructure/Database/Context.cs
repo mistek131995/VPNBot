@@ -15,5 +15,8 @@ namespace Infrastructure.Database
         internal DbSet<File> Files { get; set; }
         internal DbSet<Country> Countries { get; set; }
         internal DbSet<Activation> Activations { get; set; }
+        internal DbSet<TicketCategory> TicketCategories { get; set; }
+        internal DbSet<TicketMessage> TicketMessages { get; set; }
+        internal DbSet<Ticket> Tickets { get; set; }
     }
 }
