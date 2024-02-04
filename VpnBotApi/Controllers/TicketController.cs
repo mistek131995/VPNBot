@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using AddTicket = Service.ControllerService.Service.AddTicket;
 using GetAddTicketForm = Service.ControllerService.Service.GetAddTicketForm;
+using GetUserTickets = Service.ControllerService.Service.GetUserTickets;
 
 
 namespace VpnBotApi.Controllers
@@ -29,6 +30,18 @@ namespace VpnBotApi.Controllers
             request.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
 
             var response = await dispatcher.GetService<int, AddTicket.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> GetUserTickets()
+        {
+            var response = await dispatcher.GetService<GetUserTickets.Result, GetUserTickets.Request>(new GetUserTickets.Request()
+            {
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
 
             return Json(response);
         }
