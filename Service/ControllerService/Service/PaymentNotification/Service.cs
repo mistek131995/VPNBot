@@ -50,7 +50,7 @@ namespace Service.ControllerService.Service.PaymentNotification
 
                 logger.Information($"Успешная оплата, пользователь {user.Id}, на сумуу {request.AMOUNT}.");
 
-                return false;
+                return true;
             }
 
             return false;
