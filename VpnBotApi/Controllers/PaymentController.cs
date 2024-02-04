@@ -49,11 +49,11 @@ namespace VpnBotApi.Controllers
 
 
         [HttpPost]
-        public async Task<string> Notification([FromForm]PaymentNotification.Request request)
+        public async Task<JsonResult> Notification([FromForm]PaymentNotification.Request request)
         {
             var response = await dispatcher.GetService<string, PaymentNotification.Request>(request);
 
-            return response;
+            return Json(response);
         }
 
         [HttpGet]
