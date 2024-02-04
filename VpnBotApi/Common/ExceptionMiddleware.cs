@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Database;
 using Serilog;
 using Service.ControllerService.Common;
+using System;
 using System.Net;
 
 namespace VpnBotApi.Common
@@ -22,7 +23,8 @@ namespace VpnBotApi.Common
                 else if(typeof(PaymentException) == ex.GetType())
                 {
                     httpContext.Response.ContentType = "application/json";
-                    httpContext.Response.StatusCode = (int)HttpStatusCode.BadGateway;
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    await context.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new { type = "error", message = "test" }));
                 }
                 else
                 {
