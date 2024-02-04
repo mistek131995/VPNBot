@@ -12,8 +12,6 @@ namespace Service.ControllerService.Service.PaymentNotification
         {
             var sign = MD5Hash.Hash.GetMD5($"{request.MERCHANT_ID}:{request.AMOUNT}:T52ClLdiMg){{0!L:{request.MERCHANT_ORDER_ID}");
 
-            throw new Exception("NO");
-
             if (sign == request.SIGN)
             {
                 var user = await repositoryProvider.UserRepository.GetByIdAsync(request.MERCHANT_ORDER_ID);
@@ -41,13 +39,13 @@ namespace Service.ControllerService.Service.PaymentNotification
 
                 user.Balance -= request.us_sale;
 
-                await repositoryProvider.UserRepository.UpdateAsync(user);
+                //await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 if (user.ParentUserId > 0)
                 {
                     var parentUser = await repositoryProvider.UserRepository.GetByIdAsync(user.ParentUserId);
                     parentUser.Balance += request.AMOUNT * 0.1m;
-                    await repositoryProvider.UserRepository.UpdateAsync(parentUser);
+                    //await repositoryProvider.UserRepository.UpdateAsync(parentUser);
                 }
 
                 logger.Information($"Успешная оплата, пользователь {user.Id}, на сумуу {request.AMOUNT}.");
