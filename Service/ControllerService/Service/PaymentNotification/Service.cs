@@ -38,6 +38,8 @@ namespace Service.ControllerService.Service.PaymentNotification
                     user.AccessEndDate = user.AccessEndDate?.AddMonths(accessPosition.MonthCount).Date;
                 }
 
+                user.Balance -= request.us_sale;
+
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 if (user.ParentUserId > 0)
