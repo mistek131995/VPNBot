@@ -2,6 +2,7 @@
 using Core.Common;
 using Core.Model.User;
 using Serilog;
+using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
@@ -11,7 +12,7 @@ namespace Service.ControllerService.Service.PaymentNotification
         {
             var sign = MD5Hash.Hash.GetMD5($"{request.MERCHANT_ID}:{request.AMOUNT}:T52ClLdiMg){{0!L:{request.MERCHANT_ORDER_ID}");
 
-            return "NO";
+            throw new HandledExeption("test");
 
             if (sign == request.SIGN)
             {
