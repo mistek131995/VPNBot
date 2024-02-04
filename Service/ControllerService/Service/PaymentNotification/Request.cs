@@ -2,7 +2,7 @@
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
-    public class Request : IRequest<string>
+    public class Request : IRequest<bool>
     {
         /// <summary>
         /// ID Вашего магазина

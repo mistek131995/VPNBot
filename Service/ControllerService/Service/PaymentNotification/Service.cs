@@ -6,13 +6,11 @@ using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
-    internal class Service(IRepositoryProvider repositoryProvider, ILogger logger) : IControllerService<Request, string>
+    internal class Service(IRepositoryProvider repositoryProvider, ILogger logger) : IControllerService<Request, bool>
     {
-        public async Task<string> HandlingAsync(Request request)
+        public async Task<bool> HandlingAsync(Request request)
         {
             var sign = MD5Hash.Hash.GetMD5($"{request.MERCHANT_ID}:{request.AMOUNT}:T52ClLdiMg){{0!L:{request.MERCHANT_ORDER_ID}");
-
-            throw new HandledExeption("test");
 
             if (sign == request.SIGN)
             {
@@ -20,7 +18,7 @@ namespace Service.ControllerService.Service.PaymentNotification
                 var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.us_position_id);
 
                 if (accessPosition.Price != request.AMOUNT + request.us_sale)
-                    return "NO";
+                    return false;
 
                 user.Payments.Add(new Payment()
                 {
@@ -52,10 +50,10 @@ namespace Service.ControllerService.Service.PaymentNotification
 
                 logger.Information($"Успешная оплата, пользователь {user.Id}, на сумуу {request.AMOUNT}.");
 
-                return "YES";
+                return false;
             }
 
-            return "NO";
+            return false;
         }
     }
 }
