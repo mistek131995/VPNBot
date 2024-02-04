@@ -96,7 +96,7 @@ namespace VpnBotApi
 
             app.MapControllers();
             app.UseMiddleware<ExceptionMiddleware>();
-            app.UseMiddleware<AppVersionMiddleware>();
+            //app.UseMiddleware<AppVersionMiddleware>();
             app.MapFallbackToFile("/index.html");
 
             app.Run();

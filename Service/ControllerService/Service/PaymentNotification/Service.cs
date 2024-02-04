@@ -12,6 +12,8 @@ namespace Service.ControllerService.Service.PaymentNotification
         {
             var sign = MD5Hash.Hash.GetMD5($"{request.MERCHANT_ID}:{request.AMOUNT}:T52ClLdiMg){{0!L:{request.MERCHANT_ORDER_ID}");
 
+            throw new Exception("NO");
+
             if (sign == request.SIGN)
             {
                 var user = await repositoryProvider.UserRepository.GetByIdAsync(request.MERCHANT_ORDER_ID);
