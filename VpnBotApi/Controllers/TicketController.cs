@@ -1,10 +1,10 @@
 ﻿using Application.ControllerService.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using AddTicket = Service.ControllerService.Service.AddTicket;
 using GetAddTicketForm = Service.ControllerService.Service.GetAddTicketForm;
-using GetUserTickets = Service.ControllerService.Service.GetUserTickets;
+using GetUserTickets = Service.ControllerService.Service.Ticket.GetUserTickets;
+using GetTicket = Service.ControllerService.Service.Ticket.GetTicket;
 
 
 namespace VpnBotApi.Controllers
@@ -40,6 +40,19 @@ namespace VpnBotApi.Controllers
         {
             var response = await dispatcher.GetService<GetUserTickets.Result, GetUserTickets.Request>(new GetUserTickets.Request()
             {
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> GetTicket(int ticketId)
+        {
+            var response = await dispatcher.GetService<GetTicket.Result, GetTicket.Request>(new GetTicket.Request()
+            {
+                TicketId = ticketId,
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             });
 

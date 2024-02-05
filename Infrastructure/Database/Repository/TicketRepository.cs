@@ -86,6 +86,16 @@ namespace Infrastructure.Database.Repository
             }).ToList();
         }
 
+        public async Task<Ticket> GetByTicketIdAndUserIdAsync(int ticketId, int userId)
+        {
+            var ticket = await context.Tickets.FirstOrDefaultAsync(x => x.Id == ticketId && x.UserId == userId);
+
+            if (ticket == null)
+                return null;
+
+            return await GetByIdAsync(ticket.Id);
+        }
+
         public async Task<List<Ticket>> GetByUserIdAsync(int userId)
         {
             var ticketIds = await context.Tickets
