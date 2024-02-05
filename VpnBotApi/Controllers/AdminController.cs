@@ -11,6 +11,7 @@ using GetFiles = Service.ControllerService.Service.GetFiles;
 using GetSettings = Service.ControllerService.Service.GetSettings;
 using AddCountry = Service.ControllerService.Service.AddCountry;
 using AddServer = Service.ControllerService.Service.AddServer;
+using TicketManagement = Service.ControllerService.Service.Admin.TicketManagement;
 
 namespace VpnBotApi.Controllers
 {
@@ -116,6 +117,15 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> GetFiles()
         {
             var response = await dispatcher.GetService<GetFiles.Result, GetFiles.Request>(new GetFiles.Request());
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetIndexTicketManagement()
+        {
+            var response = await dispatcher.GetService<TicketManagement.Result, TicketManagement.Request>(new TicketManagement.Request());
 
             return Json(response);
         }

@@ -4,6 +4,7 @@ namespace Core.Repository
 {
     public interface ITicketRepository
     {
+        public Task<List<Ticket>> GetAllActiveAsync();
         public Task<Ticket> GetByIdAsync(int id);
         public Task<List<Ticket>> GetByIdsAsync(List<int> ids);
         public Task<List<Ticket>> GetByUserIdAsync(int userId);

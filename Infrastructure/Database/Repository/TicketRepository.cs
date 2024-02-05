@@ -31,6 +31,17 @@ namespace Infrastructure.Database.Repository
             return newTicket.Id;
         }
 
+        public async Task<List<Ticket>> GetAllActiveAsync()
+        {
+            var ticketIds = await context.Tickets
+                .AsNoTracking()
+                .Where(x => x.Condition == TicketCondition.Open)
+                .Select(x => x.Id)
+                .ToListAsync();
+
+            return await GetByIdsAsync(ticketIds);
+        }
+
         public async Task<Ticket> GetByIdAsync(int id)
         {
             var ticket = await context.Tickets
@@ -76,6 +87,7 @@ namespace Infrastructure.Database.Repository
                 CategoryName = x.TicketCategory.Name,
                 Condition = x.Condition,
                 CreateDate = x.CreateDate,
+                UserId = x.UserId,
                 TicketMessages = x.TicketMessages.Select(m => new TicketMessage()
                 {
                     Id = m.Id,
