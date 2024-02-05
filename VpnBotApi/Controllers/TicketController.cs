@@ -5,6 +5,7 @@ using AddTicket = Service.ControllerService.Service.AddTicket;
 using GetAddTicketForm = Service.ControllerService.Service.GetAddTicketForm;
 using GetUserTickets = Service.ControllerService.Service.Ticket.GetUserTickets;
 using GetTicket = Service.ControllerService.Service.Ticket.GetTicket;
+using AddMessage = Service.ControllerService.Service.Ticket.AddMessage;
 
 
 namespace VpnBotApi.Controllers
@@ -55,6 +56,17 @@ namespace VpnBotApi.Controllers
                 TicketId = ticketId,
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             });
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<JsonResult> AddMessage([FromBody] AddMessage.Request request)
+        {
+            request.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
+
+            var response = await dispatcher.GetService<bool, AddMessage.Request>(request);
 
             return Json(response);
         }

@@ -1,6 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
-using Core.Model.Support;
+using Core.Model.Ticket;
 
 namespace Service.ControllerService.Service.AddTicket
 {
@@ -8,7 +8,7 @@ namespace Service.ControllerService.Service.AddTicket
     {
         public async Task<int> HandlingAsync(Request request)
         {
-            var newTicket = new Core.Model.Support.Ticket()
+            var newTicket = new Core.Model.Ticket.Ticket()
             {
                 Title = request.Title,
                 CategoryId = request.CategoryId,

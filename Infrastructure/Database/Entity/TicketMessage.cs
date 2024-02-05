@@ -1,4 +1,4 @@
-﻿using Core.Model.Support;
+﻿using Core.Model.Ticket;
 using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Database.Entity

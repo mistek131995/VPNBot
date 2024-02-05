@@ -1,4 +1,4 @@
-﻿namespace Core.Model.Support
+﻿namespace Core.Model.Ticket
 {
     public class TicketCategory
     {

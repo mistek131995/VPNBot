@@ -1,4 +1,4 @@
-﻿using Core.Model.Support;
+﻿using Core.Model.Ticket;
 using Core.Repository;
 using Microsoft.EntityFrameworkCore;
 

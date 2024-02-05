@@ -1,6 +1,7 @@
-﻿using Core.Model.Support;
+﻿using Core.Model.Ticket;
 using Core.Repository;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Infrastructure.Database.Repository
 {
@@ -107,9 +108,29 @@ namespace Infrastructure.Database.Repository
             return await GetByIdsAsync(ticketIds);
         }
 
-        public Task UpdateAsync(Ticket ticket)
+        public async Task UpdateAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            var dbTicket = await context.Tickets
+                .Include(x => x.TicketMessages)
+                .FirstOrDefaultAsync(x => x.Id == ticket.Id);
+
+            var newMessages = ticket.TicketMessages
+                .Where(x => x.Id == 0)
+                .Select(m => new Entity.TicketMessage()
+                {
+                    Id = m.Id,
+                    Message = m.Message,
+                    UserId = m.UserId,
+                    Condition = m.Condition,
+                    SendDate = m.SendDate,
+                    TicketId = ticket.Id,
+                })
+                .ToList();
+
+            dbTicket.TicketMessages.AddRange(newMessages);
+            context.Tickets.Update(dbTicket);
+
+            await context.SaveChangesAsync();
         }
     }
 }
