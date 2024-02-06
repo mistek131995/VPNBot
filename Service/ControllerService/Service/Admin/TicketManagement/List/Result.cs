@@ -1,4 +1,4 @@
-﻿namespace Service.ControllerService.Service.Admin.TicketManagement
+﻿namespace Service.ControllerService.Service.Admin.TicketManagement.List
 {
     public class Result
     {

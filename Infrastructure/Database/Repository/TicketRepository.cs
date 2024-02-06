@@ -67,7 +67,7 @@ namespace Infrastructure.Database.Repository
                     Condition = x.Condition,
                     Message = x.Message,
                     SendDate = x.SendDate,
-                    UserId = ticket.UserId,
+                    UserId = x.UserId,
                 }).ToList(),
             };
         }

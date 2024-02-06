@@ -11,7 +11,9 @@ using GetFiles = Service.ControllerService.Service.GetFiles;
 using GetSettings = Service.ControllerService.Service.GetSettings;
 using AddCountry = Service.ControllerService.Service.AddCountry;
 using AddServer = Service.ControllerService.Service.AddServer;
-using TicketManagement = Service.ControllerService.Service.Admin.TicketManagement;
+using TicketManagementList = Service.ControllerService.Service.Admin.TicketManagement.List;
+using TicketManagementView = Service.ControllerService.Service.Admin.TicketManagement.View;
+using AddTicketMessage = Service.ControllerService.Service.Admin.TicketManagement.AddMessage;
 
 namespace VpnBotApi.Controllers
 {
@@ -123,9 +125,32 @@ namespace VpnBotApi.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<JsonResult> GetIndexTicketManagement()
+        public async Task<JsonResult> GetListTicketManagement()
         {
-            var response = await dispatcher.GetService<TicketManagement.Result, TicketManagement.Request>(new TicketManagement.Request());
+            var response = await dispatcher.GetService<TicketManagementList.Result, TicketManagementList. Request >(new TicketManagementList.Request());
+
+            return Json(response);
+        }
+
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetViewTicketManagement(int ticketId)
+        {
+            var response = await dispatcher.GetService<TicketManagementView.Result, TicketManagementView.Request>(new TicketManagementView.Request()
+            {
+                TicketId = ticketId
+            });
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> AddTicketMessage(AddTicketMessage.Request request)
+        {
+            request.UsertId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
+            var response = await dispatcher.GetService<bool, AddTicketMessage.Request>(request);
 
             return Json(response);
         }

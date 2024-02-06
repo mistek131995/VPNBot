@@ -1,7 +1,7 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 
-namespace Service.ControllerService.Service.Admin.TicketManagement
+namespace Service.ControllerService.Service.Admin.TicketManagement.List
 {
     internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, Result>
     {
@@ -14,7 +14,8 @@ namespace Service.ControllerService.Service.Admin.TicketManagement
             var userIds = tickets.Select(x => x.UserId).Distinct().ToList();
             var users = await repositoryProvider.UserRepository.GetByIdsAsync(userIds);
 
-            result.Tickets = tickets.Select(x => new Result.Ticket(){
+            result.Tickets = tickets.Select(x => new Result.Ticket()
+            {
                 Id = x.Id,
                 Title = x.Title,
                 Category = x.CategoryName,
