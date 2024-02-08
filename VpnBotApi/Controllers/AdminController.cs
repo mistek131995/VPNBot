@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using DeleteLog = Service.ControllerService.Service.DeleteLog;
 using GetLogs = Service.ControllerService.Service.GetLogs;
 using AddLogs = Service.ControllerService.Service.AddLog;
-using GetVpnServers = Service.ControllerService.Service.GetServers;
+using GetIndexLocation = Service.ControllerService.Service.Admin.VpnLocation.GetIndex;
 using GetAddEditServer = Service.ControllerService.Service.GetAddEditServer;
 using UploadFile = Service.ControllerService.Service.UploadFile;
 using GetFiles = Service.ControllerService.Service.GetFiles;
@@ -55,9 +55,9 @@ namespace VpnBotApi.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<JsonResult> GetServers()
+        public async Task<JsonResult> GetIndexLocation()
         {
-            var response = await dispatcher.GetService<GetVpnServers.Result, GetVpnServers.Request>(new GetVpnServers.Request());
+            var response = await dispatcher.GetService<GetIndexLocation.Result, GetIndexLocation.Request>(new GetIndexLocation.Request());
 
             return Json(response);
         }

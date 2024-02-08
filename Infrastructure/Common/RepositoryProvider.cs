@@ -8,21 +8,17 @@ namespace Infrastructure.Common
     public class RepositoryProvider(Context context) : IRepositoryProvider
     {
         private IUserRepository userRepository;
-        private IVpnServerRepository vpnServerRepository;
         private IAccessPositionRepository accessPositionsRepository;
         private ISettingsRepositroy settingsRepositroy;
         private ILogRepository logRepository;
         private IFileRepository fileRepository;
-        private ICountryRepository countryRepository;
+        private ILocationRepository locationRepository;
         private IActiovationRepository actiovationRepository;
         private ITicketRepository ticketRepository;
         private ITicketCategoryRepository ticketCategoryRepository;
 
         public IUserRepository UserRepository =>
             userRepository ??= new UserRepository(context);
-
-        public IVpnServerRepository VpnServerRepository => 
-            vpnServerRepository ??= new VpnServerRepository(context);
 
         public IAccessPositionRepository AccessPositionRepository => 
             accessPositionsRepository ??= new AccessPositionRepository(context);
@@ -36,8 +32,8 @@ namespace Infrastructure.Common
         public IFileRepository FileRepository => 
             fileRepository ??= new FileRepository(context);
 
-        public ICountryRepository CountryRepository => 
-            countryRepository ??= new CountryRepository(context);
+        public ILocationRepository LocationRepository => 
+            locationRepository ??= new LocationRepository(context);
 
         public IActiovationRepository ActiovationRepository => 
             actiovationRepository ??= new ActivationRepository(context);

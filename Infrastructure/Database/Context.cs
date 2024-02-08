@@ -13,7 +13,7 @@ namespace Infrastructure.Database
         internal DbSet<AccessPosition> AccessPositions { get; set; }
         internal DbSet<Log> Logs { get; set; }
         internal DbSet<File> Files { get; set; }
-        internal DbSet<Country> Countries { get; set; }
+        internal DbSet<Location> Locations { get; set; }
         internal DbSet<Activation> Activations { get; set; }
         internal DbSet<TicketCategory> TicketCategories { get; set; }
         internal DbSet<TicketMessage> TicketMessages { get; set; }

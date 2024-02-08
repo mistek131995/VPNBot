@@ -1,6 +1,5 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
-using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.GetAddEditServer
 {
@@ -10,15 +9,7 @@ namespace Service.ControllerService.Service.GetAddEditServer
         {
             var result = new Result();
 
-            var countries = await repositoryProvider.CountryRepository.GetAllAsync();
-
-            if (request.ServerId > 0)
-            {
-                var server = await repositoryProvider.VpnServerRepository.GetByIdAsync(request.ServerId)
-                    ?? throw new HandledExeption("Сервер не найден");
-
-                var country = countries.FirstOrDefault(x => x.Id == server.CountryId);
-            }
+            var countries = await repositoryProvider.LocationRepository.GetAllAsync();
 
             result.Countries = countries
                 .Select(x => new Result.Option(x.Id.ToString(), x.Name))

@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.Database.Entity
 {
-    public class Country
+    [Table("Countries")]
+    public class Location
     {
         [Key]
         public int Id { get; set; }

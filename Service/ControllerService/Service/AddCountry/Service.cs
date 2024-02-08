@@ -1,6 +1,5 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
-using Core.Model.Country;
 using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.AddCountry
@@ -12,12 +11,12 @@ namespace Service.ControllerService.Service.AddCountry
             if (string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(request.Tag))
                 throw new HandledExeption("Заполните название и метку");
 
-            var country = await repositoryProvider.CountryRepository.GetByNameAsync(request.Name);
+            var location = await repositoryProvider.LocationRepository.GetByNameAsync(request.Name);
 
-            if (country != null)
+            if (location != null)
                 throw new HandledExeption("Страна с таким названием уже добавлена.");
 
-            await repositoryProvider.CountryRepository.AddAsync(new Country()
+            await repositoryProvider.LocationRepository.AddAsync(new Core.Model.Location.Location()
             {
                 Name = request.Name,
                 Tag = request.Tag,

@@ -9,14 +9,14 @@ namespace Service.ControllerService.Service.GetServers
         {
             var result = new Result();
 
-            result.Servers = (await repositoryProvider.VpnServerRepository.GetAllAsync()).Select(x => new Result.Server()
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Ip = x.Ip,
-                Port = x.Port,
-                UserCount = x.UserCount,
-            }).ToList();
+            //result.Servers = (await repositoryProvider.VpnServerRepository.GetAllAsync()).Select(x => new Result.Server()
+            //{
+            //    Id = x.Id,
+            //    Name = x.Name,
+            //    Ip = x.Ip,
+            //    Port = x.Port,
+            //    UserCount = x.UserCount,
+            //}).ToList();
 
             return result;
         }

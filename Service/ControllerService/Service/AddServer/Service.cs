@@ -1,7 +1,7 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Core.Model.Location;
 using Service.ControllerService.Common;
-using Core.Model.VpnServer;
 
 namespace Service.ControllerService.Service.AddServer
 {
@@ -9,15 +9,17 @@ namespace Service.ControllerService.Service.AddServer
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            var server = await repositoryProvider.VpnServerRepository.GetAllAsync();
+            var location = await repositoryProvider.LocationRepository.GetByIdAsync(request.LocationId) 
+                ?? throw new HandledExeption("Страна не найдена");
 
-            if (server.Any(x => x.Name.Trim().ToLower() == request.Name.Trim().ToLower()))
+            if (location.VpnServers.Any(x => x.Name.Trim().ToLower() == request.Name.Trim().ToLower()))
                 throw new HandledExeption("Сервер с таким именем уже добавлен");
 
-            if (server.Any(x => x.Ip.Trim() == request.IP.Trim()))
+            if (location.VpnServers.Any(x => x.Ip.Trim() == request.IP.Trim()))
                 throw new HandledExeption("Сервер с таким IP уже добавлен");
 
-            await repositoryProvider.VpnServerRepository.AddAsync(new VpnServer(0, request.IP, request.Name, request.Description, request.Port, 0, request.UserName, request.Password, request.CountryId));
+            location.VpnServers.Add(new VpnServer(0, request.IP, request.Name, request.Description, request.Port, request.UserName, request.Password));
+            await repositoryProvider.LocationRepository.UpdateAsync(location);
 
             return true;
         }
