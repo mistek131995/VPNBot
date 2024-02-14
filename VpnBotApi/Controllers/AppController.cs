@@ -35,6 +35,15 @@ namespace VpnBotApi.Controllers
 
         [HttpGet]
         [Authorize]
+        public async Task<JsonResult> GetLocations()
+        {
+            var response = await dispatcher.GetService<GetVpnLocation.Result, GetVpnLocation.Request>(new GetVpnLocation.Request());
+
+            return Json(response.Locations);
+        }
+
+        [HttpGet]
+        [Authorize]
         public async Task<JsonResult> GetConnection(int countryId)
         {
             var response = await dispatcher.GetService<GetVpnConnection.Result, GetVpnConnection.Request>(new GetVpnConnection.Request()
