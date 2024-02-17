@@ -49,7 +49,7 @@ namespace VpnBotApi.Controllers
         {
             var response = await dispatcher.GetService<GetVpnServers.Result, GetVpnServers.Request>(new GetVpnServers.Request());
 
-            return Json(response.Servers)
+            return Json(response.Servers);
         }
 
         [HttpGet]
