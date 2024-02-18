@@ -8,17 +8,37 @@ namespace Service.ControllerService.Service.App.GetServersByTag
         public async Task<Result> HandlingAsync(Request request)
         {
             var result = new Result();
+            result.Servers = [];
 
-            var location = await repositoryProvider.LocationRepository.GetByTagAsync(request.Tag);
-
-            var servers = location.VpnServers.Select(x => new Result.Server()
+            if (request.Tag == "auto")
             {
-                Tag = location.Tag,
-                Ip = x.Ip,
-                Ping = 0
-            }).ToList();
+                var locations = await repositoryProvider.LocationRepository.GetAllAsync();
 
-            result.Servers.AddRange(servers);
+                foreach (var location in locations)
+                {
+                    var servers = location.VpnServers.Select(x => new Result.Server()
+                    {
+                        Tag = location.Tag,
+                        Ip = x.Ip,
+                        Ping = 0
+                    }).ToList();
+
+                    result.Servers.AddRange(servers);
+                }
+            }
+            else
+            {
+                var location = await repositoryProvider.LocationRepository.GetByTagAsync(request.Tag);
+
+                var servers = location.VpnServers.Select(x => new Result.Server()
+                {
+                    Tag = location.Tag,
+                    Ip = x.Ip,
+                    Ping = 0
+                }).ToList();
+
+                result.Servers.AddRange(servers);
+            }
 
             return result;
         }
