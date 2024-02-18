@@ -83,12 +83,22 @@ namespace Infrastructure.Database.Repository
 
         public async Task<Core.Model.Location.Location> GetByNameAsync(string name)
         {
-            var country = await context.Locations.FirstOrDefaultAsync(x => x.Name.ToLower().Trim() == name.ToLower().Trim());
+            var location = await context.Locations.FirstOrDefaultAsync(x => x.Name.ToLower().Trim() == name.ToLower().Trim());
 
-            if(country == null)
+            if(location == null)
                 return null;
 
-            return await GetByIdAsync(country.Id);
+            return await GetByIdAsync(location.Id);
+        }
+
+        public async Task<Core.Model.Location.Location> GetByTagAsync(string tag)
+        {
+            var location = await context.Locations.FirstOrDefaultAsync(x => x.Tag == tag);
+
+            if (location == null)
+                return null;
+
+            return await GetByIdAsync(location.Id);
         }
 
         public async Task UpdateAsync(Core.Model.Location.Location location)

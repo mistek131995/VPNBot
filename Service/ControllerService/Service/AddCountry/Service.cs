@@ -16,6 +16,11 @@ namespace Service.ControllerService.Service.AddCountry
             if (location != null)
                 throw new HandledExeption("Страна с таким названием уже добавлена.");
 
+            location = await repositoryProvider.LocationRepository.GetByTagAsync(request.Tag);
+
+            if (location != null)
+                throw new HandledExeption("Страна с таким тегом уже добавлена.");
+
             await repositoryProvider.LocationRepository.AddAsync(new Core.Model.Location.Location()
             {
                 Name = request.Name,

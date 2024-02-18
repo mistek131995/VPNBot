@@ -1,4 +1,4 @@
-﻿namespace Service.ControllerService.Service.App.GetVpnServers
+﻿namespace Service.ControllerService.Service.App.GetServersByTag
 {
     public class Result
     {

@@ -1,11 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 using Service.ControllerService.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.ControllerService.Service.App.GetConnectionByIP
 {
@@ -120,7 +115,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                 }
             };
 
-            return testConnections.FirstOrDefault(x => x.Ip == request.Ip) 
+            return testConnections.FirstOrDefault(x => x.Ip == request.Ip)
                 ?? throw new HandledExeption("Сервер не найден.");
         }
     }

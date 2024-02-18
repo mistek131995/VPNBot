@@ -1,7 +1,7 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 
-namespace Service.ControllerService.Service.App.GetVpnServers
+namespace Service.ControllerService.Service.App.GetServers
 {
     internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, Result>
     {
