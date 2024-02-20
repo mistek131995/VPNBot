@@ -18,5 +18,6 @@ namespace Infrastructure.Database
         internal DbSet<TicketCategory> TicketCategories { get; set; }
         internal DbSet<TicketMessage> TicketMessages { get; set; }
         internal DbSet<Ticket> Tickets { get; set; }
+        internal DbSet<ResetPassword> ResetPasswords { get; set; }
     }
 }

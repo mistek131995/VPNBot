@@ -1,4 +1,4 @@
-﻿namespace Service.ControllerService.Service.GetConnectionScreen
+﻿namespace Service.ControllerService.Service.App.GetConnectionScreen
 {
     public class Result
     {

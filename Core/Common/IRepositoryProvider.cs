@@ -10,8 +10,9 @@ namespace Core.Common
         public ILogRepository LogRepository { get; }
         public IFileRepository FileRepository { get; }
         public ILocationRepository LocationRepository { get; }
-        public IActiovationRepository ActiovationRepository { get; }
+        public IActivationRepository ActivationRepository { get; }
         public ITicketRepository TicketRepository { get; }
         public ITicketCategoryRepository TicketCategoryRepository { get; }
+        public IResetPasswordRepository ResetPasswordRepository { get; }
     }
 }

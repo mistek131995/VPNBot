@@ -1,6 +1,6 @@
 ﻿using Application.ControllerService.Common;
 
-namespace Service.ControllerService.Service.ChangePassword
+namespace Service.ControllerService.Service.User.ChangePassword
 {
     public class Request : IRequest<bool>
     {

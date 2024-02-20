@@ -5,7 +5,7 @@ using System;
 
 namespace Infrastructure.Database.Repository
 {
-    internal class ActivationRepository(Context context) : IActiovationRepository
+    internal class ActivationRepository(Context context) : IActivationRepository
     {
         public async Task AddAsync(Activation activation)
         {

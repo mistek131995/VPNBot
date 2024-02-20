@@ -1,6 +1,6 @@
 ﻿using Application.ControllerService.Common;
 
-namespace Service.ControllerService.Service.AuthByLogin
+namespace Service.ControllerService.Service.User.AuthByLogin
 {
     public class Request : IRequest<string>
     {

@@ -4,7 +4,7 @@ using Infrastructure.MailService;
 using Microsoft.Extensions.Configuration;
 using Service.ControllerService.Common;
 
-namespace Service.ControllerService.Service.Register
+namespace Service.ControllerService.Service.User.Register
 {
     internal class Service(IRepositoryProvider repositoryProvider, IConfiguration configuration) : IControllerService<Request, bool>
     {
@@ -12,7 +12,7 @@ namespace Service.ControllerService.Service.Register
         {
             var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
 
-            if(!string.IsNullOrEmpty(request.Token))
+            if (!string.IsNullOrEmpty(request.Token))
                 await Helper.CheckCaptchaTokenAsync(request.Token, settings.CaptchaPrivateKey);
 
             if (string.IsNullOrEmpty(request.Login) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
@@ -41,7 +41,7 @@ namespace Service.ControllerService.Service.Register
 
             if (request.Guid != null)
             {
-                var parentUser = await repositoryProvider.UserRepository.GetByGuidAsync(request.Guid ?? new Guid()) 
+                var parentUser = await repositoryProvider.UserRepository.GetByGuidAsync(request.Guid ?? new Guid())
                     ?? throw new HandledExeption("Не удалось найти пользователя для привязки реферальной программы.");
 
                 newUser.ParentUserId = parentUser.Id;
@@ -52,12 +52,12 @@ namespace Service.ControllerService.Service.Register
 
             //Добавляем активацию
             var guid = Guid.NewGuid();
-            await repositoryProvider.ActiovationRepository.AddAsync(new Core.Model.User.Activation(0, newUser.Id, guid));
+            await repositoryProvider.ActivationRepository.AddAsync(new Core.Model.User.Activation(0, newUser.Id, guid));
 
             var mailService = new MailService(repositoryProvider);
             await mailService.SendEmailAsync(request.Email, "Активация аккаунта", @$"
                 Благодарим Вас, за регистрацию на нашем сервисе. 
-                Для активации аккаунта передйите по <a href='https://{configuration["Domain"]}/Activation?guid={guid}'>ссылке</a>
+                Для активации аккаунта перейдите по <a href='https://{configuration["Domain"]}/Activation?guid={guid}'>ссылке</a>
             ");
 
             return true;

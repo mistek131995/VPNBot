@@ -7,7 +7,7 @@ namespace Service.ControllerService.Service.ActivateUser
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            var activation = await repositoryProvider.ActiovationRepository.GetByGuidAsync(request.Guid);
+            var activation = await repositoryProvider.ActivationRepository.GetByGuidAsync(request.Guid);
 
             if (activation == null)
                 return false;
@@ -17,7 +17,7 @@ namespace Service.ControllerService.Service.ActivateUser
             user.AccessEndDate = DateTime.Now.AddDays(7);
             await repositoryProvider.UserRepository.UpdateAsync(user);
 
-            await repositoryProvider.ActiovationRepository.DeleteByGuid(request.Guid);
+            await repositoryProvider.ActivationRepository.DeleteByGuid(request.Guid);
 
             return true;
         }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.ControllerService.Service.GetConnectionScreen
+namespace Service.ControllerService.Service.App.GetConnectionScreen
 {
     public class Request : IRequest<Result>
     {

@@ -3,7 +3,7 @@ using Core.Common;
 using Microsoft.Extensions.Configuration;
 using Service.ControllerService.Common;
 
-namespace Service.ControllerService.Service.AuthByLogin
+namespace Service.ControllerService.Service.User.AuthByLogin
 {
     internal class Service(IRepositoryProvider repositoryProvider, IConfiguration configuration) : IControllerService<Request, string>
     {
@@ -17,7 +17,7 @@ namespace Service.ControllerService.Service.AuthByLogin
             var user = await repositoryProvider.UserRepository.GetByLoginAndPasswordAsync(request.Login.Trim().ToLower(), request.Password) ??
                 throw new HandledExeption("Пользователь с таким логином и паролем не найден.");
 
-            if(user.Sost == UserSost.Blocked)
+            if (user.Sost == UserSost.Blocked)
                 throw new HandledExeption("Ваш аккаунт заблокирован.");
 
             if (user.Sost == UserSost.NotActive)

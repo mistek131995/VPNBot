@@ -1,6 +1,6 @@
 ﻿using Application.ControllerService.Common;
 
-namespace Service.ControllerService.Service.Register
+namespace Service.ControllerService.Service.User.Register
 {
     public class Request : IRequest<bool>
     {

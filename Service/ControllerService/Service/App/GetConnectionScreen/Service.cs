@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.ControllerService.Service.GetConnectionScreen
+namespace Service.ControllerService.Service.App.GetConnectionScreen
 {
     internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, Result>
     {

@@ -13,9 +13,10 @@ namespace Infrastructure.Common
         private ILogRepository logRepository;
         private IFileRepository fileRepository;
         private ILocationRepository locationRepository;
-        private IActiovationRepository actiovationRepository;
+        private IActivationRepository activationRepository;
         private ITicketRepository ticketRepository;
         private ITicketCategoryRepository ticketCategoryRepository;
+        private IResetPasswordRepository resetPasswordRepository;
 
         public IUserRepository UserRepository =>
             userRepository ??= new UserRepository(context);
@@ -35,13 +36,16 @@ namespace Infrastructure.Common
         public ILocationRepository LocationRepository => 
             locationRepository ??= new LocationRepository(context);
 
-        public IActiovationRepository ActiovationRepository => 
-            actiovationRepository ??= new ActivationRepository(context);
+        public IActivationRepository ActivationRepository => 
+            activationRepository ??= new ActivationRepository(context);
 
         public ITicketRepository TicketRepository => 
             ticketRepository ??= new TicketRepository(context);
 
         public ITicketCategoryRepository TicketCategoryRepository => 
             ticketCategoryRepository ??= new TicketCategoryRepository(context);
+
+        public IResetPasswordRepository ResetPasswordRepository => 
+            resetPasswordRepository ??= new ResetPasswordRepository(context);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Core.Repository
 {
-    public interface IActiovationRepository
+    public interface IActivationRepository
     {
         public Task<Activation> GetByGuidAsync(Guid guid);
         public Task<Activation> GetByUserIdAsync(int userId);

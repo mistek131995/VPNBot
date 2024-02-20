@@ -4,10 +4,10 @@ using Application.ControllerService.Common;
 
 using GetIndex = Service.ControllerService.Service.GetIndex;
 
-using Register = Service.ControllerService.Service.Register;
+using Register = Service.ControllerService.Service.User.Register;
 using Activation = Service.ControllerService.Service.ActivateUser;
-using Login = Service.ControllerService.Service.AuthByLogin;
-using ChangePassword = Service.ControllerService.Service.ChangePassword;
+using Login = Service.ControllerService.Service.User.AuthByLogin;
+using ChangePassword = Service.ControllerService.Service.User.ChangePassword;
 
 using ReferralIndex = Service.ControllerService.Service.ReferralIndex;
 

@@ -7,7 +7,7 @@ using GetServersByTag = Service.ControllerService.Service.App.GetServersByTag;
 using GetVpnConnectionByIp = Service.ControllerService.Service.App.GetConnectionByIP;
 
 using GetVpnConnection = Service.ControllerService.Service.GetConnection;
-using GetConnectionScreen = Service.ControllerService.Service.GetConnectionScreen;
+using GetConnectionScreen = Service.ControllerService.Service.App.GetConnectionScreen;
 using Microsoft.AspNetCore.Authorization;
 
 namespace VpnBotApi.Controllers
