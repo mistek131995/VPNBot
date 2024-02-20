@@ -1,12 +1,12 @@
 ﻿using Application.ControllerService.Common;
-using Infrastructure.Common;
+using Core.Common;
 using Infrastructure.MailService;
 using Microsoft.Extensions.Configuration;
 using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.User.ResetPassword
 {
-    internal class Service(RepositoryProvider repositoryProvider, IConfiguration configuration) : IControllerService<Request, bool>
+    internal class Service(IRepositoryProvider repositoryProvider, IConfiguration configuration) : IControllerService<Request, bool>
     {
         public async Task<bool> HandlingAsync(Request request)
         {
