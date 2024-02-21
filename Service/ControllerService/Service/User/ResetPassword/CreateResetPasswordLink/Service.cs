@@ -10,6 +10,9 @@ namespace Service.ControllerService.Service.User.ResetPassword.CreateResetPasswo
     {
         public async Task<bool> HandlingAsync(Request request)
         {
+            var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
+            await Helper.CheckCaptchaTokenAsync(request.Token, settings.CaptchaPrivateKey);
+
             var user = await repositoryProvider.UserRepository.GetByEmailAsync(request.Email) ??
                 throw new HandledExeption("Пользователь с таким адресом электронной почты не найден.");
 
