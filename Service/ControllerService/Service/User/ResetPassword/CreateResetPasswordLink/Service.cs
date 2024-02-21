@@ -39,7 +39,7 @@ namespace Service.ControllerService.Service.User.ResetPassword.CreateResetPasswo
         {
             var mailService = new MailService(repositoryProvider);
             await mailService.SendEmailAsync(email, "Сброс пароля", @$"
-                Для сброса пароля, перейдите по <a href='https://{configuration["Domain"]}/ResetPassword?guid={guid}'>ссылке</a>
+                Для сброса пароля, перейдите по <a href='https://{configuration["Domain"]}/reset-password?guid={guid}'>ссылке</a>
             ");
         }
     }
