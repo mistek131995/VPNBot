@@ -8,8 +8,8 @@ using Register = Service.ControllerService.Service.User.Register;
 using Activation = Service.ControllerService.Service.ActivateUser;
 using Login = Service.ControllerService.Service.User.AuthByLogin;
 using ChangePassword = Service.ControllerService.Service.User.ChangePassword;
-using CreateResetPasswordLink = Service.ControllerService.Service.User.ResetPassword.CreateResetPasswordLink;
-using SetNewPassword = Service.ControllerService.Service.User.ResetPassword.SetNewPassword;
+using CreateResetPasswordLink = Service.ControllerService.Service.User.RestorePassword.CreateResetPasswordLink;
+using SetNewPassword = Service.ControllerService.Service.User.RestorePassword.SetNewPassword;
 
 using ReferralIndex = Service.ControllerService.Service.ReferralIndex;
 

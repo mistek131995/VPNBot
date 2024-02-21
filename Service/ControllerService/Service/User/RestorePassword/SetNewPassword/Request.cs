@@ -1,6 +1,6 @@
 ﻿using Application.ControllerService.Common;
 
-namespace Service.ControllerService.Service.User.ResetPassword.SetNewPassword
+namespace Service.ControllerService.Service.User.RestorePassword.SetNewPassword
 {
     public class Request : IRequest<bool>
     {

@@ -4,7 +4,7 @@ using Infrastructure.MailService;
 using Microsoft.Extensions.Configuration;
 using Service.ControllerService.Common;
 
-namespace Service.ControllerService.Service.User.ResetPassword.CreateResetPasswordLink
+namespace Service.ControllerService.Service.User.RestorePassword.CreateResetPasswordLink
 {
     internal class Service(IRepositoryProvider repositoryProvider, IConfiguration configuration) : IControllerService<Request, bool>
     {

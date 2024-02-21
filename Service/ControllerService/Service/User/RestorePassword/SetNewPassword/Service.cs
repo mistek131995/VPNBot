@@ -2,7 +2,7 @@
 using Core.Common;
 using Service.ControllerService.Common;
 
-namespace Service.ControllerService.Service.User.ResetPassword.SetNewPassword
+namespace Service.ControllerService.Service.User.RestorePassword.SetNewPassword
 {
     internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
     {
