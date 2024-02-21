@@ -8,6 +8,8 @@ using Register = Service.ControllerService.Service.User.Register;
 using Activation = Service.ControllerService.Service.ActivateUser;
 using Login = Service.ControllerService.Service.User.AuthByLogin;
 using ChangePassword = Service.ControllerService.Service.User.ChangePassword;
+using CreateResetPasswordLink = Service.ControllerService.Service.User.ResetPassword.CreateResetPasswordLink;
+using SetNewPassword = Service.ControllerService.Service.User.ResetPassword.SetNewPassword;
 
 using ReferralIndex = Service.ControllerService.Service.ReferralIndex;
 
@@ -82,6 +84,23 @@ namespace VpnBotApi.Controllers
             {
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             });
+
+            return Json(response);
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> CreateResetPasswordLink([FromBody] CreateResetPasswordLink.Request request)
+        {
+            var response = await dispatcher.GetService<bool, CreateResetPasswordLink.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> SetNewPassword([FromBody] SetNewPassword.Request request)
+        {
+            var response = await dispatcher.GetService<bool, SetNewPassword.Request>(request);
 
             return Json(response);
         }
