@@ -1,6 +1,7 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 using Core.Model.Ticket;
+using Infrastructure.MailService;
 
 namespace Service.ControllerService.Service.AddTicket
 {
@@ -26,7 +27,25 @@ namespace Service.ControllerService.Service.AddTicket
                 UserId = request.UserId,
             });
 
-            return await repositoryProvider.TicketRepository.AddAsync(newTicket);
+            var ticketId =  await repositoryProvider.TicketRepository.AddAsync(newTicket);
+
+            //Тут оповещение админа о новом тикете
+            var adminUsers = await repositoryProvider.UserRepository.GetAllAdmins();
+            var adminEmails = adminUsers
+                .Select(x => x.Email)
+                .ToList();
+
+            var mailService = new MailService(repositoryProvider);
+            await mailService.SendEmailAsync(adminEmails, $"Новый тикет {ticketId} ({newTicket.Title})", @$"
+                Создан новый тикет {ticketId} с темой {newTicket.Title}.</br>
+                ----</br>
+                {request.Message}</br>
+                ----</br>
+                </br>
+                <a href='https://lockvpn.me/admin/ticket/{ticketId}'>Перейти к тикету</a>
+            ");
+
+            return ticketId;
         }
     }
 }
