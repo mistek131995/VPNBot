@@ -13,6 +13,7 @@ using AddCountry = Service.ControllerService.Service.AddCountry;
 using AddServer = Service.ControllerService.Service.AddServer;
 using TicketManagementList = Service.ControllerService.Service.Admin.TicketManagement.List;
 using TicketManagementView = Service.ControllerService.Service.Admin.TicketManagement.View;
+using UpdateCondition = Service.ControllerService.Service.Admin.TicketManagement.UpdateCondition;
 using AddTicketMessage = Service.ControllerService.Service.Admin.TicketManagement.AddMessage;
 
 namespace VpnBotApi.Controllers
@@ -152,6 +153,14 @@ namespace VpnBotApi.Controllers
             request.UsertId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
             var response = await dispatcher.GetService<bool, AddTicketMessage.Request>(request);
 
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> UpdateTicketCondition(UpdateCondition.Request request)
+        {
+            var response = await dispatcher.GetService<bool, UpdateCondition.Request>(request);
             return Json(response);
         }
     }

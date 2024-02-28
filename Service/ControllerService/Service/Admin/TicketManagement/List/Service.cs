@@ -20,6 +20,7 @@ namespace Service.ControllerService.Service.Admin.TicketManagement.List
                 Title = x.Title,
                 Category = x.CategoryName,
                 CreateDate = x.CreateDate,
+                Condition = x.Condition,
                 UserName = users.FirstOrDefault(u => u.Id == x.UserId)?.Login ?? "Пользователь не найден"
             }).ToList();
 
