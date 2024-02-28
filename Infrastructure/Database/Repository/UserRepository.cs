@@ -217,5 +217,29 @@ namespace Infrastructure.Database.Repository
 
             return await GetByIdAsync(user.Id);
         }
+
+        public async Task<List<User>> GetByEmailsAsync(List<string> emails)
+        {
+            var users = await context.Users
+                .Where(x => emails.Contains(x.Email))
+                .ToListAsync();
+            var userIds = users
+                .Select(x => x.Id)
+                .ToList();
+
+            return await GetByIdsAsync(userIds);
+        }
+
+        public async Task<List<User>> GetAllAdmins()
+        {
+            var users = await context.Users
+                .Where(x => x.Role == UserRole.Admin)
+                .ToListAsync();
+            var userIds = users
+                .Select(x => x.Id)
+                .ToList();
+
+            return await GetByIdsAsync(userIds);
+        }
     }
 }
