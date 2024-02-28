@@ -21,10 +21,19 @@ namespace Service.ControllerService.Service.Ticket.AddMessage
 
             await repositoryProvider.TicketRepository.UpdateAsync(ticket);
 
-            //Если пишет не владелец тикета, значит сообщение от админа
-            if(ticket.UserId != request.UserId)
+            var mailService = new MailService(repositoryProvider);
+            //Если пишет не владелец тикета, значит сообщение от админа и нужно увдеомить владельца тикета
+            if (ticket.UserId != request.UserId)
             {
-
+                var user = await repositoryProvider.UserRepository.GetByIdAsync(ticket.UserId);
+                await mailService.SendEmailAsync(user.Email, $"Новое сообщение в тикете {ticket.Id}", $@"
+                    В тикет {ticket.Id} пришло новое сообщение.</br>
+                    ----</br>
+                    {request.Message}</br>
+                    ----</br>
+                    </br>
+                    <a href='https://lockvpn.me/ticket/{ticket.Id}'>Перейти к тикету</a>
+                ");
             }
             else // Если сообщение от владельца тикета, значит отправляем админам
             {
@@ -33,14 +42,13 @@ namespace Service.ControllerService.Service.Ticket.AddMessage
                     .Select(x => x.Email)
                     .ToList();
 
-                var mailService = new MailService(repositoryProvider);
                 await mailService.SendEmailAsync(adminEmails, $"Новое сообщение в тикете {ticket.Id}", @$"
-В тикет {ticket.Id} пришло новое сообщение.</br>
-----</br>
-{request.Message}</br>
-----</br>
-</br>
-<a href='https://lockvpn.me/admin/ticket/{ticket.Id}'>Перейти к тикету</a>
+                    В тикет {ticket.Id} пришло новое сообщение.</br>
+                    ----</br>
+                    {request.Message}</br>
+                    ----</br>
+                    </br>
+                    <a href='https://lockvpn.me/admin/ticket/{ticket.Id}'>Перейти к тикету</a>
                 ");
             }
 
