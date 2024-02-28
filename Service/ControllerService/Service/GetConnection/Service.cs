@@ -150,7 +150,7 @@ namespace Service.ControllerService.Service.GetConnection
             }
             else
             {
-                return testConnections.FirstOrDefault(x => x.Ip == "78.153.139.17");
+                return testConnections.FirstOrDefault(x => x.Ip == "94.131.123.17");
             }
         }
 
