@@ -95,10 +95,10 @@ namespace Service.ControllerService.Service.GetConnection
                     Network = "tcp",
                     Protocol = "vless",
                     Security = "reality",
-                    PublicKey = "3h2QHYeRQqiisb8PqlTgz2vh1L-FOp-cUPOyT4lgK1k",
+                    PublicKey = "ZTxzbg5IzS_BFIiwWT_k3G5o_T56_Wh3S",
                     Fingerprint = "chrome",
                     ServerName =  "yahoo.com",
-                    ShortId = "77eaf6e8",
+                    ShortId = "a8cafa07",
                     Guid = "28bcfea1-53d0-4f3c-9f06-2df96ceef89c"
                 },
                 new Result()
