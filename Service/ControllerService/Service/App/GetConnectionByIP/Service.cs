@@ -88,15 +88,15 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                 new Result()
                 {
                     Name = "%2F#subscribe-access-vpn6",
-                    Ip = "94.131.123.17",
+                    Ip = "78.153.139.17",
                     Port = 443,
                     Network = "tcp",
                     Protocol = "vless",
                     Security = "reality",
-                    PublicKey = "GGH-bEoMIkUxg-Y4NEit-auck9kie32q7ZJTJetNcFs",
+                    PublicKey = "3h2QHYeRQqiisb8PqlTgz2vh1L-FOp-cUPOyT4lgK1k",
                     Fingerprint = "chrome",
                     ServerName =  "yahoo.com",
-                    ShortId = "90a822a9",
+                    ShortId = "77eaf6e8",
                     Guid = "28bcfea1-53d0-4f3c-9f06-2df96ceef89c"
                 },
                 new Result()
