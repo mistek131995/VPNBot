@@ -35,11 +35,11 @@ namespace Service.ControllerService.Service.Ticket.AddMessage
 
                 var mailService = new MailService(repositoryProvider);
                 await mailService.SendEmailAsync(adminEmails, $"Новое сообщение в тикете {ticket.Id}", @$"
-В тикет {ticket.Id} пришло новое сообщение.
-----
-{request.Message}
-----
-
+В тикет {ticket.Id} пришло новое сообщение.</br>
+----</br>
+{request.Message}</br>
+----</br>
+</br>
 <a href='https://lockvpn.me/admin/ticket/{ticket.Id}'>Перейти к тикету</a>
                 ");
             }
