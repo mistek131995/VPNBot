@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Infrastructure.MailService;
 
 namespace Service.ControllerService.Service.Admin.TicketManagement.AddMessage
 {
@@ -17,6 +18,19 @@ namespace Service.ControllerService.Service.Admin.TicketManagement.AddMessage
             });
 
             await repositoryProvider.TicketRepository.UpdateAsync(ticket);
+
+            //Оповещение пользователя о новом сообщении от админа
+            var user = await repositoryProvider.UserRepository.GetByIdAsync(ticket.UserId);
+
+            var mailService = new MailService(repositoryProvider);
+            await mailService.SendEmailAsync(user.Email, $"Новое сообщение в тикете {ticket.Id} ({ticket.Title})", $@"
+                    В тикет {ticket.Id} пришло новое сообщение.</br>
+                    ----</br>
+                    {request.Message}</br>
+                    ----</br>
+                    </br>
+                    <a href='https://lockvpn.me/ticket/{ticket.Id}'>Перейти к тикету</a>
+                ");
 
             return true;
         }
