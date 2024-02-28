@@ -90,7 +90,7 @@ namespace Service.ControllerService.Service.GetConnection
                 new Result()
                 {
                     Name = "%2F#subscribe-access-vpn6",
-                    Ip = "78.153.139.17",
+                    Ip = "94.131.123.17",
                     Port = 443,
                     Network = "tcp",
                     Protocol = "vless",
