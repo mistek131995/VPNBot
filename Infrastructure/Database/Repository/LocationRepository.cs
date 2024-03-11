@@ -91,6 +91,16 @@ namespace Infrastructure.Database.Repository
             return await GetByIdAsync(location.Id);
         }
 
+        public async Task<Core.Model.Location.Location> GetByServerIdAsync(int serverId)
+        {
+            var server = await context.VpnServers.FirstOrDefaultAsync(x => x.Id == serverId);
+
+            if(server == null) 
+                return null;
+
+            return await GetByIdAsync(server.CountryId);
+        }
+
         public async Task<Core.Model.Location.Location> GetByTagAsync(string tag)
         {
             var location = await context.Locations.FirstOrDefaultAsync(x => x.Tag == tag);
@@ -100,6 +110,7 @@ namespace Infrastructure.Database.Repository
 
             return await GetByIdAsync(location.Id);
         }
+
 
         public async Task UpdateAsync(Core.Model.Location.Location location)
         {

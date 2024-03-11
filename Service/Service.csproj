@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ControllerService\Service\GetServers\**" />
+    <EmbeddedResource Remove="ControllerService\Service\GetServers\**" />
+    <None Remove="ControllerService\Service\GetServers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
