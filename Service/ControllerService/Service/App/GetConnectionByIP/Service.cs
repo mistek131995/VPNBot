@@ -10,7 +10,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
         {
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
 
-            if (user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
+            if (user.AccessEndDate == null || user.AccessEndDate?.Date < DateTime.Now.Date)
                 throw new HandledExeption("Ваша подписка закончилась");
 
             var testConnections = new List<Result>()
