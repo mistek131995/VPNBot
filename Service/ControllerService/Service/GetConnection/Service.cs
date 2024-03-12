@@ -114,7 +114,21 @@ namespace Service.ControllerService.Service.GetConnection
                     ServerName =  "yahoo.com",
                     ShortId = "a8cafa07",
                     Guid = "8454cdb5-eaca-4bcf-aa18-22a14ec15407"
-                }
+                },
+                new Result()
+                {
+                    Name = "%2F#subscribe-access-vpn8",
+                    Ip = "95.164.6.175",
+                    Port = 443,
+                    Network = "tcp",
+                    Protocol = "vless",
+                    Security = "reality",
+                    PublicKey = "SvlSGOQONsCLv-BZJDGMaGGDSjKN5v8RbKDdt7kBNE4",
+                    Fingerprint = "chrome",
+                    ServerName =  "yahoo.com",
+                    ShortId = "3d127afb",
+                    Guid = "29d83cec-4312-44d1-9c59-bcea7530882a"
+                },
             };
 
             if (request.CountryId == 0)
