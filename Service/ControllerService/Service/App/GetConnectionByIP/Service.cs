@@ -87,6 +87,20 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                 },
                 new Result()
                 {
+                    Name = "%2F#subscribe-access-vpn6",
+                    Ip = "94.131.123.17",
+                    Port = 443,
+                    Network = "tcp",
+                    Protocol = "vless",
+                    Security = "reality",
+                    PublicKey = "ZTxzbg5IzS_BFIiwWT_k3G5o_T56_Wh3S-DQ1XsQgCw",
+                    Fingerprint = "chrome",
+                    ServerName =  "yahoo.com",
+                    ShortId = "a8cafa07",
+                    Guid = "8454cdb5-eaca-4bcf-aa18-22a14ec15407"
+                },
+                new Result()
+                {
                     Name = "%2F#subscribe-access-vpn7",
                     Ip = "78.153.139.17",
                     Port = 443,
@@ -101,18 +115,18 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                 },
                 new Result()
                 {
-                    Name = "%2F#subscribe-access-vpn6",
-                    Ip = "94.131.123.17",
+                    Name = "%2F#subscribe-access-vpn8",
+                    Ip = "95.164.6.175",
                     Port = 443,
                     Network = "tcp",
                     Protocol = "vless",
                     Security = "reality",
-                    PublicKey = "ZTxzbg5IzS_BFIiwWT_k3G5o_T56_Wh3S-DQ1XsQgCw",
+                    PublicKey = "SvlSGOQONsCLv-BZJDGMaGGDSjKN5v8RbKDdt7kBNE4",
                     Fingerprint = "chrome",
                     ServerName =  "yahoo.com",
-                    ShortId = "a8cafa07",
-                    Guid = "8454cdb5-eaca-4bcf-aa18-22a14ec15407"
-                }
+                    ShortId = "3d127afb",
+                    Guid = "29d83cec-4312-44d1-9c59-bcea7530882a"
+                },
             };
 
             return testConnections.FirstOrDefault(x => x.Ip == request.Ip)
