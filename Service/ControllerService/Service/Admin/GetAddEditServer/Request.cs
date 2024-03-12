@@ -1,6 +1,6 @@
 ﻿using Application.ControllerService.Common;
 
-namespace Service.ControllerService.Service.GetAddEditServer
+namespace Service.ControllerService.Service.Admin.GetAddEditServer
 {
     public class Request : IRequest<Result>
     {

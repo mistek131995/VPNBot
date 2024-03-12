@@ -70,7 +70,7 @@ namespace Infrastructure.Database.Repository
                 Name = x.Name,
                 Tag = x.Tag,
                 VpnServers = x.VpnServers.Select(v => new Core.Model.Location.VpnServer(
-                    v.Id, 
+                    v.Id,
                     v.Ip, 
                     v.Name, 
                     v.Description, 
@@ -123,6 +123,7 @@ namespace Infrastructure.Database.Repository
             dbLocation.VpnServers = location.VpnServers.Select(x => new VpnServer()
             {
                 Id = x.Id,
+                CountryId = location.Id,
                 Ip = x.Ip,
                 Name = x.Name,
                 Description = x.Description,

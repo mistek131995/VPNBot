@@ -2,7 +2,7 @@
 using Core.Common;
 using Service.ControllerService.Common;
 
-namespace Service.ControllerService.Service.GetAddEditServer
+namespace Service.ControllerService.Service.Admin.GetAddEditServer
 {
     internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, Result>
     {
@@ -10,7 +10,7 @@ namespace Service.ControllerService.Service.GetAddEditServer
         {
             var result = new Result();
 
-            var location = await repositoryProvider.LocationRepository.GetByServerIdAsync(request.ServerId) 
+            var location = await repositoryProvider.LocationRepository.GetByServerIdAsync(request.ServerId)
                 ?? throw new HandledExeption("Сервер не найден");
             var server = location.VpnServers.FirstOrDefault(x => x.Id == request.ServerId)
                 ?? throw new HandledExeption("Сервер не найден");

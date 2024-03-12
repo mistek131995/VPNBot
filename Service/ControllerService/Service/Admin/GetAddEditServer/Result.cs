@@ -1,10 +1,10 @@
-﻿namespace Service.ControllerService.Service.GetAddEditServer
+﻿namespace Service.ControllerService.Service.Admin.GetAddEditServer
 {
     public class Result
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Ip {  get; set; }
+        public string Ip { get; set; }
         public int Port { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }

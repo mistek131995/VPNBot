@@ -3,13 +3,13 @@ using Core.Common;
 using Core.Model.Location;
 using Service.ControllerService.Common;
 
-namespace Service.ControllerService.Service.AddServer
+namespace Service.ControllerService.Service.Admin.AddServer
 {
     internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            var location = await repositoryProvider.LocationRepository.GetByIdAsync(request.LocationId) 
+            var location = await repositoryProvider.LocationRepository.GetByIdAsync(request.LocationId)
                 ?? throw new HandledExeption("Страна не найдена");
 
             if (location.VpnServers.Any(x => x.Name.Trim().ToLower() == request.Name.Trim().ToLower()))

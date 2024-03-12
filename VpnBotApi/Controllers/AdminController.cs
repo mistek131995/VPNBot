@@ -5,16 +5,17 @@ using DeleteLog = Service.ControllerService.Service.DeleteLog;
 using GetLogs = Service.ControllerService.Service.GetLogs;
 using AddLogs = Service.ControllerService.Service.AddLog;
 using GetIndexLocation = Service.ControllerService.Service.Admin.VpnLocation.GetIndex;
-using GetAddEditServer = Service.ControllerService.Service.GetAddEditServer;
+using GetAddEditServer = Service.ControllerService.Service.Admin.GetAddEditServer;
 using UploadFile = Service.ControllerService.Service.UploadFile;
 using GetFiles = Service.ControllerService.Service.GetFiles;
 using GetSettings = Service.ControllerService.Service.GetSettings;
 using AddCountry = Service.ControllerService.Service.AddCountry;
-using AddServer = Service.ControllerService.Service.AddServer;
+using AddServer = Service.ControllerService.Service.Admin.AddServer;
 using TicketManagementList = Service.ControllerService.Service.Admin.TicketManagement.List;
 using TicketManagementView = Service.ControllerService.Service.Admin.TicketManagement.View;
 using UpdateCondition = Service.ControllerService.Service.Admin.TicketManagement.UpdateCondition;
 using AddTicketMessage = Service.ControllerService.Service.Admin.TicketManagement.AddMessage;
+using UpdateServer = Service.ControllerService.Service.Admin.UpdateServer;
 
 namespace VpnBotApi.Controllers
 {
@@ -161,6 +162,16 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> UpdateTicketCondition(UpdateCondition.Request request)
         {
             var response = await dispatcher.GetService<bool, UpdateCondition.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> UpdateServer(UpdateServer.Request request)
+        {
+            var response = await dispatcher.GetService<bool, UpdateServer.Request>(request);
+
             return Json(response);
         }
     }
