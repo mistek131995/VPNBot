@@ -10,21 +10,23 @@ namespace Service.ControllerService.Service.Admin.GetAddEditServer
         {
             var result = new Result();
 
-            var location = await repositoryProvider.LocationRepository.GetByServerIdAsync(request.ServerId)
-                ?? throw new HandledExeption("Сервер не найден");
-            var server = location.VpnServers.FirstOrDefault(x => x.Id == request.ServerId)
-                ?? throw new HandledExeption("Сервер не найден");
+            if(request.ServerId > 0)
+            {
+                var location = await repositoryProvider.LocationRepository.GetByServerIdAsync(request.ServerId)
+                    ?? throw new HandledExeption("Сервер не найден");
+                var server = location.VpnServers.FirstOrDefault(x => x.Id == request.ServerId)
+                    ?? throw new HandledExeption("Сервер не найден");
 
+                result.Name = server.Name;
+                result.Description = server.Description;
+                result.Ip = server.Ip;
+                result.Port = server.Port;
+                result.UserName = server.UserName;
+                result.Password = server.Password;
+                result.CountryId = location.Id;
+            }
 
             var countries = await repositoryProvider.LocationRepository.GetAllAsync();
-
-            result.Name = server.Name;
-            result.Description = server.Description;
-            result.Ip = server.Ip;
-            result.Port = server.Port;
-            result.UserName = server.UserName;
-            result.Password = server.Password;
-            result.CountryId = location.Id;
             result.Countries = countries
                 .Select(x => new Result.Option(x.Id.ToString(), x.Name))
                 .ToList();
