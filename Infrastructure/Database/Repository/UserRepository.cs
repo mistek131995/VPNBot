@@ -230,7 +230,7 @@ namespace Infrastructure.Database.Repository
             return await GetByIdsAsync(userIds);
         }
 
-        public async Task<List<User>> GetAllAdmins()
+        public async Task<List<User>> GetAllAdminsAsync()
         {
             var users = await context.Users
                 .Where(x => x.Role == UserRole.Admin)
@@ -238,6 +238,13 @@ namespace Infrastructure.Database.Repository
             var userIds = users
                 .Select(x => x.Id)
                 .ToList();
+
+            return await GetByIdsAsync(userIds);
+        }
+
+        public async Task<List<User>> GetAllAsync()
+        {
+            var userIds = await context.Users.Select(x => x.Id).ToListAsync();
 
             return await GetByIdsAsync(userIds);
         }

@@ -16,6 +16,8 @@ using TicketManagementView = Service.ControllerService.Service.Admin.TicketManag
 using UpdateCondition = Service.ControllerService.Service.Admin.TicketManagement.UpdateCondition;
 using AddTicketMessage = Service.ControllerService.Service.Admin.TicketManagement.AddMessage;
 using UpdateServer = Service.ControllerService.Service.Admin.UpdateServer;
+using GetUsers = Service.ControllerService.Service.Admin.Users.GetUsers;
+using GetUser = Service.ControllerService.Service.Admin.Users.GetUser;
 
 namespace VpnBotApi.Controllers
 {
@@ -171,6 +173,27 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> UpdateServer(UpdateServer.Request request)
         {
             var response = await dispatcher.GetService<bool, UpdateServer.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetUsers()
+        {
+            var response = await dispatcher.GetService<GetUsers.Result, GetUsers.Request>(new GetUsers.Request());
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetUser(int Id)
+        {
+            var response = await dispatcher.GetService<GetUser.Result, GetUser.Request>(new GetUser.Request()
+            {
+                Id = Id
+            });
 
             return Json(response);
         }

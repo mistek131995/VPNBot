@@ -30,7 +30,7 @@ namespace Service.ControllerService.Service.AddTicket
             var ticketId =  await repositoryProvider.TicketRepository.AddAsync(newTicket);
 
             //Тут оповещение админа о новом тикете
-            var adminUsers = await repositoryProvider.UserRepository.GetAllAdmins();
+            var adminUsers = await repositoryProvider.UserRepository.GetAllAdminsAsync();
             var adminEmails = adminUsers
                 .Select(x => x.Email)
                 .ToList();

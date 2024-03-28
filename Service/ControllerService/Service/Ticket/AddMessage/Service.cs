@@ -23,7 +23,7 @@ namespace Service.ControllerService.Service.Ticket.AddMessage
 
 
             //Тут оповещение админа о новом сообщении от пользователя
-            var adminUsers = await repositoryProvider.UserRepository.GetAllAdmins();
+            var adminUsers = await repositoryProvider.UserRepository.GetAllAdminsAsync();
             var adminEmails = adminUsers
                 .Select(x => x.Email)
                 .ToList();

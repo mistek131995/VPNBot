@@ -4,7 +4,8 @@ namespace Core.Repository
 {
     public interface IUserRepository
     {
-        public Task<List<User>> GetAllAdmins();
+        public Task<List<User>> GetAllAsync();
+        public Task<List<User>> GetAllAdminsAsync();
         public Task<User> GetByIdAsync(int id);
         public Task<List<User>> GetByIdsAsync(List<int> ids);
         public Task<List<User>> GetByParentIdAsync(int parentId);
