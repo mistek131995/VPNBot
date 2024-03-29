@@ -2,7 +2,6 @@
 using Core.Common;
 using Core.Model.User;
 using Serilog;
-using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.PaymentNotification
 {
@@ -28,7 +27,7 @@ namespace Service.ControllerService.Service.PaymentNotification
                     Amount = accessPosition.Price
                 });
 
-                if(user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
+                if (user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
                 {
                     user.AccessEndDate = DateTime.Now.AddMonths(accessPosition.MonthCount).Date;
                 }

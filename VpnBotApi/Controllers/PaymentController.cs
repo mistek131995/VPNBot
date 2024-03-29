@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
 using PaymentNotification = Service.ControllerService.Service.PaymentNotification;
 
-using TegroNotification = Service.ControllerService.Service.TegroPayment;
+using TegroNotification = Service.ControllerService.Service.TegroPayment.Notification;
+using TegroGetLink = Service.ControllerService.Service.TegroPayment.GetLink;
 
 using GetAccessPositions = Service.ControllerService.Service.GetAccessPositions;
 using GetSubscribeItem = Service.ControllerService.Service.GetSubscribeItem;
@@ -67,6 +68,18 @@ namespace VpnBotApi.Controllers
             var response = await dispatcher.GetService<bool, TegroNotification.Request>(request);
 
             return true;
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> TegroGetLink()
+        {
+            var response = await dispatcher.GetService<TegroGetLink.Result, TegroGetLink.Request>(new TegroGetLink.Request()
+            {
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
+
+            return Json(response);
         }
 
         [HttpGet]
