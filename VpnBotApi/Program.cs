@@ -63,6 +63,8 @@ namespace VpnBotApi
 
             var app = builder.Build();
 
+            app.UseMiddleware<ExceptionMiddleware>();
+
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider
@@ -95,8 +97,6 @@ namespace VpnBotApi
 
 
             app.MapControllers();
-            app.UseMiddleware<ExceptionMiddleware>();
-            //app.UseMiddleware<AppVersionMiddleware>();
             app.MapFallbackToFile("/index.html");
 
             app.Run();

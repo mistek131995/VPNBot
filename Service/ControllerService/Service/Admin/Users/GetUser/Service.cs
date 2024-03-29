@@ -15,8 +15,10 @@ namespace Service.ControllerService.Service.Admin.Users.GetUser
             {
                 Id = user.Id,
                 Name = user.Login,
-                RegisterDate = user.RegisterDate,
+                Email = user.Email,
+                Role = user.Role,
                 AccessEndDate = user.AccessEndDate,
+                Balance = user.Balance,
             };
         }
     }
