@@ -6,9 +6,9 @@ using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscr
 using PaymentNotification = Service.ControllerService.Service.PaymentNotification;
 
 //using CreateLink = Service.ControllerService.Service.Payment.RuKassa.CreateLink;
-using CreateLink = Service.ControllerService.Service.Payment.Lava.CreateLink;
+using CreateLavaLink = Service.ControllerService.Service.Payment.Lava.CreateLink;
 
-using GetAccessPositions = Service.ControllerService.Service.GetAccessPositions;
+using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
 using GetSubscribeItem = Service.ControllerService.Service.GetSubscribeItem;
 
 namespace VpnBotApi.Controllers
@@ -19,9 +19,9 @@ namespace VpnBotApi.Controllers
     {
         [HttpGet]
         [Authorize]
-        public async Task<JsonResult> AccessPositions()
+        public async Task<JsonResult> GetPaymentPositions()
         {
-            var response = await dispatcher.GetService<GetAccessPositions.Result, GetAccessPositions.Request>(new GetAccessPositions.Request());
+            var response = await dispatcher.GetService<GetPaymentPositions.Result, GetPaymentPositions.Request>(new GetPaymentPositions.Request());
 
             return Json(response);
         }
@@ -63,11 +63,14 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> CreateLink()
+        [Authorize]
+        public async Task<JsonResult> CreateLavaLink(int id)
         {
-            var response = await dispatcher.GetService<string, CreateLink.Request>(new CreateLink.Request());
-
-            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Headers));
+            var response = await dispatcher.GetService<string, CreateLavaLink.Request>(new CreateLavaLink.Request()
+            {
+                Id = id,
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
 
             return Json(response);
         }

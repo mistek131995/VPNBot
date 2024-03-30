@@ -1,4 +1,4 @@
-﻿namespace Service.ControllerService.Service.GetAccessPositions
+﻿namespace Service.ControllerService.Service.Payment.GetPaymentPositions
 {
     public class Result
     {

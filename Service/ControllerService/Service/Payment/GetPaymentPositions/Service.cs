@@ -1,7 +1,7 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 
-namespace Service.ControllerService.Service.GetAccessPositions
+namespace Service.ControllerService.Service.Payment.GetPaymentPositions
 {
     internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, Result>
     {
