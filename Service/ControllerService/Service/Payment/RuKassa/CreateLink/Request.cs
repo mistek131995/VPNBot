@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.ControllerService.Service.TegroPayment.GetLink
+namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
 {
-    public class Request : IRequest<Result>
+    public class Request : IRequest<string>
     {
+        public int AccessPositionId { get; set; }
         public int UserId { get; set; }
+        public int ReferalAmount { get; set; }
     }
 }

@@ -108,7 +108,7 @@ namespace Infrastructure.Database.Repository
             return await GetByIdAsync(newUser.Id);
         }
 
-        public async Task UpdateAsync(User user)
+        public async Task<User> UpdateAsync(User user)
         {
             var dbUser = await context.Users
                 .Include(x => x.Payments)
@@ -136,6 +136,8 @@ namespace Infrastructure.Database.Repository
 
             context.Users.Update(dbUser);
             await context.SaveChangesAsync();
+
+            return await GetByIdAsync(user.Id);
         }
 
         public async Task UpdateManyAsync(List<User> users)

@@ -14,6 +14,9 @@ namespace VpnBotApi.Worker.TelegramBot
         {
             var token = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
 
+            if(string.IsNullOrEmpty(token.TelegramToken))
+                return;
+
             botClient = new TelegramBotClient(token.TelegramToken);
 
             receiverOptions = new ReceiverOptions()

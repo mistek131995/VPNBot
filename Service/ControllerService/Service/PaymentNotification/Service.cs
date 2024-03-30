@@ -19,7 +19,7 @@ namespace Service.ControllerService.Service.PaymentNotification
                 if (accessPosition.Price != request.AMOUNT + request.us_sale)
                     return false;
 
-                user.Payments.Add(new Payment()
+                user.Payments.Add(new Core.Model.User.Payment()
                 {
                     AccessPositionId = accessPosition.Id,
                     Date = DateTime.Now,

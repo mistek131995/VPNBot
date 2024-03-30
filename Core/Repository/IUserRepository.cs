@@ -16,7 +16,7 @@ namespace Core.Repository
         public Task<User> GetByLoginAndPasswordAsync(string login, string password);
         public Task<User> GetByGuidAsync(Guid guid);
         public Task<User> AddAsync(User user);
-        public Task UpdateAsync(User user);
+        public Task<User> UpdateAsync(User user);
         public Task UpdateManyAsync(List<User> users);
     }
 }

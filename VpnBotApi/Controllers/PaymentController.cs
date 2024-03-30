@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
 using PaymentNotification = Service.ControllerService.Service.PaymentNotification;
 
-using TegroNotification = Service.ControllerService.Service.TegroPayment.Notification;
-using TegroGetLink = Service.ControllerService.Service.TegroPayment.GetLink;
+//using CreateLink = Service.ControllerService.Service.Payment.RuKassa.CreateLink;
+using CreateLink = Service.ControllerService.Service.Payment.Lava.CreateLink;
 
 using GetAccessPositions = Service.ControllerService.Service.GetAccessPositions;
 using GetSubscribeItem = Service.ControllerService.Service.GetSubscribeItem;
@@ -62,24 +62,20 @@ namespace VpnBotApi.Controllers
                 return "NO";
         }
 
-        [HttpPost]
-        public async Task<bool> TegroNotification([FromForm] TegroNotification.Request request)
-        {
-            var response = await dispatcher.GetService<bool, TegroNotification.Request>(request);
-
-            return true;
-        }
-
         [HttpGet]
-        [Authorize]
-        public async Task<JsonResult> TegroGetLink()
+        public async Task<JsonResult> CreateLink()
         {
-            var response = await dispatcher.GetService<TegroGetLink.Result, TegroGetLink.Request>(new TegroGetLink.Request()
-            {
-                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
-            });
+            var response = await dispatcher.GetService<string, CreateLink.Request>(new CreateLink.Request());
+
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Headers));
 
             return Json(response);
+        }
+
+        [HttpPost]
+        public async Task LavaNotification()
+        {
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Headers));
         }
 
         [HttpGet]
