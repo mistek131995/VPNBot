@@ -7,6 +7,7 @@ using PaymentNotification = Service.ControllerService.Service.PaymentNotificatio
 
 using CreateRuKassaLink = Service.ControllerService.Service.Payment.RuKassa.CreateLink;
 using CreateLavaLink = Service.ControllerService.Service.Payment.Lava.CreateLink;
+using LavaNotification = Service.ControllerService.Service.Payment.Lava.Notification;
 
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
 using GetSubscribeItem = Service.ControllerService.Service.GetSubscribeItem;
@@ -90,6 +91,14 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task LavaNotification()
         {
+            //Сигнатура полученная от платежной системы
+            var signature = Request.Headers.Authorization.ToString();
+
+            await dispatcher.GetService<bool, LavaNotification.Request>(new LavaNotification.Request()
+            {
+                Signature = signature
+            });
+
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Headers));
         }
 

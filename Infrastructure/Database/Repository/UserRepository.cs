@@ -131,6 +131,7 @@ namespace Infrastructure.Database.Repository
                     UserId = x.UserId,
                     Date = x.Date,
                     Amount = x.Amount,
+                    Signature = x.Signature,
                 })
                 .ToList();
 
@@ -249,6 +250,15 @@ namespace Infrastructure.Database.Repository
             var userIds = await context.Users.Select(x => x.Id).ToListAsync();
 
             return await GetByIdsAsync(userIds);
+        }
+
+        public async Task<User> GetByPaymentSignature(string signature)
+        {
+            var payment = await context.Payments
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Signature == signature);
+
+            return await GetByIdAsync(payment.UserId);
         }
     }
 }

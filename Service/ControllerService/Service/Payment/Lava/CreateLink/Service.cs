@@ -11,25 +11,47 @@ namespace Service.ControllerService.Service.Payment.Lava.CreateLink
     {
         public async Task<string> HandlingAsync(Request request)
         {
+            //Получаем позицию для оплаты
             var paymentPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.Id) 
                 ?? throw new HandledExeption("Не найдена позиция для оплаты");
 
+            //Получаем пользователя
+            var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) 
+                ?? throw new HandledExeption("Пользователь не найден");
+
+            //Создаем новый платеж
+            user.Payments.Add(new Core.Model.User.Payment()
+            {
+                AccessPositionId = paymentPosition.Id,
+                Amount = paymentPosition.Price,
+                Date = DateTime.Now,
+                State = Core.Model.User.PaymentState.NotCompleted,
+                UserId = request.UserId,
+            });
+
+            //Сохраняем платеж, чтобы получить Id
+            user = await repositoryProvider.UserRepository.UpdateAsync(user);
+            var lastPayment = user.Payments.LastOrDefault();
+
+            //Создаем запрос с Id платежа и получаем сигнатуру
             var query = new
             {
                 sum = paymentPosition.Price,
-                orderId = Guid.NewGuid(),
+                orderId = lastPayment.Id,
                 shopId = "00be473d-254f-4e40-a5ab-a7fd5db26fcf"
             };
-
             var serializeQuery = Newtonsoft.Json.JsonConvert.SerializeObject(query);
-
             var signature = GenerateSignature(serializeQuery, "30e27bc2cba9cb964ae0e86243058cc90c4e9d62");
 
-            var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(query), Encoding.UTF8, "application/json");
+            //Сохраняем сигнатуру платежа для будущей проерки на подленность
+            lastPayment.Signature = signature;
+            await repositoryProvider.UserRepository.UpdateAsync(user);
 
+            //Запрашиваем ссылку на оплату
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             httpClient.DefaultRequestHeaders.Add("Signature", signature);
+            var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(query), Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync("https://api.lava.ru/business/invoice/create", content);
 
             if (response.IsSuccessStatusCode)

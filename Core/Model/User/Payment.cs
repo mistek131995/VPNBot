@@ -9,7 +9,7 @@ namespace Core.Model.User
         public int AccessPositionId { get; set; }
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
-        public Guid Guid { get; set; }
         public PaymentState State { get; set; }
+        public string Signature { get; set; }
     }
 }
