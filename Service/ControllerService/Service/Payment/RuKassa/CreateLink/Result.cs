@@ -8,5 +8,8 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
 {
     public class Result
     {
+        public int id { get; set; }
+        public string hash { get; set; }
+        public string url { get; set; }
     }
 }

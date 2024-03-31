@@ -1,6 +1,7 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 using Service.ControllerService.Common;
+using Core.Model.User;
 
 namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
 {
@@ -11,53 +12,56 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId)
                 ?? throw new HandledExeption("Пользователь не найден");
 
-            if (user.Balance < request.ReferalAmount)
-                throw new HandledExeption("Недостаточно средств на реферальном балансе");
-
             var lastPayment = user.Payments.LastOrDefault();
 
-            if (lastPayment != null && (DateTime.Now - lastPayment.Date).TotalMinutes < 10)
-                throw new HandledExeption($"Недавно вы уже создавали платеж, новый платеж можно создать через {(DateTime.Now - lastPayment.Date).TotalMinutes} минут(ы)");
+            if (lastPayment != null && (DateTime.Now - lastPayment.Date).TotalMinutes < 10 && lastPayment.State == PaymentState.NotCompleted)
+            {
+                var minutes = (int)(DateTime.Now - lastPayment.Date).TotalMinutes;
 
-            var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.AccessPositionId);
+                if(minutes > 0)
+                    throw new HandledExeption($"Недавно вы уже создавали платеж, новый платеж можно создать через {(int)(DateTime.Now - lastPayment.Date).TotalMinutes} минут(ы)");
+                else
+                    throw new HandledExeption($"Недавно вы уже создавали платеж, для создания нового платежа осталось подождать меньше минуты");
+            }
+
+
+            var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.Id)
+                ?? throw new HandledExeption("Не найдена позиция для оплаты");
 
             user.Payments.Add(new Core.Model.User.Payment()
             {
                 AccessPositionId = accessPosition.Id,
+                Amount = accessPosition.Price,
+                Date = DateTime.Now,
+                State = PaymentState.NotCompleted,
+                UserId = request.UserId
             });
 
+            user = await repositoryProvider.UserRepository.UpdateAsync(user);
+            lastPayment = user.Payments.LastOrDefault();
 
+            var queryDictionary = new Dictionary<string, string>
+            {
+                { "shop_id", "2087" },
+                { "order_id", lastPayment.Id.ToString() },
+                { "token", "f1bcf17bb8a0a91966e6bb55b20e6761" },
+                { "amount", accessPosition.Price.ToString() }
+            };
 
-            //var payment = new Core.Model.User.Payment()
-            //{
-            //    Guid = Guid.NewGuid(),
-            //    AccessPositionId = request.AccessPositionId,
-            //    Amount = accessPosition.Price - request.ReferalAmount,
-            //};
+            var query = string.Join("&", queryDictionary.Select(x => $"{x.Key}={x.Value}"));
 
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync($"https://lk.rukassa.pro/api/v1/create?{query}");
 
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(responseString);
 
+                return result.url;
+            }
 
-            //var queryDictionary = new Dictionary<string, string>
-            //{
-            //    { "shop_id", "2087" },
-            //    { "order_id", "0" },
-            //    { "token", "f1bcf17bb8a0a91966e6bb55b20e6761" },
-            //    { "amount", "10" },
-            //    { "data", Newtonsoft.Json.JsonConvert.SerializeObject(payment.Guid) }
-            //};
-
-            //var query = string.Join("&", queryDictionary.Select(x => $"{x.Key}={x.Value}"));
-
-            //var httpClient = new HttpClient();
-            //var response = await httpClient.GetAsync($"https://lk.rukassa.pro/api/v1/create?{query}");
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var responseString = await response.Content.ReadAsStringAsync();
-            //}
-
-            return string.Empty;
+            throw new HandledExeption("Не удалось получить ссылку на оплату. Попробуйте позднее.");
         }
     }
 }

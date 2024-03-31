@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
 using PaymentNotification = Service.ControllerService.Service.PaymentNotification;
 
-//using CreateLink = Service.ControllerService.Service.Payment.RuKassa.CreateLink;
+using CreateRuKassaLink = Service.ControllerService.Service.Payment.RuKassa.CreateLink;
 using CreateLavaLink = Service.ControllerService.Service.Payment.Lava.CreateLink;
 
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
@@ -67,6 +67,18 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> CreateLavaLink(int id)
         {
             var response = await dispatcher.GetService<string, CreateLavaLink.Request>(new CreateLavaLink.Request()
+            {
+                Id = id,
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> CreateRuKassaLink(int id)
+        {
+            var response = await dispatcher.GetService<string, CreateRuKassaLink.Request>(new CreateRuKassaLink.Request()
             {
                 Id = id,
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)

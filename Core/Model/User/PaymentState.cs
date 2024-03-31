@@ -8,7 +8,7 @@ namespace Core.Model.User
 {
     public enum PaymentState
     {
-        None = 0,
+        NotCompleted = 0,
         Completed = 1
     }
 }
