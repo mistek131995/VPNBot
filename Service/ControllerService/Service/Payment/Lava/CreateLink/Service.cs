@@ -27,6 +27,7 @@ namespace Service.ControllerService.Service.Payment.Lava.CreateLink
                 Date = DateTime.Now,
                 State = Core.Model.User.PaymentState.NotCompleted,
                 UserId = request.UserId,
+                Signature = string.Empty,
             });
 
             //Сохраняем платеж, чтобы получить Id
