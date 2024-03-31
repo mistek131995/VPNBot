@@ -98,6 +98,8 @@ namespace VpnBotApi.Controllers
             Console.WriteLine(Request.Headers.Authorization.ToString());
             Console.WriteLine("Тело------------------------------------");
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Body));
+            Console.WriteLine("Тело строкой------------------------------------");
+            Console.WriteLine(Request.Body.ToString());
             Console.WriteLine("Конец выполнения------------------------------------");
 
             //Сигнатура полученная от платежной системы
