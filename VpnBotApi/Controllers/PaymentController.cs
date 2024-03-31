@@ -89,24 +89,21 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        public async Task LavaNotification()
+        public async Task LavaNotification([FromBody] LavaNotification.Request request)
         {
+            request.Signature = Request.Headers.Authorization.ToString();
+
             Console.WriteLine("Начало выполнения------------------------------------");
-            Console.WriteLine("Заголовок------------------------------------");
-            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Headers));
-            Console.WriteLine("Подпись------------------------------------");
-            Console.WriteLine(Request.Headers.Authorization.ToString());
-            Console.WriteLine("Тело строкой------------------------------------");
-            Console.WriteLine(Request.Body.ToString());
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(request));
+            //Console.WriteLine("Заголовок------------------------------------");
+            //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Headers));
+            //Console.WriteLine("Подпись------------------------------------");
+            //Console.WriteLine(Request.Headers.Authorization.ToString());
+            //Console.WriteLine("Тело строкой------------------------------------");
+            //Console.WriteLine(Request.Body.ToString());
             Console.WriteLine("Конец выполнения------------------------------------");
 
-            //Сигнатура полученная от платежной системы
-            var signature = Request.Headers.Authorization.ToString();
-
-            await dispatcher.GetService<bool, LavaNotification.Request>(new LavaNotification.Request()
-            {
-                Signature = signature
-            });
+            await dispatcher.GetService<bool, LavaNotification.Request>(request);
         }
 
         [HttpGet]
