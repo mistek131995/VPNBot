@@ -39,6 +39,7 @@ namespace Infrastructure.Database.Repository
                     AccessPositionId = p.AccessPositionId,
                     Amount = p.Amount,
                     Date = p.Date,
+                    Signature = p.Signature,
                 }).ToList()
             };
         }
@@ -70,6 +71,7 @@ namespace Infrastructure.Database.Repository
                         AccessPositionId = p.AccessPositionId,
                         Amount = p.Amount,
                         Date = p.Date,
+                        Signature = p.Signature,
                     }).ToList()
                 })
                 .Where(x => ids.Contains(x.Id))
