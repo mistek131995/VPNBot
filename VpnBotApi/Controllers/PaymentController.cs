@@ -91,6 +91,11 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task LavaNotification()
         {
+            Console.WriteLine("Начало выполнения------------------------------------");
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Headers));
+            Console.WriteLine(Request.Headers.Authorization.ToString());
+            Console.WriteLine("Конец выполнения------------------------------------");
+
             //Сигнатура полученная от платежной системы
             var signature = Request.Headers.Authorization.ToString();
 
@@ -98,8 +103,6 @@ namespace VpnBotApi.Controllers
             {
                 Signature = signature
             });
-
-            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Headers));
         }
 
         [HttpGet]
