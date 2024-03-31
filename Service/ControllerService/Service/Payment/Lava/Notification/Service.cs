@@ -8,8 +8,6 @@ namespace Service.ControllerService.Service.Payment.Lava.Notification
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            //var signature = Newtonsoft.Json.JsonConvert.DeserializeObject<string>(request.Signature);
-
             var user = await repositoryProvider.UserRepository.GetByPaymentSignature(request.Signature)
                 ?? throw new Exception($"Не удалось найти пользователя по сигнатуре - {request.Signature}");
 
