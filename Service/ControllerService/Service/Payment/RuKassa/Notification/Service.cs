@@ -10,7 +10,7 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            var signature = ComputeHmacSha256("f1bcf17bb8a0a91966e6bb55b20e6761", request.Query);
+            var signature = ComputeHmacSha256("f1bcf17bb8a0a91966e6bb55b20e6761", request.Query.Trim());
 
             Console.WriteLine(signature);
             Console.WriteLine(request.Signature);
