@@ -14,8 +14,11 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
         {
             var signature = SHAUtil.GetSHA256("id=6717318&order_id=22&amount=200.00&in_amount=200.00&data=&createdDateTime=2024-03-31T04%3A57%3A36%2B00%3A00&status=PAID", "f1bcf17bb8a0a91966e6bb55b20e6761");
 
+            Console.WriteLine(request.Query == "id=6717318&order_id=22&amount=200.00&in_amount=200.00&data=&createdDateTime=2024-03-31T04%3A57%3A36%2B00%3A00&status=PAID");
+
             Console.WriteLine(signature);
             Console.WriteLine(request.Signature);
+            Signature.GenerateSignature("id=6717318&order_id=22&amount=200.00&in_amount=200.00&data=&createdDateTime=2024-03-31T04%3A57%3A36%2B00%3A00&status=PAID", "f1bcf17bb8a0a91966e6bb55b20e6761");
 
             Console.WriteLine("---------------");
             Console.WriteLine(request.Query);
