@@ -8,6 +8,7 @@ using PaymentNotification = Service.ControllerService.Service.PaymentNotificatio
 using CreateRuKassaLink = Service.ControllerService.Service.Payment.RuKassa.CreateLink;
 using CreateLavaLink = Service.ControllerService.Service.Payment.Lava.CreateLink;
 using LavaNotification = Service.ControllerService.Service.Payment.Lava.Notification;
+using RuKassaNotification = Service.ControllerService.Service.Payment.RuKassa.Notification;
 
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
 using GetSubscribeItem = Service.ControllerService.Service.GetSubscribeItem;
@@ -104,6 +105,16 @@ namespace VpnBotApi.Controllers
             Console.WriteLine("Конец выполнения------------------------------------");
 
             await dispatcher.GetService<bool, LavaNotification.Request>(request);
+        }
+
+        public async Task RuKassaNotification([FromBody] RuKassaNotification.Request request)
+        {
+            Console.WriteLine("---------------------------------------------");
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Headers));
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Body));
+            Console.WriteLine("---------------------------------------------");
+
+            await dispatcher.GetService<bool, RuKassaNotification.Request>(request);
         }
 
         [HttpGet]
