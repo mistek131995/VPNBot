@@ -10,7 +10,7 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            var signature = CalculateHmacSha256("f1bcf17bb8a0a91966e6bb55b20e6761", request.Query);
+            var signature = ComputeHmacSha256("f1bcf17bb8a0a91966e6bb55b20e6761", request.Query);
 
             Console.WriteLine(signature);
             Console.WriteLine(request.Signature);
@@ -21,24 +21,25 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
             return true;
         }
 
-        public static string CalculateHmacSha256(string key, string message)
+        public static string ComputeHmacSha256(string secretKey, string message)
         {
-            // Ключ и сообщение должны быть преобразованы в массив байтов
-            byte[] keyBytes = Encoding.UTF8.GetBytes(key);
+            // Convert the secret key and message to byte arrays
+            byte[] keyBytes = Encoding.UTF8.GetBytes(secretKey);
             byte[] messageBytes = Encoding.UTF8.GetBytes(message);
 
-            // Использование класса HMACSHA256 для вычисления HMAC
-            using (HMACSHA256 hmac = new HMACSHA256(keyBytes))
+            // Initialize the HMACSHA256 instance with the secret key
+            using (HMACSHA256 hmacSha256 = new HMACSHA256(keyBytes))
             {
-                byte[] hashBytes = hmac.ComputeHash(messageBytes);
+                // Compute the hash
+                byte[] hashBytes = hmacSha256.ComputeHash(messageBytes);
 
-                // Преобразование результата из массива байтов в шестнадцатеричную строку
-                StringBuilder sb = new StringBuilder();
+                // Convert the hash to a hexadecimal string
+                StringBuilder hex = new StringBuilder(hashBytes.Length * 2);
                 foreach (byte b in hashBytes)
                 {
-                    sb.AppendFormat("{0:x2}", b);
+                    hex.AppendFormat("{0:x2}", b);
                 }
-                return sb.ToString();
+                return hex.ToString();
             }
         }
     }
