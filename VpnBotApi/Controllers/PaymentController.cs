@@ -107,21 +107,14 @@ namespace VpnBotApi.Controllers
             await dispatcher.GetService<bool, LavaNotification.Request>(request);
         }
 
-        public async Task RuKassaNotification()
+        public async Task RuKassaNotification([FromBody] RuKassaNotification.Request request)
         {
+            request.Signature = Request.Headers.FirstOrDefault(x => x.Key == "signature").Value;
             Console.WriteLine("---------------------------------------------");
-            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Headers));
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(request));
             Console.WriteLine("---------------------------------------------");
-            var reader = new StreamReader(Request.Body);
-            var body = await reader.ReadToEndAsync();
-            Console.WriteLine(body);
-            Console.WriteLine("---------------------------------------------");
-            Request.Form.ToList().ForEach(x => Console.WriteLine(x.Key + " - " + x.Value));
 
-            await dispatcher.GetService<bool, RuKassaNotification.Request>(new RuKassaNotification.Request()
-            {
-
-            });
+            await dispatcher.GetService<bool, RuKassaNotification.Request>(request);
         }
 
         [HttpGet]
