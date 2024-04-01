@@ -10,6 +10,6 @@ namespace Core.Model.User
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
         public PaymentState State { get; set; }
-        public string Signature { get; set; }
+        public Guid Guid { get; set; }
     }
 }

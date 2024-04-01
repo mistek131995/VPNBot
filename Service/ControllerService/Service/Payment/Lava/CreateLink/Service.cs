@@ -27,7 +27,7 @@ namespace Service.ControllerService.Service.Payment.Lava.CreateLink
                 Date = DateTime.Now,
                 State = Core.Model.User.PaymentState.NotCompleted,
                 UserId = request.UserId,
-                Signature = string.Empty,
+                //Signature = string.Empty,
             });
 
             //Сохраняем платеж, чтобы получить Id
@@ -42,11 +42,7 @@ namespace Service.ControllerService.Service.Payment.Lava.CreateLink
                 shopId = "00be473d-254f-4e40-a5ab-a7fd5db26fcf"
             };
             var serializeQuery = Newtonsoft.Json.JsonConvert.SerializeObject(query);
-            var signature = GenerateSignature(serializeQuery, "30e27bc2cba9cb964ae0e86243058cc90c4e9d62");
-
-            //Сохраняем сигнатуру платежа для будущей проерки на подленность
-            lastPayment.Signature = signature;
-            await repositoryProvider.UserRepository.UpdateAsync(user);
+            var signature = Signature.GenerateSignature(serializeQuery, "30e27bc2cba9cb964ae0e86243058cc90c4e9d62");
 
             //Запрашиваем ссылку на оплату
             var httpClient = new HttpClient();
@@ -60,35 +56,14 @@ namespace Service.ControllerService.Service.Payment.Lava.CreateLink
                 var body = await response.Content.ReadAsStringAsync();
                 var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(body);
 
+                //Сохраняем сигнатуру платежа для будущей проерки на подленность
+                lastPayment.Guid = Guid.Parse(result.data.id);
+                await repositoryProvider.UserRepository.UpdateAsync(user);
+
                 return result.data.url;
             }
 
             throw new HandledExeption("Не удалось получить ссылку на оплату. Попробуйте позднее.");
-        }
-
-        public static string GenerateSignature(string serializeData, string secret)
-        {
-            if (string.IsNullOrEmpty(serializeData))
-            {
-                return null;
-            }
-
-            UTF8Encoding encoding = new UTF8Encoding();
-            byte[] data = encoding.GetBytes(serializeData);
-            byte[] key = encoding.GetBytes(secret);
-
-            using (var hash = new HMACSHA256(key))
-            {
-                var hashmessage = hash.ComputeHash(data);
-                StringBuilder sbinary = new StringBuilder();
-
-                for (int i = 0; i < hashmessage.Length; i++)
-                {
-                    sbinary.Append(hashmessage[i].ToString("x2"));
-                }
-
-                return sbinary.ToString();
-            }
         }
     }
 }

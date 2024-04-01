@@ -39,7 +39,7 @@ namespace Infrastructure.Database.Repository
                     AccessPositionId = p.AccessPositionId,
                     Amount = p.Amount,
                     Date = p.Date,
-                    Signature = p.Signature,
+                    Guid = p.Guid,
                 }).ToList()
             };
         }
@@ -71,7 +71,7 @@ namespace Infrastructure.Database.Repository
                         AccessPositionId = p.AccessPositionId,
                         Amount = p.Amount,
                         Date = p.Date,
-                        Signature = p.Signature,
+                        Guid = p.Guid,
                     }).ToList()
                 })
                 .Where(x => ids.Contains(x.Id))
@@ -133,7 +133,7 @@ namespace Infrastructure.Database.Repository
                     UserId = x.UserId,
                     Date = x.Date,
                     Amount = x.Amount,
-                    Signature = x.Signature,
+                    Guid = x.Guid,
                 })
                 .ToList();
 
@@ -254,11 +254,11 @@ namespace Infrastructure.Database.Repository
             return await GetByIdsAsync(userIds);
         }
 
-        public async Task<User> GetByPaymentSignature(string signature)
+        public async Task<User> GetByPaymentSignature(Guid guid)
         {
             var payment = await context.Payments
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Signature == signature);
+                .FirstOrDefaultAsync(x => x.Guid == guid);
 
             return await GetByIdAsync(payment.UserId);
         }
