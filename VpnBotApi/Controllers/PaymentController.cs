@@ -112,9 +112,9 @@ namespace VpnBotApi.Controllers
             Console.WriteLine("---------------------------------------------");
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Headers));
             Console.WriteLine("---------------------------------------------");
-            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Body));
+            Console.WriteLine(Request.Body.ToString());
             Console.WriteLine("---------------------------------------------");
-            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(Request.Form));
+            Console.WriteLine(Request.Form.ToString());
 
             await dispatcher.GetService<bool, RuKassaNotification.Request>(new RuKassaNotification.Request()
             {
