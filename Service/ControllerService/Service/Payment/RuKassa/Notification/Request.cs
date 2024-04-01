@@ -11,6 +11,6 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
         public string? data { get; set; }
         public DateTime createdDateTime { get; set; }
         public string status { get; set; }
-        public string Signature { get; set; }
+        public string? Signature { get; set; }
     }
 }
