@@ -108,24 +108,19 @@ namespace VpnBotApi.Controllers
             await dispatcher.GetService<bool, LavaNotification.Request>(request);
         }
 
-        public async Task RuKassaNotification()
+        public async Task RuKassaNotification([FromBody]string query)
         {
             var signature = Request.Headers.FirstOrDefault(x => x.Key == "signature").Value;
 
-            var queryString = await new StreamReader(Request.Body).ReadToEndAsync();
-            var query = HttpUtility.ParseQueryString(queryString);
-
-            
-
             Console.WriteLine("---------------------------------------------");
-            Console.WriteLine(query["id"]);
-            Console.WriteLine(query["order_id"]);
-            Console.WriteLine(query["amount"]);
-            Console.WriteLine(query["in_amount"]);
-            Console.WriteLine(query["data"]);
+            Console.WriteLine(query);
             Console.WriteLine("---------------------------------------------");
 
-            await dispatcher.GetService<bool, RuKassaNotification.Request>(new RuKassaNotification.Request());
+            await dispatcher.GetService<bool, RuKassaNotification.Request>(new RuKassaNotification.Request()
+            {
+                Query = query,
+                Signature = signature
+            });
         }
 
         [HttpGet]
