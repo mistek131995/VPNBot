@@ -12,6 +12,7 @@ using RuKassaNotification = Service.ControllerService.Service.Payment.RuKassa.No
 
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
 using GetSubscribeItem = Service.ControllerService.Service.GetSubscribeItem;
+using System.Web;
 
 namespace VpnBotApi.Controllers
 {
@@ -107,14 +108,24 @@ namespace VpnBotApi.Controllers
             await dispatcher.GetService<bool, LavaNotification.Request>(request);
         }
 
-        public async Task RuKassaNotification([FromBody] RuKassaNotification.Request request)
+        public async Task RuKassaNotification()
         {
-            request.Signature = Request.Headers.FirstOrDefault(x => x.Key == "signature").Value;
+            var signature = Request.Headers.FirstOrDefault(x => x.Key == "signature").Value;
+
+            var queryString = await new StreamReader(Request.Body).ReadToEndAsync();
+            var query = HttpUtility.ParseQueryString(queryString);
+
+            
+
             Console.WriteLine("---------------------------------------------");
-            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(request));
+            Console.WriteLine(query["id"]);
+            Console.WriteLine(query["order_id"]);
+            Console.WriteLine(query["amount"]);
+            Console.WriteLine(query["in_amount"]);
+            Console.WriteLine(query["data"]);
             Console.WriteLine("---------------------------------------------");
 
-            await dispatcher.GetService<bool, RuKassaNotification.Request>(request);
+            await dispatcher.GetService<bool, RuKassaNotification.Request>(new RuKassaNotification.Request());
         }
 
         [HttpGet]
