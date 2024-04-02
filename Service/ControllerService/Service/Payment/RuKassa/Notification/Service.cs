@@ -21,7 +21,13 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
 
             var signature = Signature.GenerateSignature($"{id}|{createdDateTime}|{amount}", "f1bcf17bb8a0a91966e6bb55b20e6761");
 
-            if(signature == request.Signature && amount == inAmount)
+            Console.WriteLine(amount);
+            Console.WriteLine(amount);
+            Console.WriteLine("----------");
+            Console.WriteLine(signature);
+            Console.WriteLine(request.Signature);
+
+            if (signature == request.Signature && amount == inAmount)
             {
                 var user = await repositoryProvider.UserRepository.GetByPaymentId(int.Parse(orderId))
                     ?? throw new Exception($"Не удалось найти пользователя по orderId (PaymentId) - {orderId}");
