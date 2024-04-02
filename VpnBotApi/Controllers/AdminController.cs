@@ -18,6 +18,7 @@ using AddTicketMessage = Service.ControllerService.Service.Admin.TicketManagemen
 using UpdateServer = Service.ControllerService.Service.Admin.UpdateServer;
 using GetUsers = Service.ControllerService.Service.Admin.Users.GetUsers;
 using GetUser = Service.ControllerService.Service.Admin.Users.GetUser;
+using UpdateUser = Service.ControllerService.Service.Admin.Users.Update;
 
 namespace VpnBotApi.Controllers
 {
@@ -194,6 +195,15 @@ namespace VpnBotApi.Controllers
             {
                 Id = Id
             });
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> UpdateUser([FromBody]UpdateUser.Request request)
+        {
+            var response = await dispatcher.GetService<bool, UpdateUser.Request>(request);
 
             return Json(response);
         }

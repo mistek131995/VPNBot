@@ -1,18 +1,24 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.Admin.Users.Update
 {
-    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
+    public class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
     {
-        public Task<bool> HandlingAsync(Request request)
+        public async Task<bool> HandlingAsync(Request request)
         {
-            throw new NotImplementedException();
+            var user = await repositoryProvider.UserRepository.GetByIdAsync(request.Id)
+                ?? throw new HandledExeption("Пользователь не найден");
+
+            user.AccessEndDate = request.AccessEndDate;
+
+            if (!string.IsNullOrEmpty(request.Password))
+                user.Password = request.Password;
+
+            await repositoryProvider.UserRepository.UpdateAsync(user);
+
+            return true;
         }
     }
 }
