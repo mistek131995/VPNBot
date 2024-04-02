@@ -57,7 +57,7 @@ namespace Service.ControllerService.Service.Payment.Lava.CreateLink
                 var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(body);
 
                 //Сохраняем сигнатуру платежа для будущей проерки на подленность
-                lastPayment.Guid = Guid.Parse(result.data.id);
+                //lastPayment.Guid = Guid.Parse(result.data.id);
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 return result.data.url;

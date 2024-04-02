@@ -1,4 +1,6 @@
-﻿namespace Service.ControllerService.Service.GetIndex
+﻿using Core.Model.User;
+
+namespace Service.ControllerService.Service.GetIndex
 {
     public class Result
     {
@@ -21,6 +23,7 @@
             public string Range { get; set; }
             public DateTime Date { get; set; }
             public string Price { get; set; }
+            public PaymentState State { get; set; }
         }
     }
 }

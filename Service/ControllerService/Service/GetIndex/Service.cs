@@ -18,7 +18,7 @@ namespace Service.ControllerService.Service.GetIndex
             result.EndAccessDate = user.AccessEndDate;
             result.Balance = user.Balance;
 
-            if (user.Payments != null && user.Payments.Any())
+            if (user.Payments != null && user.Payments.Count != 0)
             {
                 foreach (var payment in user.Payments)
                 {
@@ -29,7 +29,8 @@ namespace Service.ControllerService.Service.GetIndex
                         Id = payment.Id,
                         Date = payment.Date,
                         Range = $"{position.MonthCount} месяц.",
-                        Price = $"{position.Price} руб."
+                        Price = $"{position.Price} руб.",
+                        State = payment.State
                     });
                 }
             }

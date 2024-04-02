@@ -32,14 +32,16 @@ namespace Infrastructure.Database.Repository
                 Guid = user.Guid,
                 ParentUserId = user.ParentUserId,
                 Balance = user.Balance,
-                Payments = user.Payments.Select(p => new Payment()
+                Payments = user.Payments
+                .OrderByDescending(x => x.Date)
+                .Select(p => new Payment()
                 {
                     Id = p.Id,
                     UserId = p.UserId,
                     AccessPositionId = p.AccessPositionId,
                     Amount = p.Amount,
                     Date = p.Date,
-                    Guid = p.Guid,
+                    State = p.State,
                 }).ToList()
             };
         }
@@ -64,14 +66,16 @@ namespace Infrastructure.Database.Repository
                     Guid = x.Guid,
                     ParentUserId = x.ParentUserId,
                     Balance = x.Balance,
-                    Payments = x.Payments.Select(p => new Model.Payment()
+                    Payments = x.Payments
+                    .OrderByDescending(x => x.Date)
+                    .Select(p => new Payment()
                     {
                         Id = p.Id,
                         UserId = p.UserId,
                         AccessPositionId = p.AccessPositionId,
                         Amount = p.Amount,
                         Date = p.Date,
-                        Guid = p.Guid,
+                        State = p.State,
                     }).ToList()
                 })
                 .Where(x => ids.Contains(x.Id))
@@ -133,7 +137,7 @@ namespace Infrastructure.Database.Repository
                     UserId = x.UserId,
                     Date = x.Date,
                     Amount = x.Amount,
-                    Guid = x.Guid,
+                    State = x.State,
                 })
                 .ToList();
 
@@ -173,6 +177,7 @@ namespace Infrastructure.Database.Repository
                         Date = p.Date,
                         UserId = p.UserId,
                         Amount = p.Amount,
+                        State = p.State,
                     })
                     .ToList();
             }

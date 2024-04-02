@@ -14,7 +14,6 @@ namespace Infrastructure.Database.Entity
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
         public PaymentState State { get; set; }
-        public Guid Guid { get; set; }
 
         public AccessPosition AccessPosition { get; set; }
     }
