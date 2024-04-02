@@ -23,12 +23,15 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
 
             if(signature == request.Signature && amount == inAmount)
             {
+                Console.WriteLine($"Ищем пользователя по Id платежа - {int.Parse(orderId)}");
                 var user = await repositoryProvider.UserRepository.GetByPaymentId(int.Parse(orderId))
-                ?? throw new Exception($"Не удалось найти пользователя по orderId (PaymentId) - {request.Signature}");
+                    ?? throw new Exception($"Не удалось найти пользователя по orderId (PaymentId) - {orderId}");
 
+                Console.WriteLine($"Ищем платеж по Id платежа - {int.Parse(orderId)}");
                 var payment = user.Payments.FirstOrDefault(x => x.Id == int.Parse(orderId))
-                    ?? throw new Exception($"Не удалось найти платеж по orderId (PaymentId) - {request.Signature}");
+                    ?? throw new Exception($"Не удалось найти платеж по orderId (PaymentId) - {orderId}");
 
+                Console.WriteLine($"Ищем позицию по Id из платежа - {payment.AccessPositionId}");
                 var paymentPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(payment.AccessPositionId)
                     ?? throw new Exception($"Не удалось найти подписку с Id - {payment.AccessPositionId}");
 
