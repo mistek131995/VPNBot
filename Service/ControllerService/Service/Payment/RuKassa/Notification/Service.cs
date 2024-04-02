@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Core.Model.User;
 using Service.ControllerService.Common;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,15 +14,37 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
         {
             var query = HttpUtility.ParseQueryString(request.Query);
             var id = query["id"];
+            var orderId = query["order_id"];
             var createdDateTime = query["createdDateTime"];
             var amount = query["amount"];
+            var inAmount = query["in_amount"];
 
             var signature = Signature.GenerateSignature($"{id}|{createdDateTime}|{amount}", "f1bcf17bb8a0a91966e6bb55b20e6761");
 
-            Console.WriteLine(signature);
-            Console.WriteLine(request.Signature);
+            if(signature == request.Signature && amount == inAmount)
+            {
+                var user = await repositoryProvider.UserRepository.GetByPaymentId(int.Parse(orderId))
+                ?? throw new Exception($"Не удалось найти пользователя по orderId (PaymentId) - {request.Signature}");
 
-            return true;
+                var payment = user.Payments.FirstOrDefault(x => x.Id == int.Parse(orderId))
+                    ?? throw new Exception($"Не удалось найти платеж по orderId (PaymentId) - {request.Signature}");
+
+                var paymentPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(payment.AccessPositionId)
+                    ?? throw new Exception($"Не удалось найти подписку с Id - {payment.AccessPositionId}");
+
+                if (user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
+                    user.AccessEndDate = DateTime.Now.AddMonths(paymentPosition.MonthCount);
+                else
+                    user.AccessEndDate = user.AccessEndDate?.AddMonths(paymentPosition.MonthCount);
+
+                payment.State = PaymentState.Completed;
+
+                await repositoryProvider.UserRepository.UpdateAsync(user);
+
+                return true;
+            }
+
+            throw new Exception("Ошибка подтверждения платежа");
         }
 
         public static string ComputeHmacSha256(string secretKey, string message)

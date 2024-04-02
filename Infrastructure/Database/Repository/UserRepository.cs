@@ -254,11 +254,11 @@ namespace Infrastructure.Database.Repository
             return await GetByIdsAsync(userIds);
         }
 
-        public async Task<User> GetByPaymentSignature(Guid guid)
+        public async Task<User> GetByPaymentId(int paymentId)
         {
             var payment = await context.Payments
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Guid == guid);
+                .FirstOrDefaultAsync(x => x.Id == paymentId);
 
             return await GetByIdAsync(payment.UserId);
         }

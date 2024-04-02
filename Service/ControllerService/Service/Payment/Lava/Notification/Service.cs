@@ -26,23 +26,23 @@ namespace Service.ControllerService.Service.Payment.Lava.Notification
                 throw new Exception("Сигнатуры не совпадают");
 
 
-            var user = await repositoryProvider.UserRepository.GetByPaymentSignature(Guid.Parse(request.invoice_id))
-                ?? throw new Exception($"Не удалось найти пользователя по сигнатуре - {request.Signature}");
+            //var user = await repositoryProvider.UserRepository.GetByPaymentSignature(Guid.Parse(request.invoice_id))
+            //    ?? throw new Exception($"Не удалось найти пользователя по сигнатуре - {request.Signature}");
 
-            var payment = user.Payments.FirstOrDefault(x => x.Guid == Guid.Parse(request.invoice_id))
-                ?? throw new Exception($"Не удалось найти платеж по сигнатуре - {request.Signature}");
+            //var payment = user.Payments.FirstOrDefault(x => x.Guid == Guid.Parse(request.invoice_id))
+            //    ?? throw new Exception($"Не удалось найти платеж по сигнатуре - {request.Signature}");
 
-            var paymentPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(payment.AccessPositionId)
-                ?? throw new Exception($"Не удалось найти подписку с Id - {payment.AccessPositionId}");
+            //var paymentPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(payment.AccessPositionId)
+            //    ?? throw new Exception($"Не удалось найти подписку с Id - {payment.AccessPositionId}");
 
-            if (user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
-                user.AccessEndDate = DateTime.Now.AddMonths(paymentPosition.MonthCount);
-            else
-                user.AccessEndDate = user.AccessEndDate?.AddMonths(paymentPosition.MonthCount);
+            //if (user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
+            //    user.AccessEndDate = DateTime.Now.AddMonths(paymentPosition.MonthCount);
+            //else
+            //    user.AccessEndDate = user.AccessEndDate?.AddMonths(paymentPosition.MonthCount);
 
-            payment.State = PaymentState.Completed;
+            //payment.State = PaymentState.Completed;
 
-            await repositoryProvider.UserRepository.UpdateAsync(user);
+            //await repositoryProvider.UserRepository.UpdateAsync(user);
 
             return true;
         }
