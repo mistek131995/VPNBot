@@ -21,12 +21,6 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
 
             var signature = Signature.GenerateSignature($"{id}|{createdDateTime}|{amount}", "f1bcf17bb8a0a91966e6bb55b20e6761");
 
-            Console.WriteLine(amount);
-            Console.WriteLine(amount);
-            Console.WriteLine("----------");
-            Console.WriteLine(signature);
-            Console.WriteLine(request.Signature);
-
             if (signature == request.Signature && amount == inAmount)
             {
                 var user = await repositoryProvider.UserRepository.GetByPaymentId(int.Parse(orderId))
@@ -34,6 +28,10 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
 
                 var payment = user.Payments.FirstOrDefault(x => x.Id == int.Parse(orderId))
                     ?? throw new Exception($"Не удалось найти платеж по orderId (PaymentId) - {orderId}");
+
+                Console.WriteLine(int.Parse(orderId));
+                Console.WriteLine(payment.State);
+                Console.WriteLine(payment.Id);
 
                 if (payment.State == PaymentState.Completed)
                     throw new Exception("Попытка повторного зачисления по уже оплаченному счета");
