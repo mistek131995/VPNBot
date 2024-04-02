@@ -1,10 +1,8 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
-using Encrypt.Library;
-using Service.ControllerService.Common;
-using System.Data.SqlTypes;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 
 namespace Service.ControllerService.Service.Payment.RuKassa.Notification
 {
@@ -12,16 +10,19 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            var signature = SHAUtil.GetSHA256("id=6717318&order_id=22&amount=200.00&in_amount=200.00&data=&createdDateTime=2024-03-31T04%3A57%3A36%2B00%3A00&status=PAID", "f1bcf17bb8a0a91966e6bb55b20e6761");
 
-            Console.WriteLine(request.Query == "id=6717318&order_id=22&amount=200.00&in_amount=200.00&data=&createdDateTime=2024-03-31T04%3A57%3A36%2B00%3A00&status=PAID");
-
-            Console.WriteLine(signature);
             Console.WriteLine(request.Signature);
-            Signature.GenerateSignature("id=6717318&order_id=22&amount=200.00&in_amount=200.00&data=&createdDateTime=2024-03-31T04%3A57%3A36%2B00%3A00&status=PAID", "f1bcf17bb8a0a91966e6bb55b20e6761");
 
             Console.WriteLine("---------------");
             Console.WriteLine(request.Query);
+            Console.WriteLine("---------------");
+            var httpUtility = HttpUtility.ParseQueryString(request.Query);
+            Console.WriteLine("---------------");
+            Console.WriteLine(httpUtility["id"]);
+            Console.WriteLine("---------------");
+            Console.WriteLine(httpUtility["createdDateTime"]);
+            Console.WriteLine("---------------");
+            Console.WriteLine(httpUtility["amount"]);
 
             return true;
         }
