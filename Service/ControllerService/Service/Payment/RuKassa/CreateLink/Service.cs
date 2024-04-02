@@ -12,11 +12,11 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId)
                 ?? throw new HandledExeption("Пользователь не найден");
 
-            var lastPayment = user.Payments.LastOrDefault();
+            var lastPayment = user.Payments.FirstOrDefault();
 
             if (lastPayment != null && (DateTime.Now - lastPayment.Date).TotalMinutes < 10 && lastPayment.State == PaymentState.NotCompleted)
             {
-                var minutes = (int)(DateTime.Now - lastPayment.Date).TotalMinutes;
+                var minutes = (DateTime.Now - lastPayment.Date).Minutes;
 
                 if(minutes > 0)
                     throw new HandledExeption($"Недавно вы уже создавали платеж, новый платеж можно создать через {(int)(DateTime.Now - lastPayment.Date).TotalMinutes} минут(ы)");
