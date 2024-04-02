@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Service.ControllerService.Common;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -10,19 +11,15 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
     {
         public async Task<bool> HandlingAsync(Request request)
         {
+            var query = HttpUtility.ParseQueryString(request.Query);
+            var id = query["id"];
+            var createdDateTime = query["createdDateTime"];
+            var amount = query["amount"];
 
+            var signature = Signature.GenerateSignature($"{id}|{createdDateTime}|{amount}", "f1bcf17bb8a0a91966e6bb55b20e6761");
+
+            Console.WriteLine(signature);
             Console.WriteLine(request.Signature);
-
-            Console.WriteLine("---------------");
-            Console.WriteLine(request.Query);
-            Console.WriteLine("---------------");
-            var httpUtility = HttpUtility.ParseQueryString(request.Query);
-            Console.WriteLine("---------------");
-            Console.WriteLine(httpUtility["id"]);
-            Console.WriteLine("---------------");
-            Console.WriteLine(httpUtility["createdDateTime"]);
-            Console.WriteLine("---------------");
-            Console.WriteLine(httpUtility["amount"]);
 
             return true;
         }
