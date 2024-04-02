@@ -29,10 +29,6 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
                 var payment = user.Payments.FirstOrDefault(x => x.Id == int.Parse(orderId))
                     ?? throw new Exception($"Не удалось найти платеж по orderId (PaymentId) - {orderId}");
 
-                Console.WriteLine(int.Parse(orderId));
-                Console.WriteLine(payment.State);
-                Console.WriteLine(payment.Id);
-
                 if (payment.State == PaymentState.Completed)
                     throw new Exception("Попытка повторного зачисления по уже оплаченному счета");
 

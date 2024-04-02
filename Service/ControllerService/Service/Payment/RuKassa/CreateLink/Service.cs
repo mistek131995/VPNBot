@@ -38,7 +38,7 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
             });
 
             user = await repositoryProvider.UserRepository.UpdateAsync(user);
-            lastPayment = user.Payments.LastOrDefault();
+            lastPayment = user.Payments.FirstOrDefault();
 
             var queryDictionary = new Dictionary<string, string>
             {
