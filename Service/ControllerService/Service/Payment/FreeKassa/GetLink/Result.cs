@@ -1,4 +1,4 @@
-﻿namespace Service.ControllerService.Service.GetSubscribeItem
+﻿namespace Service.ControllerService.Service.Payment.FreeKassa.GetLink
 {
     public class Result
     {

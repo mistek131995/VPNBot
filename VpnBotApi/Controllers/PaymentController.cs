@@ -3,15 +3,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
-using PaymentNotification = Service.ControllerService.Service.PaymentNotification;
+
+using FreeKassaNotification = Service.ControllerService.Service.Payment.FreeKassa.Notification;
+using FreeKassaGetLink = Service.ControllerService.Service.Payment.FreeKassa.GetLink;
 
 using CreateRuKassaLink = Service.ControllerService.Service.Payment.RuKassa.CreateLink;
-using CreateLavaLink = Service.ControllerService.Service.Payment.Lava.CreateLink;
-using LavaNotification = Service.ControllerService.Service.Payment.Lava.Notification;
 using RuKassaNotification = Service.ControllerService.Service.Payment.RuKassa.Notification;
 
+using CreateLavaLink = Service.ControllerService.Service.Payment.Lava.CreateLink;
+using LavaNotification = Service.ControllerService.Service.Payment.Lava.Notification;
+
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
-using GetSubscribeItem = Service.ControllerService.Service.GetSubscribeItem;
 using System.Web;
 
 namespace VpnBotApi.Controllers
@@ -33,7 +35,7 @@ namespace VpnBotApi.Controllers
         [Authorize]
         public async Task<JsonResult> GetSubscribeItem(int id, decimal sale)
         {
-            var response = await dispatcher.GetService<GetSubscribeItem.Result, GetSubscribeItem.Request>(new GetSubscribeItem.Request()
+            var response = await dispatcher.GetService<FreeKassaGetLink.Result, FreeKassaGetLink.Request>(new FreeKassaGetLink.Request()
             {
                 Id = id,
                 Sale = sale,
@@ -55,9 +57,9 @@ namespace VpnBotApi.Controllers
 
 
         [HttpPost]
-        public async Task<string> Notification([FromForm]PaymentNotification.Request request)
+        public async Task<string> Notification([FromForm] FreeKassaNotification.Request request)
         {
-            var response = await dispatcher.GetService<bool, PaymentNotification.Request>(request);
+            var response = await dispatcher.GetService<bool, FreeKassaNotification.Request>(request);
 
             if (response)
                 return "YES";

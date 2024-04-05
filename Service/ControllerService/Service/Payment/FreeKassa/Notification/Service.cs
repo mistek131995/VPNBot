@@ -3,7 +3,7 @@ using Core.Common;
 using Core.Model.User;
 using Serilog;
 
-namespace Service.ControllerService.Service.PaymentNotification
+namespace Service.ControllerService.Service.Payment.FreeKassa.Notification
 {
     internal class Service(IRepositoryProvider repositoryProvider, ILogger logger) : IControllerService<Request, bool>
     {

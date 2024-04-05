@@ -1,9 +1,9 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 using Service.ControllerService.Common;
-using static Service.ControllerService.Service.GetSubscribeItem.Result;
+using static Service.ControllerService.Service.Payment.FreeKassa.GetLink.Result;
 
-namespace Service.ControllerService.Service.GetSubscribeItem
+namespace Service.ControllerService.Service.Payment.FreeKassa.GetLink
 {
     internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, Result>
     {
@@ -13,7 +13,7 @@ namespace Service.ControllerService.Service.GetSubscribeItem
             var subscribeItem = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.Id)
                 ?? throw new HandledExeption("Подписка не найдена.");
 
-            var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) 
+            var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId)
                 ?? throw new HandledExeption("Пользователь не найден.");
 
             if (user.Balance < request.Sale)

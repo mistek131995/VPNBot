@@ -1,6 +1,6 @@
 ﻿using Application.ControllerService.Common;
 
-namespace Service.ControllerService.Service.PaymentNotification
+namespace Service.ControllerService.Service.Payment.FreeKassa.Notification
 {
     public class Request : IRequest<bool>
     {
