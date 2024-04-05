@@ -19,6 +19,7 @@ using UpdateServer = Service.ControllerService.Service.Admin.UpdateServer;
 using GetUsers = Service.ControllerService.Service.Admin.Users.GetUsers;
 using GetUser = Service.ControllerService.Service.Admin.Users.GetUser;
 using UpdateUser = Service.ControllerService.Service.Admin.Users.Update;
+using DeleteServer = Service.ControllerService.Service.Location.DeleteServer;
 
 namespace VpnBotApi.Controllers
 {
@@ -174,6 +175,15 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> UpdateServer(UpdateServer.Request request)
         {
             var response = await dispatcher.GetService<bool, UpdateServer.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> DeleteServer([FromBody] DeleteServer.Request request)
+        {
+            var response = await dispatcher.GetService<bool, DeleteServer.Request>(request);
 
             return Json(response);
         }

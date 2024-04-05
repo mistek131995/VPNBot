@@ -111,7 +111,6 @@ namespace Infrastructure.Database.Repository
             return await GetByIdAsync(location.Id);
         }
 
-
         public async Task UpdateAsync(Core.Model.Location.Location location)
         {
             var dbLocation = await context.Locations
