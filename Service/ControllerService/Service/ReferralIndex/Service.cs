@@ -19,7 +19,7 @@ namespace Service.ControllerService.Service.ReferralIndex
                 .Select(x => new Result.Referral()
                 {
                     Name = x.Login,
-                    TopupTotal = x.Payments.Sum(s => s.Amount * 0.1m)
+                    TopupTotal = x.Payments.Sum(s => s.Amount * 0.1m) //Потому что 10%
                 })
                 .ToList();
 

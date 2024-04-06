@@ -15,6 +15,7 @@ namespace Infrastructure.Database.Entity
         public int CountryId { get; set; }
 
         public List<Access> Access { get; set; }
+        public List<UserConnection> UserConnections { get; set; }
         public Location Country { get; set; }
     }
 }

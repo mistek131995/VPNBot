@@ -23,5 +23,6 @@ namespace Infrastructure.Database.Entity
         public decimal Balance { get; set; }
 
         public List<Payment> Payments { get; set; }
+        public List<UserConnection> UserConnections { get; set; }
     }
 }

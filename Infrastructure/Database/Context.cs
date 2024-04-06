@@ -6,6 +6,7 @@ namespace Infrastructure.Database
 {
     public class Context(DbContextOptions<Context> options) : DbContext(options)
     {
+
         internal DbSet<User> Users { get; set; }
         internal DbSet<VpnServer> VpnServers { get; set; }
         internal DbSet<Setting> Settings { get; set; }
@@ -19,5 +20,6 @@ namespace Infrastructure.Database
         internal DbSet<TicketMessage> TicketMessages { get; set; }
         internal DbSet<Ticket> Tickets { get; set; }
         internal DbSet<ResetPassword> ResetPasswords { get; set; }
+        internal DbSet<UserConnection> UserConnections { get; set; }
     }
 }

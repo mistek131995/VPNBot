@@ -454,6 +454,60 @@ namespace Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Infrastructure.Database.Entity.UserConnection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Fingerprint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Network")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Port")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Protocol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PublicKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Security")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ServerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VpnServerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VpnServerId");
+
+                    b.ToTable("UserConnections");
+                });
+
             modelBuilder.Entity("Infrastructure.Database.Entity.VpnServer", b =>
                 {
                     b.Property<int>("Id")
@@ -564,6 +618,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("Ticket");
                 });
 
+            modelBuilder.Entity("Infrastructure.Database.Entity.UserConnection", b =>
+                {
+                    b.HasOne("Infrastructure.Database.Entity.User", "User")
+                        .WithMany("UserConnections")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Infrastructure.Database.Entity.VpnServer", "VpnServer")
+                        .WithMany("UserConnections")
+                        .HasForeignKey("VpnServerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("VpnServer");
+                });
+
             modelBuilder.Entity("Infrastructure.Database.Entity.VpnServer", b =>
                 {
                     b.HasOne("Infrastructure.Database.Entity.Location", "Country")
@@ -598,11 +671,15 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Database.Entity.User", b =>
                 {
                     b.Navigation("Payments");
+
+                    b.Navigation("UserConnections");
                 });
 
             modelBuilder.Entity("Infrastructure.Database.Entity.VpnServer", b =>
                 {
                     b.Navigation("Access");
+
+                    b.Navigation("UserConnections");
                 });
 #pragma warning restore 612, 618
         }

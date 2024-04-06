@@ -14,8 +14,10 @@ namespace Service.ControllerService.Service.GetIndex
         public DateTime RegisterDate { get; set; }
         public DateTime? EndAccessDate { get; set; }
         public decimal Balance { get; set; }
+        public string ReferralLink { get; set; }
 
         public List<Payment> Payments { get; set; }
+        public List<Referral> Referrals { get; set; }
 
         public class Payment
         {
@@ -24,6 +26,12 @@ namespace Service.ControllerService.Service.GetIndex
             public DateTime Date { get; set; }
             public string Price { get; set; }
             public PaymentState State { get; set; }
+        }
+
+        public class Referral
+        {
+            public string Login { get; set; }
+            public decimal TopupTotal { get; set; }
         }
     }
 }
