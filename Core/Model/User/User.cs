@@ -1,4 +1,5 @@
 ﻿using Core.Common;
+using System.Collections.ObjectModel;
 
 namespace Core.Model.User
 {
@@ -20,6 +21,6 @@ namespace Core.Model.User
         public decimal Balance { get; set; }
 
         public List<Payment> Payments { get; set; }
-
+        public List<UserConnection> UserConnections { get; set; }
     }
 }

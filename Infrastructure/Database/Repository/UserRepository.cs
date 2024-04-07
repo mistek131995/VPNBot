@@ -11,6 +11,7 @@ namespace Infrastructure.Database.Repository
         {
             var user = await context.Users
                 .Include(x => x.Payments)
+                .Include(x => x.UserConnections)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -32,6 +33,20 @@ namespace Infrastructure.Database.Repository
                 Guid = user.Guid,
                 ParentUserId = user.ParentUserId,
                 Balance = user.Balance,
+                UserConnections = user.UserConnections.Select(c => new UserConnection()
+                {
+                    Id = c.Id,
+                    UserId = c.UserId,
+                    VpnServerId = c.VpnServerId,
+                    Port = c.Port,
+                    Network = c.Network,
+                    Protocol = c.Protocol,
+                    Security = c.Security,
+                    PublicKey = c.PublicKey,
+                    Fingerprint = c.Fingerprint,
+                    ServerName = c.ServerName,
+                    ShortId = c.ShortId,
+                }).ToList(),
                 Payments = user.Payments
                 .OrderByDescending(x => x.Date)
                 .Select(p => new Payment()
@@ -50,6 +65,7 @@ namespace Infrastructure.Database.Repository
         {
             return await context.Users
                 .Include(x => x.Payments)
+                .Include(x => x.UserConnections)
                 .AsNoTracking()
                 .Select(x => new Model.User()
                 {
@@ -66,6 +82,20 @@ namespace Infrastructure.Database.Repository
                     Guid = x.Guid,
                     ParentUserId = x.ParentUserId,
                     Balance = x.Balance,
+                    UserConnections = x.UserConnections.Select(c => new UserConnection()
+                    {
+                        Id = c.Id,
+                        UserId = c.UserId,
+                        VpnServerId = c.VpnServerId,
+                        Port = c.Port,
+                        Network = c.Network,
+                        Protocol = c.Protocol,
+                        Security = c.Security,
+                        PublicKey = c.PublicKey,
+                        Fingerprint = c.Fingerprint,
+                        ServerName = c.ServerName,
+                        ShortId = c.ShortId,
+                    }).ToList(),
                     Payments = x.Payments
                     .OrderByDescending(x => x.Date)
                     .Select(p => new Payment()
@@ -141,6 +171,23 @@ namespace Infrastructure.Database.Repository
                 })
                 .ToList();
 
+            dbUser.UserConnections = user.UserConnections
+                .Select(x => new Entity.UserConnection()
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    VpnServerId = x.VpnServerId,
+                    Port = x.Port,
+                    Network = x.Network,
+                    Protocol = x.Protocol,
+                    Security = x.Security,
+                    PublicKey = x.PublicKey,
+                    Fingerprint = x.Fingerprint,
+                    ServerName = x.ServerName,
+                    ShortId = x.ShortId,
+                })
+                .ToList();
+
             context.Users.Update(dbUser);
             await context.SaveChangesAsync();
 
@@ -178,6 +225,23 @@ namespace Infrastructure.Database.Repository
                         UserId = p.UserId,
                         Amount = p.Amount,
                         State = p.State,
+                    })
+                    .ToList();
+
+                dbUser.UserConnections = user.UserConnections.ToArray()
+                    .Select(c => new Entity.UserConnection()
+                    {
+                        Id = c.Id,
+                        UserId = c.UserId,
+                        VpnServerId = c.VpnServerId,
+                        Port = c.Port,
+                        Network = c.Network,
+                        Protocol = c.Protocol,
+                        Security = c.Security,
+                        PublicKey = c.PublicKey,
+                        Fingerprint = c.Fingerprint,
+                        ServerName = c.ServerName,
+                        ShortId = c.ShortId,
                     })
                     .ToList();
             }
@@ -266,6 +330,17 @@ namespace Infrastructure.Database.Repository
                 .FirstOrDefaultAsync(x => x.Id == paymentId);
 
             return await GetByIdAsync(payment.UserId);
+        }
+
+        public async Task DeleteAsync(User user)
+        {
+            var dbUser = await context.Users
+                .Include(x => x.Payments)
+                .Include(x => x.UserConnections)
+                .FirstOrDefaultAsync(x => x.Id == user.Id);
+
+            context.Users.Remove(dbUser);
+            await context.SaveChangesAsync();
         }
     }
 }

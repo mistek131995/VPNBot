@@ -10,6 +10,7 @@ namespace Core.Repository
         public Task<Location> GetByNameAsync(string name);
         public Task<Location> GetByTagAsync(string tag);
         public Task<Location> GetByServerIdAsync(int serverId);
+        public Task<Location> GetByServerIpAsync(string serverIp);
 
         public Task<int> AddAsync(Location country);
         public Task UpdateAsync(Location country);

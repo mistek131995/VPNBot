@@ -6,7 +6,6 @@ using GetVpnLocation = Service.ControllerService.Service.App.GetVpnLocation;
 using GetServersByTag = Service.ControllerService.Service.App.GetServersByTag;
 using GetVpnConnectionByIp = Service.ControllerService.Service.App.GetConnectionByIP;
 
-using GetVpnConnection = Service.ControllerService.Service.GetConnection;
 using GetConnectionScreen = Service.ControllerService.Service.App.GetConnectionScreen;
 using Microsoft.AspNetCore.Authorization;
 
@@ -55,19 +54,6 @@ namespace VpnBotApi.Controllers
             });
 
             return Json(response.Servers);
-        }
-
-        [HttpGet]
-        [Authorize]//Устарел
-        public async Task<JsonResult> GetConnection(int countryId)
-        {
-            var response = await dispatcher.GetService<GetVpnConnection.Result, GetVpnConnection.Request>(new GetVpnConnection.Request()
-            {
-                CountryId = countryId,
-                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
-            });
-
-            return Json(response);
         }
 
         [HttpGet]

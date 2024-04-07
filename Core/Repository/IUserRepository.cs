@@ -19,5 +19,6 @@ namespace Core.Repository
         public Task<User> AddAsync(User user);
         public Task<User> UpdateAsync(User user);
         public Task UpdateManyAsync(List<User> users);
+        public Task DeleteAsync(User user);
     }
 }

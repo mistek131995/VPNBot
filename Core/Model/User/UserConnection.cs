@@ -1,13 +1,13 @@
-﻿namespace Service.ControllerService.Service.GetConnection
+﻿namespace Core.Model.User
 {
-    public class Result
+    public class UserConnection
     {
-        public string Name { get; set; }
-        public string Ip { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int VpnServerId { get; set; }
         public int Port { get; set; }
-        public string Protocol { get; set; }
-        public string Guid { get; set; }
         public string Network { get; set; }
+        public string Protocol { get; set; }
         public string Security { get; set; }
         public string PublicKey { get; set; }
         public string Fingerprint { get; set; }

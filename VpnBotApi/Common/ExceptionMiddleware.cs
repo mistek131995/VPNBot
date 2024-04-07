@@ -16,6 +16,11 @@ namespace VpnBotApi.Common
                 if (typeof(HandledExeption) == ex.GetType())
                 {
                     await HandleExceptionAsync(httpContext, ex);
+
+                    if (((HandledExeption)ex).WriteToLog)
+                    {
+                        logger.Error(ex, ex.StackTrace);
+                    }
                 }
                 else
                 {
