@@ -33,7 +33,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
 
                 var userConnection = user.UserConnections.FirstOrDefault(x => x.VpnServerId == server.Id);
 
-                if(userConnection == null)
+                if(userConnection == null || userConnection.AccessEndDate != user.AccessEndDate)
                 {
                     var serializerSettings = new JsonSerializerSettings();
                     serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -126,7 +126,9 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                         PublicKey = streamSettings.RealitySettings.Settings.PublicKey,
                         Fingerprint = streamSettings.RealitySettings.Settings.Fingerprint,
                         ServerName = streamSettings.RealitySettings.ServerNames.FirstOrDefault(),
-                        ShortId = streamSettings.RealitySettings.ShortIds.FirstOrDefault()
+                        ShortId = streamSettings.RealitySettings.ShortIds.FirstOrDefault(),
+
+                        AccessEndDate = user.AccessEndDate ?? throw new Exception("Доступ не может быть пустым")
                     };
 
                     user.UserConnections.Add(userConnection);

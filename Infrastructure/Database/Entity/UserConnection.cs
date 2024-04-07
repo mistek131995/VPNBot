@@ -21,6 +21,7 @@ namespace Infrastructure.Database.Entity
         public string Fingerprint { get; set; }
         public string ServerName { get; set; }
         public string ShortId { get; set; }
+        public DateTime AccessEndDate { get; set; }
 
         public VpnServer VpnServer { get; set; }
         public User User { get; set; }

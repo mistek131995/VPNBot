@@ -13,5 +13,6 @@
         public string Fingerprint { get; set; }
         public string ServerName { get; set; }
         public string ShortId { get; set; }
+        public DateTime AccessEndDate { get; set; }
     }
 }

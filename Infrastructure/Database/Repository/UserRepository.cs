@@ -46,6 +46,7 @@ namespace Infrastructure.Database.Repository
                     Fingerprint = c.Fingerprint,
                     ServerName = c.ServerName,
                     ShortId = c.ShortId,
+                    AccessEndDate = c.AccessEndDate,
                 }).ToList(),
                 Payments = user.Payments
                 .OrderByDescending(x => x.Date)
@@ -95,6 +96,7 @@ namespace Infrastructure.Database.Repository
                         Fingerprint = c.Fingerprint,
                         ServerName = c.ServerName,
                         ShortId = c.ShortId,
+                        AccessEndDate = c.AccessEndDate,
                     }).ToList(),
                     Payments = x.Payments
                     .OrderByDescending(x => x.Date)
@@ -185,6 +187,7 @@ namespace Infrastructure.Database.Repository
                     Fingerprint = x.Fingerprint,
                     ServerName = x.ServerName,
                     ShortId = x.ShortId,
+                    AccessEndDate = x.AccessEndDate,
                 })
                 .ToList();
 
@@ -242,6 +245,7 @@ namespace Infrastructure.Database.Repository
                         Fingerprint = c.Fingerprint,
                         ServerName = c.ServerName,
                         ShortId = c.ShortId,
+                        AccessEndDate = c.AccessEndDate,
                     })
                     .ToList();
             }
