@@ -13,7 +13,8 @@ namespace Infrastructure.Database.Repository
                 Message = log.Message,
                 MessageTemplate = log.MessageTemplate,
                 Level = log.Level,
-                TimeStamp = log.TimeStamp
+                TimeStamp = log.TimeStamp,
+                Exception = log.Exception,
             });
 
             await context.SaveChangesAsync();
