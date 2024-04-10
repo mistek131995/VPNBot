@@ -15,6 +15,7 @@ namespace Service.ControllerService.Service.GetLogs
                 Level = x.Level,
                 Message = x.Message,
                 TimeStamp = x.TimeStamp,
+                StackTrace = x.Exception
             }).ToList();
 
             return result;
