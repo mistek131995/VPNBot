@@ -49,7 +49,9 @@ namespace Infrastructure.Database.Repository
                     Message = x.Message,
                     Level = x.Level,
                     TimeStamp = x.TimeStamp ?? DateTime.MinValue,
+                    Exception = x.Exception,
                 })
+                .OrderByDescending(x => x.TimeStamp)
                 .ToListAsync();
         }
 
@@ -62,6 +64,7 @@ namespace Infrastructure.Database.Repository
                     Message = x.Message,
                     Level = x.Level,
                     TimeStamp = x.TimeStamp ?? DateTime.MinValue,
+                    Exception = x.Exception,
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
