@@ -1,0 +1,13 @@
+{
+  "relation" : [
+    "delegate_permission/common.handle_all_urls",
+    "delegate_permission/common.get_login_creds"
+  ],
+  "target" : {
+    "namespace" : "android_app",
+    "package_name" : "com.lockvpnandroidapp.android",
+    "sha256_cert_fingerprints" : [
+      "3D:7E:6E:97:1D:10:A5:89:81:42:21:AF:17:72:D1:FB:5D:BB:A9:DE:D2:FB:44:E2:94:54:7B:05:0A:29:20:90"
+    ]
+  }
+}
