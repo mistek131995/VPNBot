@@ -13,6 +13,8 @@ namespace Service.ControllerService.Service.User.AuthWithGoogle
 
             Console.WriteLine(validPayload.Email);
 
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(validPayload));
+
             return "";
         }
     }
