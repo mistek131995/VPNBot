@@ -11,7 +11,9 @@ namespace Service.ControllerService.Service.User.AuthWithGoogle
         {
             var validPayload = await GoogleJsonWebSignature.ValidateAsync(request.Token);
 
-            return Newtonsoft.Json.JsonConvert.SerializeObject(validPayload);
+            Console.WriteLine(validPayload.Email);
+
+            return "";
         }
     }
 }
