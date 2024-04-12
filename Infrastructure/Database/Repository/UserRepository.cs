@@ -130,6 +130,7 @@ namespace Infrastructure.Database.Repository
                 TelegramUserId = user.TelegramUserId,
                 TelegramChatId = user.TelegramChatId,
                 RegisterDate = user.RegisterDate,
+                AccessEndDate = user.AccessEndDate,
                 Role = UserRole.User,
                 Login = user.Login,
                 Password = user.Password,
