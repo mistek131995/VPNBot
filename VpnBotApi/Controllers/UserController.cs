@@ -7,6 +7,7 @@ using GetIndex = Service.ControllerService.Service.GetIndex;
 using Register = Service.ControllerService.Service.User.Register;
 using Activation = Service.ControllerService.Service.ActivateUser;
 using Login = Service.ControllerService.Service.User.AuthByLogin;
+using AuthWithGoogle = Service.ControllerService.Service.User.AuthWithGoogle;
 using ChangePassword = Service.ControllerService.Service.User.ChangePassword;
 using CreateResetPasswordLink = Service.ControllerService.Service.User.RestorePassword.CreateResetPasswordLink;
 using SetNewPassword = Service.ControllerService.Service.User.RestorePassword.SetNewPassword;
@@ -61,6 +62,14 @@ namespace VpnBotApi.Controllers
             var test = HttpContext.Connection.RemoteIpAddress;
 
             var response = await dispatcher.GetService<string, Login.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AuthWithGoogle([FromBody] AuthWithGoogle.Request request)
+        {
+            var response = await dispatcher.GetService<string, AuthWithGoogle.Request>(request);
 
             return Json(response);
         }
