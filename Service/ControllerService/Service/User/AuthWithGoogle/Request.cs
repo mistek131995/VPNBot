@@ -4,6 +4,7 @@ namespace Service.ControllerService.Service.User.AuthWithGoogle
 {
     public class Request : IRequest<string>
     {
-        public string Token { get; set; }
+        public string? Token { get; set; }
+        public string? AcceptToken { get; set; }
     }
 }

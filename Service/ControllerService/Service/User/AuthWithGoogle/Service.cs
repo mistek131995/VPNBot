@@ -5,6 +5,7 @@ using MD5Hash;
 using Microsoft.Extensions.Configuration;
 using Core.Model.User;
 using Service.ControllerService.Common;
+using Service.ControllerService.Common.Extensions;
 
 namespace Service.ControllerService.Service.User.AuthWithGoogle
 {
@@ -12,7 +13,15 @@ namespace Service.ControllerService.Service.User.AuthWithGoogle
     {
         public async Task<string> HandlingAsync(Request request)
         {
-            var validPayload = await GoogleJsonWebSignature.ValidateAsync(request.Token);
+            if (string.IsNullOrEmpty(request.Token) && string.IsNullOrEmpty(request.AcceptToken))
+                throw new HandledExeption("Ошибка аутентификации");
+
+            GoogleJsonWebSignature.Payload validPayload;
+
+            if (string.IsNullOrEmpty(request.AcceptToken))
+                validPayload = await GoogleJsonWebSignature.ValidateAsync(request.Token);
+            else
+                validPayload = await GoogleAuth.ValidateAccessToken(request.AcceptToken);
 
             var user = await repositoryProvider.UserRepository.GetByEmailAsync(validPayload.Email);
 
