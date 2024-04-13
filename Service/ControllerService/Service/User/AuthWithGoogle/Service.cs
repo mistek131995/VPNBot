@@ -28,6 +28,15 @@ namespace Service.ControllerService.Service.User.AuthWithGoogle
             if (user == null)
             {
                 var login = validPayload.Email.Split('@')[0];
+
+                var userWithLogin = await repositoryProvider.UserRepository.GetByLoginAsync(login);
+
+                while (userWithLogin != null)
+                {
+                    login = login + new Random().Next(0, 9);
+                    userWithLogin = await repositoryProvider.UserRepository.GetByLoginAsync(login);
+                }
+
                 var password = string.Join("", validPayload.Email.GetMD5().Take(8)).GetMD5();
 
                 user = await repositoryProvider.UserRepository.AddAsync(new Core.Model.User.User()
