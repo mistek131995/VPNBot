@@ -1,6 +1,6 @@
 ﻿using Core.Common;
 
-namespace Core.Model.AccessPosition
+namespace Core.Model.Finance
 {
     public class AccessPosition : IAggregate
     {

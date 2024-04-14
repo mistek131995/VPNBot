@@ -1,4 +1,4 @@
-﻿using Core.Model.AccessPosition;
+﻿using Core.Model.Finance;
 
 namespace Core.Repository
 {

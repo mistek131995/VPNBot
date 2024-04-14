@@ -1,4 +1,4 @@
-﻿using Core.Model.AccessPosition;
+﻿using Core.Model.Finance;
 using Core.Repository;
 using Microsoft.EntityFrameworkCore;
 
