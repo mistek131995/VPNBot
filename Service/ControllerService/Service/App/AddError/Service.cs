@@ -10,7 +10,7 @@ namespace Service.ControllerService.Service.App.AddError
             await repositoryProvider.LogRepository.AddAsync(new Core.Model.Log.Log()
             {
                 Level = "Error",
-                Message = request.Message ?? "" + " | " + request.Location ?? "",
+                Message = (request.Message ?? "") + " | " + (request.Location ?? ""),
                 MessageTemplate = request.Message ?? "" + request.Location ?? "",
                 Exception = request.StackTrace ?? "",
                 TimeStamp = DateTime.Now
