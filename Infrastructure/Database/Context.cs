@@ -21,5 +21,6 @@ namespace Infrastructure.Database
         internal DbSet<Ticket> Tickets { get; set; }
         internal DbSet<ResetPassword> ResetPasswords { get; set; }
         internal DbSet<UserConnection> UserConnections { get; set; }
+        internal DbSet<PromoCode> PromoCodes { get; set; }
     }
 }

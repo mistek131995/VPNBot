@@ -17,6 +17,7 @@ namespace Infrastructure.Common
         private ITicketRepository ticketRepository;
         private ITicketCategoryRepository ticketCategoryRepository;
         private IResetPasswordRepository resetPasswordRepository;
+        private IPromoCodeRepository promoCodeRepository;
 
         public IUserRepository UserRepository =>
             userRepository ??= new UserRepository(context);
@@ -47,5 +48,8 @@ namespace Infrastructure.Common
 
         public IResetPasswordRepository ResetPasswordRepository => 
             resetPasswordRepository ??= new ResetPasswordRepository(context);
+
+        public IPromoCodeRepository PromoCodeRepository => 
+            promoCodeRepository ??= new PromoCodeRepository(context);
     }
 }

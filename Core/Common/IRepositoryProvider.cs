@@ -14,5 +14,6 @@ namespace Core.Common
         public ITicketRepository TicketRepository { get; }
         public ITicketCategoryRepository TicketCategoryRepository { get; }
         public IResetPasswordRepository ResetPasswordRepository { get; }
+        public IPromoCodeRepository PromoCodeRepository { get; }
     }
 }
