@@ -7,7 +7,9 @@ namespace Core.Repository
         public Task<List<PromoCode>> GetAllAsync();
         public Task<PromoCode> GetByIdAsync(int id);
         public Task<List<PromoCode>> GetByIdsAsync(List<int> ids);
+        public Task<PromoCode> GetByCodeAsync(string code);
         public Task<PromoCode> AddAsync(PromoCode promoCode);
         public Task UpdateAsync(PromoCode promoCode);
+        public Task DeleteAsync(PromoCode promoCode);
     }
 }

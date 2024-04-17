@@ -98,5 +98,24 @@ namespace Infrastructure.Database.Repository
 
             await context.SaveChangesAsync();
         }
+
+        public async Task<PromoCode> GetByCodeAsync(string code)
+        {
+            var promoCode = await context.PromoCodes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Code == code);
+
+            if(promoCode == null)
+                return null;
+
+            return await GetByIdAsync(promoCode.Id);
+        }
+
+        public async Task DeleteAsync(PromoCode promoCode)
+        {
+            var promoCodeEntity = await context.PromoCodes.FirstOrDefaultAsync(x => x.Id == promoCode.Id);
+            context.PromoCodes.Remove(promoCodeEntity);
+            await context.SaveChangesAsync();
+        }
     }
 }

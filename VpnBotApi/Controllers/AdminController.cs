@@ -21,6 +21,11 @@ using GetUser = Service.ControllerService.Service.Admin.Users.GetUser;
 using UpdateUser = Service.ControllerService.Service.Admin.Users.Update;
 using DeleteUser = Service.ControllerService.Service.Admin.Users.Delete;
 using DeleteServer = Service.ControllerService.Service.Location.DeleteServer;
+using AddPromoCode = Service.ControllerService.Service.Admin.Finance.AddPromoCode;
+using GetPromoCodes = Service.ControllerService.Service.Admin.Finance.GetPromoCodes;
+using DeletePromoCode = Service.ControllerService.Service.Admin.Finance.DeletePromoCode;
+using GetPromoCode = Service.ControllerService.Service.Admin.Finance.GetPromoCode;
+using UpdatePromoCode = Service.ControllerService.Service.Admin.Finance.UpdatePromoCode;
 
 namespace VpnBotApi.Controllers
 {
@@ -224,6 +229,54 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> DeleteUser([FromBody]DeleteUser.Request request)
         {
             var response = await dispatcher.GetService<bool, DeleteUser.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> AddPromoCode([FromBody]AddPromoCode.Request request)
+        {
+            var response = await dispatcher.GetService<bool, AddPromoCode.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetPromoCodes()
+        {
+            var response = await dispatcher.GetService<GetPromoCodes.Result, GetPromoCodes.Request>(new GetPromoCodes.Request());
+
+            return Json(response.PromoCodes);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> DeletePromoCode([FromBody]DeletePromoCode.Request request)
+        {
+            var response = await dispatcher.GetService<bool, DeletePromoCode.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetPromoCode(int id)
+        {
+            var response = await dispatcher.GetService<GetPromoCode.Result, GetPromoCode.Request>(new GetPromoCode.Request()
+            {
+                Id = id
+            });
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> UpdatePromoCode([FromBody]UpdatePromoCode.Request request)
+        {
+            var response = await dispatcher.GetService<bool, UpdatePromoCode.Request>(request);
 
             return Json(response);
         }
