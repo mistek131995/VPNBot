@@ -14,7 +14,7 @@ using CreateLavaLink = Service.ControllerService.Service.Payment.Lava.CreateLink
 using LavaNotification = Service.ControllerService.Service.Payment.Lava.Notification;
 
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
-using System.Web;
+using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 
 namespace VpnBotApi.Controllers
 {
@@ -26,7 +26,24 @@ namespace VpnBotApi.Controllers
         [Authorize]
         public async Task<JsonResult> GetPaymentPositions()
         {
-            var response = await dispatcher.GetService<GetPaymentPositions.Result, GetPaymentPositions.Request>(new GetPaymentPositions.Request());
+            var response = await dispatcher.GetService<GetPaymentPositions.Result, GetPaymentPositions.Request>(new GetPaymentPositions.Request()
+            {
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> ApplyPromoCode(string promoCode, int positionId)
+        {
+            var response = await dispatcher.GetService<int, ApplyPromoCode.Request>(new ApplyPromoCode.Request()
+            {
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value),
+                PositionId = positionId,
+                PromoCode = promoCode
+            });
 
             return Json(response);
         }

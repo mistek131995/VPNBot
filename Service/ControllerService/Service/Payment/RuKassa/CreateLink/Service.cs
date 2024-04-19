@@ -1,7 +1,8 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
-using Service.ControllerService.Common;
 using Core.Model.User;
+using Newtonsoft.Json;
+using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
 {
@@ -12,13 +13,16 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId)
                 ?? throw new HandledExeption("Пользователь не найден");
 
+            if (user.Role != UserRole.Admin)
+                throw new HandledExeption("Ведутся технические работы, попробуйте позднее");
+
             var lastPayment = user.Payments.FirstOrDefault();
 
             if (lastPayment != null && (DateTime.Now - lastPayment.Date).TotalMinutes < 10 && lastPayment.State == PaymentState.NotCompleted)
             {
                 var minutes = (DateTime.Now - lastPayment.Date).Minutes;
 
-                if(minutes > 0)
+                if (minutes > 0)
                     throw new HandledExeption($"Недавно вы уже создавали платеж, новый платеж можно создать через {(int)(DateTime.Now - lastPayment.Date).TotalMinutes} минут(ы)");
                 else
                     throw new HandledExeption($"Недавно вы уже создавали платеж, для создания нового платежа осталось подождать меньше минуты");
@@ -40,13 +44,26 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
             user = await repositoryProvider.UserRepository.UpdateAsync(user);
             lastPayment = user.Payments.FirstOrDefault();
 
-            var queryDictionary = new Dictionary<string, string>
+            var queryDictionary = new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(request.PromoCode))
             {
-                { "shop_id", "2087" },
-                { "order_id", lastPayment.Id.ToString() },
-                { "token", "f1bcf17bb8a0a91966e6bb55b20e6761" },
-                { "amount", accessPosition.Price.ToString() }
-            };
+                var promoCode = await repositoryProvider.PromoCodeRepository.GetByCodeAsync(request.PromoCode) ??
+                    throw new HandledExeption("Промокод не найден");
+
+                if (user.UserUserPromoCodes.Any(x => x.PromoCodeId == promoCode.Id))
+                    throw new HandledExeption("Промокод уже использовался");
+
+                var discount = accessPosition.Price * ((decimal)promoCode.Discount / 100);
+                accessPosition.Price = (int)(accessPosition.Price - discount);
+
+                queryDictionary.Add("data", JsonConvert.SerializeObject(new { promoCode = request.PromoCode }));
+            }
+
+            queryDictionary.Add("shop_id", "2087");
+            queryDictionary.Add("order_id", lastPayment.Id.ToString());
+            queryDictionary.Add("token", "f1bcf17bb8a0a91966e6bb55b20e6761");
+            queryDictionary.Add("amount", accessPosition.Price.ToString());
 
             var query = string.Join("&", queryDictionary.Select(x => $"{x.Key}={x.Value}"));
 

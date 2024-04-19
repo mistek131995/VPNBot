@@ -24,5 +24,6 @@ namespace Infrastructure.Database.Entity
 
         public List<Payment> Payments { get; set; }
         public List<UserConnection> UserConnections { get; set; }
+        public List<UserUsedPromoCode> UserUsedPromoCodes { get; set; }
     }
 }

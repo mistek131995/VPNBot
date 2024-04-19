@@ -524,6 +524,32 @@ namespace Infrastructure.Migrations
                     b.ToTable("UserConnections");
                 });
 
+            modelBuilder.Entity("Infrastructure.Database.Entity.UserUsedPromoCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PromoCodeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UsedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PromoCodeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserUsedPromoCodes");
+                });
+
             modelBuilder.Entity("Infrastructure.Database.Entity.VpnServer", b =>
                 {
                     b.Property<int>("Id")
@@ -653,6 +679,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("VpnServer");
                 });
 
+            modelBuilder.Entity("Infrastructure.Database.Entity.UserUsedPromoCode", b =>
+                {
+                    b.HasOne("Infrastructure.Database.Entity.PromoCode", "PromoCode")
+                        .WithMany("UserUsedPromoCodes")
+                        .HasForeignKey("PromoCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Infrastructure.Database.Entity.User", "User")
+                        .WithMany("UserUsedPromoCodes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PromoCode");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Infrastructure.Database.Entity.VpnServer", b =>
                 {
                     b.HasOne("Infrastructure.Database.Entity.Location", "Country")
@@ -674,6 +719,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("VpnServers");
                 });
 
+            modelBuilder.Entity("Infrastructure.Database.Entity.PromoCode", b =>
+                {
+                    b.Navigation("UserUsedPromoCodes");
+                });
+
             modelBuilder.Entity("Infrastructure.Database.Entity.Ticket", b =>
                 {
                     b.Navigation("TicketMessages");
@@ -689,6 +739,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("Payments");
 
                     b.Navigation("UserConnections");
+
+                    b.Navigation("UserUsedPromoCodes");
                 });
 
             modelBuilder.Entity("Infrastructure.Database.Entity.VpnServer", b =>

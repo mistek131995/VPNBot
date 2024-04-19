@@ -12,6 +12,7 @@ namespace Infrastructure.Database.Repository
             var user = await context.Users
                 .Include(x => x.Payments)
                 .Include(x => x.UserConnections)
+                .Include(x => x.UserUsedPromoCodes)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -33,6 +34,13 @@ namespace Infrastructure.Database.Repository
                 Guid = user.Guid,
                 ParentUserId = user.ParentUserId,
                 Balance = user.Balance,
+                UserUserPromoCodes = user.UserUsedPromoCodes.Select(x => new UserUserPromoCode()
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    PromoCodeId = x.PromoCodeId,
+                    UsedDate = x.UsedDate,
+                }).ToList(),
                 UserConnections = user.UserConnections.Select(c => new UserConnection()
                 {
                     Id = c.Id,
@@ -67,6 +75,7 @@ namespace Infrastructure.Database.Repository
             return await context.Users
                 .Include(x => x.Payments)
                 .Include(x => x.UserConnections)
+                .Include(x => x.UserUsedPromoCodes)
                 .AsNoTracking()
                 .Select(x => new Model.User()
                 {
@@ -83,6 +92,13 @@ namespace Infrastructure.Database.Repository
                     Guid = x.Guid,
                     ParentUserId = x.ParentUserId,
                     Balance = x.Balance,
+                    UserUserPromoCodes = x.UserUsedPromoCodes.Select(x => new UserUserPromoCode()
+                    {
+                        Id = x.Id,
+                        UserId = x.UserId,
+                        PromoCodeId = x.PromoCodeId,
+                        UsedDate = x.UsedDate,
+                    }).ToList(),
                     UserConnections = x.UserConnections.Select(c => new UserConnection()
                     {
                         Id = c.Id,
