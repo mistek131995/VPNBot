@@ -20,10 +20,10 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
 
             if (lastPayment != null && (DateTime.Now - lastPayment.Date).TotalMinutes < 10 && lastPayment.State == PaymentState.NotCompleted)
             {
-                var minutes = (DateTime.Now - lastPayment.Date).Minutes;
+                var minutes = (int)(10 - (DateTime.Now - lastPayment.Date).TotalMinutes);
 
                 if (minutes > 0)
-                    throw new HandledExeption($"Недавно вы уже создавали платеж, новый платеж можно создать через {(int)(DateTime.Now - lastPayment.Date).TotalMinutes} минут(ы)");
+                    throw new HandledExeption($"Недавно вы уже создавали платеж, новый платеж можно создать через {minutes} минут(ы)");
                 else
                     throw new HandledExeption($"Недавно вы уже создавали платеж, для создания нового платежа осталось подождать меньше минуты");
             }
@@ -67,16 +67,16 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
 
             var query = string.Join("&", queryDictionary.Select(x => $"{x.Key}={x.Value}"));
 
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"https://lk.rukassa.pro/api/v1/create?{query}");
+            //var httpClient = new HttpClient();
+            //var response = await httpClient.GetAsync($"https://lk.rukassa.pro/api/v1/create?{query}");
 
-            if (response.IsSuccessStatusCode)
-            {
-                var responseString = await response.Content.ReadAsStringAsync();
-                var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(responseString);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    var responseString = await response.Content.ReadAsStringAsync();
+            //    var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(responseString);
 
-                return result.url;
-            }
+            //    return result.url;
+            //}
 
             throw new HandledExeption("Не удалось получить ссылку на оплату. Попробуйте позднее.");
         }
