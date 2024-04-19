@@ -60,7 +60,8 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
                         user.UserUsedPromoCodes.Add(new UserUsedPromoCode()
                         {
                             PromoCodeId = promoCode.Id,
-                            UserId = user.Id
+                            UserId = user.Id,
+                            UsedDate = DateTime.Now
                         });
                     }
                 }

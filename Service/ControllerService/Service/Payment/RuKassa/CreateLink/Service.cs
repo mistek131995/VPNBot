@@ -13,9 +13,6 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId)
                 ?? throw new HandledExeption("Пользователь не найден");
 
-            if (user.Role != UserRole.Admin)
-                throw new HandledExeption("Ведутся технические работы, попробуйте позднее");
-
             var lastPayment = user.Payments.FirstOrDefault();
 
             if (lastPayment != null && (DateTime.Now - lastPayment.Date).TotalMinutes < 10 && lastPayment.State == PaymentState.NotCompleted)
