@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Model.User
 {
-    public class UserUserPromoCode
+    public class UserUsedPromoCode
     {
         public int Id { get; set; }
         public int UserId { get; set; }

@@ -34,7 +34,7 @@ namespace Infrastructure.Database.Repository
                 Guid = user.Guid,
                 ParentUserId = user.ParentUserId,
                 Balance = user.Balance,
-                UserUserPromoCodes = user.UserUsedPromoCodes.Select(x => new UserUserPromoCode()
+                UserUsedPromoCodes = user.UserUsedPromoCodes.Select(x => new UserUsedPromoCode()
                 {
                     Id = x.Id,
                     UserId = x.UserId,
@@ -92,7 +92,7 @@ namespace Infrastructure.Database.Repository
                     Guid = x.Guid,
                     ParentUserId = x.ParentUserId,
                     Balance = x.Balance,
-                    UserUserPromoCodes = x.UserUsedPromoCodes.Select(x => new UserUserPromoCode()
+                    UserUsedPromoCodes = x.UserUsedPromoCodes.Select(x => new UserUsedPromoCode()
                     {
                         Id = x.Id,
                         UserId = x.UserId,
@@ -178,6 +178,16 @@ namespace Infrastructure.Database.Repository
             dbUser.Balance = user.Balance;
             dbUser.AccessEndDate = user.AccessEndDate;
 
+            dbUser.UserUsedPromoCodes = user.UserUsedPromoCodes
+                .Select(x => new Entity.UserUsedPromoCode()
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    PromoCodeId = x.PromoCodeId,
+                    UsedDate = x.UsedDate,
+                })
+                .ToList();
+
             dbUser.Payments = user.Payments
                 .Select(x => new Entity.Payment()
                 {
@@ -235,6 +245,16 @@ namespace Infrastructure.Database.Repository
                 dbUser.Sost = user.Sost;
                 dbUser.Balance = user.Balance;
                 dbUser.AccessEndDate = user.AccessEndDate;
+
+                dbUser.UserUsedPromoCodes = user.UserUsedPromoCodes
+                    .Select(x => new Entity.UserUsedPromoCode()
+                    {
+                        Id = x.Id,
+                        UserId = x.UserId,
+                        PromoCodeId = x.PromoCodeId,
+                        UsedDate = x.UsedDate,
+                    })
+                    .ToList();
 
                 dbUser.Payments = user.Payments
                     .Select(p => new Entity.Payment()

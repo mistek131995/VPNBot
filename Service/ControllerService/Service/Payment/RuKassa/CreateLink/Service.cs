@@ -51,7 +51,7 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
                 var promoCode = await repositoryProvider.PromoCodeRepository.GetByCodeAsync(request.PromoCode) ??
                     throw new HandledExeption("Промокод не найден");
 
-                if (user.UserUserPromoCodes.Any(x => x.PromoCodeId == promoCode.Id))
+                if (user.UserUsedPromoCodes.Any(x => x.PromoCodeId == promoCode.Id))
                     throw new HandledExeption("Промокод уже использовался");
 
                 var discount = accessPosition.Price * ((decimal)promoCode.Discount / 100);

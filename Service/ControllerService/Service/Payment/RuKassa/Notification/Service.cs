@@ -1,6 +1,7 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 using Core.Model.User;
+using Newtonsoft.Json;
 using Service.ControllerService.Common;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,8 +9,11 @@ using System.Web;
 
 namespace Service.ControllerService.Service.Payment.RuKassa.Notification
 {
+
     public class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
     {
+        private record Data(string PromoCode);
+
         public async Task<bool> HandlingAsync(Request request)
         {
             var query = HttpUtility.ParseQueryString(request.Query);
@@ -41,6 +45,25 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
                     user.AccessEndDate = user.AccessEndDate?.AddMonths(paymentPosition.MonthCount);
 
                 payment.State = PaymentState.Completed;
+
+                var dataJsonString = query["data"];
+
+                if(!string.IsNullOrEmpty(dataJsonString))
+                {
+                    var data = JsonConvert.DeserializeObject<Data>(dataJsonString);
+
+                    if (!string.IsNullOrEmpty(data.PromoCode))
+                    {
+                        var promoCode = await repositoryProvider.PromoCodeRepository.GetByCodeAsync(data.PromoCode)
+                            ?? throw new Exception("Промокод не найден");
+
+                        user.UserUsedPromoCodes.Add(new UserUsedPromoCode()
+                        {
+                            PromoCodeId = promoCode.Id,
+                            UserId = user.Id
+                        });
+                    }
+                }
 
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
