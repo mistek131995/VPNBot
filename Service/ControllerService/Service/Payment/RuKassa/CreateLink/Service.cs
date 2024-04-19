@@ -29,17 +29,14 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
             var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.Id)
                 ?? throw new HandledExeption("Не найдена позиция для оплаты");
 
-            user.Payments.Add(new Core.Model.User.Payment()
+            var newPayment = new Core.Model.User.Payment()
             {
                 AccessPositionId = accessPosition.Id,
                 Amount = accessPosition.Price,
                 Date = DateTime.Now,
                 State = PaymentState.NotCompleted,
                 UserId = request.UserId
-            });
-
-            user = await repositoryProvider.UserRepository.UpdateAsync(user);
-            lastPayment = user.Payments.FirstOrDefault();
+            };
 
             var queryDictionary = new Dictionary<string, string>();
 
@@ -52,15 +49,20 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
                     throw new HandledExeption("Промокод уже использовался");
 
                 var discount = accessPosition.Price * ((decimal)promoCode.Discount / 100);
-                accessPosition.Price = (int)(accessPosition.Price - discount);
+                newPayment.Amount = (int)(accessPosition.Price - discount);
 
                 queryDictionary.Add("data", JsonConvert.SerializeObject(new { promoCode = request.PromoCode }));
             }
 
+            user.Payments.Add(newPayment);
+
+            user = await repositoryProvider.UserRepository.UpdateAsync(user);
+            lastPayment = user.Payments.FirstOrDefault();
+
             queryDictionary.Add("shop_id", "2087");
             queryDictionary.Add("order_id", lastPayment.Id.ToString());
             queryDictionary.Add("token", "f1bcf17bb8a0a91966e6bb55b20e6761");
-            queryDictionary.Add("amount", accessPosition.Price.ToString());
+            queryDictionary.Add("amount", newPayment.Amount.ToString());
 
             var query = string.Join("&", queryDictionary.Select(x => $"{x.Key}={x.Value}"));
 
