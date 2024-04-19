@@ -67,16 +67,16 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
 
             var query = string.Join("&", queryDictionary.Select(x => $"{x.Key}={x.Value}"));
 
-            //var httpClient = new HttpClient();
-            //var response = await httpClient.GetAsync($"https://lk.rukassa.pro/api/v1/create?{query}");
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync($"https://lk.rukassa.pro/api/v1/create?{query}");
 
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var responseString = await response.Content.ReadAsStringAsync();
-            //    var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(responseString);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(responseString);
 
-            //    return result.url;
-            //}
+                return result.url;
+            }
 
             throw new HandledExeption("Не удалось получить ссылку на оплату. Попробуйте позднее.");
         }
