@@ -98,7 +98,7 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> CreateRuKassaLink(int id, string promocode)
+        public async Task<JsonResult> CreateRuKassaLink(int id, string? promocode)
         {
             var response = await dispatcher.GetService<string, CreateRuKassaLink.Request>(new CreateRuKassaLink.Request()
             {
