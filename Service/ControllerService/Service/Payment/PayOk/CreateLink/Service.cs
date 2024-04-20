@@ -64,9 +64,9 @@ namespace Service.ControllerService.Service.Payment.PayOk.CreateLink
             queryDictionary.Add("payment", lastPayment.Id.ToString());
             queryDictionary.Add("currency", "RUB");
             queryDictionary.Add("shop", "11555");
-            queryDictionary.Add("desc", lastPayment.Id.ToString());
+            queryDictionary.Add("desc", $"Оплата счета - {lastPayment.Id}");
 
-            var signString = $"{newPayment.Amount}|{lastPayment.Id}|11555|RUB|{lastPayment.Id.ToString()}|f035f6dde555705f6773f8f1a2ea5af7";
+            var signString = $"{newPayment.Amount}|{lastPayment.Id}|11555|RUB|Оплата счета - {lastPayment.Id}|f035f6dde555705f6773f8f1a2ea5af7";
             var sign = signString.GetMD5();
 
             queryDictionary.Add("sign", sign);
