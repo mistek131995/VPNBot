@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Model.User
+namespace Service.ControllerService.Service.Payment.PayOk.CreateLink
 {
-    public enum UserRole
+    internal class Result
     {
-        None = 0,
-        User = 1,
-        Admin = 2,
-        Tester = 3
     }
 }

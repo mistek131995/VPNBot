@@ -16,6 +16,8 @@ using LavaNotification = Service.ControllerService.Service.Payment.Lava.Notifica
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
 using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 
+using CreatePayOkLink = Service.ControllerService.Service.Payment.PayOk.CreateLink;
+
 namespace VpnBotApi.Controllers
 {
     [ApiController]
@@ -98,9 +100,24 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<JsonResult> CreateRuKassaLink(int id, string? promocode)
         {
             var response = await dispatcher.GetService<string, CreateRuKassaLink.Request>(new CreateRuKassaLink.Request()
+            {
+                Id = id,
+                PromoCode = promocode,
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> CreatePayOkLink(int id, string? promocode)
+        {
+            var response = await dispatcher.GetService<string, CreatePayOkLink.Request>(new CreatePayOkLink.Request()
             {
                 Id = id,
                 PromoCode = promocode,
