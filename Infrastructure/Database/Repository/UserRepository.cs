@@ -364,7 +364,7 @@ namespace Infrastructure.Database.Repository
             return await GetByIdsAsync(userIds);
         }
 
-        public async Task<User> GetByPaymentId(int paymentId)
+        public async Task<User> GetByPaymentIdAsync(int paymentId)
         {
             var payment = await context.Payments
                 .AsNoTracking()

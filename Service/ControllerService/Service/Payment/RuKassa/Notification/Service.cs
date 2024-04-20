@@ -27,7 +27,7 @@ namespace Service.ControllerService.Service.Payment.RuKassa.Notification
 
             if (signature == request.Signature && amount == inAmount)
             {
-                var user = await repositoryProvider.UserRepository.GetByPaymentId(int.Parse(orderId))
+                var user = await repositoryProvider.UserRepository.GetByPaymentIdAsync(int.Parse(orderId))
                     ?? throw new Exception($"Не удалось найти пользователя по orderId (PaymentId) - {orderId}");
 
                 var payment = user.Payments.FirstOrDefault(x => x.Id == int.Parse(orderId))
