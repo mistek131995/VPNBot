@@ -15,6 +15,6 @@ namespace Service.ControllerService.Service.Payment.PayOk.Notification
         public string desc { get; set; }
         public string currency { get; set; }
         public string sign { get; set; }
-        public string custom { get; set; }
+        public string? custom { get; set; }
     }
 }
