@@ -10,7 +10,7 @@ namespace Service.ControllerService.Service.Payment.PayOk.Notification
 
         public async Task<bool> HandlingAsync(Request request)
         {
-            var sign = $"f035f6dde555705f6773f8f1a2ea5af7|{request.desc}|{request.currency}|{request.shop}|{request.payment_id}|{request.amount}".GetMD5();
+            var sign = $"f035f6dde555705f6773f8f1a2ea5af7|{request.desc}|{request.currency}|{request.shop}|{request.payment_id}|{request.amount}".GetMD5(EncodingType.UTF8);
 
             if (sign == request.sign)
             {
