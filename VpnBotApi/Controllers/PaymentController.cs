@@ -17,6 +17,7 @@ using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPayment
 using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 
 using CreatePayOkLink = Service.ControllerService.Service.Payment.PayOk.CreateLink;
+using PayOkNotification = Service.ControllerService.Service.Payment.PayOk.Notification;
 
 namespace VpnBotApi.Controllers
 {
@@ -126,6 +127,15 @@ namespace VpnBotApi.Controllers
 
             return Json(response);
         }
+
+        [HttpPost]
+        public async Task<JsonResult> PayOkNotification([FromBody] PayOkNotification.Request request)
+        {
+            var response = await dispatcher.GetService<bool, PayOkNotification.Request>(request);
+
+            return Json(response);
+        }
+
 
         [HttpPost]
         public async Task LavaNotification([FromBody] LavaNotification.Request request)
