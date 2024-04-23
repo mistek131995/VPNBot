@@ -5,6 +5,7 @@ using GetFile = Service.ControllerService.Service.GetFile;
 using GetVpnLocation = Service.ControllerService.Service.App.GetVpnLocation;
 using GetServersByTag = Service.ControllerService.Service.App.GetServersByTag;
 using GetVpnConnectionByIp = Service.ControllerService.Service.App.GetConnectionByIP;
+using GetProxyConnection = Service.ControllerService.Service.App.GetProxyConnection;
 
 using GetConnectionScreen = Service.ControllerService.Service.App.GetConnectionScreen;
 using AddError = Service.ControllerService.Service.App.AddError;
@@ -78,6 +79,19 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> AddError([FromBody]AddError.Request request)
         {
             var response = await dispatcher.GetService<bool, AddError.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> GetProxyConnection(string ip)
+        {
+            var response = await dispatcher.GetService<GetProxyConnection.Result, GetProxyConnection.Request>(new GetProxyConnection.Request()
+            {
+                Ip = ip,
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
 
             return Json(response);
         }
