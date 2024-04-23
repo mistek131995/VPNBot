@@ -129,7 +129,7 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> PayOkNotification([FromBody] PayOkNotification.Request request)
+        public async Task<JsonResult> PayOkNotification([FromForm] PayOkNotification.Request request)
         {
             var response = await dispatcher.GetService<bool, PayOkNotification.Request>(request);
 
