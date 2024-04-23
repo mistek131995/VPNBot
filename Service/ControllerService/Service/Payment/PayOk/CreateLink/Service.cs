@@ -51,7 +51,7 @@ namespace Service.ControllerService.Service.Payment.PayOk.CreateLink
                 var discount = accessPosition.Price * ((decimal)promoCode.Discount / 100);
                 newPayment.Amount = (int)(accessPosition.Price - discount);
 
-                queryDictionary.Add("custom", JsonConvert.SerializeObject(new { promoCode = request.PromoCode }));
+                queryDictionary.Add("custom", request.PromoCode);
             }
 
             queryDictionary.Add("amount", newPayment.Amount.ToString());

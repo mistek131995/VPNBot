@@ -2,6 +2,7 @@
 using Core.Common;
 using Core.Model.User;
 using MD5Hash;
+using Newtonsoft.Json;
 
 namespace Service.ControllerService.Service.Payment.PayOk.Notification
 {
@@ -32,6 +33,20 @@ namespace Service.ControllerService.Service.Payment.PayOk.Notification
 
                 payment.State = PaymentState.Completed;
 
+                if (!string.IsNullOrEmpty(request.custom))
+                {
+                    var promoCode = await repositoryProvider.PromoCodeRepository.GetByCodeAsync(request.custom)
+                        ?? throw new Exception("Промокод не найден");
+
+                    user.UserUsedPromoCodes.Add(new UserUsedPromoCode()
+                    {
+                        PromoCodeId = promoCode.Id,
+                        UserId = user.Id,
+                        UsedDate = DateTime.Now
+                    });
+                }
+
+                await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 return true;
             }
