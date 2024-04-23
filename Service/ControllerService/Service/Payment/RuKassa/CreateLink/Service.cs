@@ -17,7 +17,7 @@ namespace Service.ControllerService.Service.Payment.RuKassa.CreateLink
 
             if (lastPayment != null && (DateTime.Now - lastPayment.Date).TotalMinutes < 10 && lastPayment.State == PaymentState.NotCompleted && user.Role == UserRole.User)
             {
-                var minutes = (int)(10 - (DateTime.Now - lastPayment.Date).TotalMinutes);
+                var minutes = (int)(5 - (DateTime.Now - lastPayment.Date).TotalMinutes);
 
                 if (minutes > 0)
                     throw new HandledExeption($"Недавно вы уже создавали платеж, новый платеж можно создать через {minutes} минут(ы)");
