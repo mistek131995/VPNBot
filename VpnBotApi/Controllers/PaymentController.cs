@@ -18,6 +18,7 @@ using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 
 using CreatePayOkLink = Service.ControllerService.Service.Payment.PayOk.CreateLink;
 using PayOkNotification = Service.ControllerService.Service.Payment.PayOk.Notification;
+using Newtonsoft.Json;
 
 namespace VpnBotApi.Controllers
 {
@@ -131,6 +132,11 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<JsonResult> PayOkNotification([FromForm] PayOkNotification.Request request)
         {
+
+            Console.WriteLine(JsonConvert.SerializeObject(request));
+            Console.WriteLine(Request.Form.ToString());
+            Console.WriteLine(JsonConvert.SerializeObject(Request.Form));
+
             var response = await dispatcher.GetService<bool, PayOkNotification.Request>(request);
 
             return Json(response);
