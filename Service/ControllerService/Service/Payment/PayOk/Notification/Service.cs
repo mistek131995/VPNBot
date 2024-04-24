@@ -33,9 +33,11 @@ namespace Service.ControllerService.Service.Payment.PayOk.Notification
 
                 payment.State = PaymentState.Completed;
 
-                if (!string.IsNullOrEmpty(request.custom))
+                var promoCodeCode = request.custom["custom"].ElementAtOrDefault(0);
+
+                if (!string.IsNullOrEmpty(promoCodeCode))
                 {
-                    var promoCode = await repositoryProvider.PromoCodeRepository.GetByCodeAsync(request.custom)
+                    var promoCode = await repositoryProvider.PromoCodeRepository.GetByCodeAsync(promoCodeCode)
                         ?? throw new Exception("Промокод не найден");
 
                     user.UserUsedPromoCodes.Add(new UserUsedPromoCode()
