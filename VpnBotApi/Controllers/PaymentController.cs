@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
 
-//using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
+using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
 using YouKassaGetLink = Service.ControllerService.Service.Payment.YouKassa.GetLink;
 
 using CreateRuKassaLink = Service.ControllerService.Service.Payment.RuKassa.CreateLink;
@@ -64,6 +64,18 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
+        public async Task<bool> YouKassaNotification([FromBody] YouKassaNotification.Request request)
+        {
+            var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
+
+            Console.WriteLine("------------------------");
+            Console.WriteLine(JsonConvert.SerializeObject(request));
+            Console.WriteLine("------------------------");
+
+            return true;
+        }
+
+        [HttpPost]
         [Authorize]
         public async Task<JsonResult> ExtendSubscribeForBonuses(ExtendSubscribeForBonuses.Request request)
         {
@@ -72,17 +84,6 @@ namespace VpnBotApi.Controllers
 
             return Json(response);
         }
-
-        //[HttpPost]
-        //public async Task<string> Notification([FromForm] FreeKassaNotification.Request request)
-        //{
-        //    var response = await dispatcher.GetService<bool, FreeKassaNotification.Request>(request);
-
-        //    if (response)
-        //        return "YES";
-        //    else
-        //        return "NO";
-        //}
 
         [HttpGet]
         [Authorize]
