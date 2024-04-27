@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
 
-using FreeKassaNotification = Service.ControllerService.Service.Payment.FreeKassa.Notification;
-using FreeKassaGetLink = Service.ControllerService.Service.Payment.FreeKassa.GetLink;
+//using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
+using YouKassaGetLink = Service.ControllerService.Service.Payment.YouKassa.GetLink;
 
 using CreateRuKassaLink = Service.ControllerService.Service.Payment.RuKassa.CreateLink;
 using RuKassaNotification = Service.ControllerService.Service.Payment.RuKassa.Notification;
@@ -51,13 +51,13 @@ namespace VpnBotApi.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<JsonResult> GetSubscribeItem(int id, decimal sale)
+        public async Task<JsonResult> GetYouKassaLink(int id, string? promoCode)
         {
-            var response = await dispatcher.GetService<FreeKassaGetLink.Result, FreeKassaGetLink.Request>(new FreeKassaGetLink.Request()
+            var response = await dispatcher.GetService<string, YouKassaGetLink.Request>(new YouKassaGetLink.Request()
             {
                 Id = id,
-                Sale = sale,
-                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value),
+                PromoCode = promoCode
             });
 
             return Json(response);
@@ -73,16 +73,16 @@ namespace VpnBotApi.Controllers
             return Json(response);
         }
 
-        [HttpPost]
-        public async Task<string> Notification([FromForm] FreeKassaNotification.Request request)
-        {
-            var response = await dispatcher.GetService<bool, FreeKassaNotification.Request>(request);
+        //[HttpPost]
+        //public async Task<string> Notification([FromForm] FreeKassaNotification.Request request)
+        //{
+        //    var response = await dispatcher.GetService<bool, FreeKassaNotification.Request>(request);
 
-            if (response)
-                return "YES";
-            else
-                return "NO";
-        }
+        //    if (response)
+        //        return "YES";
+        //    else
+        //        return "NO";
+        //}
 
         [HttpGet]
         [Authorize]
