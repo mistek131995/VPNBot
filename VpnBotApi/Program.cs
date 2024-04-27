@@ -8,7 +8,6 @@ using Serilog;
 using Service;
 using System.Text;
 using VpnBotApi.Common;
-using VpnBotApi.Worker.TelegramBot;
 
 namespace VpnBotApi
 {
@@ -32,8 +31,6 @@ namespace VpnBotApi
             {
                 options.CustomSchemaIds(type => type.FullName);
             });
-            builder.Services.AddHostedService<ScopedHostedService>();
-            builder.Services.AddTelegramBot();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddService();
 
