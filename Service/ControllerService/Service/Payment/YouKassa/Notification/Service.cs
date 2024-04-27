@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,13 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            throw new NotImplementedException();
+
+
+            Console.WriteLine("------------------------");
+            Console.WriteLine(JsonConvert.SerializeObject(request));
+            Console.WriteLine("------------------------");
+
+            return true;
         }
     }
 }
