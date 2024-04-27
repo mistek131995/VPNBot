@@ -64,13 +64,14 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> YouKassaNotification()
+        public async Task<bool> YouKassaNotification([FromBody] YouKassaNotification.Request request)
         {
-            var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(new YouKassaNotification.Request());
+            Console.WriteLine("------------------------");
+            Console.WriteLine(JsonConvert.SerializeObject(request));
+            Console.WriteLine("------------------------");
 
-            Console.WriteLine("------------------------");
-            Console.WriteLine(JsonConvert.SerializeObject("ok"));
-            Console.WriteLine("------------------------");
+
+            var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
 
             return true;
         }
