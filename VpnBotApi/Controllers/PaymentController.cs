@@ -16,6 +16,7 @@ using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 using CreatePayOkLink = Service.ControllerService.Service.Payment.PayOk.CreateLink;
 using PayOkNotification = Service.ControllerService.Service.Payment.PayOk.Notification;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace VpnBotApi.Controllers
 {
@@ -66,12 +67,14 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<bool> YouKassaNotification(/*[FromBody] YouKassaNotification.Request request*/)
         {
-            var reader = new StreamReader(Request.Body);
-            reader.BaseStream.Seek(0, SeekOrigin.Begin);
-            var rawMessage = reader.ReadToEnd();
+            var requestContent = "";
+            using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
+            {
+                requestContent = await reader.ReadToEndAsync();
+            }
 
             Console.WriteLine("------------------------");
-            Console.WriteLine(rawMessage);
+            Console.WriteLine(requestContent);
             Console.WriteLine("------------------------");
 
 
