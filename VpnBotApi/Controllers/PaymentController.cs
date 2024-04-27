@@ -67,9 +67,9 @@ namespace VpnBotApi.Controllers
         public async Task<bool> YouKassaNotification(/*[FromBody] YouKassaNotification.Request request*/)
         {
             Console.WriteLine("------------------------");
-            Console.WriteLine(JsonConvert.SerializeObject(JsonConvert.SerializeObject(Request.Body)));
-            Console.WriteLine(JsonConvert.SerializeObject(JsonConvert.SerializeObject(Request.Form)));
-            Console.WriteLine(JsonConvert.SerializeObject(JsonConvert.SerializeObject(Request)));
+            Console.WriteLine(JsonConvert.SerializeObject(Request.Body.ToString()));
+            Console.WriteLine(JsonConvert.SerializeObject(Request.Form.ToString()));
+            Console.WriteLine(JsonConvert.SerializeObject(JsonConvert.SerializeObject(Request.ContentType)));
             Console.WriteLine("------------------------");
 
 
