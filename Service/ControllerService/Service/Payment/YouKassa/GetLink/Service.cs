@@ -68,10 +68,11 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
                 var byteContent = new ByteArrayContent(buffer);
                 byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                var response = await client.PostAsync($"https://api.yookassa.ru/v3/payments/{paymentId}", byteContent);
+                var response = await client.PostAsync($"https://api.yookassa.ru/v3/payments", byteContent);
                 var responseContent = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<Result>(responseContent);
 
-                return JsonConvert.SerializeObject(response);
+                return result.confirmation.confirmation_url;
             }
         }
     }
