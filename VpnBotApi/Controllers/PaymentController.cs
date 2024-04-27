@@ -66,10 +66,12 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<bool> YouKassaNotification(/*[FromBody] YouKassaNotification.Request request*/)
         {
+            var reader = new StreamReader(Request.Body);
+            reader.BaseStream.Seek(0, SeekOrigin.Begin);
+            var rawMessage = reader.ReadToEnd();
+
             Console.WriteLine("------------------------");
-            Console.WriteLine(JsonConvert.SerializeObject(Request.Body.ToString()));
-            Console.WriteLine(JsonConvert.SerializeObject(Request.Form.ToString()));
-            Console.WriteLine(JsonConvert.SerializeObject(JsonConvert.SerializeObject(Request.ContentType)));
+            Console.WriteLine(rawMessage);
             Console.WriteLine("------------------------");
 
 
