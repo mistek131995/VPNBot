@@ -65,20 +65,24 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> YouKassaNotification(/*[FromBody] YouKassaNotification.Request request*/)
+        public async Task<bool> YouKassaNotification([FromBody] YouKassaNotification.Request request)
         {
-            var requestContent = "";
-            using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
-            {
-                requestContent = await reader.ReadToEndAsync();
-            }
+            //var requestContent = "";
+            //using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
+            //{
+            //    requestContent = await reader.ReadToEndAsync();
+            //}
+
+            //Console.WriteLine("------------------------");
+            //Console.WriteLine(requestContent);
+            //Console.WriteLine("------------------------");
+
+
+            //var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(new YouKassaNotification.Request());
 
             Console.WriteLine("------------------------");
-            Console.WriteLine(requestContent);
+            Console.WriteLine("requestContent");
             Console.WriteLine("------------------------");
-
-
-            var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(new YouKassaNotification.Request());
 
             return true;
         }
