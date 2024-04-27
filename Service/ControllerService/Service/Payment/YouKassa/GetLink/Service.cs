@@ -44,7 +44,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
             {
                 var byteArray = Encoding.UTF8.GetBytes($"{shopId}:{secretKey}");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                client.DefaultRequestHeaders.Add("Idempotence-Key", Guid.NewGuid().ToString());
+                client.DefaultRequestHeaders.Add("Idempotence-Key", lastPayment.Id.ToString());
 
                 var obj = new
                 {
