@@ -29,7 +29,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
                 throw new HandledExeption("Промокод уже использовался");
 
             var shopId = "376859"; // Замените на ваш Идентификатор магазина
-            var secretKey = "live_qyxk0X0mT9NcvyGMf2TMpZmQHCBuSbCOzpcrqTJ8zHw"; // Замените на ваш Секретный ключ
+            var secretKey = "live_PTUhuGnzhz3JoBqcgkqm8v_QoR3DLx61Zu4F1etyFug"; // Замените на ваш Секретный ключ
 
             var price = accessPosition.Price;
 
