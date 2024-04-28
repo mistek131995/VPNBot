@@ -15,7 +15,7 @@ namespace Core.Repository
         public Task<List<User>> GetByEmailsAsync(List<string> emails);
         public Task<User> GetByLoginAndPasswordAsync(string login, string password);
         public Task<User> GetByGuidAsync(Guid guid);
-        public Task<User> GetByPaymentIdAsync(int paymentId);
+        public Task<User> GetByPaymentGuidAsync(Guid paymentId);
         public Task<User> AddAsync(User user);
         public Task<User> UpdateAsync(User user);
         public Task UpdateManyAsync(List<User> users);

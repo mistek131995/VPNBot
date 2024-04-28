@@ -31,7 +31,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
 
         public class Object
         {
-            public string id { get; set; }
+            public Guid id { get; set; }
             public string status { get; set; }
             public Amount amount { get; set; }
             public IncomeAmount income_amount { get; set; }

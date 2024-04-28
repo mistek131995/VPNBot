@@ -12,6 +12,7 @@ using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 
 using Newtonsoft.Json;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace VpnBotApi.Controllers
 {
@@ -62,6 +63,7 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<bool> YouKassaNotification([FromBody] YouKassaNotification.Request request)
         {
+            Console.WriteLine(Request.HttpContext.Connection.RemoteIpAddress);
 
             var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
 

@@ -337,11 +337,11 @@ namespace Infrastructure.Database.Repository
             return await GetByIdsAsync(userIds);
         }
 
-        public async Task<User> GetByPaymentIdAsync(int paymentId)
+        public async Task<User> GetByPaymentGuidAsync(Guid guid)
         {
             var payment = await context.Payments
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == paymentId);
+                .FirstOrDefaultAsync(x => x.Guid == guid);
 
             return await GetByIdAsync(payment.UserId);
         }
