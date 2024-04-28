@@ -26,10 +26,6 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
 
             await repositoryProvider.UserRepository.UpdateAsync(user);
 
-            Console.WriteLine("------------------------");
-            Console.WriteLine(JsonConvert.SerializeObject(request));
-            Console.WriteLine("------------------------");
-
             return true;
         }
     }

@@ -28,8 +28,8 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
             if (promoCode != null && user.Payments.Any(x => x.PromoCodeId == promoCode.Id))
                 throw new HandledExeption("Промокод уже использовался");
 
-            var shopId = "378461"; // Замените на ваш Идентификатор магазина
-            var secretKey = "test_OI5RhR_h07nXYWcDZEJa9c4_F_FbF3Gjv8mj8DNeIu8"; // Замените на ваш Секретный ключ
+            var shopId = "376859"; // Замените на ваш Идентификатор магазина
+            var secretKey = "live_qyxk0X0mT9NcvyGMf2TMpZmQHCBuSbCOzpcrqTJ8zHw"; // Замените на ваш Секретный ключ
 
             var price = accessPosition.Price;
 
