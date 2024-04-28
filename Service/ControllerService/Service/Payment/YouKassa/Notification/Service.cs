@@ -17,6 +17,9 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
             var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(payment.AccessPositionId) ??
                 throw new Exception("Не удалось найти подписку");
 
+            if(request.@object.status != "succeeded")
+                throw new Exception("Статус платежа не равен succeeded");
+
             if (user.AccessEndDate < DateTime.Now)
                 user.AccessEndDate = DateTime.Now.AddMonths(accessPosition.MonthCount);
             else
@@ -25,6 +28,10 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
             payment.State = Core.Model.User.PaymentState.Completed;
 
             await repositoryProvider.UserRepository.UpdateAsync(user);
+
+            Console.WriteLine("------------------------");
+            Console.WriteLine(JsonConvert.SerializeObject(request));
+            Console.WriteLine("------------------------");
 
             return true;
         }
