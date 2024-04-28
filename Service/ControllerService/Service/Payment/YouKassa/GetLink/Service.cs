@@ -29,12 +29,12 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
             //var shopId = "378461"; // Замените на ваш Идентификатор магазина
             //var secretKey = "test_OI5RhR_h07nXYWcDZEJa9c4_F_FbF3Gjv8mj8DNeIu8"; // Замените на ваш Секретный ключ
 
-            var price = (decimal)accessPosition.Price;
+            var price = accessPosition.Price;
 
             if (promoCode != null)
             {
                 var discount = (decimal)promoCode.Discount / 100 * accessPosition.Price;
-                price -= discount;
+                price -= (int)discount;
             }
 
             using (var client = new HttpClient())
@@ -56,21 +56,21 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
                         customer = new
                         {
                             email = user.Email,
-                            items = new[]
+                        },
+                        items = new[]
                             {
                                 new
                                 {
                                     description = $"Подписка LockVPN ({accessPosition.Name})",
-                                    quantity = 1.ToString(),
+                                    quantity = 1,
                                     amount = new
                                     {
-                                        value = price.ToString(),
+                                        value = price,
                                         currency = "RUB"
                                     },
                                     vat_code = "1"
                                 }
                             }
-                        }
                     },
                     confirmation = new
                     {
