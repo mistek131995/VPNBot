@@ -23,9 +23,6 @@ namespace Service.ControllerService.Service.Payment.ApplyPromoCode
             var discount = position.Price * ((decimal)promoCode.Discount / 100);
             var newPrice = (int)(position.Price - discount);
 
-            if (newPrice < 100)
-                throw new HandledExeption("Цена не может быть меньше 100руб.");
-
             return newPrice;
         }
     }
