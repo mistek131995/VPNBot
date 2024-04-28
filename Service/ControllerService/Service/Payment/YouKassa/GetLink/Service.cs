@@ -109,6 +109,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
                     return result.confirmation.confirmation_url;
                 }
 
+                Console.WriteLine(jsonObj);
                 throw new HandledExeption("Не удалось создать ссылку на оплату", true);
             }
         }
