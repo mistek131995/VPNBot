@@ -11,7 +11,5 @@ namespace Infrastructure.Database.Entity
         public int UsageCount { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-
-        public List<UserUsedPromoCode> UserUsedPromoCodes { get; set; }
     }
 }

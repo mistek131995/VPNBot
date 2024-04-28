@@ -23,34 +23,26 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
             var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.Id) ??
                 throw new HandledExeption("Позиция не найдена");
 
-            var newPayment = new Core.Model.User.Payment()
-            {
-                AccessPositionId = accessPosition.Id,
-                Amount = accessPosition.Price,
-                Date = DateTime.Now,
-                State = PaymentState.NotCompleted,
-                UserId = request.UserId
-            };
+            var promoCode = await repositoryProvider.PromoCodeRepository.GetByCodeAsync(request.PromoCode);
 
-            user.Payments.Add(newPayment);
-            user = await repositoryProvider.UserRepository.UpdateAsync(user);
-            var lastPayment = user.Payments.FirstOrDefault();
+            if (promoCode != null && user.Payments.Any(x => x.PromoCodeId == promoCode.Id))
+                throw new HandledExeption("Промокод уже использовался");
 
-            var paymentId = lastPayment.Id; // Замените на ваш payment_id
             var shopId = "378461"; // Замените на ваш Идентификатор магазина
             var secretKey = "test_OI5RhR_h07nXYWcDZEJa9c4_F_FbF3Gjv8mj8DNeIu8"; // Замените на ваш Секретный ключ
+            var price = promoCode == null ? accessPosition.Price : accessPosition.Price - (promoCode.Discount / 100 * accessPosition.Price);
 
             using (var client = new HttpClient())
             {
                 var byteArray = Encoding.UTF8.GetBytes($"{shopId}:{secretKey}");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                client.DefaultRequestHeaders.Add("Idempotence-Key", lastPayment.Id.ToString());
+                client.DefaultRequestHeaders.Add("Idempotence-Key", Guid.NewGuid().ToString());
 
                 var obj = new
                 {
                     amount = new
                     {
-                        value = 100,
+                        value = price,
                         currency = "RUB"
                     },
                     capture = true,
@@ -72,7 +64,26 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<Result>(responseContent);
 
-                return result.confirmation.confirmation_url;
+                if (response.IsSuccessStatusCode)
+                {
+                    var newPayment = new Core.Model.User.Payment()
+                    {
+                        AccessPositionId = accessPosition.Id,
+                        Amount = accessPosition.Price,
+                        Date = DateTime.Now,
+                        State = PaymentState.NotCompleted,
+                        UserId = request.UserId,
+                        PromoCodeId = promoCode?.Id ?? 0,
+                        Guid = Guid.Parse(result.id),
+                    };
+
+                    user.Payments.Add(newPayment);
+                    user = await repositoryProvider.UserRepository.UpdateAsync(user);
+
+                    return result.confirmation.confirmation_url;
+                }
+
+                throw new HandledExeption("Не удалось создать ссылку на оплату", true);
             }
         }
     }

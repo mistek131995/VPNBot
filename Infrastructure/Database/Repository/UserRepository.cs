@@ -12,7 +12,6 @@ namespace Infrastructure.Database.Repository
             var user = await context.Users
                 .Include(x => x.Payments)
                 .Include(x => x.UserConnections)
-                .Include(x => x.UserUsedPromoCodes)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -34,13 +33,6 @@ namespace Infrastructure.Database.Repository
                 Guid = user.Guid,
                 ParentUserId = user.ParentUserId,
                 Balance = user.Balance,
-                UserUsedPromoCodes = user.UserUsedPromoCodes.Select(x => new UserUsedPromoCode()
-                {
-                    Id = x.Id,
-                    UserId = x.UserId,
-                    PromoCodeId = x.PromoCodeId,
-                    UsedDate = x.UsedDate,
-                }).ToList(),
                 UserConnections = user.UserConnections.Select(c => new UserConnection()
                 {
                     Id = c.Id,
@@ -66,6 +58,8 @@ namespace Infrastructure.Database.Repository
                     Amount = p.Amount,
                     Date = p.Date,
                     State = p.State,
+                    PromoCodeId = p.PromoCodeId,
+                    Guid = p.Guid,
                 }).ToList()
             };
         }
@@ -75,7 +69,6 @@ namespace Infrastructure.Database.Repository
             return await context.Users
                 .Include(x => x.Payments)
                 .Include(x => x.UserConnections)
-                .Include(x => x.UserUsedPromoCodes)
                 .AsNoTracking()
                 .Select(x => new Model.User()
                 {
@@ -92,13 +85,6 @@ namespace Infrastructure.Database.Repository
                     Guid = x.Guid,
                     ParentUserId = x.ParentUserId,
                     Balance = x.Balance,
-                    UserUsedPromoCodes = x.UserUsedPromoCodes.Select(x => new UserUsedPromoCode()
-                    {
-                        Id = x.Id,
-                        UserId = x.UserId,
-                        PromoCodeId = x.PromoCodeId,
-                        UsedDate = x.UsedDate,
-                    }).ToList(),
                     UserConnections = x.UserConnections.Select(c => new UserConnection()
                     {
                         Id = c.Id,
@@ -124,6 +110,8 @@ namespace Infrastructure.Database.Repository
                         Amount = p.Amount,
                         Date = p.Date,
                         State = p.State,
+                        PromoCodeId = p.PromoCodeId,
+                        Guid = p.Guid,
                     }).ToList()
                 })
                 .Where(x => ids.Contains(x.Id))
@@ -178,16 +166,6 @@ namespace Infrastructure.Database.Repository
             dbUser.Balance = user.Balance;
             dbUser.AccessEndDate = user.AccessEndDate;
 
-            dbUser.UserUsedPromoCodes = user.UserUsedPromoCodes
-                .Select(x => new Entity.UserUsedPromoCode()
-                {
-                    Id = x.Id,
-                    UserId = x.UserId,
-                    PromoCodeId = x.PromoCodeId,
-                    UsedDate = x.UsedDate,
-                })
-                .ToList();
-
             dbUser.Payments = user.Payments
                 .Select(x => new Entity.Payment()
                 {
@@ -197,6 +175,8 @@ namespace Infrastructure.Database.Repository
                     Date = x.Date,
                     Amount = x.Amount,
                     State = x.State,
+                    PromoCodeId = x.PromoCodeId,
+                    Guid = x.Guid,
                 })
                 .ToList();
 
@@ -246,16 +226,6 @@ namespace Infrastructure.Database.Repository
                 dbUser.Balance = user.Balance;
                 dbUser.AccessEndDate = user.AccessEndDate;
 
-                dbUser.UserUsedPromoCodes = user.UserUsedPromoCodes
-                    .Select(x => new Entity.UserUsedPromoCode()
-                    {
-                        Id = x.Id,
-                        UserId = x.UserId,
-                        PromoCodeId = x.PromoCodeId,
-                        UsedDate = x.UsedDate,
-                    })
-                    .ToList();
-
                 dbUser.Payments = user.Payments
                     .Select(p => new Entity.Payment()
                     {
@@ -265,6 +235,8 @@ namespace Infrastructure.Database.Repository
                         UserId = p.UserId,
                         Amount = p.Amount,
                         State = p.State,
+                        PromoCodeId = p.PromoCodeId,
+                        Guid = p.Guid,
                     })
                     .ToList();
 
@@ -283,6 +255,7 @@ namespace Infrastructure.Database.Repository
                         ServerName = c.ServerName,
                         ShortId = c.ShortId,
                         AccessEndDate = c.AccessEndDate,
+                        
                     })
                     .ToList();
             }

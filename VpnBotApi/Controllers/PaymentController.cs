@@ -7,14 +7,9 @@ using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscr
 using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
 using YouKassaGetLink = Service.ControllerService.Service.Payment.YouKassa.GetLink;
 
-using CreateRuKassaLink = Service.ControllerService.Service.Payment.RuKassa.CreateLink;
-using RuKassaNotification = Service.ControllerService.Service.Payment.RuKassa.Notification;
-
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
 using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 
-using CreatePayOkLink = Service.ControllerService.Service.Payment.PayOk.CreateLink;
-using PayOkNotification = Service.ControllerService.Service.Payment.PayOk.Notification;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -81,53 +76,6 @@ namespace VpnBotApi.Controllers
             var response = await dispatcher.GetService<bool, ExtendSubscribeForBonuses.Request>(request);
 
             return Json(response);
-        }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<JsonResult> CreateRuKassaLink(int id, string? promocode)
-        {
-            var response = await dispatcher.GetService<string, CreateRuKassaLink.Request>(new CreateRuKassaLink.Request()
-            {
-                Id = id,
-                PromoCode = promocode,
-                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
-            });
-
-            return Json(response);
-        }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<JsonResult> CreatePayOkLink(int id, string? promocode)
-        {
-            var response = await dispatcher.GetService<string, CreatePayOkLink.Request>(new CreatePayOkLink.Request()
-            {
-                Id = id,
-                PromoCode = promocode,
-                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
-            });
-
-            return Json(response);
-        }
-
-        [HttpPost]
-        public async Task<JsonResult> PayOkNotification([FromForm] PayOkNotification.Request request)
-        {
-            var response = await dispatcher.GetService<bool, PayOkNotification.Request>(request);
-
-            return Json(response);
-        }
-
-        public async Task RuKassaNotification()
-        {
-            var signature = Request.Headers.FirstOrDefault(x => x.Key == "signature").Value;
-
-            await dispatcher.GetService<bool, RuKassaNotification.Request>(new RuKassaNotification.Request()
-            {
-                Query = await new StreamReader(Request.Body).ReadToEndAsync(),
-                Signature = signature
-            });
         }
 
         [HttpGet]
