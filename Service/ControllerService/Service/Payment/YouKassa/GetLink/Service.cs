@@ -55,7 +55,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
                         type = "redirect",
                         return_url = "https://lockvpn.me/payment?status=success"
                     },
-                    description = "Test"
+                    description = $"Подписка LockVPN ({accessPosition.Name})"
                 };
 
                 var jsonObj = JsonConvert.SerializeObject(obj);
