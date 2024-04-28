@@ -70,18 +70,18 @@ namespace VpnBotApi.Controllers
                 throw new Exception("IP адреса нет в разрешенном списке");
             }
 
-            //var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
+            var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
 
-            var requestContent = "";
-            using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
-            {
-                requestContent = await reader.ReadToEndAsync();
-            }
+            //var requestContent = "";
+            //using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
+            //{
+            //    requestContent = await reader.ReadToEndAsync();
+            //}
 
-            Console.WriteLine("------------------------");
+            //Console.WriteLine("------------------------");
             //Console.WriteLine(requestContent);
-            Console.WriteLine(JsonConvert.SerializeObject(request));
-            Console.WriteLine("------------------------");
+            //Console.WriteLine(JsonConvert.SerializeObject(request));
+            //Console.WriteLine("------------------------");
 
             return true;
         }
