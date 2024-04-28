@@ -8,10 +8,18 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
         public string @event { get; set; }
         public Object @object { get; set; }
 
+        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
         public class Amount
         {
             public string value { get; set; }
             public string currency { get; set; }
+        }
+
+        public class AuthorizationDetails
+        {
+            public string rrn { get; set; }
+            public string auth_code { get; set; }
+            public ThreeDSecure three_d_secure { get; set; }
         }
 
         public class IncomeAmount
@@ -26,7 +34,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
 
         public class Object
         {
-            public Guid id { get; set; }
+            public string id { get; set; }
             public string status { get; set; }
             public Amount amount { get; set; }
             public IncomeAmount income_amount { get; set; }
@@ -39,7 +47,9 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
             public RefundedAmount refunded_amount { get; set; }
             public bool paid { get; set; }
             public bool refundable { get; set; }
+            public string receipt_registration { get; set; }
             public Metadata metadata { get; set; }
+            public AuthorizationDetails authorization_details { get; set; }
         }
 
         public class PaymentMethod
@@ -61,6 +71,14 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
         {
             public string value { get; set; }
             public string currency { get; set; }
+        }
+
+        public class ThreeDSecure
+        {
+            public bool applied { get; set; }
+            public string protocol { get; set; }
+            public bool method_completed { get; set; }
+            public bool challenge_completed { get; set; }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Application.ControllerService.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Net;
 using System.Text;
 using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
@@ -56,7 +57,7 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> YouKassaNotification(/*[FromBody] YouKassaNotification.Request request*/)
+        public async Task<bool> YouKassaNotification([FromBody] YouKassaNotification.Request request)
         {
             if (!IPNetwork.Parse("185.71.76.0/27").Contains(Request.HttpContext.Connection.RemoteIpAddress) &&
                 !IPNetwork.Parse("185.71.77.0/27").Contains(Request.HttpContext.Connection.RemoteIpAddress) &&
@@ -78,7 +79,8 @@ namespace VpnBotApi.Controllers
             }
 
             Console.WriteLine("------------------------");
-            Console.WriteLine(requestContent);
+            //Console.WriteLine(requestContent);
+            Console.WriteLine(JsonConvert.SerializeObject(request));
             Console.WriteLine("------------------------");
 
             return true;
