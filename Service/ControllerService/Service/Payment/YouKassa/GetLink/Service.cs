@@ -30,7 +30,14 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
 
             var shopId = "378461"; // Замените на ваш Идентификатор магазина
             var secretKey = "test_OI5RhR_h07nXYWcDZEJa9c4_F_FbF3Gjv8mj8DNeIu8"; // Замените на ваш Секретный ключ
-            var price = promoCode == null ? accessPosition.Price : accessPosition.Price - (promoCode.Discount / 100 * accessPosition.Price);
+
+            var price = accessPosition.Price;
+
+            if(promoCode != null)
+            {
+                var discount = (decimal)promoCode.Discount / 100 * accessPosition.Price;
+                price -= (int)discount;
+            }
 
             using (var client = new HttpClient())
             {
