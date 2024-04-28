@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Text;
 using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
@@ -70,8 +71,15 @@ namespace VpnBotApi.Controllers
 
             var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
 
-            Console.WriteLine("IP адреса нет в разрешенном списке");
-            Console.WriteLine(Request.HttpContext.Connection.RemoteIpAddress);
+            var requestContent = "";
+            using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
+            {
+                requestContent = await reader.ReadToEndAsync();
+            }
+
+            Console.WriteLine("------------------------");
+            Console.WriteLine(requestContent);
+            Console.WriteLine("------------------------");
 
             return true;
         }
