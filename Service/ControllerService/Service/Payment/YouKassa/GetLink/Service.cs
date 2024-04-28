@@ -2,6 +2,7 @@
 using Core.Common;
 using Core.Model.User;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Service.ControllerService.Common;
 using System.Net.Http.Headers;
 using System.Text;
@@ -50,6 +51,27 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
                         currency = "RUB"
                     },
                     capture = true,
+                    receipt = new
+                    {
+                        customer = new
+                        {
+                            email = user.Email,
+                            items = new[]
+                            {
+                                new
+                                {
+                                    description = $"Подписка LockVPN ({accessPosition.Name})",
+                                    quantity = 1,
+                                    amount = new
+                                    {
+                                        value = price,
+                                        currency = "RUB"
+                                    },
+                                    vat_code = "1"
+                                }
+                            }
+                        }
+                    },
                     confirmation = new
                     {
                         type = "redirect",
