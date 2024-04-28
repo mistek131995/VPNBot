@@ -3,13 +3,8 @@ using Core.Common;
 using Core.Model.User;
 using Newtonsoft.Json;
 using Service.ControllerService.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
 {
@@ -30,10 +25,12 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
 
             var shopId = "376859"; // Замените на ваш Идентификатор магазина
             var secretKey = "live_PTUhuGnzhz3JoBqcgkqm8v_QoR3DLx61Zu4F1etyFug"; // Замените на ваш Секретный ключ
+            //var shopId = "378461"; // Замените на ваш Идентификатор магазина
+            //var secretKey = "test_OI5RhR_h07nXYWcDZEJa9c4_F_FbF3Gjv8mj8DNeIu8"; // Замените на ваш Секретный ключ
 
             var price = accessPosition.Price;
 
-            if(promoCode != null)
+            if (promoCode != null)
             {
                 var discount = (decimal)promoCode.Discount / 100 * accessPosition.Price;
                 price -= (int)discount;
