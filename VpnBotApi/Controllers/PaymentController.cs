@@ -63,9 +63,9 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<bool> YouKassaNotification([FromBody] YouKassaNotification.Request request)
         {
-            Console.WriteLine(Request.HttpContext.Connection.RemoteIpAddress);
-
             var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
+
+            Console.WriteLine(Request.HttpContext.Connection.RemoteIpAddress);
 
             return true;
         }
