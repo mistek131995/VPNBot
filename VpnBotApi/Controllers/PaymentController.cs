@@ -57,8 +57,6 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<bool> YouKassaNotification([FromBody] YouKassaNotification.Request request)
         {
-            Console.WriteLine(Request.HttpContext.Connection.RemoteIpAddress);
-
             if (!IPNetwork.Parse("185.71.76.0/27").Contains(Request.HttpContext.Connection.RemoteIpAddress) &&
                 !IPNetwork.Parse("185.71.77.0/27").Contains(Request.HttpContext.Connection.RemoteIpAddress) &&
                 !IPNetwork.Parse("77.75.153.0/25").Contains(Request.HttpContext.Connection.RemoteIpAddress) &&
@@ -67,11 +65,13 @@ namespace VpnBotApi.Controllers
                 IPAddress.Parse("77.75.156.11") != Request.HttpContext.Connection.RemoteIpAddress &&
                 IPAddress.Parse("77.75.156.35") != Request.HttpContext.Connection.RemoteIpAddress)
             {
-                Console.WriteLine("IP адреса нет в разрешенном списке");
                 throw new Exception("IP адреса нет в разрешенном списке");
             }
 
             var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
+
+            Console.WriteLine("IP адреса нет в разрешенном списке");
+            Console.WriteLine(Request.HttpContext.Connection.RemoteIpAddress);
 
             return true;
         }
