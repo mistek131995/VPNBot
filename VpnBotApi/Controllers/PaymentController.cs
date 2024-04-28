@@ -1,18 +1,12 @@
 ﻿using Application.ControllerService.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
-
-using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
-using YouKassaGetLink = Service.ControllerService.Service.Payment.YouKassa.GetLink;
-
-using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
+using System.Net;
 using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
-
-using Newtonsoft.Json;
-using System.Text;
-using Microsoft.AspNetCore.Http;
+using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
+using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
+using YouKassaGetLink = Service.ControllerService.Service.Payment.YouKassa.GetLink;
+using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
 
 namespace VpnBotApi.Controllers
 {
@@ -63,9 +57,21 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<bool> YouKassaNotification([FromBody] YouKassaNotification.Request request)
         {
-            var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
-
             Console.WriteLine(Request.HttpContext.Connection.RemoteIpAddress);
+
+            if (!IPNetwork.Parse("185.71.76.0/27").Contains(Request.HttpContext.Connection.RemoteIpAddress) &&
+                !IPNetwork.Parse("185.71.77.0/27").Contains(Request.HttpContext.Connection.RemoteIpAddress) &&
+                !IPNetwork.Parse("77.75.153.0/25").Contains(Request.HttpContext.Connection.RemoteIpAddress) &&
+                !IPNetwork.Parse("77.75.154.128/25").Contains(Request.HttpContext.Connection.RemoteIpAddress) &&
+                !IPNetwork.Parse("2a02:5180::/32").Contains(Request.HttpContext.Connection.RemoteIpAddress) &&
+                IPAddress.Parse("77.75.156.11") != Request.HttpContext.Connection.RemoteIpAddress &&
+                IPAddress.Parse("77.75.156.35") != Request.HttpContext.Connection.RemoteIpAddress)
+            {
+                Console.WriteLine("IP адреса нет в разрешенном списке");
+                throw new Exception("IP адреса нет в разрешенном списке");
+            }
+
+            var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
 
             return true;
         }
