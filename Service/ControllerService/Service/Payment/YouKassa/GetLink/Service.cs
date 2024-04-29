@@ -101,15 +101,15 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
                         UserId = request.UserId,
                         PromoCodeId = promoCode?.Id ?? 0,
                         Guid = Guid.Parse(result.id),
+                        PaymentMethod = PaymentMethod.YouKassa
                     };
 
                     user.Payments.Add(newPayment);
-                    user = await repositoryProvider.UserRepository.UpdateAsync(user);
+                    await repositoryProvider.UserRepository.UpdateAsync(user);
 
                     return result.confirmation.confirmation_url;
                 }
 
-                Console.WriteLine(jsonObj);
                 throw new HandledExeption("Не удалось создать ссылку на оплату", true);
             }
         }

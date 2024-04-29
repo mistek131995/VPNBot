@@ -12,5 +12,6 @@ namespace Core.Model.User
         public PaymentState State { get; set; }
         public int PromoCodeId { get; set; }
         public Guid Guid { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
     }
 }

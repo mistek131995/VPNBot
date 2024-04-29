@@ -60,6 +60,7 @@ namespace Infrastructure.Database.Repository
                     State = p.State,
                     PromoCodeId = p.PromoCodeId,
                     Guid = p.Guid,
+                    PaymentMethod = p.PaymentMethod
                 }).ToList()
             };
         }
@@ -112,6 +113,7 @@ namespace Infrastructure.Database.Repository
                         State = p.State,
                         PromoCodeId = p.PromoCodeId,
                         Guid = p.Guid,
+                        PaymentMethod = p.PaymentMethod
                     }).ToList()
                 })
                 .Where(x => ids.Contains(x.Id))
@@ -177,6 +179,7 @@ namespace Infrastructure.Database.Repository
                     State = x.State,
                     PromoCodeId = x.PromoCodeId,
                     Guid = x.Guid,
+                    PaymentMethod = x.PaymentMethod
                 })
                 .ToList();
 
@@ -237,6 +240,7 @@ namespace Infrastructure.Database.Repository
                         State = p.State,
                         PromoCodeId = p.PromoCodeId,
                         Guid = p.Guid,
+                        PaymentMethod = p.PaymentMethod
                     })
                     .ToList();
 

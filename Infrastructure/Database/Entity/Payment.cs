@@ -16,6 +16,7 @@ namespace Infrastructure.Database.Entity
         public PaymentState State { get; set; }
         public int PromoCodeId { get; set; }
         public Guid Guid { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
 
         public AccessPosition AccessPosition { get; set; }
         public PromoCode PromoCode { get; set; }

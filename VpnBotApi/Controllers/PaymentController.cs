@@ -10,6 +10,9 @@ using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPayment
 using YouKassaGetLink = Service.ControllerService.Service.Payment.YouKassa.GetLink;
 using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
 
+using CryptoCloudGetLink = Service.ControllerService.Service.Payment.CryptoCloud.GetLink;
+using CryptoCloudNotification = Service.ControllerService.Service.Payment.CryptoCloud.Notification;
+
 namespace VpnBotApi.Controllers
 {
     [ApiController]
@@ -56,6 +59,20 @@ namespace VpnBotApi.Controllers
             return Json(response);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> GetCryptoCloudLink(int id, string? promoCode)
+        {
+            var response = await dispatcher.GetService<string, CryptoCloudGetLink.Request>(new CryptoCloudGetLink.Request()
+            {
+                Id = id,
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value),
+                PromoCode = promoCode
+            });
+
+            return Json(response);
+        }
+
         [HttpPost]
         public async Task<bool> YouKassaNotification([FromBody] YouKassaNotification.Request request)
         {
@@ -70,7 +87,7 @@ namespace VpnBotApi.Controllers
                 throw new Exception("IP адреса нет в разрешенном списке");
             }
 
-            var response = await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
+            return await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
 
             //var requestContent = "";
             //using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
@@ -82,8 +99,12 @@ namespace VpnBotApi.Controllers
             //Console.WriteLine(requestContent);
             //Console.WriteLine(JsonConvert.SerializeObject(request));
             //Console.WriteLine("------------------------");
+        }
 
-            return true;
+        [HttpPost]
+        public async Task<bool> CryptoCloudNotification([FromBody]CryptoCloudNotification.Request request)
+        {
+            return await dispatcher.GetService<bool, CryptoCloudNotification.Request>(request);
         }
 
         [HttpPost]
