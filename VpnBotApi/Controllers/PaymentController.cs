@@ -12,6 +12,7 @@ using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.
 
 using CryptoCloudGetLink = Service.ControllerService.Service.Payment.CryptoCloud.GetLink;
 using CryptoCloudNotification = Service.ControllerService.Service.Payment.CryptoCloud.Notification;
+using System.Web;
 
 namespace VpnBotApi.Controllers
 {
@@ -111,7 +112,6 @@ namespace VpnBotApi.Controllers
             using var reader = new StreamReader(Request.Body);
             var body = await reader.ReadToEndAsync();
 
-            dynamic data = JsonConvert.DeserializeObject(body);
             //var requestContent = "";
             //using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
             //{
@@ -120,17 +120,25 @@ namespace VpnBotApi.Controllers
             //    return await dispatcher.GetService<bool, CryptoCloudNotification.Request>(request);
             //}
 
+            var parsedQuery = HttpUtility.ParseQueryString(body);
+            var status = parsedQuery["status"];
+            var invoiceId = parsedQuery["invoice_id"];
+            var amountCrypto = parsedQuery["amount_crypto"];
+            var currency = parsedQuery["currency"];
+            var orderId = parsedQuery["order_id"];
+            var token = parsedQuery["token"];
+
 
             Console.WriteLine("__________________");
             Console.WriteLine("test");
             Console.WriteLine("__________________");
 
-            Console.WriteLine(data?.status);
-            Console.WriteLine(data?.invoice_id);
-            Console.WriteLine(data?.amount_crypto);
-            Console.WriteLine(data?.currency);
-            Console.WriteLine(data?.order_id);
-            Console.WriteLine(data?.token);
+            Console.WriteLine(status);
+            Console.WriteLine(invoiceId);
+            Console.WriteLine(amountCrypto);
+            Console.WriteLine(currency);
+            Console.WriteLine(orderId);
+            Console.WriteLine(token);
 
             return true;
         }
