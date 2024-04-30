@@ -102,20 +102,20 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> CryptoCloudNotification([FromBody] CryptoCloudNotification.Request request)
+        public async Task<bool> CryptoCloudNotification()
         {
+
             //var requestContent = "";
             //using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
             //{
             //    requestContent = await reader.ReadToEndAsync();
+
+            //    return await dispatcher.GetService<bool, CryptoCloudNotification.Request>(request);
             //}
 
-            //Console.WriteLine("------------------------");
-            //Console.WriteLine(queryString);
-            ////Console.WriteLine(JsonConvert.SerializeObject(request));
-            //Console.WriteLine("------------------------");
-
-            return await dispatcher.GetService<bool, CryptoCloudNotification.Request>(request);
+            Console.WriteLine("__________________");
+            Console.WriteLine("test");
+            Console.WriteLine("__________________");
 
             return true;
         }
