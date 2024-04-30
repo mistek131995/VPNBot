@@ -117,9 +117,6 @@ namespace VpnBotApi.Controllers
             Console.WriteLine("test");
             Console.WriteLine("__________________");
 
-            Console.WriteLine(status);
-            Console.WriteLine(invoice_id);
-
             return true;
         }
 
