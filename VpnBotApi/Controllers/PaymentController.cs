@@ -109,7 +109,7 @@ namespace VpnBotApi.Controllers
             Console.WriteLine("__________________");
 
             using var reader = new StreamReader(Request.Body);
-            var body = reader.ReadToEnd();
+            var body = await reader.ReadToEndAsync();
 
             var request = JsonConvert.DeserializeObject<CryptoCloudNotification.Request>(body);
             //var requestContent = "";
