@@ -111,7 +111,7 @@ namespace VpnBotApi.Controllers
             using var reader = new StreamReader(Request.Body);
             var body = await reader.ReadToEndAsync();
 
-            var request = JsonConvert.DeserializeObject<CryptoCloudNotification.Request>(body);
+            dynamic data = JsonConvert.DeserializeObject(body);
             //var requestContent = "";
             //using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
             //{
@@ -125,7 +125,12 @@ namespace VpnBotApi.Controllers
             Console.WriteLine("test");
             Console.WriteLine("__________________");
 
-            Console.WriteLine(JsonConvert.SerializeObject(request));
+            Console.WriteLine(data?.status);
+            Console.WriteLine(data?.invoice_id);
+            Console.WriteLine(data?.amount_crypto);
+            Console.WriteLine(data?.currency);
+            Console.WriteLine(data?.order_id);
+            Console.WriteLine(data?.token);
 
             return true;
         }
