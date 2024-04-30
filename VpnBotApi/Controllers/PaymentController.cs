@@ -102,7 +102,7 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> CryptoCloudNotification(string? status, string? invoice_id)
+        public async Task<bool> CryptoCloudNotification([FromBody]string? status, [FromBody]string? invoice_id)
         {
 
             //var requestContent = "";
