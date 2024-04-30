@@ -89,58 +89,23 @@ namespace VpnBotApi.Controllers
             }
 
             return await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
-
-            //var requestContent = "";
-            //using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
-            //{
-            //    requestContent = await reader.ReadToEndAsync();
-            //}
-
-            //Console.WriteLine("------------------------");
-            //Console.WriteLine(requestContent);
-            //Console.WriteLine(JsonConvert.SerializeObject(request));
-            //Console.WriteLine("------------------------");
         }
 
         [HttpPost]
         public async Task<bool> CryptoCloudNotification()
         {
-            Console.WriteLine("__________________");
-            Console.WriteLine("test");
-            Console.WriteLine("__________________");
-
             using var reader = new StreamReader(Request.Body);
             var body = await reader.ReadToEndAsync();
-
-            //var requestContent = "";
-            //using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
-            //{
-            //    requestContent = await reader.ReadToEndAsync();
-
-            //    return await dispatcher.GetService<bool, CryptoCloudNotification.Request>(request);
-            //}
-
             var parsedQuery = HttpUtility.ParseQueryString(body);
-            var status = parsedQuery["status"];
-            var invoiceId = parsedQuery["invoice_id"];
-            var amountCrypto = parsedQuery["amount_crypto"];
-            var currency = parsedQuery["currency"];
-            var orderId = parsedQuery["order_id"];
-            var token = parsedQuery["token"];
 
-
-            Console.WriteLine("__________________");
-            Console.WriteLine("test");
-            Console.WriteLine("__________________");
-
-            Console.WriteLine(status);
-            Console.WriteLine(invoiceId);
-            Console.WriteLine(amountCrypto);
-            Console.WriteLine(currency);
-            Console.WriteLine(orderId);
-            Console.WriteLine(token);
-
-            return true;
+            return await dispatcher.GetService<bool, CryptoCloudNotification.Request>(new CryptoCloudNotification.Request()
+            {
+                status = parsedQuery["status"],
+                invoice_id = parsedQuery["invoice_id"],
+                amount_crypto = parsedQuery["amount_crypto"],
+                currency = parsedQuery["currency"],
+                order_id = Guid.Parse(parsedQuery["order_id"])
+            });
         }
 
         [HttpPost]
