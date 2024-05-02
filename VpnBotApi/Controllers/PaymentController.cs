@@ -7,11 +7,16 @@ using System.Text;
 using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
+
 using YouKassaGetLink = Service.ControllerService.Service.Payment.YouKassa.GetLink;
 using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
 
 using CryptoCloudGetLink = Service.ControllerService.Service.Payment.CryptoCloud.GetLink;
 using CryptoCloudNotification = Service.ControllerService.Service.Payment.CryptoCloud.Notification;
+
+using ePayCoreGetLink = Service.ControllerService.Service.Payment.ePayCore.GetLink;
+//using ePayCoreNotification = Service.ControllerService.Service.Payment.ePayCore.Notification;
+
 using System.Web;
 
 namespace VpnBotApi.Controllers
@@ -65,6 +70,20 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> GetCryptoCloudLink(int id, string? promoCode)
         {
             var response = await dispatcher.GetService<string, CryptoCloudGetLink.Request>(new CryptoCloudGetLink.Request()
+            {
+                Id = id,
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value),
+                PromoCode = promoCode
+            });
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> GetEPayCoreLink(int id, string? promoCode)
+        {
+            var response = await dispatcher.GetService<byte[], ePayCoreGetLink.Request>(new ePayCoreGetLink.Request()
             {
                 Id = id,
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value),
