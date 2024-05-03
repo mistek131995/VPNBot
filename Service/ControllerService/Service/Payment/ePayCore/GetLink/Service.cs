@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Service.ControllerService.Service.Payment.ePayCore.GetLink
 {
-    internal class Service : IControllerService<Request, byte[]>
+    internal class Service : IControllerService<Request, string>
     {
-        public async Task<byte[]> HandlingAsync(Request request)
+        public async Task<string> HandlingAsync(Request request)
         {
 
             var orderId = "test-" + new Random().Next(0, 99900).ToString();
@@ -32,23 +32,23 @@ namespace Service.ControllerService.Service.Payment.ePayCore.GetLink
                 { "epc_sign", GetSha256Hash($"103783:5:USD:{orderId}:24041986") },
             };
 
-            var client = new HttpClient();
-            var response = await client.PostAsync("https://api.epaycore.com/checkout/form", new FormUrlEncodedContent(dictionary));
+            //var client = new HttpClient();
+            //var response = await client.PostAsync("https://api.epaycore.com/checkout/form", new FormUrlEncodedContent(dictionary));
 
-            var paymentPage = await response.Content.ReadAsStringAsync();
+            //var paymentPage = await response.Content.ReadAsStringAsync();
 
-            var file = await response.Content.ReadAsStreamAsync();
+            //var file = await response.Content.ReadAsStreamAsync();
 
-            byte[] buffer = new byte[16 * 1024];
-            using var memoryStream = new MemoryStream();
-            int read;
-            while ((read = file.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                memoryStream.Write(buffer, 0, read);
-            }
+            //byte[] buffer = new byte[16 * 1024];
+            //using var memoryStream = new MemoryStream();
+            //int read;
+            //while ((read = file.Read(buffer, 0, buffer.Length)) > 0)
+            //{
+            //    memoryStream.Write(buffer, 0, read);
+            //}
 
 
-            return buffer;
+            return string.Join("&", dictionary.Select(x => $"{x.Key}={x.Value}"));
         }
 
         public static string GetSha256Hash(string inputString)

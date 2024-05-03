@@ -83,7 +83,7 @@ namespace VpnBotApi.Controllers
         [Authorize]
         public async Task<JsonResult> GetEPayCoreLink(int id, string? promoCode)
         {
-            var response = await dispatcher.GetService<byte[], ePayCoreGetLink.Request>(new ePayCoreGetLink.Request()
+            var response = await dispatcher.GetService<string, ePayCoreGetLink.Request>(new ePayCoreGetLink.Request()
             {
                 Id = id,
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value),
