@@ -32,22 +32,6 @@ namespace Service.ControllerService.Service.Payment.ePayCore.GetLink
                 { "epc_sign", GetSha256Hash($"103783:5:USD:{orderId}:24041986") },
             };
 
-            //var client = new HttpClient();
-            //var response = await client.PostAsync("https://api.epaycore.com/checkout/form", new FormUrlEncodedContent(dictionary));
-
-            //var paymentPage = await response.Content.ReadAsStringAsync();
-
-            //var file = await response.Content.ReadAsStreamAsync();
-
-            //byte[] buffer = new byte[16 * 1024];
-            //using var memoryStream = new MemoryStream();
-            //int read;
-            //while ((read = file.Read(buffer, 0, buffer.Length)) > 0)
-            //{
-            //    memoryStream.Write(buffer, 0, read);
-            //}
-
-
             return string.Join("&", dictionary.Select(x => $"{x.Key}={x.Value}"));
         }
 
