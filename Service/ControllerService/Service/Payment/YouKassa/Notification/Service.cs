@@ -1,6 +1,5 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
-using Newtonsoft.Json;
 
 namespace Service.ControllerService.Service.Payment.YouKassa.Notification
 {
@@ -17,7 +16,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
             var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(payment.AccessPositionId) ??
                 throw new Exception("Не удалось найти подписку");
 
-            if(request.@object.status != "succeeded")
+            if (request.@object.status != "succeeded")
                 throw new Exception("Статус платежа не равен succeeded");
 
             if (user.AccessEndDate < DateTime.Now)

@@ -2,7 +2,6 @@
 using Core.Common;
 using Core.Model.User;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Service.ControllerService.Common;
 using System.Net.Http.Headers;
 using System.Text;
