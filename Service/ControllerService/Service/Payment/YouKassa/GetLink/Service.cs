@@ -21,7 +21,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
 
             var promoCode = await repositoryProvider.PromoCodeRepository.GetByCodeAsync(request.PromoCode);
 
-            if (promoCode != null && user.Payments.Any(x => x.PromoCodeId == promoCode.Id))
+            if (promoCode != null && user.Payments.Any(x => x.PromoCodeId == promoCode.Id) && user.Role != UserRole.Admin)
                 throw new HandledExeption("Промокод уже использовался");
 
             var shopId = "376859"; // Замените на ваш Идентификатор магазина
