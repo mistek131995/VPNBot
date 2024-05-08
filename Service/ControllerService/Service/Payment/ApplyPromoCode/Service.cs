@@ -17,7 +17,7 @@ namespace Service.ControllerService.Service.Payment.ApplyPromoCode
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) ??
                 throw new HandledExeption("Пользователь не найден");
 
-            if (user.Payments.Any(x => x.PromoCodeId == promoCode.Id))
+            if (user.Payments.Any(x => x.PromoCodeId == promoCode.Id) && user.Role != Core.Model.User.UserRole.Admin)
                 throw new HandledExeption("Промокод уже использовался");
 
             var discount = position.Price * ((decimal)promoCode.Discount / 100);
