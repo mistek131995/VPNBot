@@ -23,7 +23,7 @@ namespace VpnBotApi.Controllers
 {
     [ApiController]
     [Route("[Controller]/[Action]")]
-    public class PaymentController(ControllerServiceDispatcher dispatcher) : Controller
+    public class PaymentController(ControllerServiceDispatcher dispatcher, Serilog.ILogger logger) : Controller
     {
         [HttpGet]
         [Authorize]
@@ -104,6 +104,7 @@ namespace VpnBotApi.Controllers
                 IPAddress.Parse("77.75.156.11") != Request.HttpContext.Connection.RemoteIpAddress &&
                 IPAddress.Parse("77.75.156.35") != Request.HttpContext.Connection.RemoteIpAddress)
             {
+                logger.Information("Попытка доступа к увдомлению ЮКассы со стороннего IP адреса");
                 throw new Exception("IP адреса нет в разрешенном списке");
             }
 
