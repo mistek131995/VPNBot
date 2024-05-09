@@ -17,7 +17,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
                 throw new Exception("Не удалось найти подписку");
 
             if (request.@object.status != "succeeded")
-                throw new Exception("Статус платежа не равен succeeded");
+                throw new Exception($"Статус платежа не равен succeeded | {request.@object.status} | {request.@object.id}");
 
             if (user.AccessEndDate < DateTime.Now)
                 user.AccessEndDate = DateTime.Now.AddMonths(accessPosition.MonthCount);
