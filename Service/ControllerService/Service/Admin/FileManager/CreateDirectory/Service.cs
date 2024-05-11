@@ -13,8 +13,13 @@ namespace Service.ControllerService.Service.Admin.FileManager.CreateDirectory
         public async Task<string> HandlingAsync(Request request)
         {
             var mainPath = AppDomain.CurrentDomain.BaseDirectory;
+            var filesPath = Path.Combine(mainPath, "wwwroot", "files");
 
-            return mainPath;
+            Directory.CreateDirectory(Path.Combine(filesPath, "test"));
+
+            Directory.GetDirectories(filesPath);
+
+            return string.Join(" | ", filesPath);
         }
     }
 }
