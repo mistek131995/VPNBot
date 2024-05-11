@@ -17,9 +17,9 @@ namespace Service.ControllerService.Service.Admin.FileManager.CreateDirectory
 
             Directory.CreateDirectory(Path.Combine(filesPath, "test"));
 
-            Directory.GetDirectories(filesPath);
+            var test = Directory.GetDirectories(filesPath);
 
-            return string.Join(" | ", filesPath);
+            return string.Join(" | ", test);
         }
     }
 }
