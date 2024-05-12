@@ -9,7 +9,7 @@ namespace Service.ControllerService.Service.Admin.Users.Delete
         public async Task<bool> HandlingAsync(Request request)
         {
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId)
-                ?? throw new HandledExeption("Пользователь не найден");
+                ?? throw new HandledException("Пользователь не найден");
 
             await repositoryProvider.UserRepository.DeleteAsync(user);
 

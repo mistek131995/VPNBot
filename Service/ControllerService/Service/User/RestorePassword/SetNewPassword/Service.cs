@@ -9,10 +9,10 @@ namespace Service.ControllerService.Service.User.RestorePassword.SetNewPassword
         public async Task<bool> HandlingAsync(Request request)
         {
             var resetPassword = await repositoryProvider.ResetPasswordRepository.GetByGuidAsync(request.Guid)
-                ?? throw new HandledExeption("Некорректная ссылка на сброс пароля, запросите новую ссылку");
+                ?? throw new HandledException("Некорректная ссылка на сброс пароля, запросите новую ссылку");
 
             var user = await repositoryProvider.UserRepository.GetByIdAsync(resetPassword.UserId) 
-                ?? throw new HandledExeption("Пользователь не найден");
+                ?? throw new HandledException("Пользователь не найден");
 
             user.Password = request.Password;
             await repositoryProvider.UserRepository.UpdateAsync(user);

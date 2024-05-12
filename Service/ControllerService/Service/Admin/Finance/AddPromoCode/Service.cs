@@ -12,7 +12,7 @@ namespace Service.ControllerService.Service.Admin.Finance.AddPromoCode
             var promoCode = await repositoryProvider.PromoCodeRepository.GetByCodeAsync(request.Code);
 
             if (promoCode != null)
-                throw new HandledExeption("Промокод с таким кодом уже существует");
+                throw new HandledException("Промокод с таким кодом уже существует");
 
             await repositoryProvider.PromoCodeRepository.AddAsync(new PromoCode
             {

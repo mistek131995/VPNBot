@@ -9,14 +9,14 @@ namespace Service.ControllerService.Service.Admin.UpdateServer
         public async Task<bool> HandlingAsync(Request request)
         {
             var location = await repositoryProvider.LocationRepository.GetByServerIdAsync(request.Id) 
-                ?? throw new HandledExeption("Сервер не найден");
+                ?? throw new HandledException("Сервер не найден");
             var server = location.VpnServers.FirstOrDefault(x => x.Id == request.Id) 
-                ?? throw new HandledExeption("Сервер не найден");
+                ?? throw new HandledException("Сервер не найден");
 
             if(location.Id != request.LocationId)
             {
                 var newServerLocation = await repositoryProvider.LocationRepository.GetByIdAsync(request.LocationId) 
-                    ?? throw new HandledExeption("Локация не найдена");
+                    ?? throw new HandledException("Локация не найдена");
                 newServerLocation.VpnServers.Add(new Core.Model.Location.VpnServer(
                     0, 
                     request.Ip, 

@@ -15,16 +15,16 @@ namespace Service.ControllerService.Service.App.GetProxyConnection
         public async Task<Result> HandlingAsync(Request request)
         {
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) ??
-                throw new HandledExeption("Пользователь не найден");
+                throw new HandledException("Пользователь не найден");
 
             if (user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
-                throw new HandledExeption("Ваша подписка истекла");
+                throw new HandledException("Ваша подписка истекла");
 
             var location = await repositoryProvider.LocationRepository.GetByServerIpAsync(request.Ip) ??
-                throw new HandledExeption("Локация не найдена не найден");
+                throw new HandledException("Локация не найдена не найден");
 
             var server = location.VpnServers.FirstOrDefault(x => x.Ip == request.Ip) ??
-                throw new HandledExeption("Сервер не найден");
+                throw new HandledException("Сервер не найден");
 
             var serializerSettings = new JsonSerializerSettings();
             serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -41,28 +41,28 @@ namespace Service.ControllerService.Service.App.GetProxyConnection
             var authResponse = await httpClient.PostAsync("/login", authData);
 
             if (!authResponse.IsSuccessStatusCode)
-                throw new HandledExeption("Произошла ошибка или сервер временно недоступен", true);
+                throw new HandledException("Произошла ошибка или сервер временно недоступен", true);
 
             var authContent = await authResponse.Content.ReadAsStringAsync();
             var authResult = bool.Parse(JObject.Parse(authContent)["success"].ToString());
 
             if (!authResult)
-                throw new HandledExeption("Ошибка авторизации на сервере", true);
+                throw new HandledException("Ошибка авторизации на сервере", true);
 
             var inboundsResponse = await httpClient.GetAsync("/panel/api/inbounds/list");
 
             if (!inboundsResponse.IsSuccessStatusCode)
-                throw new HandledExeption("Не удалось получить список подключений");
+                throw new HandledException("Не удалось получить список подключений");
 
             var inboundsString = await inboundsResponse.Content.ReadAsStringAsync();
 
             var inbounds = JsonConvert.DeserializeObject<List<Inbound>>(JObject.Parse(inboundsString)["obj"].ToString());
 
             var proxy = inbounds.FirstOrDefault(x => x.remark == "proxy") ?? 
-                throw new HandledExeption("Прокси не найдено");
+                throw new HandledException("Прокси не найдено");
 
             var accounts = JsonConvert.DeserializeObject<List<Account>>(JObject.Parse(proxy.settings)["accounts"].ToString()).FirstOrDefault() ?? 
-                throw new HandledExeption("Пользователь для прокси не найден");
+                throw new HandledException("Пользователь для прокси не найден");
 
             return new Result()
             {

@@ -9,10 +9,10 @@ namespace Service.ControllerService.Service.User.ChangePassword
         public async Task<bool> HandlingAsync(Request request)
         {
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId)
-                ?? throw new HandledExeption("Пользователь не найден.");
+                ?? throw new HandledException("Пользователь не найден.");
 
             if (user.Password != request.OldPassword)
-                throw new HandledExeption("Введен неверный пароль.");
+                throw new HandledException("Введен неверный пароль.");
 
             user.Password = request.Password;
 

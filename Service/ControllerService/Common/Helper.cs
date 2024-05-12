@@ -56,7 +56,7 @@ namespace Service.ControllerService.Common
             var result = bool.Parse(JObject.Parse(reponseString)["success"].ToString());
 
             if (!result)
-                throw new HandledExeption("Каптча не прошла проверку");
+                throw new HandledException("Каптча не прошла проверку");
         }
     }
 }

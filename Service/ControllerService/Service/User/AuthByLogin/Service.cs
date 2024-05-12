@@ -14,13 +14,13 @@ namespace Service.ControllerService.Service.User.AuthByLogin
             await Helper.CheckCaptchaTokenAsync(request.Token, settings.CaptchaPrivateKey);
 
             var user = await repositoryProvider.UserRepository.GetByLoginAndPasswordAsync(request.Login.Trim().ToLower(), request.Password) ??
-                throw new HandledExeption("Пользователь с таким логином и паролем не найден.");
+                throw new HandledException("Пользователь с таким логином и паролем не найден.");
 
             if (user.Sost == UserSost.Blocked)
-                throw new HandledExeption("Ваш аккаунт заблокирован.");
+                throw new HandledException("Ваш аккаунт заблокирован.");
 
             if (user.Sost == UserSost.NotActive)
-                throw new HandledExeption("Ваш аккаунт не активирован. Проверьте электронную почту, письмо может быть в папке 'Спам'.");
+                throw new HandledException("Ваш аккаунт не активирован. Проверьте электронную почту, письмо может быть в папке 'Спам'.");
 
             return Helper.CreateJwtToken(user, configuration);
         }

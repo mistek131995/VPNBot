@@ -10,12 +10,12 @@ namespace Service.ControllerService.Service.ExtendSubscribeForBonuses
         public async Task<bool> HandlingAsync(Request request)
         {
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) 
-                ?? throw new HandledExeption("Пользователь не найден.");
+                ?? throw new HandledException("Пользователь не найден.");
 
             var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.PositionId);
 
             if (user.Balance < accessPosition.Price)
-                throw new HandledExeption("Недостаточно бонусов для оплаты подписки.");
+                throw new HandledException("Недостаточно бонусов для оплаты подписки.");
 
             if (user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
             {

@@ -9,7 +9,7 @@ namespace Service.ControllerService.Service.Admin.Users.GetUser
         public async Task<Result> HandlingAsync(Request request)
         {
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.Id) ??
-                throw new HandledExeption("Пользователь не найден");
+                throw new HandledException("Пользователь не найден");
 
             return new Result()
             {

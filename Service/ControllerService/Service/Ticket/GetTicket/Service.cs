@@ -11,7 +11,7 @@ namespace Service.ControllerService.Service.Ticket.GetTicket
             var result = new Result();
 
             var ticket = await repositoryProvider.TicketRepository.GetByTicketIdAndUserIdAsync(request.TicketId, request.UserId)
-                ?? throw new HandledExeption("Обращение не найдено");
+                ?? throw new HandledException("Обращение не найдено");
 
             result.Id = ticket.Id;
             result.Title = ticket.Title;

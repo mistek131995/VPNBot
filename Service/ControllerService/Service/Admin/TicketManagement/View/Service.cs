@@ -9,7 +9,7 @@ namespace Service.ControllerService.Service.Admin.TicketManagement.View
         public async Task<Result> HandlingAsync(Request request)
         {
             var ticket = await repositoryProvider.TicketRepository.GetByIdAsync(request.TicketId) 
-                ?? throw new HandledExeption("Тикет не найден.");
+                ?? throw new HandledException("Тикет не найден.");
 
             var result = new Result();
             result.Id = ticket.Id;

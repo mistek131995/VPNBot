@@ -16,17 +16,17 @@ namespace Service.ControllerService.Service.User.Register
                 await Helper.CheckCaptchaTokenAsync(request.Token, settings.CaptchaPrivateKey);
 
             if (string.IsNullOrEmpty(request.Login) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
-                throw new HandledExeption("Заполните обязательные поля");
+                throw new HandledException("Заполните обязательные поля");
 
             var user = await repositoryProvider.UserRepository.GetByLoginAsync(request.Login.Trim().ToLower());
 
             if (user != null)
-                throw new HandledExeption("Пользователь с таким логином уже зарегистрирован");
+                throw new HandledException("Пользователь с таким логином уже зарегистрирован");
 
             user = await repositoryProvider.UserRepository.GetByEmailAsync(request.Email.Trim().ToLower());
 
             if (user != null)
-                throw new HandledExeption("Пользователь с таким адресом электронной почты уже зарегистрирован");
+                throw new HandledException("Пользователь с таким адресом электронной почты уже зарегистрирован");
 
             var newUser = new Core.Model.User.User()
             {
@@ -42,7 +42,7 @@ namespace Service.ControllerService.Service.User.Register
             if (request.Guid != null)
             {
                 var parentUser = await repositoryProvider.UserRepository.GetByGuidAsync(request.Guid ?? new Guid())
-                    ?? throw new HandledExeption("Не удалось найти пользователя для привязки реферальной программы.");
+                    ?? throw new HandledException("Не удалось найти пользователя для привязки реферальной программы.");
 
                 newUser.ParentUserId = parentUser.Id;
             }

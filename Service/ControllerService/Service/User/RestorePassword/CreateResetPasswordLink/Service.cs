@@ -14,7 +14,7 @@ namespace Service.ControllerService.Service.User.RestorePassword.CreateResetPass
             await Helper.CheckCaptchaTokenAsync(request.Token, settings.CaptchaPrivateKey);
 
             var user = await repositoryProvider.UserRepository.GetByEmailAsync(request.Email) ??
-                throw new HandledExeption("Пользователь с таким адресом электронной почты не найден.");
+                throw new HandledException("Пользователь с таким адресом электронной почты не найден.");
 
             var resetPassword = await repositoryProvider.ResetPasswordRepository.GetByUserIdAsync(user.Id);
 

@@ -9,7 +9,7 @@ namespace Service.ControllerService.Service.DeleteLog
         public async Task<bool> HandlingAsync(Request request)
         {
             var log = await repositoryProvider.LogRepository.GetByIdAsync(request.Id) 
-                ?? throw new HandledExeption("Лог не найден.");
+                ?? throw new HandledException("Лог не найден.");
 
             await repositoryProvider.LogRepository.DeleteByIdAsync(request.Id);
 

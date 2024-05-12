@@ -13,15 +13,15 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
         public async Task<string> HandlingAsync(Request request)
         {
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) ??
-                throw new HandledExeption("Пользователь не найден");
+                throw new HandledException("Пользователь не найден");
 
             var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.Id) ??
-                throw new HandledExeption("Позиция не найдена");
+                throw new HandledException("Позиция не найдена");
 
             var promoCode = await repositoryProvider.PromoCodeRepository.GetByCodeAsync(request.PromoCode);
 
             if (promoCode != null && user.Payments.Any(x => x.PromoCodeId == promoCode.Id) && user.Role != UserRole.Admin)
-                throw new HandledExeption("Промокод уже использовался");
+                throw new HandledException("Промокод уже использовался");
 
             var shopId = "376859"; // Замените на ваш Идентификатор магазина
             var secretKey = "live_PTUhuGnzhz3JoBqcgkqm8v_QoR3DLx61Zu4F1etyFug"; // Замените на ваш Секретный ключ
@@ -109,7 +109,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
                     return result.confirmation.confirmation_url;
                 }
 
-                throw new HandledExeption("Не удалось создать ссылку на оплату", true);
+                throw new HandledException("Не удалось создать ссылку на оплату", true);
             }
         }
     }

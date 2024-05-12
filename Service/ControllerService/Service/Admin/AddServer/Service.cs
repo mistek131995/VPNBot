@@ -10,13 +10,13 @@ namespace Service.ControllerService.Service.Admin.AddServer
         public async Task<bool> HandlingAsync(Request request)
         {
             var location = await repositoryProvider.LocationRepository.GetByIdAsync(request.LocationId)
-                ?? throw new HandledExeption("Страна не найдена");
+                ?? throw new HandledException("Страна не найдена");
 
             if (location.VpnServers.Any(x => x.Name.Trim().ToLower() == request.Name.Trim().ToLower()))
-                throw new HandledExeption("Сервер с таким именем уже добавлен");
+                throw new HandledException("Сервер с таким именем уже добавлен");
 
             if (location.VpnServers.Any(x => x.Ip.Trim() == request.IP.Trim()))
-                throw new HandledExeption("Сервер с таким IP уже добавлен");
+                throw new HandledException("Сервер с таким IP уже добавлен");
 
             location.VpnServers.Add(new VpnServer(0, request.IP, request.Name, request.Description, request.Port, request.UserName, request.Password));
             await repositoryProvider.LocationRepository.UpdateAsync(location);

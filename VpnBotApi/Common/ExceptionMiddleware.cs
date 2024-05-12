@@ -13,11 +13,11 @@ namespace VpnBotApi.Common
             }
             catch (Exception ex)
             {
-                if (typeof(HandledExeption) == ex.GetType())
+                if (typeof(HandledException) == ex.GetType())
                 {
                     await HandleExceptionAsync(httpContext, ex);
 
-                    if (((HandledExeption)ex).WriteToLog)
+                    if (((HandledException)ex).WriteToLog)
                     {
                         logger.Error(ex, ex.StackTrace);
                     }
@@ -26,7 +26,7 @@ namespace VpnBotApi.Common
                 {
                     logger.Error(ex, ex.StackTrace);
                     Console.WriteLine(ex.Message);
-                    await HandleExceptionAsync(httpContext, new HandledExeption("Произошла непредвиденная ошибка, мы уже работаем над ее устранением."));
+                    await HandleExceptionAsync(httpContext, new HandledException("Произошла непредвиденная ошибка, мы уже работаем над ее устранением."));
                 }
             }
         }

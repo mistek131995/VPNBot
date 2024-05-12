@@ -11,7 +11,7 @@ namespace Service.ControllerService.Service.Payment.GetPaymentPositions
             var result = new Result();
 
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) ??
-                throw new HandledExeption("Пользователь не найден");
+                throw new HandledException("Пользователь не найден");
 
             result.EndAccessDate = user.AccessEndDate < DateTime.Now ? DateTime.Now : user.AccessEndDate;
             result.AccessPositions = (await repositoryProvider.AccessPositionRepository.GetAllAsync()).Select(x => new Result.AccessPosition()

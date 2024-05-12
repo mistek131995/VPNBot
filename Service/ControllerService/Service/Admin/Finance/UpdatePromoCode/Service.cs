@@ -9,7 +9,7 @@ namespace Service.ControllerService.Service.Admin.Finance.UpdatePromoCode
         public async Task<bool> HandlingAsync(Request request)
         {
             var promoCode = await repositoryProvider.PromoCodeRepository.GetByIdAsync(request.Id)
-                ?? throw new HandledExeption("Промокод не найден");
+                ?? throw new HandledException("Промокод не найден");
 
             promoCode.Code = request.Code;
             promoCode.Discount = request.Discount;

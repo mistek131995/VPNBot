@@ -9,7 +9,7 @@ namespace Service.ControllerService.Service.Location.DeleteServer
         public async Task<bool> HandlingAsync(Request request)
         {
             var location = await repositoryProvider.LocationRepository.GetByServerIdAsync(request.Id)
-                ?? throw new HandledExeption("Сервер не найден");
+                ?? throw new HandledException("Сервер не найден");
 
             location.DeleteServer(request.Id);
 

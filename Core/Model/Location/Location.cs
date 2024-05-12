@@ -15,7 +15,7 @@ namespace Core.Model.Location
             var server = VpnServers.FirstOrDefault(x => x.Id == serverId);
             if (server == null)
             {
-                throw new HandledExeption("Сервер не найден");
+                throw new HandledException("Сервер не найден");
             }
 
             VpnServers.Remove(server);

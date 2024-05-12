@@ -14,7 +14,7 @@ namespace Service.ControllerService.Service.User.AuthWithGoogle
         public async Task<string> HandlingAsync(Request request)
         {
             if (string.IsNullOrEmpty(request.Token) && string.IsNullOrEmpty(request.AcceptToken))
-                throw new HandledExeption("Ошибка аутентификации");
+                throw new HandledException("Ошибка аутентификации");
 
             GoogleJsonWebSignature.Payload validPayload;
 

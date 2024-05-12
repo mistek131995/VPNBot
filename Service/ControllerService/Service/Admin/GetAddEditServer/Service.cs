@@ -13,9 +13,9 @@ namespace Service.ControllerService.Service.Admin.GetAddEditServer
             if(request.ServerId > 0)
             {
                 var location = await repositoryProvider.LocationRepository.GetByServerIdAsync(request.ServerId)
-                    ?? throw new HandledExeption("Сервер не найден");
+                    ?? throw new HandledException("Сервер не найден");
                 var server = location.VpnServers.FirstOrDefault(x => x.Id == request.ServerId)
-                    ?? throw new HandledExeption("Сервер не найден");
+                    ?? throw new HandledException("Сервер не найден");
 
                 result.Name = server.Name;
                 result.Description = server.Description;
