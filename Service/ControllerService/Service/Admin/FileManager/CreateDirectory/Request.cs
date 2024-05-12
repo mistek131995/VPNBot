@@ -4,5 +4,6 @@ namespace Service.ControllerService.Service.Admin.FileManager.CreateDirectory
 {
     public class Request : IRequest<bool>
     {
+        public string Name { get; set; }
     }
 }

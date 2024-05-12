@@ -9,7 +9,7 @@ namespace Service.ControllerService.Service.Admin.FileManager.CreateDirectory
         {
             var filesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot", "files");
 
-            Directory.CreateDirectory(Path.Combine(filesPath, "test"));
+            Directory.CreateDirectory(Path.Combine(filesPath, request.Name));
 
             return true;
         }
