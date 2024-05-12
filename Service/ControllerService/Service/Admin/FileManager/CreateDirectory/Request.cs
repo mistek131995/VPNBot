@@ -2,7 +2,7 @@
 
 namespace Service.ControllerService.Service.Admin.FileManager.CreateDirectory
 {
-    public class Request : IRequest<string>
+    public class Request : IRequest<bool>
     {
     }
 }

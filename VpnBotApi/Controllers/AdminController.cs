@@ -26,7 +26,9 @@ using GetPromoCodes = Service.ControllerService.Service.Admin.Finance.GetPromoCo
 using DeletePromoCode = Service.ControllerService.Service.Admin.Finance.DeletePromoCode;
 using GetPromoCode = Service.ControllerService.Service.Admin.Finance.GetPromoCode;
 using UpdatePromoCode = Service.ControllerService.Service.Admin.Finance.UpdatePromoCode;
+
 using CreateDirectory = Service.ControllerService.Service.Admin.FileManager.CreateDirectory;
+using GetDirectories = Service.ControllerService.Service.Admin.FileManager.GetDirectories;
 
 namespace VpnBotApi.Controllers
 {
@@ -286,7 +288,17 @@ namespace VpnBotApi.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<JsonResult> CreateDirectory([FromBody] CreateDirectory.Request request)
         {
-            var response = await dispatcher.GetService<string, CreateDirectory.Request>(request);
+            var response = await dispatcher.GetService<bool, CreateDirectory.Request>(request);
+
+            return Json(response);
+        }
+        
+        
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetDirectories([FromBody] GetDirectories.Request request)
+        {
+            var response = await dispatcher.GetService<string[], GetDirectories.Request>(request);
 
             return Json(response);
         }
