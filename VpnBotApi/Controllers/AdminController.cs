@@ -294,11 +294,14 @@ namespace VpnBotApi.Controllers
         }
         
         
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<JsonResult> GetDirectories([FromBody] GetDirectories.Request request)
+        public async Task<JsonResult> GetDirectories()
         {
-            var response = await dispatcher.GetService<string[], GetDirectories.Request>(request);
+            var response = await dispatcher.GetService<string[], GetDirectories.Request>(new GetDirectories.Request()
+            {
+
+            });
 
             return Json(response);
         }
