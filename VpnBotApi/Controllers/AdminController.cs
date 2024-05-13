@@ -6,7 +6,6 @@ using GetLogs = Service.ControllerService.Service.GetLogs;
 using AddLogs = Service.ControllerService.Service.AddLog;
 using GetIndexLocation = Service.ControllerService.Service.Admin.VpnLocation.GetIndex;
 using GetAddEditServer = Service.ControllerService.Service.Admin.GetAddEditServer;
-using UploadFile = Service.ControllerService.Service.UploadFile;
 using GetFiles = Service.ControllerService.Service.GetFiles;
 using GetSettings = Service.ControllerService.Service.GetSettings;
 using AddCountry = Service.ControllerService.Service.AddCountry;
@@ -21,15 +20,19 @@ using GetUser = Service.ControllerService.Service.Admin.Users.GetUser;
 using UpdateUser = Service.ControllerService.Service.Admin.Users.Update;
 using DeleteUser = Service.ControllerService.Service.Admin.Users.Delete;
 using DeleteServer = Service.ControllerService.Service.Location.DeleteServer;
+
 using AddPromoCode = Service.ControllerService.Service.Admin.Finance.AddPromoCode;
 using GetPromoCodes = Service.ControllerService.Service.Admin.Finance.GetPromoCodes;
 using DeletePromoCode = Service.ControllerService.Service.Admin.Finance.DeletePromoCode;
 using GetPromoCode = Service.ControllerService.Service.Admin.Finance.GetPromoCode;
 using UpdatePromoCode = Service.ControllerService.Service.Admin.Finance.UpdatePromoCode;
 
+using GetAccessPositions = Service.ControllerService.Service.Admin.Finance.GetAccessPositions;
+
 using CreateDirectory = Service.ControllerService.Service.Admin.FileManager.CreateDirectory;
 using DeleteDirectory = Service.ControllerService.Service.Admin.FileManager.DeleteDirectory;
 using GetDirectories = Service.ControllerService.Service.Admin.FileManager.GetDirectories;
+using UploadFile = Service.ControllerService.Service.Admin.FileManager.UploadFile;
 
 namespace VpnBotApi.Controllers
 {
@@ -106,28 +109,6 @@ namespace VpnBotApi.Controllers
             var response = await dispatcher.GetService<bool, AddCountry.Request>(request);
 
             return Json(response);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<JsonResult> UploadFile([FromForm] IFormFile file, [FromForm] string version, [FromForm] string tag)
-        {
-            using (var ms = new MemoryStream())
-            {
-                file.CopyTo(ms);
-                var fileBytes = ms.ToArray();
-
-                var response = await dispatcher.GetService<bool, UploadFile.Request>(new UploadFile.Request()
-                {
-                    Tag = tag,
-                    Name = file.FileName.Replace(" ", "_"),
-                    ContentType = file.ContentType,
-                    Data = ms.ToArray(),
-                    Version = version
-                });
-
-                return Json(response);
-            }
         }
 
         [HttpGet]
@@ -276,6 +257,15 @@ namespace VpnBotApi.Controllers
             return Json(response);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetAccessPositions()
+        {
+            var response = await dispatcher.GetService<List<GetAccessPositions.Result>, GetAccessPositions.Request>(new GetAccessPositions.Request());
+
+            return Json(response);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<JsonResult> UpdatePromoCode([FromBody]UpdatePromoCode.Request request)
@@ -311,6 +301,17 @@ namespace VpnBotApi.Controllers
             {
 
             });
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> UploadFile([FromBody] UploadFile.Request request)
+        {
+            var test = request.Data.Where(x => x > 255).ToList();
+
+            var response = await dispatcher.GetService<bool, UploadFile.Request>(request);
 
             return Json(response);
         }

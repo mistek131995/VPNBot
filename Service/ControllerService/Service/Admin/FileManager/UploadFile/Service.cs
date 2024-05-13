@@ -1,9 +1,4 @@
 ﻿using Application.ControllerService.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.ControllerService.Service.Admin.FileManager.UploadFile
 {
@@ -11,7 +6,11 @@ namespace Service.ControllerService.Service.Admin.FileManager.UploadFile
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            throw new NotImplementedException();
+            var byteArray = Convert.FromBase64String(request.Data.Split(",")[1]);
+
+            await File.WriteAllBytesAsync(Path.Combine(request.Path, request.FileName), byteArray);
+
+            return true;
         }
     }
 }

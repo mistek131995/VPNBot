@@ -6,6 +6,20 @@ namespace Infrastructure.Database.Repository
 {
     internal class AccessPositionRepository(Context context) : IAccessPositionRepository
     {
+        public async Task AddAsync(AccessPosition accessPosition)
+        {
+            context.AccessPositions.Add(new Entity.AccessPosition()
+            {
+                Name = accessPosition.Name,
+                Description = accessPosition.Description,
+                GooglePlayIdentifier = accessPosition.GooglePlayIdentifier,
+                MonthCount = accessPosition.MonthCount,
+                Price = accessPosition.Price,
+            });
+
+            await context.SaveChangesAsync();
+        }
+
         public async Task<List<AccessPosition>> GetAllAsync()
         {
             return await context.AccessPositions
@@ -52,6 +66,18 @@ namespace Infrastructure.Database.Repository
             })
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Price == price);
+        }
+
+        public async Task UpdateAsync(AccessPosition accessPosition)
+        {
+            var position = await context.AccessPositions.FirstOrDefaultAsync();
+            position.Name = accessPosition.Name;
+            position.Description = accessPosition.Description;
+            position.MonthCount = accessPosition.MonthCount;
+            position.Price = accessPosition.Price;
+            position.GooglePlayIdentifier = accessPosition.GooglePlayIdentifier;
+
+            await context.SaveChangesAsync();
         }
     }
 }

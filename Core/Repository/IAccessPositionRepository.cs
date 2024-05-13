@@ -7,5 +7,7 @@ namespace Core.Repository
         public Task<AccessPosition> GetByIdAsync(int id);
         public Task<AccessPosition> GetByPriceAsync(int price);
         public Task<List<AccessPosition>> GetAllAsync();
+        public Task AddAsync(AccessPosition accessPosition);
+        public Task UpdateAsync(AccessPosition accessPosition);
     }
 }
