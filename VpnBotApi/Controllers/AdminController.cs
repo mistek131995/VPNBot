@@ -33,6 +33,7 @@ using CreateDirectory = Service.ControllerService.Service.Admin.FileManager.Crea
 using DeleteDirectory = Service.ControllerService.Service.Admin.FileManager.DeleteDirectory;
 using GetDirectories = Service.ControllerService.Service.Admin.FileManager.GetDirectories;
 using UploadFile = Service.ControllerService.Service.Admin.FileManager.UploadFile;
+using DeleteFile = Service.ControllerService.Service.Admin.FileManager.DeleteFile;
 
 namespace VpnBotApi.Controllers
 {
@@ -310,9 +311,16 @@ namespace VpnBotApi.Controllers
         [RequestSizeLimit(200000000)]
         public async Task<JsonResult> UploadFile([FromBody] UploadFile.Request request)
         {
-            var test = request.Data.Where(x => x > 255).ToList();
-
             var response = await dispatcher.GetService<bool, UploadFile.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> DeleteFile([FromBody] DeleteFile.Request request)
+        {
+            var response = await dispatcher.GetService<bool, DeleteFile.Request>(request);
 
             return Json(response);
         }
