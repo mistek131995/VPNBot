@@ -8,7 +8,12 @@ namespace Service.ControllerService.Service.Admin.FileManager.UploadFile
         {
             var byteArray = Convert.FromBase64String(request.Data.Split(",")[1]);
 
-            await File.WriteAllBytesAsync(Path.Combine(request.Path, request.FileName), byteArray);
+            var filePath = Path.Combine(request.Path, request.FileName);
+
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+
+            await File.WriteAllBytesAsync(filePath, byteArray);
 
             return true;
         }
