@@ -14,6 +14,7 @@ namespace Service.ControllerService.Service.Admin.FileManager.GetDirectories
                 {
                     Name = new DirectoryInfo(x).Name,
                     Path = x,
+                    Files = Directory.GetFiles(x).Select(f => new FileInfo(f).Name).ToList()
                 }).ToList()
             };
         }
