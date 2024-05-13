@@ -31,6 +31,7 @@ namespace Infrastructure.Database.Repository
                     Description = x.Description,
                     MonthCount = x.MonthCount,
                     Price = x.Price,
+                    GooglePlayIdentifier = x.GooglePlayIdentifier,
                 })
                 .ToListAsync();
         }
@@ -51,6 +52,7 @@ namespace Infrastructure.Database.Repository
                 Description = accessPosition.Description,
                 MonthCount = accessPosition.MonthCount,
                 Price = accessPosition.Price,
+                GooglePlayIdentifier = accessPosition.GooglePlayIdentifier
             };
         }
 
@@ -63,6 +65,7 @@ namespace Infrastructure.Database.Repository
                 Description = x.Description,
                 MonthCount = x.MonthCount,
                 Name = x.Name,
+                GooglePlayIdentifier= x.GooglePlayIdentifier
             })
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Price == price);

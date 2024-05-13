@@ -28,6 +28,8 @@ using GetPromoCode = Service.ControllerService.Service.Admin.Finance.GetPromoCod
 using UpdatePromoCode = Service.ControllerService.Service.Admin.Finance.UpdatePromoCode;
 
 using GetAccessPositions = Service.ControllerService.Service.Admin.Finance.GetAccessPositions;
+using GetAccessPosition = Service.ControllerService.Service.Admin.Finance.GetAccessPosition;
+using UpdateAccessPosition = Service.ControllerService.Service.Admin.Finance.UpdateAccessPosition;
 
 using CreateDirectory = Service.ControllerService.Service.Admin.FileManager.CreateDirectory;
 using DeleteDirectory = Service.ControllerService.Service.Admin.FileManager.DeleteDirectory;
@@ -263,6 +265,27 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> GetAccessPositions()
         {
             var response = await dispatcher.GetService<List<GetAccessPositions.Result>, GetAccessPositions.Request>(new GetAccessPositions.Request());
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetAccessPosition(int id)
+        {
+            var response = await dispatcher.GetService<GetAccessPosition.Result, GetAccessPosition.Request>(new GetAccessPosition.Request()
+            {
+                Id = id
+            });
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> UpdateAccessPosition([FromBody] UpdateAccessPosition.Request request)
+        {
+            var response = await dispatcher.GetService<bool, UpdateAccessPosition.Request>(request);
 
             return Json(response);
         }
