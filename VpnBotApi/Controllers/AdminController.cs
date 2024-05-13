@@ -307,6 +307,7 @@ namespace VpnBotApi.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [RequestSizeLimit(200000000)]
         public async Task<JsonResult> UploadFile([FromBody] UploadFile.Request request)
         {
             var test = request.Data.Where(x => x > 255).ToList();
