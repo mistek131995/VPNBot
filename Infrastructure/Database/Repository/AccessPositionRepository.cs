@@ -73,7 +73,7 @@ namespace Infrastructure.Database.Repository
 
         public async Task UpdateAsync(AccessPosition accessPosition)
         {
-            var position = await context.AccessPositions.FirstOrDefaultAsync();
+            var position = await context.AccessPositions.FirstOrDefaultAsync(x => x.Id == accessPosition.Id);
             position.Name = accessPosition.Name;
             position.Description = accessPosition.Description;
             position.MonthCount = accessPosition.MonthCount;
