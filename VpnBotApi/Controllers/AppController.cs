@@ -9,6 +9,9 @@ using GetProxyConnection = Service.ControllerService.Service.App.GetProxyConnect
 
 using GetConnectionScreen = Service.ControllerService.Service.App.GetConnectionScreen;
 using AddError = Service.ControllerService.Service.App.AddError;
+
+using GetAccessPositions = Service.ControllerService.Service.App.GetAccessPositions;
+
 using Microsoft.AspNetCore.Authorization;
 
 namespace VpnBotApi.Controllers
@@ -92,6 +95,15 @@ namespace VpnBotApi.Controllers
                 Ip = ip,
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             });
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> GetAccessPositions()
+        {
+            var response = await dispatcher.GetService<List<GetAccessPositions.Result>, GetAccessPositions.Request>(new GetAccessPositions.Request());
 
             return Json(response);
         }
