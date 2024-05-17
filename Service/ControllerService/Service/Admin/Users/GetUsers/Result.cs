@@ -5,6 +5,6 @@
         public List<User> Users { get; set; }
         public int Count { get; set; }
 
-        public record User(int Id, string Name, DateTime RegisterDate, DateTime? AccessEndDate);
+        public record User(int Id, string Name, DateTime RegisterDate, DateTime? AccessEndDate, DateTime? LastConnection);
     }
 }

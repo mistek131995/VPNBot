@@ -13,7 +13,8 @@ namespace Service.ControllerService.Service.Admin.Users.GetUsers
 
             result.Count = users.Count;
             result.Users = users
-                .Select(x => new Result.User(x.Id, x.Login, x.RegisterDate, x.AccessEndDate))
+                .Select(x => new Result.User(x.Id, x.Login, x.RegisterDate, x.AccessEndDate, x.LastConnection))
+                .OrderByDescending(x => x.LastConnection)
                 .ToList();
 
             return result;
