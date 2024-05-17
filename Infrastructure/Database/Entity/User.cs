@@ -21,6 +21,7 @@ namespace Infrastructure.Database.Entity
         public int ParentUserId { get; set; }
         [Precision(18, 3)]
         public decimal Balance { get; set; }
+        public DateTime? LastConnection { get; set; }
 
         public List<Payment> Payments { get; set; }
         public List<UserConnection> UserConnections { get; set; }

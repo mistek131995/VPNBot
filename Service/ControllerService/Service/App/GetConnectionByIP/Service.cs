@@ -20,6 +20,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
         public async Task<Result> HandlingAsync(Request request)
         {
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
+            user.LastConnection = DateTime.UtcNow;
 
             if (user.AccessEndDate == null || user.AccessEndDate?.Date < DateTime.Now.Date)
                 throw new HandledException("Ваша подписка закончилась");

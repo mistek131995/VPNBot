@@ -19,6 +19,7 @@ namespace Core.Model.User
         public Guid Guid { get; set; }
         public int ParentUserId {  get; set; }
         public decimal Balance { get; set; }
+        public DateTime? LastConnection {  get; set; }
 
         public List<Payment> Payments { get; set; }
         public List<UserConnection> UserConnections { get; set; }

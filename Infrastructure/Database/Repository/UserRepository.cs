@@ -33,6 +33,7 @@ namespace Infrastructure.Database.Repository
                 Guid = user.Guid,
                 ParentUserId = user.ParentUserId,
                 Balance = user.Balance,
+                LastConnection = user.LastConnection,
                 UserConnections = user.UserConnections.Select(c => new UserConnection()
                 {
                     Id = c.Id,
@@ -86,6 +87,7 @@ namespace Infrastructure.Database.Repository
                     Guid = x.Guid,
                     ParentUserId = x.ParentUserId,
                     Balance = x.Balance,
+                    LastConnection = x.LastConnection,
                     UserConnections = x.UserConnections.Select(c => new UserConnection()
                     {
                         Id = c.Id,
@@ -145,6 +147,7 @@ namespace Infrastructure.Database.Repository
                 Guid = user.Guid,
                 Balance = user.Balance,
                 ParentUserId = user.ParentUserId,
+                LastConnection = user.LastConnection,
             };
 
             await context.Users.AddAsync(newUser);
@@ -167,6 +170,7 @@ namespace Infrastructure.Database.Repository
             dbUser.Sost = user.Sost;
             dbUser.Balance = user.Balance;
             dbUser.AccessEndDate = user.AccessEndDate;
+            dbUser.LastConnection = user.LastConnection;
 
             dbUser.Payments = user.Payments
                 .Select(x => new Entity.Payment()
@@ -228,6 +232,7 @@ namespace Infrastructure.Database.Repository
                 dbUser.Sost = user.Sost;
                 dbUser.Balance = user.Balance;
                 dbUser.AccessEndDate = user.AccessEndDate;
+                dbUser.LastConnection = user.LastConnection;
 
                 dbUser.Payments = user.Payments
                     .Select(p => new Entity.Payment()

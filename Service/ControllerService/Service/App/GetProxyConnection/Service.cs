@@ -17,6 +17,8 @@ namespace Service.ControllerService.Service.App.GetProxyConnection
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) ??
                 throw new HandledException("Пользователь не найден");
 
+            user.LastConnection = DateTime.UtcNow;
+
             if (user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
                 throw new HandledException("Ваша подписка истекла");
 
