@@ -1,21 +1,15 @@
 ﻿using Application.ControllerService.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Net;
-using System.Text;
+using System.Web;
 using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
-using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
-using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
-
-using YouKassaGetLink = Service.ControllerService.Service.Payment.YouKassa.GetLink;
-using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
-
 using CryptoCloudGetLink = Service.ControllerService.Service.Payment.CryptoCloud.GetLink;
 using CryptoCloudNotification = Service.ControllerService.Service.Payment.CryptoCloud.Notification;
-
-
-using System.Web;
+using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
+using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
+using YouKassaGetLink = Service.ControllerService.Service.Payment.YouKassa.GetLink;
+using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
 
 namespace VpnBotApi.Controllers
 {
@@ -120,6 +114,12 @@ namespace VpnBotApi.Controllers
             var response = await dispatcher.GetService<bool, ExtendSubscribeForBonuses.Request>(request);
 
             return Json(response);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> GooglePlayNotification()
+        {
+            throw new NotImplementedException();
         }
 
         [HttpGet]
