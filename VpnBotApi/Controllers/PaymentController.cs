@@ -119,7 +119,9 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<JsonResult> GooglePlayNotification()
         {
-            throw new NotImplementedException();
+            logger.Information("Уведомление получено");
+
+            return Json(new { });
         }
 
         [HttpGet]
