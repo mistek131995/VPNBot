@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Text;
 using System.Web;
 using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 using CryptoCloudGetLink = Service.ControllerService.Service.Payment.CryptoCloud.GetLink;
@@ -119,7 +120,11 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<JsonResult> GooglePlayNotification()
         {
-            logger.Information("Уведомление получено");
+            using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
+            {
+                var requestContent = await reader.ReadToEndAsync();
+                logger.Information(requestContent);
+            }
 
             return Json(new { });
         }
