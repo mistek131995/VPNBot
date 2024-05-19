@@ -9,9 +9,9 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.Notification
 {
     internal class Service : IControllerService<Request, bool>
     {
-        public Task<bool> HandlingAsync(Request request)
+        public async Task<bool> HandlingAsync(Request request)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }
