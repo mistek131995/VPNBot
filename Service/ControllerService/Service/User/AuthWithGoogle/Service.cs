@@ -49,7 +49,8 @@ namespace Service.ControllerService.Service.User.AuthWithGoogle
                     Sost = UserSost.Active,
                     Balance = 0,
                     Guid = Guid.NewGuid(),
-                    RegisterDate = DateTime.Now
+                    RegisterDate = DateTime.Now,
+                    SubscribeToken = string.Empty,
                 });
             }
 

@@ -37,6 +37,7 @@ namespace Service.ControllerService.Service.User.Register
                 RegisterDate = DateTime.Now,
                 Sost = UserSost.NotActive,
                 Guid = Guid.NewGuid(),
+                SubscribeToken = string.Empty,
             };
 
             if (request.Guid != null)
