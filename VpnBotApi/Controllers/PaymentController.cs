@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Text;
 using System.Web;
 using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 using CryptoCloudGetLink = Service.ControllerService.Service.Payment.CryptoCloud.GetLink;
 using CryptoCloudNotification = Service.ControllerService.Service.Payment.CryptoCloud.Notification;
 using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
+using AddSubscribe = Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe;
+using GooglePlayNotification = Service.ControllerService.Service.Payment.GooglePlay.Notification;
 using YouKassaGetLink = Service.ControllerService.Service.Payment.YouKassa.GetLink;
 using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
 
@@ -118,15 +119,21 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> GooglePlayNotification()
+        [Authorize]
+        public async Task<JsonResult> AddSubscribe([FromBody] AddSubscribe.Request request)
         {
-            using (var reader = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
-            {
-                var requestContent = await reader.ReadToEndAsync();
-                logger.Information(requestContent);
-            }
+            request.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
+            var response = await dispatcher.GetService<bool, AddSubscribe.Request>(request);
 
-            return Json(new { });
+            return Json(response);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> GooglePlayNotification([FromBody] GooglePlayNotification.Request request)
+        {
+            var response = await dispatcher.GetService<bool, GooglePlayNotification.Request>(request);
+
+            return Json(response);
         }
 
         [HttpGet]

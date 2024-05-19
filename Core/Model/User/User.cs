@@ -21,6 +21,9 @@ namespace Core.Model.User
         public decimal Balance { get; set; }
         public DateTime? LastConnection {  get; set; }
 
+        public SubscribeType SubscribeType { get; set; }
+        public string SubscribeToken { get; set; }
+
         public List<Payment> Payments { get; set; }
         public List<UserConnection> UserConnections { get; set; }
     }
