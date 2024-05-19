@@ -14,6 +14,7 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
 
             var httpClient = new HttpClient();
             var response = await httpClient.GetAsync($"https://androidpublisher.googleapis.com/androidpublisher/v3/applications/com.lockvpnandroidapp/purchases/subscriptionsv2/tokens/{request.SubscribeToken}");
+            response.EnsureSuccessStatusCode();
             var data = await response.Content.ReadAsStringAsync();
 
             logger.Information(data);
