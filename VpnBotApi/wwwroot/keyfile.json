@@ -1,1 +1,13 @@
-{"web":{"client_id":"354549970311-bi5ordl9jsbsbl874vob4bq1ahr6r98k.apps.googleusercontent.com","project_id":"lockvpn","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["https://lockvpn.me"],"javascript_origins":["https://lockvpn.me","http://localhost"]}}
+{
+  "type": "service_account",
+  "project_id": "lockvpn",
+  "private_key_id": "9a1c300595eb84caf98f515082d3c8f5be5a79f3",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDDm/Xk5NGYnqFE\nvJxR9RkSlHBi4N9ZMDMUJyCEgCbOvxq34SXITE+gO0+sOhCTHrOVOfd7es1MuDg5\nwoAgSjXc4xmVDJgkmECYFbtwnWg60bHMb04hRm6SHFFBkEAgkW3/J/9akpTEDkhN\noq2kVMyRrVzEtU33b/QAEb+y6yt6XfxOvDa5n5N29HTM3R3+4gRmzpTtfQwC7QhZ\nYOgubB6y2RE+71fRVwreuw6jKRMgrt54QLVugAg6lCzPJjexrBXuIWatBHkEhs/X\ngJ4Pgxt6y0iC5kdlAYpYVg8zrXN0VK0fOI4NPFlUb+/1F1Ysvortx0YHfboJraJh\nTSnPNkWBAgMBAAECggEANMvutcZREEmYq63g33oxN0ObhgS+JBuPXdwlub3BO8J3\nGrSJdyOpxkzb91eAy8TYoemQc+K0cQW0H1rxLEX7fdBKQmGw2wfBP4t2GTJTRLT+\nsXhFdVPGWmeMQw8FUAUQ1HLeSHsR7k0QlOvYxGcjBBrv1CQ/lA7CpBYmUMuK467r\na+n+Nm44ijLCrSvMOoaDX5GzYDUDl8WvShhhHOo6i5BhbpHdj1GRQ2gZ6YHUZbZr\nsm934/Aos9bKkW+6rI58lMGfxTOcUaV9rR3P+9eyWJ/kvtrUqWFsnIVMcdbLeWdf\n6uJDmUlgNXvXUYOUciZnAcK56eDH3wSJmoH8GKAJpQKBgQDveugIWz6uCO93dftz\nw9oYJCZtz18U1CrKpcFKdX17/w5SbW7deOoazYFlVY2Y6lHUe7uF2mO2RQemJ4zD\nLw8u5HB+3v6Txiumu/HoaPt4C35QMr6kzV33+tBD8yKocsqdiSoIp08OZmXeTkDW\n04+Yo84sY5clkmlQyhSEghJrFwKBgQDRGlE4P0HAl34f0+pBdg13nNjS56NFxSpA\nmWtEUqqJb81k1JvuECJ75hP/+AHxRJPtKOPNBDoCCxdLcgEamrT3x1yVGShU+vJv\nPvbK7gNUhv0BXKaI9XnVdaYyp41kukP7Q2rclerW9y9hns6ncMLK+ttkr0fDzr7u\n6wlBN3zTJwKBgQC68s6aX2iyAcW3E0Jl3/msqOPbC2ylXO++3ODk2I1KNBUhIc7P\nU+olXFJsIfp06k9ROfptBsyaaI8NFYjcgisvJyPu1vQTtjszYTr6fKH617YWs1aC\nXtPBl2nn8bEXoO0tR/upX7rmeeeCQMJ7MhLCTPXRTzmaGg7fA7I6szPfpwKBgQDG\nCavEnrxyX8gW8shZKSqGD2mXDcUnzh0/Q05BTh2vvtCDX40ywds3BugINGX6kB2d\nrm1ZfVhHGSP900JSZRVh2lHH8CSvn2A+lh58gUFsK9CxGoOrEPpLfXpjXSbfsD20\nWdx6gA4De+ZHCXXlRTlnroBc8lkAjO1uL/H670dsXwKBgHxzrpWlPFKPwRX9+v7+\njfbymik9b88vmldmvv0grzTDBN4pM8yg9kb2vbmjx5X1DUACmBu2OueM1U04YNRv\ni1LMKgHHE3jPhsvxq15HHQHoW0eg7eKDPsfLsCS0CLsLaCOdq6JQrBjy7UNNTkmW\nKXtG89Q4glDN55PgWnFWW5fu\n-----END PRIVATE KEY-----\n",
+  "client_email": "subscribe@lockvpn.iam.gserviceaccount.com",
+  "client_id": "102543850301147591545",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/subscribe%40lockvpn.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
