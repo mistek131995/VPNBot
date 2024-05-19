@@ -28,7 +28,8 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
             var response = await httpClient.PostAsync("https://accounts.google.com/o/oauth2/token", content);
             if (!response.IsSuccessStatusCode)
             {
-                logger.Information(response.ReasonPhrase);
+                var errorResponse = await response.Content.ReadAsStringAsync();
+                logger.Information(errorResponse);
                 throw new ApplicationException("Не удалось получить токен.");
             }
 
