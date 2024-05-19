@@ -26,30 +26,6 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
 
             logger.Information($"Пользователю {user.Login} успешно добавлен токен Google Play.");
 
-            //// Путь к файлу ключа JSON сервисного аккаунта
-            //string jsonKeyFilePath = "wwwroot/keyfile.json";
-            //// Область доступа, необходимая для вашего запроса
-            //string[] scopes = new string[] { "https://www.googleapis.com/auth/androidpublisher" };
-
-            //GoogleCredential credential = GoogleCredential.FromFile(jsonKeyFilePath)
-            //.CreateScoped(scopes);
-
-            //var accessToken = await credential.UnderlyingCredential.GetAccessTokenForRequestAsync();
-
-            //var httpClient = new HttpClient();
-
-            //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            //var response = await httpClient.GetAsync($"https://androidpublisher.googleapis.com/androidpublisher/v3/applications/com.lockvpnandroidapp/purchases/subscriptionsv2/tokens/{request.SubscribeToken}");
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    var errorResponse = await response.Content.ReadAsStringAsync();
-            //    logger.Information(errorResponse);
-            //    throw new ApplicationException("Не удалось получить токен.");
-            //}
-            //var data = await response.Content.ReadAsStringAsync();
-
-            //logger.Information(data);
-
             return true;
         }
     }
