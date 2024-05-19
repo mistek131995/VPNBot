@@ -39,7 +39,12 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var response = await httpClient.GetAsync($"https://androidpublisher.googleapis.com/androidpublisher/v3/applications/com.lockvpnandroidapp/purchases/subscriptionsv2/tokens/{request.SubscribeToken}");
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorResponse = await response.Content.ReadAsStringAsync();
+                logger.Information(errorResponse);
+                throw new ApplicationException("Не удалось получить токен.");
+            }
             var data = await response.Content.ReadAsStringAsync();
 
             logger.Information(data);
