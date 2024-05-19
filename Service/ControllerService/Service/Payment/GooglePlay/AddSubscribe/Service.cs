@@ -13,32 +13,17 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId)
                 ?? throw new HandledException("Пользователь не найден", true);
 
-            var httpClient = new HttpClient();
+            // Путь к файлу ключа JSON сервисного аккаунта
+            string jsonKeyFilePath = "wwwroot/keyfile.json";
+            // Область доступа, необходимая для вашего запроса
+            string[] scopes = new string[] { "https://www.googleapis.com/auth/androidpublisher" };
 
-            string clientId = "354549970311-bi5ordl9jsbsbl874vob4bq1ahr6r98k.apps.googleusercontent.com";
-            string scope = "https://www.googleapis.com/auth/androidpublisher";
-            string clientSecret = "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";
+            GoogleCredential credential = GoogleCredential.FromFile(jsonKeyFilePath)
+            .CreateScoped(scopes);
 
-            var requestBody = new Dictionary<string, string>
-            {
-                {"grant_type", "client_credentials"},
-                {"client_id", clientId},
-                {"client_secret", clientSecret},
-                {"scope", scope}
-            };
+            var accessToken = await credential.UnderlyingCredential.GetAccessTokenForRequestAsync();
 
-            var content = new FormUrlEncodedContent(requestBody);
-            var response = await httpClient.PostAsync("https://accounts.google.com/o/oauth2/token", content);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorResponse = await response.Content.ReadAsStringAsync();
-                logger.Information(errorResponse);
-                throw new ApplicationException("Не удалось получить access token.");
-            }
-
-            var responseString = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseString);
+            //var httpClient = new HttpClient();
 
             //string clientId = "354549970311-bi5ordl9jsbsbl874vob4bq1ahr6r98k.apps.googleusercontent.com";
             //string scope = "https://www.googleapis.com/auth/androidpublisher";
@@ -71,7 +56,7 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
             //response.EnsureSuccessStatusCode();
             //var data = await response.Content.ReadAsStringAsync();
 
-            logger.Information(tokenResponse["access_token"]);
+            logger.Information(accessToken);
 
             return true;
         }

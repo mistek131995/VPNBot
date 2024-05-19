@@ -57,7 +57,6 @@ namespace VpnBotApi
                     };
                 });
 
-
             var app = builder.Build();
 
             app.UseMiddleware<ExceptionMiddleware>();
