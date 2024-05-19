@@ -20,7 +20,7 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
             {
                 new KeyValuePair<string, string>("grant_type", "authorization_code"),
                 new KeyValuePair<string, string>("code", "4/0AdLIrYc25eVCPJDONWVxp3XkTZvOQleCec7h6sNwH2i1dHrRJFL6YwmzAINRG746AWzjjA"),
-                new KeyValuePair<string, string>("client_id", "354549970311-bi5ordl9jsbsbl874vob4bq1ahr6r98k.apps.googleusercontent.com\r\n"),
+                new KeyValuePair<string, string>("client_id", "354549970311-bi5ordl9jsbsbl874vob4bq1ahr6r98k.apps.googleusercontent.com"),
                 new KeyValuePair<string, string>("client_secret", "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"),
                 new KeyValuePair<string, string>("redirect_uri", "https://lockvpn.me")
             });
