@@ -32,6 +32,8 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
 
             if (!response.IsSuccessStatusCode)
             {
+                var errorResponse = await response.Content.ReadAsStringAsync();
+                logger.Information(errorResponse);
                 throw new ApplicationException("Не удалось получить access token.");
             }
 
