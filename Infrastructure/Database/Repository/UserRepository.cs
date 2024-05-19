@@ -148,6 +148,7 @@ namespace Infrastructure.Database.Repository
                 Balance = user.Balance,
                 ParentUserId = user.ParentUserId,
                 LastConnection = user.LastConnection,
+                SubscribeToken = user.SubscribeToken,
             };
 
             await context.Users.AddAsync(newUser);
