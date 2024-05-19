@@ -3,6 +3,7 @@ using Core.Common;
 using Google.Apis.Auth.OAuth2;
 using Newtonsoft.Json;
 using Service.ControllerService.Common;
+using System.Net.Http.Headers;
 
 namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
 {
@@ -23,23 +24,7 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
 
             var accessToken = await credential.UnderlyingCredential.GetAccessTokenForRequestAsync();
 
-            //var httpClient = new HttpClient();
-
-            //string clientId = "354549970311-bi5ordl9jsbsbl874vob4bq1ahr6r98k.apps.googleusercontent.com";
-            //string scope = "https://www.googleapis.com/auth/androidpublisher";
-            //string redirectUri = "https://lockvpn.me";
-            //string responseType = "code";
-
-            //string authorizationUrl = $"https://accounts.google.com/o/oauth2/auth?client_id={clientId}&redirect_uri={redirectUri}&scope={scope}&response_type={responseType}";
-
-            //var content = new FormUrlEncodedContent(new[]
-            //{
-            //    new KeyValuePair<string, string>("grant_type", "authorization_code"),
-            //    new KeyValuePair<string, string>("code", "4/0AdLIrYc25eVCPJDONWVxp3XkTZvOQleCec7h6sNwH2i1dHrRJFL6YwmzAINRG746AWzjjA"),
-            //    new KeyValuePair<string, string>("client_id", "354549970311-bi5ordl9jsbsbl874vob4bq1ahr6r98k.apps.googleusercontent.com"),
-            //    new KeyValuePair<string, string>("client_secret", "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"),
-            //    new KeyValuePair<string, string>("redirect_uri", "https://lockvpn.me")
-            //});
+            var httpClient = new HttpClient();
 
             //var response = await httpClient.PostAsync("https://accounts.google.com/o/oauth2/token", content);
             //if (!response.IsSuccessStatusCode)
@@ -52,11 +37,12 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
             //var responseString = await response.Content.ReadAsStringAsync();
             //var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(responseString);
 
-            //var response = await httpClient.GetAsync($"https://androidpublisher.googleapis.com/androidpublisher/v3/applications/com.lockvpnandroidapp/purchases/subscriptionsv2/tokens/{request.SubscribeToken}");
-            //response.EnsureSuccessStatusCode();
-            //var data = await response.Content.ReadAsStringAsync();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var response = await httpClient.GetAsync($"https://androidpublisher.googleapis.com/androidpublisher/v3/applications/com.lockvpnandroidapp/purchases/subscriptionsv2/tokens/{request.SubscribeToken}");
+            response.EnsureSuccessStatusCode();
+            var data = await response.Content.ReadAsStringAsync();
 
-            logger.Information(accessToken);
+            logger.Information(data);
 
             return true;
         }
