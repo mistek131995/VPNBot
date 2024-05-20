@@ -9,7 +9,7 @@ namespace Service.ControllerService.Service.App.GetSubscribeModal
 {
     public class Result
     {
-        public SubscribeType SubscribeType { get; set; }
+        public ыек SubscribeType { get; set; }
         public List<Subscribe> Subscribes { get; set; }
 
         public class Subscribe

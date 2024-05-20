@@ -2,6 +2,7 @@
 using Core.Common;
 using Google.Apis.Auth.OAuth2;
 using Newtonsoft.Json;
+using Service.ControllerService.Common;
 using System.Net.Http.Headers;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -30,28 +31,11 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.Notification
             var user = await repositoryProvider.UserRepository.GetBySubscribeTokenAsync(callbackData.subscriptionNotification.purchaseToken) 
                 ?? throw new Exception("Пользователь не найден");
 
-
-            string jsonKeyFilePath = "wwwroot/keyfile.json";
-            string[] scopes = ["https://www.googleapis.com/auth/androidpublisher"];
-            GoogleCredential credential = GoogleCredential
-                .FromFile(jsonKeyFilePath)
-                .CreateScoped(scopes);
-            var accessToken = await credential.UnderlyingCredential.GetAccessTokenForRequestAsync();
-
             if(callbackData.subscriptionNotification != null)
             {
-                var httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                var response = await httpClient.GetAsync($"https://androidpublisher.googleapis.com/androidpublisher/v3/applications/com.lockvpnandroidapp/purchases/subscriptionsv2/tokens/{callbackData.subscriptionNotification.purchaseToken}");
-                if (!response.IsSuccessStatusCode)
-                {
-                    var errorResponse = await response.Content.ReadAsStringAsync();
-                    logger.Information(errorResponse);
-                    throw new ApplicationException("Не удалось получить информацию о покупке.");
-                }
-                var data = await response.Content.ReadAsStringAsync();
+                var purchaseData = await GooglePlayHelper.GetPurchaseDataAsync(callbackData.subscriptionNotification.purchaseToken);
 
-                logger.Information($"Получены данные о покупке: {data}");
+                logger.Information($"Получены данные о покупке: {JsonConvert.SerializeObject(purchaseData)}");
             }
             else if(callbackData.voidedPurchaseNotification != null)
             {
