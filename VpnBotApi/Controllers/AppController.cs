@@ -10,7 +10,7 @@ using GetProxyConnection = Service.ControllerService.Service.App.GetProxyConnect
 using GetConnectionScreen = Service.ControllerService.Service.App.GetConnectionScreen;
 using AddError = Service.ControllerService.Service.App.AddError;
 
-using GetAccessPositions = Service.ControllerService.Service.App.GetAccessPositions;
+using GetSubscribeModal = Service.ControllerService.Service.App.GetSubscribeModal;
 
 using Microsoft.AspNetCore.Authorization;
 
@@ -101,9 +101,12 @@ namespace VpnBotApi.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<JsonResult> GetAccessPositions()
+        public async Task<JsonResult> GetSubscribeModal()
         {
-            var response = await dispatcher.GetService<List<GetAccessPositions.Result>, GetAccessPositions.Request>(new GetAccessPositions.Request());
+            var response = await dispatcher.GetService<GetSubscribeModal.Result, GetSubscribeModal.Request>(new GetSubscribeModal.Request()
+            {
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
 
             return Json(response);
         }
