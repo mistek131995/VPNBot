@@ -366,5 +366,12 @@ namespace Infrastructure.Database.Repository
             context.Users.Remove(dbUser);
             await context.SaveChangesAsync();
         }
+
+        public async Task<User> GetBySubscribeTokenAsync(string subscribeToken)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(x => x.SubscribeToken == subscribeToken);
+
+            return await GetByIdAsync(user?.Id ?? 0);
+        }
     }
 }
