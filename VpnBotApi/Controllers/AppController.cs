@@ -1,7 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Microsoft.AspNetCore.Mvc;
 
-using GetFile = Service.ControllerService.Service.GetFile;
 using GetVpnLocation = Service.ControllerService.Service.App.GetVpnLocation;
 using GetServersByTag = Service.ControllerService.Service.App.GetServersByTag;
 using GetVpnConnectionByIp = Service.ControllerService.Service.App.GetConnectionByIP;
@@ -20,16 +19,6 @@ namespace VpnBotApi.Controllers
     [Route("[Controller]/[Action]")]
     public class AppController(ControllerServiceDispatcher dispatcher) : Controller
     {
-        [HttpGet]
-        public async Task<JsonResult> GetFile(string tag)
-        {
-            var response = await dispatcher.GetService<GetFile.Result, GetFile.Request>(new GetFile.Request()
-            {
-                Tag = tag
-            });
-
-            return Json(response);
-        }
 
         [HttpGet]
         [Authorize]

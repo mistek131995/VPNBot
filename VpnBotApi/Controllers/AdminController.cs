@@ -6,7 +6,6 @@ using GetLogs = Service.ControllerService.Service.GetLogs;
 using AddLogs = Service.ControllerService.Service.AddLog;
 using GetIndexLocation = Service.ControllerService.Service.Admin.VpnLocation.GetIndex;
 using GetAddEditServer = Service.ControllerService.Service.Admin.GetAddEditServer;
-using GetFiles = Service.ControllerService.Service.GetFiles;
 using GetSettings = Service.ControllerService.Service.GetSettings;
 using AddCountry = Service.ControllerService.Service.AddCountry;
 using AddServer = Service.ControllerService.Service.Admin.AddServer;
@@ -110,15 +109,6 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> AddCountry(AddCountry.Request request)
         {
             var response = await dispatcher.GetService<bool, AddCountry.Request>(request);
-
-            return Json(response);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<JsonResult> GetFiles()
-        {
-            var response = await dispatcher.GetService<GetFiles.Result, GetFiles.Request>(new GetFiles.Request());
 
             return Json(response);
         }
