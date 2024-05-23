@@ -3,15 +3,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Web;
+using AddSubscribe = Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe;
 using ApplyPromoCode = Service.ControllerService.Service.Payment.ApplyPromoCode;
 using CryptoCloudGetLink = Service.ControllerService.Service.Payment.CryptoCloud.GetLink;
 using CryptoCloudNotification = Service.ControllerService.Service.Payment.CryptoCloud.Notification;
 using ExtendSubscribeForBonuses = Service.ControllerService.Service.ExtendSubscribeForBonuses;
 using GetPaymentPositions = Service.ControllerService.Service.Payment.GetPaymentPositions;
-using AddSubscribe = Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe;
 using GooglePlayNotification = Service.ControllerService.Service.Payment.GooglePlay.Notification;
 using YouKassaGetLink = Service.ControllerService.Service.Payment.YouKassa.GetLink;
 using YouKassaNotification = Service.ControllerService.Service.Payment.YouKassa.Notification;
+using Service.ControllerService.Common;
 
 namespace VpnBotApi.Controllers
 {

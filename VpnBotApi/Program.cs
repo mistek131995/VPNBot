@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Service;
+using Service.ControllerService.Common;
 using System.Text;
 using VpnBotApi.Common;
 
@@ -33,6 +34,7 @@ namespace VpnBotApi
             });
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddService();
+            builder.Services.AddSingleton<ExchangeRateService>();
 
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
