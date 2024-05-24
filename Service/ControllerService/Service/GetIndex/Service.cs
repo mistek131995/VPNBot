@@ -30,7 +30,7 @@ namespace Service.ControllerService.Service.GetIndex
                 {
                     Id = payment.Id,
                     Date = payment.Date,
-                    Range = $"{position.MonthCount} месяц.",
+                    Range = position.Name,
                     Price = $"{position.Price} руб.",
                     State = payment.State
                 });
