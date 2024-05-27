@@ -35,6 +35,7 @@ namespace VpnBotApi
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddService();
             builder.Services.AddSingleton<ExchangeRateService>();
+            builder.Services.AddSingleton<LoginInFailureService>();
 
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

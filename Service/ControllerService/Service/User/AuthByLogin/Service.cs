@@ -5,16 +5,21 @@ using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.User.AuthByLogin
 {
-    internal class Service(IRepositoryProvider repositoryProvider, IConfiguration configuration) : IControllerService<Request, string>
+    internal class Service(IRepositoryProvider repositoryProvider, IConfiguration configuration, LoginInFailureService loginInFailureService) : IControllerService<Request, string>
     {
         public async Task<string> HandlingAsync(Request request)
         {
+            loginInFailureService.CheckLoginInRequest(request.Ip);
+
             var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
 
-            await Helper.CheckCaptchaTokenAsync(request.Token, settings.CaptchaPrivateKey);
+            var user = await repositoryProvider.UserRepository.GetByLoginAndPasswordAsync(request.Login.Trim().ToLower(), request.Password);
 
-            var user = await repositoryProvider.UserRepository.GetByLoginAndPasswordAsync(request.Login.Trim().ToLower(), request.Password) ??
+            if(user == null)
+            {
+                loginInFailureService.AddFailure(request.Ip, user?.Id ?? 0);
                 throw new HandledException("Пользователь с таким логином и паролем не найден.");
+            }
 
             if (user.Sost == UserSost.Blocked)
                 throw new HandledException("Ваш аккаунт заблокирован.");
