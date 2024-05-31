@@ -78,10 +78,10 @@ namespace VpnBotApi
                 app.UseSwaggerUI();
             }
 
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseHttpsRedirection();
-            }
+            //if (!app.Environment.IsDevelopment())
+            //{
+            //    app.UseHttpsRedirection();
+            //}
 
 
             var provider = new FileExtensionContentTypeProvider();
