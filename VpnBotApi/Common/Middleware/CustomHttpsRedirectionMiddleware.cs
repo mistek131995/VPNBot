@@ -78,7 +78,7 @@ namespace VpnBotApi.Common.Middleware
             var MyTask = IPL.Lookup(context.Request.HttpContext.Connection.RemoteIpAddress.ToString());
             var MyObj = MyTask.Result;
 
-            if (context.Request.IsHttps || MyObj["country_code"].ToString() == "IR" || MyObj["country_code"].ToString() == "KG")
+            if (context.Request.IsHttps || MyObj["country_code"].ToString() == "IR")
             {
                 return _next(context);
             }
