@@ -75,10 +75,10 @@ namespace VpnBotApi.Common.Middleware
             string Lang = "en";
 
             // Lookup ip address geolocation data
-            var MyTask = IPL.Lookup(context.Request.HttpContext.Connection.RemoteIpAddress.ToString(), Lang);
+            var MyTask = IPL.Lookup(context.Request.HttpContext.Connection.RemoteIpAddress.ToString());
             var MyObj = MyTask.Result;
 
-            if (context.Request.IsHttps)
+            if (context.Request.IsHttps || MyObj["country_code"].ToString() == "IR" || MyObj["country_code"].ToString() == "KG")
             {
                 return _next(context);
             }
