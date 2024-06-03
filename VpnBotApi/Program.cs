@@ -8,7 +8,8 @@ using Serilog;
 using Service;
 using Service.ControllerService.Common;
 using System.Text;
-using VpnBotApi.Common;
+using VpnBotApi.Common.Extensions;
+using VpnBotApi.Common.Middleware;
 
 namespace VpnBotApi
 {
@@ -79,9 +80,9 @@ namespace VpnBotApi
             }
 
             //if (!app.Environment.IsDevelopment())
-            //{
-            //    app.UseHttpsRedirection();
-            //}
+            {
+                app.UseCustomHttpsPolicyBuilderExtensions();
+            }
 
 
             var provider = new FileExtensionContentTypeProvider();

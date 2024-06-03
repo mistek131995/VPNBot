@@ -1,7 +1,7 @@
 ﻿using Service.ControllerService.Common;
 using System.Net;
 
-namespace VpnBotApi.Common
+namespace VpnBotApi.Common.Middleware
 {
     public class ExceptionMiddleware(RequestDelegate next, Serilog.ILogger logger)
     {
