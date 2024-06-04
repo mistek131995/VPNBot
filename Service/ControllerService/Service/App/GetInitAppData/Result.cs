@@ -1,8 +1,9 @@
-﻿namespace Service.ControllerService.Service.App.GetVpnLocation
+﻿namespace Service.ControllerService.Service.App.GetInitAppData
 {
     public class Result
     {
         public List<Location> Locations { get; set; }
+        public string IpLocation { get; set; }
 
         public class Location
         {

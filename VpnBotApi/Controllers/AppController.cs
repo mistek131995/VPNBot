@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using GetVpnLocation = Service.ControllerService.Service.App.GetVpnLocation;
+using GetInitAppData = Service.ControllerService.Service.App.GetInitAppData;
 using GetServersByTag = Service.ControllerService.Service.App.GetServersByTag;
 using GetVpnConnectionByIp = Service.ControllerService.Service.App.GetConnectionByIP;
 using GetProxyConnection = Service.ControllerService.Service.App.GetProxyConnection;
@@ -19,6 +20,17 @@ namespace VpnBotApi.Controllers
     [Route("[Controller]/[Action]")]
     public class AppController(ControllerServiceDispatcher dispatcher) : Controller
     {
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> GetInitAppData()
+        {
+            var response = await dispatcher.GetService<GetInitAppData.Result, GetInitAppData.Request>(new GetInitAppData.Request()
+            {
+                Ip = Request.HttpContext.Connection.RemoteIpAddress.ToString()
+            });
+
+            return Json(response);
+        }
 
         [HttpGet]
         [Authorize]

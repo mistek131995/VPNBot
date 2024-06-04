@@ -72,7 +72,6 @@ namespace VpnBotApi.Common.Middleware
             };
 
             IPGeolocation IPL = new(Config);
-            string Lang = "en";
 
             // Lookup ip address geolocation data
             var MyTask = IPL.Lookup(context.Request.HttpContext.Connection.RemoteIpAddress.ToString());
