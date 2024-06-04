@@ -22,7 +22,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
             user.LastConnection = DateTime.UtcNow;
 
-            if (user.AccessEndDate == null || user.AccessEndDate?.Date < DateTime.Now.Date)
+            if ((user.AccessEndDate == null || user.AccessEndDate?.Date < DateTime.Now.Date) && request.OS != "android")
                 throw new HandledException("Ваша подписка закончилась");
 
 

@@ -43,11 +43,12 @@ namespace VpnBotApi.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<JsonResult> GetConnectionByIp(string ip)
+        public async Task<JsonResult> GetConnectionByIp(string ip, string? os)
         {
             var response = await dispatcher.GetService<GetVpnConnectionByIp.Result, GetVpnConnectionByIp.Request>(new GetVpnConnectionByIp.Request()
             {
                 Ip = ip,
+                OS = os,
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             });
 
