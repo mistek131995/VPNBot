@@ -70,7 +70,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                                 Email = user.Login,
                                 LimitIp = 1,
                                 TotalGB = 0,
-                                //ExpiryTime = expiryTime,
+                                ExpiryTime = 0,
                                 Enable = true,
                                 Reset = 0,
                                 TgId = "",
