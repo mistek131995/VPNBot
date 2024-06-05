@@ -14,5 +14,6 @@
         public string ServerName { get; set; }
         public string ShortId { get; set; }
         public DateTime AccessEndDate { get; set; }
+        public ConnectionType ConnectionType { get; set; }
     }
 }

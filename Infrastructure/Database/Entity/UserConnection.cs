@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Model.User;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace Infrastructure.Database.Entity
         public string ServerName { get; set; }
         public string ShortId { get; set; }
         public DateTime AccessEndDate { get; set; }
+        public ConnectionType ConnectionType { get; set; }
 
         public VpnServer VpnServer { get; set; }
         public User User { get; set; }
