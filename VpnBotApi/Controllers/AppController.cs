@@ -7,6 +7,8 @@ using GetServersByTag = Service.ControllerService.Service.App.GetServersByTag;
 using GetVpnConnectionByIp = Service.ControllerService.Service.App.GetConnectionByIP;
 using GetProxyConnection = Service.ControllerService.Service.App.GetProxyConnection;
 
+using GetInitTileService = Service.ControllerService.Service.App.GetInitTileService;
+
 using GetConnectionScreen = Service.ControllerService.Service.App.GetConnectionScreen;
 using AddError = Service.ControllerService.Service.App.AddError;
 
@@ -106,6 +108,18 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> GetSubscribeModal()
         {
             var response = await dispatcher.GetService<GetSubscribeModal.Result, GetSubscribeModal.Request>(new GetSubscribeModal.Request()
+            {
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> GetInitTileService()
+        {
+            var response = await dispatcher.GetService<GetInitTileService.Result, GetInitTileService.Request>(new GetInitTileService.Request()
             {
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             });
