@@ -48,6 +48,7 @@ namespace Infrastructure.Database.Repository
                     ServerName = c.ServerName,
                     ShortId = c.ShortId,
                     AccessEndDate = c.AccessEndDate,
+                    ConnectionType = c.ConnectionType,
                 }).ToList(),
                 Payments = user.Payments
                 .OrderByDescending(x => x.Date)
@@ -102,6 +103,7 @@ namespace Infrastructure.Database.Repository
                         ServerName = c.ServerName,
                         ShortId = c.ShortId,
                         AccessEndDate = c.AccessEndDate,
+                        ConnectionType = c.ConnectionType,
                     }).ToList(),
                     Payments = x.Payments
                     .OrderByDescending(x => x.Date)
@@ -203,6 +205,7 @@ namespace Infrastructure.Database.Repository
                     ServerName = x.ServerName,
                     ShortId = x.ShortId,
                     AccessEndDate = x.AccessEndDate,
+                    ConnectionType = x.ConnectionType,
                 })
                 .ToList();
 
@@ -265,6 +268,7 @@ namespace Infrastructure.Database.Repository
                         ServerName = c.ServerName,
                         ShortId = c.ShortId,
                         AccessEndDate = c.AccessEndDate,
+                        ConnectionType = c.ConnectionType,
                         
                     })
                     .ToList();

@@ -7,10 +7,11 @@ using Infrastructure.HttpClientService.Model;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System;
+using Serilog;
 
 namespace Service.ControllerService.Service.App.GetConnectionByIP
 {
-    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, Result>
+    internal class Service(IRepositoryProvider repositoryProvider, ILogger logger) : IControllerService<Request, Result>
     {
 
         public record StreamSettings(string Network, string Security, RealitySettings RealitySettings);
@@ -22,8 +23,12 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
             user.LastConnection = DateTime.UtcNow;
 
+            logger.Information("Зашли в метод");
+
             if ((user.AccessEndDate == null || user.AccessEndDate?.Date < DateTime.Now.Date) && request.OS == "android")
             {
+                logger.Information("Зашли в устловие создания бесплатного подключения");
+
                 var location = await repositoryProvider.LocationRepository.GetByServerIpAsync(request.Ip) ??
                     throw new HandledException("Локация не найдена не найден");
                 var server = location.VpnServers.FirstOrDefault(x => x.Ip == request.Ip) ??
@@ -31,7 +36,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
 
                 var userConnection = user.UserConnections.FirstOrDefault(x => x.VpnServerId == server.Id && x.ConnectionType == ConnectionType.Free);
 
-                if(userConnection == null)
+                if (userConnection == null)
                 {
                     var serializerSettings = new JsonSerializerSettings();
                     serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
