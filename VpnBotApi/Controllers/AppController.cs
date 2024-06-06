@@ -28,7 +28,8 @@ namespace VpnBotApi.Controllers
         {
             var response = await dispatcher.GetService<GetInitAppData.Result, GetInitAppData.Request>(new GetInitAppData.Request()
             {
-                Ip = Request.HttpContext.Connection.RemoteIpAddress.ToString()
+                Ip = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             });
 
             return Json(response);

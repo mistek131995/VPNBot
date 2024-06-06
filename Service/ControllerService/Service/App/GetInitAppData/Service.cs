@@ -10,7 +10,7 @@ namespace Service.ControllerService.Service.App.GetInitAppData
         {
             var result = new Result();
 
-            var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UsertId);
+            var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
 
             Configuration Config = new()
             {
@@ -24,8 +24,12 @@ namespace Service.ControllerService.Service.App.GetInitAppData
             var MyObj = MyTask;
 
             result.IpLocation = MyObj["country_code"]?.ToString() ?? "";
-            result.IsExpired = user.AccessEndDate.Value < DateTime.Now;
-            result.AccessEndDate = user.AccessEndDate.Value.ToShortDateString();
+
+            if(user != null)
+            {
+                result.IsExpired = user.AccessEndDate.Value < DateTime.Now;
+                result.AccessEndDate = user.AccessEndDate.Value.ToShortDateString();
+            }
 
             var locations = await repositoryProvider.LocationRepository.GetAllAsync();
 
