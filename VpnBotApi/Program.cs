@@ -81,7 +81,7 @@ namespace VpnBotApi
 
             //if (!app.Environment.IsDevelopment())
             {
-                app.UseCustomHttpsPolicyBuilderExtensions();
+                //app.UseCustomHttpsPolicyBuilderExtensions();
             }
 
 
