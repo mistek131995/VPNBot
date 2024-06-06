@@ -80,6 +80,7 @@ namespace VpnBotApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseStaticFiles();
 
 
             app.MapControllers();
