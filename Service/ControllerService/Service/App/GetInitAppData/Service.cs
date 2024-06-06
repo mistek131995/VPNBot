@@ -24,7 +24,7 @@ namespace Service.ControllerService.Service.App.GetInitAppData
             var MyObj = MyTask;
 
             result.IpLocation = MyObj["country_code"]?.ToString() ?? "";
-            result.IsExpired = user.AccessEndDate < DateTime.Now;
+            result.IsExpired = user.AccessEndDate.Value < DateTime.Now;
             result.AccessEndDate = user.AccessEndDate.Value.ToShortDateString();
 
             var locations = await repositoryProvider.LocationRepository.GetAllAsync();
