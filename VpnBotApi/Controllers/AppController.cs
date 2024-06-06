@@ -6,8 +6,7 @@ using GetInitAppData = Service.ControllerService.Service.App.GetInitAppData;
 using GetServersByTag = Service.ControllerService.Service.App.GetServersByTag;
 using GetVpnConnectionByIp = Service.ControllerService.Service.App.GetConnectionByIP;
 using GetProxyConnection = Service.ControllerService.Service.App.GetProxyConnection;
-
-using GetInitTileService = Service.ControllerService.Service.App.GetInitTileService;
+using GetUserData = Service.ControllerService.Service.App.GetUserData;
 
 using GetConnectionScreen = Service.ControllerService.Service.App.GetConnectionScreen;
 using AddError = Service.ControllerService.Service.App.AddError;
@@ -114,15 +113,16 @@ namespace VpnBotApi.Controllers
             });
 
             return Json(response);
-        }
-
+        }        
+        
         [HttpGet]
         [Authorize]
-        public async Task<JsonResult> GetInitTileService()
+        public async Task<JsonResult> GetUserData()
         {
-            var response = await dispatcher.GetService<GetInitTileService.Result, GetInitTileService.Request>(new GetInitTileService.Request()
+            var response = await dispatcher.GetService<GetUserData.Result, GetUserData.Request>(new GetUserData.Request()
             {
-                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value),
+                Ip = Request.HttpContext.Connection.RemoteIpAddress.ToString()
             });
 
             return Json(response);
