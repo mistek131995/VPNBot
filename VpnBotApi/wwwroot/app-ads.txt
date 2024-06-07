@@ -281,3 +281,6 @@ appnexus.com, 14416, RESELLER
 orangeclickmedia.com, C-1054, RESELLER
 spinx.biz, 1373698864, RESELLER
 target.vk.ru, 21329270, DIRECT
+
+smartadserver.com, 4194-OB, RESELLER, 060d053dcf45cbf3
+smartadserver.com, 4194, RESELLER, 060d053dcf45cbf3
