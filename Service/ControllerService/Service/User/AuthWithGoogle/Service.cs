@@ -45,7 +45,7 @@ namespace Service.ControllerService.Service.User.AuthWithGoogle
                     Email = validPayload.Email,
                     Password = password,
                     Role = UserRole.User,
-                    AccessEndDate = DateTime.Now.AddDays(7),
+                    AccessEndDate = DateTime.Now,
                     Sost = UserSost.Active,
                     Balance = 0,
                     Guid = Guid.NewGuid(),
