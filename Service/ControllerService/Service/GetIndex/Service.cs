@@ -20,6 +20,7 @@ namespace Service.ControllerService.Service.GetIndex
             result.EndAccessDate = user.AccessEndDate;
             result.Balance = user.Balance;
             result.ReferralLink = $"https://{configuration["Domain"]}/Register?parent={user.Guid}";
+            result.IsExpired = user.AccessEndDate < DateTime.Now;
 
 
             foreach (var payment in user.Payments.Take(10))

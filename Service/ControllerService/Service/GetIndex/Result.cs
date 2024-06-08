@@ -15,6 +15,7 @@ namespace Service.ControllerService.Service.GetIndex
         public DateTime? EndAccessDate { get; set; }
         public decimal Balance { get; set; }
         public string ReferralLink { get; set; }
+        public bool IsExpired { get; set; }
 
         public List<Payment> Payments { get; set; }
         public List<Referral> Referrals { get; set; }
