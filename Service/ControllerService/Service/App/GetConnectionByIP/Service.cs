@@ -1,13 +1,11 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
-using Service.ControllerService.Common;
 using Core.Model.User;
-using Newtonsoft.Json;
 using Infrastructure.HttpClientService.Model;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using System;
-using Serilog;
+using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.App.GetConnectionByIP
 {
@@ -21,7 +19,6 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
         public async Task<Result> HandlingAsync(Request request)
         {
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
-            user.LastConnection = DateTime.UtcNow;
 
             if ((user.AccessEndDate == null || user.AccessEndDate?.Date < DateTime.Now.Date) && request.OS == "android")
             {
@@ -129,6 +126,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                         AccessEndDate = DateTime.MinValue
                     };
 
+                    user.LastConnection = DateTime.UtcNow;
                     user.UserConnections.Add(userConnection);
                     await repositoryProvider.UserRepository.UpdateAsync(user);
                 }
@@ -150,7 +148,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
             }
             else
             {
-                if(user.AccessEndDate == null || user.AccessEndDate?.Date < DateTime.Now.Date)
+                if (user.AccessEndDate == null || user.AccessEndDate?.Date < DateTime.Now.Date)
                     throw new HandledException("Ваша подписка закончилась");
 
                 var location = await repositoryProvider.LocationRepository.GetByServerIpAsync(request.Ip) ??
@@ -160,7 +158,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
 
                 var userConnection = user.UserConnections.FirstOrDefault(x => x.VpnServerId == server.Id && x.ConnectionType == ConnectionType.Paid);
 
-                if(userConnection == null || userConnection.AccessEndDate != user.AccessEndDate)
+                if (userConnection == null || userConnection.AccessEndDate != user.AccessEndDate)
                 {
                     var serializerSettings = new JsonSerializerSettings();
                     serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -217,8 +215,8 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                     };
 
                     var addUserConnectionResponse = await httpClient.PostAsync("/panel/inbound/addClient", addData);
-                    
-                    if(!addUserConnectionResponse.IsSuccessStatusCode)
+
+                    if (!addUserConnectionResponse.IsSuccessStatusCode)
                         throw new HandledException("Произошла ошибка или сервер временно недоступен", true);
 
                     var addUserConnectionContent = await addUserConnectionResponse.Content.ReadAsStringAsync();
@@ -259,6 +257,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                         AccessEndDate = user.AccessEndDate ?? throw new Exception("Доступ не может быть пустым")
                     };
 
+                    user.LastConnection = DateTime.UtcNow;
                     user.UserConnections.Add(userConnection);
                     await repositoryProvider.UserRepository.UpdateAsync(user);
                 }
@@ -278,9 +277,6 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                     Guid = user.Guid.ToString()
                 };
             }
-
-
-
         }
     }
 }

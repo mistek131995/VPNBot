@@ -1,9 +1,9 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Core.Model.User;
 using Google.Apis.Auth;
 using MD5Hash;
 using Microsoft.Extensions.Configuration;
-using Core.Model.User;
 using Service.ControllerService.Common;
 using Service.ControllerService.Common.Extensions;
 
