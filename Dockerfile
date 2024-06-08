@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk
+ENV TZ="Europe/Moscow"
 USER root
 RUN apt-get update && mkdir /home/source && mkdir /home/build
 ADD . /home/source
