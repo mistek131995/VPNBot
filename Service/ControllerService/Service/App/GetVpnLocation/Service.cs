@@ -21,7 +21,8 @@ namespace Service.ControllerService.Service.App.GetVpnLocation
                     Ip = y.Ip,
                     Ping = 0
                 }).ToList()
-            }).ToList();
+            }).OrderBy(x => x.Tag)
+            .ToList();
 
             return result;
         }
