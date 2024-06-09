@@ -126,10 +126,11 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                         AccessEndDate = DateTime.MinValue
                     };
 
-                    user.LastConnection = DateTime.UtcNow;
                     user.UserConnections.Add(userConnection);
-                    await repositoryProvider.UserRepository.UpdateAsync(user);
                 }
+
+                user.LastConnection = DateTime.Now;
+                await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 return new Result()
                 {
@@ -257,10 +258,11 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                         AccessEndDate = user.AccessEndDate ?? throw new Exception("Доступ не может быть пустым")
                     };
 
-                    user.LastConnection = DateTime.UtcNow;
                     user.UserConnections.Add(userConnection);
-                    await repositoryProvider.UserRepository.UpdateAsync(user);
                 }
+
+                user.LastConnection = DateTime.Now;
+                await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 return new Result()
                 {
