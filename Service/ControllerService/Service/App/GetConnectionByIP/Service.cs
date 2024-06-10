@@ -130,6 +130,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                 }
 
                 user.LastConnection = DateTime.Now;
+                user.UserConnections.RemoveAll(x => x.VpnServerId == server.Id && x.ConnectionType == ConnectionType.Paid);
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 return new Result()
@@ -262,6 +263,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                 }
 
                 user.LastConnection = DateTime.Now;
+                user.UserConnections.RemoveAll(x => x.VpnServerId == server.Id && x.ConnectionType == ConnectionType.Free);
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 return new Result()
