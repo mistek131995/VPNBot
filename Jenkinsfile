@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Clear images') {
             steps {
-                sh "docker system prune -a"
+                sh "docker system prune -af"
             }
         }
         stage('Delete source') {
