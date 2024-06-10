@@ -11,7 +11,7 @@ namespace Service.ControllerService.Service.App.GetConnectionScreen
 
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
 
-            result.IsExpired = user.AccessEndDate?.Date < DateTime.Now.Date;
+            result.IsExpired = user.AccessEndDate?.Date <= DateTime.Now.Date;
             result.AccessEndDate = user.AccessEndDate?.ToString("dd.MM.yyyy");
 
             return result;

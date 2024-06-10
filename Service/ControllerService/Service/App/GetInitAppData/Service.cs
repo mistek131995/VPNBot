@@ -26,7 +26,7 @@ namespace Service.ControllerService.Service.App.GetInitAppData
 
             result.IpLocation = MyObj["country_code"]?.ToString() ?? "";
 
-            result.IsExpired = user.AccessEndDate.Value < DateTime.Now;
+            result.IsExpired = user.AccessEndDate?.Date <= DateTime.Now.Date;
 
             logger.Information($"{DateTime.Now}");
             logger.Information($"{user.AccessEndDate.Value}");
