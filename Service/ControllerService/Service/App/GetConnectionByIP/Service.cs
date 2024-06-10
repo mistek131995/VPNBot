@@ -5,11 +5,12 @@ using Infrastructure.HttpClientService.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using Serilog;
 using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.App.GetConnectionByIP
 {
-    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, Result>
+    internal class Service(IRepositoryProvider repositoryProvider, ILogger logger) : IControllerService<Request, Result>
     {
 
         public record StreamSettings(string Network, string Security, RealitySettings RealitySettings);
@@ -92,7 +93,10 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                     var addUserConnectionResult = bool.Parse(JObject.Parse(addUserConnectionContent)["success"].ToString());
 
                     if (!addUserConnectionResult)
-                        throw new HandledException("Ошибка добавления пользователя на сервер", true);
+                    {
+                        logger.Error($"Ошибка добавления пользователя {user.Login} на сервер {server.Ip}");
+                        throw new HandledException("Ошибка добавления пользователя на сервер");
+                    }
 
                     var inboundResponse = await httpClient.GetAsync("/panel/api/inbounds/get/1");
 
@@ -225,7 +229,10 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                     var addUserConnectionResult = bool.Parse(JObject.Parse(addUserConnectionContent)["success"].ToString());
 
                     if (!addUserConnectionResult)
-                        throw new HandledException("Ошибка добавления пользователя на сервер", true);
+                    {
+                        logger.Error($"Ошибка добавления пользователя {user.Login} на сервер {server.Ip}");
+                        throw new HandledException("Ошибка добавления пользователя на сервер");
+                    }
 
                     var inboundResponse = await httpClient.GetAsync("/panel/api/inbounds/get/1");
 
