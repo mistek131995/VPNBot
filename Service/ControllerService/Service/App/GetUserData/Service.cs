@@ -12,19 +12,23 @@ namespace Service.ControllerService.Service.App.GetUserData
 
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
 
-            Configuration Config = new()
+            result.AccessIsExpire = user.AccessEndDate?.Date <= DateTime.Now.Date;
+
+            if (result.AccessIsExpire)
             {
-                ApiKey = "B402E5F8EAE840F9DF2AF3F76358F80E"
-            };
+                Configuration Config = new()
+                {
+                    ApiKey = "B402E5F8EAE840F9DF2AF3F76358F80E"
+                };
 
-            IPGeolocation IPL = new(Config);
+                IPGeolocation IPL = new(Config);
 
-            // Lookup ip address geolocation data
-            var MyTask = await IPL.Lookup(request.Ip);
-            var MyObj = MyTask;
+                // Lookup ip address geolocation data
+                var MyTask = await IPL.Lookup(request.Ip);
+                var MyObj = MyTask;
 
-            result.IpLocation = MyObj["country_code"]?.ToString() ?? "";
-            result.AccessIsExpire = user.AccessEndDate.Value < DateTime.Now;
+                result.IpLocation = MyObj["country_code"]?.ToString() ?? "";
+            }
 
             return result;
         }

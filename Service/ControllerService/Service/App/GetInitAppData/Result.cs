@@ -3,7 +3,6 @@
     public class Result
     {
         public List<Location> Locations { get; set; }
-        public string IpLocation { get; set; }
         public bool IsExpired { get; set; }
         public string AccessEndDate { get; set; }
 

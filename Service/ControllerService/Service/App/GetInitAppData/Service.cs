@@ -1,6 +1,5 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
-using IP2LocationIOComponent;
 using Serilog;
 
 namespace Service.ControllerService.Service.App.GetInitAppData
@@ -13,24 +12,7 @@ namespace Service.ControllerService.Service.App.GetInitAppData
 
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
 
-            result.IsExpired = user.AccessEndDate?.Date <= DateTime.Now.Date;
-
-            if (result.IsExpired)
-            {
-                Configuration Config = new()
-                {
-                    ApiKey = "B402E5F8EAE840F9DF2AF3F76358F80E"
-                };
-
-                IPGeolocation IPL = new(Config);
-
-                // Lookup ip address geolocation data
-                var MyTask = await IPL.Lookup(request.Ip);
-                var MyObj = MyTask;
-
-                result.IpLocation = MyObj["country_code"]?.ToString() ?? "";
-            }
-
+            result.IsExpired = user.AccessEndDate.Value.Date <= DateTime.Now.Date;
             result.AccessEndDate = user.AccessEndDate.Value.ToString("dd.MM.yyyy");
 
             var locations = await repositoryProvider.LocationRepository.GetAllAsync();
