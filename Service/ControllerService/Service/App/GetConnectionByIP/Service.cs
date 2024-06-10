@@ -20,7 +20,7 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
         {
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
 
-            if ((user.AccessEndDate == null || user.AccessEndDate?.Date < DateTime.Now.Date) && request.OS == "android")
+            if ((user.AccessEndDate == null || user.AccessEndDate?.Date <= DateTime.Now.Date) && request.OS == "android")
             {
                 var location = await repositoryProvider.LocationRepository.GetByServerIpAsync(request.Ip) ??
                     throw new HandledException("Локация не найдена не найден");

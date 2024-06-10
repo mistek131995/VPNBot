@@ -1,10 +1,11 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 using IP2LocationIOComponent;
+using Serilog;
 
 namespace Service.ControllerService.Service.App.GetInitAppData
 {
-    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, Result>
+    internal class Service(IRepositoryProvider repositoryProvider, ILogger logger) : IControllerService<Request, Result>
     {
         public async Task<Result> HandlingAsync(Request request)
         {
@@ -26,6 +27,10 @@ namespace Service.ControllerService.Service.App.GetInitAppData
             result.IpLocation = MyObj["country_code"]?.ToString() ?? "";
 
             result.IsExpired = user.AccessEndDate.Value < DateTime.Now;
+
+            logger.Information($"{DateTime.Now}");
+            logger.Information($"{user.AccessEndDate.Value}");
+
             result.AccessEndDate = user.AccessEndDate.Value.ToString("dd.MM.yyyy");
 
             var locations = await repositoryProvider.LocationRepository.GetAllAsync();
