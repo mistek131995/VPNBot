@@ -18,6 +18,9 @@ namespace Service.ControllerService.Service.User.Register
             if (string.IsNullOrEmpty(request.Login) || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
                 throw new HandledException("Заполните обязательные поля");
 
+            if(!request.Email.Contains("@"))
+                throw new HandledException("Неверный формат электронной почты");
+
             var user = await repositoryProvider.UserRepository.GetByLoginAsync(request.Login.Trim().ToLower());
 
             if (user != null)
