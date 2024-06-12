@@ -11,7 +11,9 @@
         public string UserName { get; set; }
         public string Password { get; set; }
 
-        public VpnServer(int id, string ip, string name, string description, int port, string userName, string password)
+        public List<ConnectionStatistic> Statistics { get; set; }
+
+        public VpnServer(int id, string ip, string name, string description, int port, string userName, string password, List<ConnectionStatistic> statistics)
         {
             Id = id;
             Ip = ip;
@@ -20,6 +22,7 @@
             Port = port;
             UserName = userName;
             Password = password;
+            Statistics = statistics;
         }
     }
 }

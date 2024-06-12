@@ -134,8 +134,15 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                 }
 
                 user.LastConnection = DateTime.Now;
-                //user.UserConnections.RemoveAll(x => x.VpnServerId == server.Id && x.ConnectionType == ConnectionType.Paid);
                 await repositoryProvider.UserRepository.UpdateAsync(user);
+
+                var todayStatistic = server.Statistics.FirstOrDefault(x => x.Date.Date == DateTime.Now.Date);
+                if (todayStatistic != null)
+                    todayStatistic.Count += 1;
+                else
+                    server.Statistics.Add(new Core.Model.Location.ConnectionStatistic(0, DateTime.Now.Date, 1));
+
+                await repositoryProvider.LocationRepository.UpdateAsync(location);
 
                 return new Result()
                 {
@@ -270,8 +277,15 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                 }
 
                 user.LastConnection = DateTime.Now;
-                //user.UserConnections.RemoveAll(x => x.VpnServerId == server.Id && x.ConnectionType == ConnectionType.Free);
                 await repositoryProvider.UserRepository.UpdateAsync(user);
+
+                var todayStatistic = server.Statistics.FirstOrDefault(x => x.Date.Date == DateTime.Now.Date);
+                if (todayStatistic != null)
+                    todayStatistic.Count += 1;
+                else
+                    server.Statistics.Add(new Core.Model.Location.ConnectionStatistic(0, DateTime.Now.Date, 1));
+
+                await repositoryProvider.LocationRepository.UpdateAsync(location);
 
                 return new Result()
                 {

@@ -24,7 +24,8 @@ namespace Service.ControllerService.Service.Admin.UpdateServer
                     request.Description, 
                     request.Port, 
                     request.UserName, 
-                    request.Password));
+                    request.Password, 
+                    new List<Core.Model.Location.ConnectionStatistic>()));
 
                 await repositoryProvider.LocationRepository.UpdateAsync(newServerLocation);
 

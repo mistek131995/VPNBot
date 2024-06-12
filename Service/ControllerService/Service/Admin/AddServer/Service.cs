@@ -18,7 +18,7 @@ namespace Service.ControllerService.Service.Admin.AddServer
             if (location.VpnServers.Any(x => x.Ip.Trim() == request.IP.Trim()))
                 throw new HandledException("Сервер с таким IP уже добавлен");
 
-            location.VpnServers.Add(new VpnServer(0, request.IP, request.Name, request.Description, request.Port, request.UserName, request.Password));
+            location.VpnServers.Add(new VpnServer(0, request.IP, request.Name, request.Description, request.Port, request.UserName, request.Password, new List<ConnectionStatistic>()));
             await repositoryProvider.LocationRepository.UpdateAsync(location);
 
             return true;

@@ -33,6 +33,7 @@ namespace Infrastructure.Database.Repository
         {
             var country = await context.Locations
                 .Include(x => x.VpnServers)
+                .ThenInclude(x => x.ConnectionStatistics)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -51,7 +52,8 @@ namespace Infrastructure.Database.Repository
                     v.Description, 
                     v.Port, 
                     v.UserName, 
-                    v.Password)
+                    v.Password, 
+                    v.ConnectionStatistics.Select(s => new Core.Model.Location.ConnectionStatistic(s.Id, s.Date, s.Count)).ToList())
                 ).ToList()
             };
         }
@@ -60,6 +62,7 @@ namespace Infrastructure.Database.Repository
         {
             var locations = await context.Locations
                 .Include(x => x.VpnServers)
+                .ThenInclude(x => x.ConnectionStatistics)
                 .AsNoTracking()
                 .Where(x => ids.Contains(x.Id))
                 .ToListAsync();
@@ -76,7 +79,8 @@ namespace Infrastructure.Database.Repository
                     v.Description, 
                     v.Port, 
                     v.UserName,
-                    v.Password)
+                    v.Password, 
+                    v.ConnectionStatistics.Select(s => new Core.Model.Location.ConnectionStatistic(s.Id, s.Date, s.Count)).ToList())
                 ).ToList()
             }).ToList();
         }
@@ -139,6 +143,12 @@ namespace Infrastructure.Database.Repository
                 Port = x.Port,
                 UserName = x.UserName,
                 Password = x.Password,
+                ConnectionStatistics = x.Statistics.Select(s => new ConnectionStatistic()
+                {
+                    Id = s.Id,
+                    Date = s.Date,
+                    Count = s.Count,
+                }).ToList()
             }).ToList();
 
             context.Locations.Update(dbLocation);
