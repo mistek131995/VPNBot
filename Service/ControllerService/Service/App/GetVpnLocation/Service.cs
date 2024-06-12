@@ -11,18 +11,20 @@ namespace Service.ControllerService.Service.App.GetVpnLocation
 
             var locations = await repositoryProvider.LocationRepository.GetAllAsync();
 
-            result.Locations = locations.Select(x => new Result.Location()
-            {
-                Id = x.Id,
-                Tag = x.Tag,
-                Name = x.Name,
-                Servers = x.VpnServers.Select(y => new Result.Server()
+            result.Locations = locations
+                .Where(x => x.VpnServers.Count > 0)
+                .Select(x => new Result.Location()
                 {
-                    Ip = y.Ip,
-                    Ping = 0
-                }).ToList()
-            })
-            .ToList();
+                    Id = x.Id,
+                    Tag = x.Tag,
+                    Name = x.Name,
+                    Servers = x.VpnServers.Select(y => new Result.Server()
+                    {
+                        Ip = y.Ip,
+                        Ping = 0
+                    }).ToList()
+                })
+                .ToList();
 
             return result;
         }
