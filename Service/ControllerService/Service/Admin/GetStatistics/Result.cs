@@ -3,9 +3,11 @@
     public class Result
     {
         public int RegisterToday { get; set; }
-        public int RegisterTomorrow { get; set; }
+        public int RegisterYesterday { get; set; }
         public int ConnectionCount { get; set; }
 
-        public record ConnectionByLocation(string Name, int Count);
+        public List<ConnectionByLocation> ConnectionByLocations { get; set; }
+
+        public record ConnectionByLocation(string Name, int CountToday, int CountYesterday, int CountTotal);
     }
 }
