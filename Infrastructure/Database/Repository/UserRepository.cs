@@ -381,7 +381,7 @@ namespace Infrastructure.Database.Repository
         public async Task<List<User>> GetByRegisterDateRange(DateTime start, DateTime end)
         {
             var userIds = await context.Users
-                .Where(x => x.RegisterDate.Date >= start.AddDays(-1).Date && x.RegisterDate.Date <= end.AddDays(-1).Date)
+                .Where(x => x.RegisterDate.Date >= start.Date && x.RegisterDate.Date <= end.Date)
                 .Select(x => x.Id)
                 .ToListAsync();
 
