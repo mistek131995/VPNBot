@@ -377,5 +377,15 @@ namespace Infrastructure.Database.Repository
 
             return await GetByIdAsync(user?.Id ?? 0);
         }
+
+        public async Task<List<User>> GetByRegisterDateRange(DateTime start, DateTime end)
+        {
+            var userIds = await context.Users
+                .Where(x => x.RegisterDate.Date >= start.AddDays(-1).Date && x.RegisterDate.Date <= end.AddDays(-1).Date)
+                .Select(x => x.Id)
+                .ToListAsync();
+
+            return await GetByIdsAsync(userIds);
+        }
     }
 }

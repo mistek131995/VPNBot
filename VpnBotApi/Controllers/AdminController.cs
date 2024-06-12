@@ -36,6 +36,8 @@ using GetDirectories = Service.ControllerService.Service.Admin.FileManager.GetDi
 using UploadFile = Service.ControllerService.Service.Admin.FileManager.UploadFile;
 using DeleteFile = Service.ControllerService.Service.Admin.FileManager.DeleteFile;
 
+using GetStatistics = Service.ControllerService.Service.Admin.GetStatistics;
+
 namespace VpnBotApi.Controllers
 {
     [ApiController]
@@ -54,6 +56,14 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> GetLogs()
         {
             var response = await dispatcher.GetService<GetLogs.Result, GetLogs.Request>(new GetLogs.Request());
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> GetStatistics()
+        {
+            var response = await dispatcher.GetService<GetStatistics.Result, GetStatistics.Request>(new GetStatistics.Request());
             return Json(response);
         }
 
