@@ -15,7 +15,7 @@ namespace Service.ControllerService.Service.Admin.GetStatistics
             result.RegisterYesterday = users.Where(x => x.RegisterDate.Date == DateTime.Now.Date.AddDays(-1)).Count();
 
             var locations = await repositoryProvider.LocationRepository.GetAllAsync();
-            result.ConnectionByLocations = locations
+            result.ConnectionByLocations = locations.Where(x => x.VpnServers.Count > 0)
                 .Select(x => new Result.ConnectionByLocation(
                     x.Name,
                     x.VpnServers.SelectMany(s => s.Statistics).Where(s => s.Date.Date == DateTime.Now.Date).Sum(s => s.Count),
