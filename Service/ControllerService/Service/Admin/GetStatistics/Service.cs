@@ -9,10 +9,11 @@ namespace Service.ControllerService.Service.Admin.GetStatistics
         {
             var result = new Result();
             //Пользователи за вчера и сегодня
-            var users = await repositoryProvider.UserRepository.GetByRegisterDateRange(DateTime.Now.AddDays(-1), DateTime.Now);
+            var users = await repositoryProvider.UserRepository.GetAllAsync();
 
             result.RegisterToday = users.Where(x => x.RegisterDate.Date == DateTime.Now.Date).Count();
             result.RegisterYesterday = users.Where(x => x.RegisterDate.Date == DateTime.Now.Date.AddDays(-1)).Count();
+            result.TotalUsers = users.Count();
 
             var locations = await repositoryProvider.LocationRepository.GetAllAsync();
             result.ConnectionByLocations = locations.Where(x => x.VpnServers.Count > 0)
@@ -22,8 +23,6 @@ namespace Service.ControllerService.Service.Admin.GetStatistics
                     x.VpnServers.SelectMany(s => s.Statistics).Where(s => s.Date.Date == DateTime.Now.AddDays(-1).Date).Sum(s => s.Count),
                     x.VpnServers.SelectMany(s => s.Statistics).Sum(s => s.Count)))
                 .ToList();
-
-            result.ConnectionCount = locations.SelectMany(x => x.VpnServers).SelectMany(x => x.Statistics).Sum(x => x.Count);
 
             return result;
         }

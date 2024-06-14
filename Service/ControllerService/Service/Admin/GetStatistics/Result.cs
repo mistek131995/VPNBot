@@ -4,7 +4,7 @@
     {
         public int RegisterToday { get; set; }
         public int RegisterYesterday { get; set; }
-        public int ConnectionCount { get; set; }
+        public int TotalUsers { get; set; }
 
         public List<ConnectionByLocation> ConnectionByLocations { get; set; }
 

@@ -8,8 +8,8 @@ namespace Service.ControllerService.Service.GetSettings
     {
         public async Task<Result> HandlingAsync(Request request)
         {
-            var result = new Result()
-                ;
+            var result = new Result();
+
             var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
 
             if (exchangeRateService.UpdateDate == DateTime.MinValue || (DateTime.Now - exchangeRateService.UpdateDate).TotalHours > 1)

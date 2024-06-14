@@ -11,6 +11,7 @@ using AuthWithGoogle = Service.ControllerService.Service.User.AuthWithGoogle;
 using ChangePassword = Service.ControllerService.Service.User.ChangePassword;
 using CreateResetPasswordLink = Service.ControllerService.Service.User.RestorePassword.CreateResetPasswordLink;
 using SetNewPassword = Service.ControllerService.Service.User.RestorePassword.SetNewPassword;
+using GetSettings = Service.ControllerService.Service.User.GetSettings;
 
 using ReferralIndex = Service.ControllerService.Service.ReferralIndex;
 
@@ -110,6 +111,18 @@ namespace VpnBotApi.Controllers
         public async Task<JsonResult> SetNewPassword([FromBody] SetNewPassword.Request request)
         {
             var response = await dispatcher.GetService<bool, SetNewPassword.Request>(request);
+
+            return Json(response);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> GetSettings()
+        {
+            var response = await dispatcher.GetService<GetSettings.Result, GetSettings.Request>(new GetSettings.Request()
+            {
+                UsertId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
+            });
 
             return Json(response);
         }
