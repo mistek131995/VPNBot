@@ -85,6 +85,8 @@ namespace VpnBotApi.Controllers
         [HttpPost]
         public async Task<JsonResult> AddError([FromBody]AddError.Request request)
         {
+            request.Ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+
             var response = await dispatcher.GetService<bool, AddError.Request>(request);
 
             return Json(response);
