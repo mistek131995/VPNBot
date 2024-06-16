@@ -29,7 +29,7 @@ namespace Infrastructure.Database.Entity
 
         public List<Payment> Payments { get; set; }
         public List<UserConnection> UserConnections { get; set; }
-        internal ChangePasswordRequest ChangePasswordRequest { get; set; }
-        internal ChangeEmailRequest ChangeEmailRequest { get; set; }
+        public ChangePasswordRequest ChangePasswordRequest { get; set; }
+        public ChangeEmailRequest ChangeEmailRequest { get; set; }
     }
 }

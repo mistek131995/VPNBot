@@ -13,6 +13,7 @@ using SetNewPassword = Service.ControllerService.Service.User.RestorePassword.Se
 using GetSettings = Service.ControllerService.Service.User.GetSettings;
 
 using AddChangePasswordRequest = Service.ControllerService.Service.User.ChangePassword.AddChangePasswordRequest;
+using ConfirmChangePassword = Service.ControllerService.Service.User.ChangePassword.ConfirmChangePassword;
 
 using ReferralIndex = Service.ControllerService.Service.ReferralIndex;
 
@@ -83,6 +84,15 @@ namespace VpnBotApi.Controllers
             command.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
 
             var response = await dispatcher.GetService<bool, AddChangePasswordRequest.Request>(command);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<JsonResult> ConfirmChangePassword([FromBody] ConfirmChangePassword.Request command)
+        {
+            var response = await dispatcher.GetService<bool, ConfirmChangePassword.Request>(command);
 
             return Json(response);
         }

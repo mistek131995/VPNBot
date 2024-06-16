@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Database.Entity
 {
-    internal class ChangeEmailRequest
+    public class ChangeEmailRequest
     {
         [Key]
         public int Id { get; set; }

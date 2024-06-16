@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Database.Entity
 {
-    internal class ChangePasswordRequest
+    public class ChangePasswordRequest
     {
         [Key]
         public int Id { get; set; }

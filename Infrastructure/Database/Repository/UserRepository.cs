@@ -399,7 +399,7 @@ namespace Infrastructure.Database.Repository
             return await GetByIdAsync(user?.Id ?? 0);
         }
 
-        public async Task<List<User>> GetByRegisterDateRange(DateTime start, DateTime end)
+        public async Task<List<User>> GetByRegisterDateRangeAsync(DateTime start, DateTime end)
         {
             var userIds = await context.Users
                 .Where(x => x.RegisterDate.Date >= start.Date && x.RegisterDate.Date <= end.Date)
@@ -407,6 +407,16 @@ namespace Infrastructure.Database.Repository
                 .ToListAsync();
 
             return await GetByIdsAsync(userIds);
+        }
+
+        public async Task<User> GetByChangePasswordRequestGuidAsync(Guid guid)
+        {
+            var request = await context.ChangePasswordRequests.FirstOrDefaultAsync(x => x.Guid == guid);
+
+            if (request == null)
+                return null;
+
+            return await GetByIdAsync(request.UserId);
         }
     }
 }
