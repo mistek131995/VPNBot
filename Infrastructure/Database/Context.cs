@@ -23,5 +23,7 @@ namespace Infrastructure.Database
         internal DbSet<UserConnection> UserConnections { get; set; }
         internal DbSet<PromoCode> PromoCodes { get; set; }
         internal DbSet<ConnectionStatistic> ConnectionStatistics { get; set; }
+        internal DbSet<ChangeEmailRequest> ChangeEmailRequests { get; set; }
+        internal DbSet<ChangePasswordRequest> ChangePasswordRequests { get; set; }
     }
 }

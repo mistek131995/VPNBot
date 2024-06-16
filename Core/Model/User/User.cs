@@ -1,5 +1,4 @@
 ﻿using Core.Common;
-using System.Collections.ObjectModel;
 
 namespace Core.Model.User
 {
@@ -17,14 +16,16 @@ namespace Core.Model.User
         public DateTime? AccessEndDate { get; set; }
         public UserSost Sost { get; set; }
         public Guid Guid { get; set; }
-        public int ParentUserId {  get; set; }
+        public int ParentUserId { get; set; }
         public decimal Balance { get; set; }
-        public DateTime? LastConnection {  get; set; }
+        public DateTime? LastConnection { get; set; }
 
         public SubscribeType SubscribeType { get; set; }
         public string SubscribeToken { get; set; }
 
         public List<Payment> Payments { get; set; }
         public List<UserConnection> UserConnections { get; set; }
+        public ChangePasswordRequest ChangePasswordRequest { get; set; }
+        public ChangeEmailRequest ChangeEmailRequest { get; set; }
     }
 }

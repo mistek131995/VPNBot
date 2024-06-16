@@ -1,7 +1,6 @@
 ﻿using Core.Model.User;
 using Core.Repository;
 using Microsoft.EntityFrameworkCore;
-using Model = Core.Model.User;
 
 namespace Infrastructure.Database.Repository
 {
@@ -12,6 +11,8 @@ namespace Infrastructure.Database.Repository
             var user = await context.Users
                 .Include(x => x.Payments)
                 .Include(x => x.UserConnections)
+                .Include(x => x.ChangeEmailRequest)
+                .Include(x => x.ChangePasswordRequest)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -34,6 +35,8 @@ namespace Infrastructure.Database.Repository
                 ParentUserId = user.ParentUserId,
                 Balance = user.Balance,
                 LastConnection = user.LastConnection,
+                ChangeEmailRequest = user.ChangeEmailRequest == null ? null : new ChangeEmailRequest(user.ChangeEmailRequest.Guid, user.ChangeEmailRequest.Email),
+                ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new ChangePasswordRequest(user.ChangePasswordRequest.Guid, user.ChangePasswordRequest.Password),
                 UserConnections = user.UserConnections.Select(c => new UserConnection()
                 {
                     Id = c.Id,
@@ -72,8 +75,10 @@ namespace Infrastructure.Database.Repository
             return await context.Users
                 .Include(x => x.Payments)
                 .Include(x => x.UserConnections)
+                .Include(x => x.ChangeEmailRequest)
+                .Include(x => x.ChangePasswordRequest)
                 .AsNoTracking()
-                .Select(x => new Model.User()
+                .Select(x => new User()
                 {
                     Id = x.Id,
                     TelegramUserId = x.TelegramUserId,
@@ -89,6 +94,8 @@ namespace Infrastructure.Database.Repository
                     ParentUserId = x.ParentUserId,
                     Balance = x.Balance,
                     LastConnection = x.LastConnection,
+                    ChangeEmailRequest = x.ChangeEmailRequest == null ? null : new ChangeEmailRequest(x.ChangeEmailRequest.Guid, x.ChangeEmailRequest.Email),
+                    ChangePasswordRequest = x.ChangePasswordRequest == null ? null : new ChangePasswordRequest(x.ChangePasswordRequest.Guid, x.ChangePasswordRequest.Password),
                     UserConnections = x.UserConnections.Select(c => new UserConnection()
                     {
                         Id = c.Id,
@@ -175,6 +182,13 @@ namespace Infrastructure.Database.Repository
             dbUser.AccessEndDate = user.AccessEndDate;
             dbUser.LastConnection = user.LastConnection;
 
+            dbUser.ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new Entity.ChangePasswordRequest()
+            {
+                UserId = dbUser.Id,
+                Password = user.ChangePasswordRequest.Password,
+                Guid = user.ChangePasswordRequest.Guid
+            };
+
             dbUser.Payments = user.Payments
                 .Select(x => new Entity.Payment()
                 {
@@ -238,6 +252,13 @@ namespace Infrastructure.Database.Repository
                 dbUser.AccessEndDate = user.AccessEndDate;
                 dbUser.LastConnection = user.LastConnection;
 
+                dbUser.ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new Entity.ChangePasswordRequest()
+                {
+                    UserId = dbUser.Id,
+                    Password = user.ChangePasswordRequest.Password,
+                    Guid = user.ChangePasswordRequest.Guid
+                };
+
                 dbUser.Payments = user.Payments
                     .Select(p => new Entity.Payment()
                     {
@@ -269,7 +290,7 @@ namespace Infrastructure.Database.Repository
                         ShortId = c.ShortId,
                         AccessEndDate = c.AccessEndDate,
                         ConnectionType = c.ConnectionType,
-                        
+
                     })
                     .ToList();
             }

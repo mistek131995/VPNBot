@@ -8,10 +8,11 @@ using Register = Service.ControllerService.Service.User.Register;
 using Activation = Service.ControllerService.Service.ActivateUser;
 using AuthByLogin = Service.ControllerService.Service.User.AuthByLogin;
 using AuthWithGoogle = Service.ControllerService.Service.User.AuthWithGoogle;
-using ChangePassword = Service.ControllerService.Service.User.ChangePassword;
 using CreateResetPasswordLink = Service.ControllerService.Service.User.RestorePassword.CreateResetPasswordLink;
 using SetNewPassword = Service.ControllerService.Service.User.RestorePassword.SetNewPassword;
 using GetSettings = Service.ControllerService.Service.User.GetSettings;
+
+using AddChangePasswordRequest = Service.ControllerService.Service.User.ChangePassword.AddChangePasswordRequest;
 
 using ReferralIndex = Service.ControllerService.Service.ReferralIndex;
 
@@ -77,11 +78,11 @@ namespace VpnBotApi.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> ChangePassword([FromBody] ChangePassword.Request command)
+        public async Task<JsonResult> AddChangePasswordRequest([FromBody] AddChangePasswordRequest.Request command)
         {
             command.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
 
-            var response = await dispatcher.GetService<bool, ChangePassword.Request>(command);
+            var response = await dispatcher.GetService<bool, AddChangePasswordRequest.Request>(command);
 
             return Json(response);
         }
