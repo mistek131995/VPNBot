@@ -23,9 +23,11 @@ namespace Service.ControllerService.Service.User.ChangeEmail.AddChangeEmailReque
 
 
             var mailService = new MailService(repositoryProvider);
-            await mailService.SendEmailAsync(user.Email, "Смена электронной почты", @$"Для вашего аккаунта, был создан запрос на смену эектронной почты. \n
-                Для подтверждения смены Электронной почты перейдите по  <a href='https://{configuration["Domain"]}?confirm-change-email-request-guid={user.ChangeEmailRequest.Guid}'>ссылке</a>. \n
+            await mailService.SendEmailAsync(user.Email, "Смена электронной почты", @$"Для вашего аккаунта, был создан запрос на смену эектронной почты.
                 Если вы не создавали запрос на смену электронной почты, перейдите в аккаунт и обновите пароль.");
+
+            await mailService.SendEmailAsync(request.Email, "Смена электронной почты", @$"Для вашего аккаунта, был создан запрос на смену эектронной почты.
+                Для подтверждения смены Электронной почты перейдите по <a href='https://{configuration["Domain"]}?confirm-change-email-request-guid={user.ChangeEmailRequest.Guid}'>ссылке</a>.");
 
             return true;
 
