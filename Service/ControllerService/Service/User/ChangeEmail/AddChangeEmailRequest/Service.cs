@@ -11,6 +11,9 @@ namespace Service.ControllerService.Service.User.ChangeEmail.AddChangeEmailReque
     {
         public async Task<bool> HandlingAsync(Request request)
         {
+            if (!request.Email.Contains("@"))
+                throw new HandledException("Неверный формат электронной почты");
+
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) 
                 ?? throw new HandledException("Пользователь не найден");
 
@@ -21,7 +24,7 @@ namespace Service.ControllerService.Service.User.ChangeEmail.AddChangeEmailReque
 
             var mailService = new MailService(repositoryProvider);
             await mailService.SendEmailAsync(user.Email, "Смена пароля", @$"Для вашего аккаунта, был создан запрос на смену эектронной почты. \n
-                Для подтверждения смены Электронной почты перейдите по  <a href='https://{configuration["Domain"]}?confirm-change-email-request-guid={user.ChangePasswordRequest.Guid}'>ссылке</a>. \n
+                Для подтверждения смены Электронной почты перейдите по  <a href='https://{configuration["Domain"]}?confirm-change-email-request-guid={user.ChangeEmailRequest.Guid}'>ссылке</a>. \n
                 Если вы не создавали запрос на смену электронной почты, перейдите в аккаунт и обновите пароль.");
 
             return true;

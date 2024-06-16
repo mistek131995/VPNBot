@@ -418,5 +418,15 @@ namespace Infrastructure.Database.Repository
 
             return await GetByIdAsync(request.UserId);
         }
+
+        public async Task<User> GetByChangeEmailRequestGuidAsync(Guid guid)
+        {
+            var request = await context.ChangeEmailRequests.FirstOrDefaultAsync(x => x.Guid == guid);
+
+            if (request == null)
+                return null;
+
+            return await GetByIdAsync(request.UserId);
+        }
     }
 }

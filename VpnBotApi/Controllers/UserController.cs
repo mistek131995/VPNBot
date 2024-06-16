@@ -16,6 +16,7 @@ using AddChangePasswordRequest = Service.ControllerService.Service.User.ChangePa
 using ConfirmChangePassword = Service.ControllerService.Service.User.ChangePassword.ConfirmChangePassword;
 
 using AddChangeEmailRequest = Service.ControllerService.Service.User.ChangeEmail.AddChangeEmailRequest;
+using ConfirmChangeEmail = Service.ControllerService.Service.User.ChangeEmail.ConfirmChangeEmail;
 
 using ReferralIndex = Service.ControllerService.Service.ReferralIndex;
 
@@ -110,12 +111,9 @@ namespace VpnBotApi.Controllers
         }
 
         [HttpPost]
-        [Authorize]
-        public async Task<JsonResult> AddChangeEmailRequest([FromBody] AddChangePasswordRequest.Request command)
+        public async Task<JsonResult> ConfirmChangeEmail([FromBody] ConfirmChangeEmail.Request command)
         {
-            command.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
-
-            var response = await dispatcher.GetService<bool, AddChangePasswordRequest.Request>(command);
+            var response = await dispatcher.GetService<bool, ConfirmChangeEmail.Request>(command);
 
             return Json(response);
         }
