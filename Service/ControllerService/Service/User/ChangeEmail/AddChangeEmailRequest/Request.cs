@@ -2,9 +2,9 @@
 
 namespace Service.ControllerService.Service.User.ChangeEmail.AddChangeEmailRequest
 {
-    internal class Request : IRequest<bool>
+    public class Request : IRequest<bool>
     {
-        public int UsertId { get; set; }
+        public int UserId { get; set; }
         public string Email { get; set; }
     }
 }

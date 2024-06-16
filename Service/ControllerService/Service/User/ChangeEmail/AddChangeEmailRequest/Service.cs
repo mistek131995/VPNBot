@@ -11,7 +11,7 @@ namespace Service.ControllerService.Service.User.ChangeEmail.AddChangeEmailReque
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UsertId) 
+            var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) 
                 ?? throw new HandledException("Пользователь не найден");
 
             user.ChangeEmailRequest = new ChangeEmailRequest(Guid.NewGuid(), request.Email);
