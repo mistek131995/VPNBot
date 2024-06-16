@@ -19,7 +19,7 @@ namespace Service.ControllerService.Service.User.ChangePassword.AddChangePasswor
 
             var mailService = new MailService(repositoryProvider);
             await mailService.SendEmailAsync(user.Email, "Смена пароля", @$"Для вашего аккаунта, был создан запрос на смену пароля.</br>
-                Для подтверждения смены пароля перейдите по  <a href='https://{configuration["Domain"]}/confirm-change-password-request?guid={user.ChangePasswordRequest.Guid}'>ссылке</a>.</br>
+                Для подтверждения смены пароля перейдите по  <a href='https://{configuration["Domain"]}?confirm-change-password-request-guid={user.ChangePasswordRequest.Guid}'>ссылке</a>.</br>
                 Если вы не создавали запрос на смену пароля, перейдите в аккаунт и обновите пароль.");
 
             return true;

@@ -26,4 +26,8 @@
     <PackageReference Include="IP2Location.io" Version="1.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ControllerService\Service\User\ChangeEmail\ConfirmChangeEmail\" />
+  </ItemGroup>
+
 </Project>
