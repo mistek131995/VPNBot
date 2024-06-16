@@ -20,7 +20,7 @@ namespace Infrastructure.MailService
 
             using var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("Администрация сайта", settings.SMTPLogin));
-            emailMessage.To.Add(new MailboxAddress(user.Login, toEmail));
+            emailMessage.To.Add(new MailboxAddress(user?.Login ?? "Пользователь", toEmail));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
