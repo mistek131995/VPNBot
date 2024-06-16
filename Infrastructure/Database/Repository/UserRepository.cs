@@ -189,6 +189,13 @@ namespace Infrastructure.Database.Repository
                 Guid = user.ChangePasswordRequest.Guid
             };
 
+            dbUser.ChangeEmailRequest = user.ChangeEmailRequest == null ? null : new Entity.ChangeEmailRequest()
+            {
+                UserId = dbUser.Id,
+                Email = user.ChangeEmailRequest.Email,
+                Guid = user.ChangeEmailRequest.Guid
+            };
+
             dbUser.Payments = user.Payments
                 .Select(x => new Entity.Payment()
                 {
@@ -257,6 +264,13 @@ namespace Infrastructure.Database.Repository
                     UserId = dbUser.Id,
                     Password = user.ChangePasswordRequest.Password,
                     Guid = user.ChangePasswordRequest.Guid
+                };
+
+                dbUser.ChangeEmailRequest = user.ChangeEmailRequest == null ? null : new Entity.ChangeEmailRequest()
+                {
+                    UserId = dbUser.Id,
+                    Email = user.ChangeEmailRequest.Email,
+                    Guid = user.ChangeEmailRequest.Guid
                 };
 
                 dbUser.Payments = user.Payments
