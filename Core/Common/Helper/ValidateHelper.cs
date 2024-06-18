@@ -17,8 +17,6 @@ namespace Core.Common.Helper
         public static void PasswordValidator(string password)
         {
             if(string.IsNullOrEmpty(password)) throw new HandledException("Пароль не может быть пустым");
-            if(password.Length < 6) throw new HandledException("Длина пароля не может быть меньше 6 символов");
-            if(password.Length > 12) throw new HandledException("Длина пароля не может быть больше 12 символов");
         }
     }
 }
