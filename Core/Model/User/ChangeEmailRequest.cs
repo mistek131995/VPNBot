@@ -1,5 +1,5 @@
-﻿using Service.ControllerService.Common;
-using System.Text.RegularExpressions;
+﻿using Core.Common.Helper;
+using Service.ControllerService.Common;
 
 namespace Core.Model.User
 {
@@ -21,10 +21,7 @@ namespace Core.Model.User
 
         public ChangeEmailRequest(string email)
         {
-            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            Match match = regex.Match(email);
-
-            if (!match.Success)
+            if (!ValidateHelper.EmailVlidator(email))
                 throw new HandledException("Неверный формат электронной почты");
 
             Guid = Guid.NewGuid();
@@ -33,10 +30,7 @@ namespace Core.Model.User
 
         public void ChangeEmail(string email)
         {
-            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            Match match = regex.Match(email);
-
-            if (!match.Success)
+            if (!ValidateHelper.EmailVlidator(email))
                 throw new HandledException("Неверный формат электронной почты");
 
             Guid = Guid.NewGuid();
