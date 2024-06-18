@@ -11,9 +11,6 @@ namespace Service.ControllerService.Service.User.ChangeEmail.AddChangeEmailReque
     {
         public async Task<bool> HandlingAsync(Request request)
         {
-            if (!request.Email.Contains("@"))
-                throw new HandledException("Неверный формат электронной почты");
-
             var user = await repositoryProvider.UserRepository.GetByEmailAsync(request.Email);
 
             if(user != null) 
@@ -22,7 +19,11 @@ namespace Service.ControllerService.Service.User.ChangeEmail.AddChangeEmailReque
             user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) 
                 ?? throw new HandledException("Пользователь не найден");
 
-            user.ChangeEmailRequest = new ChangeEmailRequest(Guid.NewGuid(), request.Email);
+            if(user.ChangeEmailRequest != null)
+                user.ChangeEmailRequest.ChangeEmail(request.Email);
+            else
+                user.ChangeEmailRequest = new ChangeEmailRequest(request.Email);
+
 
             await repositoryProvider.UserRepository.UpdateAsync(user);
 

@@ -1,4 +1,6 @@
 ﻿using Core.Common;
+using Service.ControllerService.Common;
+using System.Text.RegularExpressions;
 
 namespace Core.Model.User
 {
@@ -22,6 +24,17 @@ namespace Core.Model.User
 
         public SubscribeType SubscribeType { get; set; }
         public string SubscribeToken { get; set; }
+
+        public void ChangeEmail(string email)
+        {
+            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            Match match = regex.Match(email);
+
+            if (!match.Success)
+                throw new HandledException("Неверный формат электронной почты");
+
+            Email = email;
+        }
 
         public List<Payment> Payments { get; set; }
         public List<UserConnection> UserConnections { get; set; }
