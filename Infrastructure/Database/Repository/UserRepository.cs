@@ -191,6 +191,7 @@ namespace Infrastructure.Database.Repository
 
             dbUser.ChangeEmailRequest = user.ChangeEmailRequest == null ? null : new Entity.ChangeEmailRequest()
             {
+                Id = user.ChangeEmailRequest.Id,
                 UserId = dbUser.Id,
                 Email = user.ChangeEmailRequest.Email,
                 Guid = user.ChangeEmailRequest.Guid
@@ -268,6 +269,7 @@ namespace Infrastructure.Database.Repository
 
                 dbUser.ChangeEmailRequest = user.ChangeEmailRequest == null ? null : new Entity.ChangeEmailRequest()
                 {
+                    Id = user.ChangeEmailRequest.Id,
                     UserId = dbUser.Id,
                     Email = user.ChangeEmailRequest.Email,
                     Guid = user.ChangeEmailRequest.Guid

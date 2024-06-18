@@ -5,7 +5,7 @@ namespace Core.Model.User
 {
     public class ChangeEmailRequest
     {
-        private int Id { get; set; }
+        public int Id { get; private set; }
         public Guid Guid { get; private set; }
         public string Email { get; private set; }
 
