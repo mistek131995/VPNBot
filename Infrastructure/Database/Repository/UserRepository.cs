@@ -36,7 +36,7 @@ namespace Infrastructure.Database.Repository
                 Balance = user.Balance,
                 LastConnection = user.LastConnection,
                 ChangeEmailRequest = user.ChangeEmailRequest == null ? null : new ChangeEmailRequest(user.ChangeEmailRequest.Id, user.ChangeEmailRequest.Guid, user.ChangeEmailRequest.Email),
-                ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new ChangePasswordRequest(user.ChangePasswordRequest.Guid, user.ChangePasswordRequest.Password),
+                ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new ChangePasswordRequest(user.ChangePasswordRequest.Id, user.ChangePasswordRequest.Guid, user.ChangePasswordRequest.Password),
                 UserConnections = user.UserConnections.Select(c => new UserConnection()
                 {
                     Id = c.Id,
@@ -95,7 +95,7 @@ namespace Infrastructure.Database.Repository
                     Balance = x.Balance,
                     LastConnection = x.LastConnection,
                     ChangeEmailRequest = x.ChangeEmailRequest == null ? null : new ChangeEmailRequest(x.ChangeEmailRequest.Id, x.ChangeEmailRequest.Guid, x.ChangeEmailRequest.Email),
-                    ChangePasswordRequest = x.ChangePasswordRequest == null ? null : new ChangePasswordRequest(x.ChangePasswordRequest.Guid, x.ChangePasswordRequest.Password),
+                    ChangePasswordRequest = x.ChangePasswordRequest == null ? null : new ChangePasswordRequest(x.ChangePasswordRequest.Id, x.ChangePasswordRequest.Guid, x.ChangePasswordRequest.Password),
                     UserConnections = x.UserConnections.Select(c => new UserConnection()
                     {
                         Id = c.Id,
@@ -184,6 +184,7 @@ namespace Infrastructure.Database.Repository
 
             dbUser.ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new Entity.ChangePasswordRequest()
             {
+                Id = user.ChangePasswordRequest.Id,
                 UserId = dbUser.Id,
                 Password = user.ChangePasswordRequest.Password,
                 Guid = user.ChangePasswordRequest.Guid
@@ -262,6 +263,7 @@ namespace Infrastructure.Database.Repository
 
                 dbUser.ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new Entity.ChangePasswordRequest()
                 {
+                    Id = user.ChangePasswordRequest.Id,
                     UserId = dbUser.Id,
                     Password = user.ChangePasswordRequest.Password,
                     Guid = user.ChangePasswordRequest.Guid

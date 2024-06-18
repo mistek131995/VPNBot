@@ -1,5 +1,4 @@
 ﻿using Core.Common.Helper;
-using Service.ControllerService.Common;
 
 namespace Core.Model.User
 {
@@ -21,8 +20,7 @@ namespace Core.Model.User
 
         public ChangeEmailRequest(string email)
         {
-            if (!ValidateHelper.EmailVlidator(email))
-                throw new HandledException("Неверный формат электронной почты");
+            ValidateHelper.EmailVlidator(email);
 
             Guid = Guid.NewGuid();
             Email = email;
@@ -30,8 +28,7 @@ namespace Core.Model.User
 
         public void ChangeEmail(string email)
         {
-            if (!ValidateHelper.EmailVlidator(email))
-                throw new HandledException("Неверный формат электронной почты");
+            ValidateHelper.EmailVlidator(email);
 
             Guid = Guid.NewGuid();
             Email = email;

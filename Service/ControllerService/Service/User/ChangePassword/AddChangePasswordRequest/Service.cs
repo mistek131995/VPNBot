@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Core.Common.Helper;
 using Core.Model.User;
 using Infrastructure.MailService;
 using Microsoft.Extensions.Configuration;
@@ -11,10 +12,16 @@ namespace Service.ControllerService.Service.User.ChangePassword.AddChangePasswor
     {
         public async Task<bool> HandlingAsync(Request request)
         {
+            ValidateHelper.PasswordValidator(request.Password);
+
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId)
                 ?? throw new HandledException("Пользователь не найден");
 
-            user.ChangePasswordRequest = new ChangePasswordRequest(Guid.NewGuid(), request.Password);
+            if(user.ChangePasswordRequest == null)
+                user.ChangePasswordRequest = new ChangePasswordRequest(Guid.NewGuid(), request.Password);
+            else
+                user.ChangePasswordRequest.ChangePassword(request.Password);
+
             await repositoryProvider.UserRepository.UpdateAsync(user);
 
             var mailService = new MailService(repositoryProvider);
