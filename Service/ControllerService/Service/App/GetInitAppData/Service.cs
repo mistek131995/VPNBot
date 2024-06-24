@@ -12,8 +12,8 @@ namespace Service.ControllerService.Service.App.GetInitAppData
 
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId);
 
-            result.IsExpired = user.AccessEndDate.Value.Date <= DateTime.Now.Date;
-            result.AccessEndDate = user.AccessEndDate.Value.ToString("dd.MM.yyyy");
+            result.IsExpired = user.AccessEndDate == null || user.AccessEndDate.Value.Date <= DateTime.Now.Date;
+            result.AccessEndDate = user.AccessEndDate?.ToString("dd.MM.yyyy") ?? "";
 
             var locations = await repositoryProvider.LocationRepository.GetAllAsync();
 
