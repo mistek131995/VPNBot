@@ -12,7 +12,7 @@ pipeline {
 				}
 			
                 sh 'mkdir /home/source'
-				sh 'git clone https://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@github.com/mistek131995/VPNBot.git /home/source'
+				sh 'git clone https://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@github.com/mistek131995/VPNBot.git /home/source'
             }
         }
         stage('Create image') {
