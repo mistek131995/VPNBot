@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Database.Entity
 {
-    internal class Activation
+    public class Activation
     {
         [Key]
         public int Id { get; set; }

@@ -19,8 +19,8 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.AddSubscribe
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId)
                 ?? throw new HandledException("Пользователь не найден", true);
 
-            user.SubscribeToken = request.SubscribeToken;
-            user.SubscribeType = Core.Model.User.SubscribeType.GooglePlay;
+            //user.SubscribeToken = request.SubscribeToken;
+            //user.SubscribeType = Core.Model.User.SubscribeType.GooglePlay;
 
             await repositoryProvider.UserRepository.UpdateAsync(user);
 

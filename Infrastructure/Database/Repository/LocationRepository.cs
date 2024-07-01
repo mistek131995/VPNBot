@@ -1,10 +1,11 @@
 ﻿using Core.Repository;
+using Infrastructure.Common;
 using Infrastructure.Database.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database.Repository
 {
-    internal class LocationRepository(Context context) : ILocationRepository
+    internal class LocationRepository(ContextFactory context) : ILocationRepository
     {
         public async Task<int> AddAsync(Core.Model.Location.Location location)
         {
@@ -13,7 +14,15 @@ namespace Infrastructure.Database.Repository
                 Id = location.Id,
                 Name = location.Name.Trim(),
                 Tag = location.Tag.Trim(),
-                VpnServers = new List<VpnServer>()
+                VpnServers = location.VpnServers.Select(x => new VpnServer()
+                {
+                    Ip = x.Ip,
+                    Port = x.Port,
+                    Name = x.Name,
+                    Description = x.Description,
+                    UserName = x.UserName,
+                    Password = x.Password,
+                }).ToList()
             };
 
             await context.Locations.AddAsync(newLocation);
@@ -37,59 +46,38 @@ namespace Infrastructure.Database.Repository
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if(country == null) 
+            if (country == null)
                 return null;
 
-            return new Core.Model.Location.Location()
-            {
-                Id = country.Id,
-                Name = country.Name,
-                Tag = country.Tag,
-                VpnServers = country.VpnServers.Select(v => new Core.Model.Location.VpnServer(
-                    v.Id,
-                    v.Ip, 
-                    v.Name, 
-                    v.Description, 
-                    v.Port, 
-                    v.UserName, 
-                    v.Password, 
-                    v.ConnectionStatistics.Select(s => new Core.Model.Location.ConnectionStatistic(s.Id, s.Date, s.Count)).ToList())
-                ).ToList()
-            };
+            return new Core.Model.Location.Location(country.Id, country.Tag, country.Name, country.VpnServers
+                .Select(s => new Core.Model.Location.VpnServer(s.Id, s.Ip, s.Name, s.Description, s.Port, s.UserName, s.Password, s.ConnectionStatistics
+                        .Select(cs => new Core.Model.Location.ConnectionStatistic(cs.Id, cs.Date, cs.Count))
+                        .ToList()))
+                .ToList());
         }
 
         public async Task<List<Core.Model.Location.Location>> GetByIdsAsync(List<int> ids)
         {
-            var locations = await context.Locations
+            return await context.Locations
                 .Include(x => x.VpnServers)
                 .ThenInclude(x => x.ConnectionStatistics)
                 .AsNoTracking()
                 .Where(x => ids.Contains(x.Id))
+                .Select(x => new Core.Model.Location.Location(x.Id, x.Tag, x.Name,
+                    x.VpnServers
+                    .Select(s => new Core.Model.Location.VpnServer(s.Id, s.Ip, s.Name, s.Description, s.Port, s.UserName, s.Password,
+                        s.ConnectionStatistics
+                        .Select(cs => new Core.Model.Location.ConnectionStatistic(cs.Id, cs.Date, cs.Count))
+                        .ToList()))
+                    .ToList()))
                 .ToListAsync();
-
-            return locations.Select(x => new Core.Model.Location.Location()
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Tag = x.Tag,
-                VpnServers = x.VpnServers.Select(v => new Core.Model.Location.VpnServer(
-                    v.Id,
-                    v.Ip, 
-                    v.Name, 
-                    v.Description, 
-                    v.Port, 
-                    v.UserName,
-                    v.Password, 
-                    v.ConnectionStatistics.Select(s => new Core.Model.Location.ConnectionStatistic(s.Id, s.Date, s.Count)).ToList())
-                ).ToList()
-            }).ToList();
         }
 
         public async Task<Core.Model.Location.Location> GetByNameAsync(string name)
         {
             var location = await context.Locations.FirstOrDefaultAsync(x => x.Name.ToLower().Trim() == name.ToLower().Trim());
 
-            if(location == null)
+            if (location == null)
                 return null;
 
             return await GetByIdAsync(location.Id);
@@ -99,7 +87,7 @@ namespace Infrastructure.Database.Repository
         {
             var server = await context.VpnServers.FirstOrDefaultAsync(x => x.Id == serverId);
 
-            if(server == null) 
+            if (server == null)
                 return null;
 
             return await GetByIdAsync(server.CountryId);
@@ -109,7 +97,7 @@ namespace Infrastructure.Database.Repository
         {
             var server = await context.VpnServers.FirstOrDefaultAsync(x => x.Ip == serverIp);
 
-            if(server == null) 
+            if (server == null)
                 return null;
 
             return await GetByIdAsync(server.CountryId);

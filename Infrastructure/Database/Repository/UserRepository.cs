@@ -1,10 +1,12 @@
 ﻿using Core.Model.User;
 using Core.Repository;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Infrastructure.Database.Repository
 {
-    public class UserRepository(Context context) : IUserRepository
+    public class UserRepository(ContextFactory context) : IUserRepository
     {
         public async Task<User> GetByIdAsync(int id)
         {
@@ -19,116 +21,29 @@ namespace Infrastructure.Database.Repository
             if (user == null)
                 return null;
 
-            return new User()
-            {
-                Id = user.Id,
-                TelegramUserId = user.TelegramUserId,
-                TelegramChatId = user.TelegramChatId,
-                Login = user.Login,
-                Email = user.Email,
-                Password = user.Password,
-                RegisterDate = user.RegisterDate,
-                AccessEndDate = user.AccessEndDate,
-                Role = user.Role,
-                Sost = user.Sost,
-                Guid = user.Guid,
-                ParentUserId = user.ParentUserId,
-                Balance = user.Balance,
-                LastConnection = user.LastConnection,
-                ChangeEmailRequest = user.ChangeEmailRequest == null ? null : new ChangeEmailRequest(user.ChangeEmailRequest.Id, user.ChangeEmailRequest.Guid, user.ChangeEmailRequest.Email),
-                ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new ChangePasswordRequest(user.ChangePasswordRequest.Id, user.ChangePasswordRequest.Guid, user.ChangePasswordRequest.Password),
-                UserConnections = user.UserConnections.Select(c => new UserConnection()
-                {
-                    Id = c.Id,
-                    UserId = c.UserId,
-                    VpnServerId = c.VpnServerId,
-                    Port = c.Port,
-                    Network = c.Network,
-                    Protocol = c.Protocol,
-                    Security = c.Security,
-                    PublicKey = c.PublicKey,
-                    Fingerprint = c.Fingerprint,
-                    ServerName = c.ServerName,
-                    ShortId = c.ShortId,
-                    AccessEndDate = c.AccessEndDate,
-                    ConnectionType = c.ConnectionType,
-                }).ToList(),
-                Payments = user.Payments
-                .OrderByDescending(x => x.Date)
-                .Select(p => new Payment()
-                {
-                    Id = p.Id,
-                    UserId = p.UserId,
-                    AccessPositionId = p.AccessPositionId,
-                    Amount = p.Amount,
-                    Date = p.Date,
-                    State = p.State,
-                    PromoCodeId = p.PromoCodeId,
-                    Guid = p.Guid,
-                    PaymentMethod = p.PaymentMethod
-                }).ToList()
-            };
+            return new User(user.Id, user.TelegramUserId, user.TelegramChatId, user.Login, user.Email, user.Password, user.Role, user.RegisterDate,
+                user.AccessEndDate, user.Sost, user.Guid, user.ParentUserId, user.Balance, user.LastConnection, user.SubscribeType, user.SubscribeToken,
+                user.Payments.Select(x => new Payment(x.Id, x.AccessPositionId, x.Amount, x.Date, x.State, x.PromoCodeId, x.Guid, x.PaymentMethod)).ToList(),
+                user.UserConnections.Select(x => new UserConnection(x.Id, x.VpnServerId, x.Port, x.Network, x.Protocol, x.Security, x.PublicKey, x.Fingerprint, x.ServerName, x.ShortId, x.AccessEndDate, x.ConnectionType)).ToList(),
+                user.ChangePasswordRequest == null ? null : new ChangePasswordRequest(user.ChangePasswordRequest.Id, user.ChangePasswordRequest.Guid, user.ChangePasswordRequest.Password),
+                user.ChangeEmailRequest == null ? null : new ChangeEmailRequest(user.ChangeEmailRequest.Id, user.ChangeEmailRequest.Guid, user.ChangeEmailRequest.Email));
         }
 
         public async Task<List<User>> GetByIdsAsync(List<int> ids)
         {
             return await context.Users
+                .Where(x => ids.Contains(x.Id))
                 .Include(x => x.Payments)
                 .Include(x => x.UserConnections)
                 .Include(x => x.ChangeEmailRequest)
                 .Include(x => x.ChangePasswordRequest)
                 .AsNoTracking()
-                .Select(x => new User()
-                {
-                    Id = x.Id,
-                    TelegramUserId = x.TelegramUserId,
-                    TelegramChatId = x.TelegramChatId,
-                    Login = x.Login,
-                    Email = x.Email,
-                    Password = x.Password,
-                    Sost = x.Sost,
-                    RegisterDate = x.RegisterDate,
-                    AccessEndDate = x.AccessEndDate,
-                    Role = x.Role,
-                    Guid = x.Guid,
-                    ParentUserId = x.ParentUserId,
-                    Balance = x.Balance,
-                    LastConnection = x.LastConnection,
-                    ChangeEmailRequest = x.ChangeEmailRequest == null ? null : new ChangeEmailRequest(x.ChangeEmailRequest.Id, x.ChangeEmailRequest.Guid, x.ChangeEmailRequest.Email),
-                    ChangePasswordRequest = x.ChangePasswordRequest == null ? null : new ChangePasswordRequest(x.ChangePasswordRequest.Id, x.ChangePasswordRequest.Guid, x.ChangePasswordRequest.Password),
-                    UserConnections = x.UserConnections.Select(c => new UserConnection()
-                    {
-                        Id = c.Id,
-                        UserId = c.UserId,
-                        VpnServerId = c.VpnServerId,
-                        Port = c.Port,
-                        Network = c.Network,
-                        Protocol = c.Protocol,
-                        Security = c.Security,
-                        PublicKey = c.PublicKey,
-                        Fingerprint = c.Fingerprint,
-                        ServerName = c.ServerName,
-                        ShortId = c.ShortId,
-                        AccessEndDate = c.AccessEndDate,
-                        ConnectionType = c.ConnectionType,
-                    }).ToList(),
-                    Payments = x.Payments
-                    .OrderByDescending(x => x.Date)
-                    .Select(p => new Payment()
-                    {
-                        Id = p.Id,
-                        UserId = p.UserId,
-                        AccessPositionId = p.AccessPositionId,
-                        Amount = p.Amount,
-                        Date = p.Date,
-                        State = p.State,
-                        PromoCodeId = p.PromoCodeId,
-                        Guid = p.Guid,
-                        PaymentMethod = p.PaymentMethod
-                    }).ToList()
-                })
-                .Where(x => ids.Contains(x.Id))
-                .ToListAsync();
+                .Select(u => new User(u.Id, u.TelegramUserId, u.TelegramChatId, u.Login, u.Email, u.Password, u.Role, u.RegisterDate,
+                u.AccessEndDate, u.Sost, u.Guid, u.ParentUserId, u.Balance, u.LastConnection, u.SubscribeType, u.SubscribeToken,
+                u.Payments.Select(x => new Payment(x.Id, x.AccessPositionId, x.Amount, x.Date, x.State, x.PromoCodeId, x.Guid, x.PaymentMethod)).ToList(),
+                u.UserConnections.Select(x => new UserConnection(x.Id, x.VpnServerId, x.Port, x.Network, x.Protocol, x.Security, x.PublicKey, x.Fingerprint, x.ServerName, x.ShortId, x.AccessEndDate, x.ConnectionType)).ToList(),
+                u.ChangePasswordRequest == null ? null : new ChangePasswordRequest(u.ChangePasswordRequest.Id, u.ChangePasswordRequest.Guid, u.ChangePasswordRequest.Password),
+                u.ChangeEmailRequest == null ? null : new ChangeEmailRequest(u.ChangeEmailRequest.Id, u.ChangeEmailRequest.Guid, u.ChangeEmailRequest.Email))).ToListAsync();
         }
 
         public async Task<User> GetByTelegramUserIdAsync(long telegramUserId)
@@ -162,6 +77,8 @@ namespace Infrastructure.Database.Repository
 
             await context.Users.AddAsync(newUser);
             await context.SaveChangesAsync();
+
+            var test = await context.Users.ToListAsync();
 
             return await GetByIdAsync(newUser.Id);
         }
@@ -203,7 +120,7 @@ namespace Infrastructure.Database.Repository
                 {
                     Id = x.Id,
                     AccessPositionId = x.AccessPositionId,
-                    UserId = x.UserId,
+                    UserId = user.Id,
                     Date = x.Date,
                     Amount = x.Amount,
                     State = x.State,
@@ -217,7 +134,7 @@ namespace Infrastructure.Database.Repository
                 .Select(x => new Entity.UserConnection()
                 {
                     Id = x.Id,
-                    UserId = x.UserId,
+                    UserId = user.Id,
                     VpnServerId = x.VpnServerId,
                     Port = x.Port,
                     Network = x.Network,
@@ -283,7 +200,7 @@ namespace Infrastructure.Database.Repository
                         Id = p.Id,
                         AccessPositionId = p.AccessPositionId,
                         Date = p.Date,
-                        UserId = p.UserId,
+                        UserId = dbUser.Id,
                         Amount = p.Amount,
                         State = p.State,
                         PromoCodeId = p.PromoCodeId,
@@ -296,7 +213,7 @@ namespace Infrastructure.Database.Repository
                     .Select(c => new Entity.UserConnection()
                     {
                         Id = c.Id,
-                        UserId = c.UserId,
+                        UserId = dbUser.Id,
                         VpnServerId = c.VpnServerId,
                         Port = c.Port,
                         Network = c.Network,

@@ -1,10 +1,11 @@
 ﻿using Core.Model.Log;
 using Core.Repository;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database.Repository
 {
-    public class LogRepository(Context context) : ILogRepository
+    public class LogRepository(ContextFactory context) : ILogRepository
     {
         public async Task<bool> AddAsync(Log log)
         {

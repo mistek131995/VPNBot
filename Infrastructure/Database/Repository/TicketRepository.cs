@@ -1,11 +1,12 @@
 ﻿using Core.Model.Ticket;
 using Core.Repository;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Infrastructure.Database.Repository
 {
-    internal class TicketRepository(Context context) : ITicketRepository
+    internal class TicketRepository(ContextFactory context) : ITicketRepository
     {
         public async Task<int> AddAsync(Ticket ticket)
         {

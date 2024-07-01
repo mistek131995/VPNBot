@@ -17,7 +17,7 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -155,7 +155,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("ChangeEmailRequests");
                 });
@@ -180,7 +181,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("ChangePasswordRequests");
                 });
@@ -314,7 +316,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
 
-                    b.Property<int>("PromoCodeId")
+                    b.Property<int?>("PromoCodeId")
                         .HasColumnType("int");
 
                     b.Property<int>("State")
@@ -689,8 +691,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Database.Entity.ChangeEmailRequest", b =>
                 {
                     b.HasOne("Infrastructure.Database.Entity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("ChangeEmailRequest")
+                        .HasForeignKey("Infrastructure.Database.Entity.ChangeEmailRequest", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -700,8 +702,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Database.Entity.ChangePasswordRequest", b =>
                 {
                     b.HasOne("Infrastructure.Database.Entity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("ChangePasswordRequest")
+                        .HasForeignKey("Infrastructure.Database.Entity.ChangePasswordRequest", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -729,9 +731,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Infrastructure.Database.Entity.PromoCode", "PromoCode")
                         .WithMany()
-                        .HasForeignKey("PromoCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PromoCodeId");
 
                     b.HasOne("Infrastructure.Database.Entity.User", null)
                         .WithMany("Payments")
@@ -829,6 +829,12 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Database.Entity.User", b =>
                 {
+                    b.Navigation("ChangeEmailRequest")
+                        .IsRequired();
+
+                    b.Navigation("ChangePasswordRequest")
+                        .IsRequired();
+
                     b.Navigation("Payments");
 
                     b.Navigation("UserConnections");

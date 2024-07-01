@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Database.Entity
 {
-    internal class TicketCategory
+    public class TicketCategory
     {
         [Key]
         public int Id { get; set; }

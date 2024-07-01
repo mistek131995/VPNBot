@@ -14,19 +14,8 @@ namespace Service.ControllerService.Service.ExtendSubscribeForBonuses
 
             var accessPosition = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.PositionId);
 
-            if (user.Balance < accessPosition.Price)
-                throw new HandledException("Недостаточно бонусов для оплаты подписки.");
-
-            if (user.AccessEndDate == null || user.AccessEndDate < DateTime.Now)
-            {
-                user.AccessEndDate = DateTime.Now.AddMonths(accessPosition.MonthCount).Date;
-            }
-            else
-            {
-                user.AccessEndDate = user.AccessEndDate?.AddMonths(accessPosition.MonthCount).Date;
-            }
-
-            user.Balance -= accessPosition.Price;
+            user.SubtractBalance(accessPosition.Price);
+            user.UpdateAccessEndDate(accessPosition.MonthCount);
 
             await repositoryProvider.UserRepository.UpdateAsync(user);
             logger.Information($"Успешное продление за бонусы. Списано - {accessPosition.Price}, пользователь - {user.Id}.");

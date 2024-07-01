@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Core.Model.Location;
 using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.AddCountry
@@ -21,11 +22,7 @@ namespace Service.ControllerService.Service.AddCountry
             if (location != null)
                 throw new HandledException("Страна с таким тегом уже добавлена.");
 
-            await repositoryProvider.LocationRepository.AddAsync(new Core.Model.Location.Location()
-            {
-                Name = request.Name,
-                Tag = request.Tag,
-            });
+            await repositoryProvider.LocationRepository.AddAsync(new Core.Model.Location.Location(request.Name, request.Tag, new List<VpnServer>()));
 
             return true;
         }

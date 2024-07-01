@@ -1,10 +1,11 @@
 ﻿using Core.Model.Finance;
 using Core.Repository;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database.Repository
 {
-    internal class AccessPositionRepository(Context context) : IAccessPositionRepository
+    internal class AccessPositionRepository(ContextFactory context) : IAccessPositionRepository
     {
         public async Task AddAsync(AccessPosition accessPosition)
         {
@@ -22,18 +23,9 @@ namespace Infrastructure.Database.Repository
 
         public async Task<List<AccessPosition>> GetAllAsync()
         {
-            return await context.AccessPositions
-                .AsNoTracking()
-                .Select(x => new AccessPosition()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description,
-                    MonthCount = x.MonthCount,
-                    Price = x.Price,
-                    GooglePlayIdentifier = x.GooglePlayIdentifier,
-                })
-                .ToListAsync();
+            var ids = context.AccessPositions.Select(x => x.Id).ToList();
+
+            return await GetByIds(ids);
         }
 
         public async Task<AccessPosition> GetByIdAsync(int id)
@@ -45,30 +37,27 @@ namespace Infrastructure.Database.Repository
             if(accessPosition == null)
                 return null;
 
-            return new AccessPosition()
-            {
-                Id = accessPosition.Id,
-                Name = accessPosition.Name,
-                Description = accessPosition.Description,
-                MonthCount = accessPosition.MonthCount,
-                Price = accessPosition.Price,
-                GooglePlayIdentifier = accessPosition.GooglePlayIdentifier
-            };
+            return new AccessPosition(accessPosition.Id, accessPosition.Name, accessPosition.MonthCount, accessPosition.Description, accessPosition.Price, accessPosition.GooglePlayIdentifier);
+        }
+
+        public async Task<List<AccessPosition>> GetByIds(List<int> ids)
+        {
+            return await context.AccessPositions
+                .AsNoTracking()
+                .Where(x => ids.Contains(x.Id))
+                .Select(x => new AccessPosition(x.Id, x.Name, x.MonthCount, x.Description, x.Price, x.GooglePlayIdentifier))
+                .ToListAsync();
         }
 
         public async Task<AccessPosition> GetByPriceAsync(int price)
         {
-            return await context.AccessPositions.Select(x => new AccessPosition()
-            {
-                Id = x.Id,
-                Price = x.Price,
-                Description = x.Description,
-                MonthCount = x.MonthCount,
-                Name = x.Name,
-                GooglePlayIdentifier= x.GooglePlayIdentifier
-            })
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Price == price);
+            var accessPosition = await context.AccessPositions
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Price == price);
+
+            if(accessPosition == null) return null;
+
+            return await GetByIdAsync(accessPosition.Id);
         }
 
         public async Task UpdateAsync(AccessPosition accessPosition)

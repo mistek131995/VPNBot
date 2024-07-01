@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Apis.AndroidPublisher.v3" Version="1.68.0.3422" />
+    <PackageReference Include="Google.Apis.AndroidPublisher.v3" Version="1.68.0.3464" />
     <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
     <PackageReference Include="IP2Location.io" Version="1.0.3" />
   </ItemGroup>

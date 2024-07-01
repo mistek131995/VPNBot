@@ -39,8 +39,8 @@ namespace Service.ControllerService.Service.Payment.GooglePlay.Notification
             }
             else if(callbackData.voidedPurchaseNotification != null)
             {
-                user.SubscribeToken = string.Empty;
-                user.SubscribeType = Core.Model.User.SubscribeType.None;
+                //user.SubscribeToken = string.Empty;
+                //user.SubscribeType = Core.Model.User.SubscribeType.None;
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 logger.Information($"Пользователь {user.Login} отменил подписку");

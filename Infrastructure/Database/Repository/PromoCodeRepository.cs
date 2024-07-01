@@ -1,10 +1,11 @@
 ﻿using Core.Model.Finance;
 using Core.Repository;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database.Repository
 {
-    internal class PromoCodeRepository(Context context) : IPromoCodeRepository
+    internal class PromoCodeRepository(ContextFactory context) : IPromoCodeRepository
     {
         public async Task<List<PromoCode>> GetAllAsync()
         {

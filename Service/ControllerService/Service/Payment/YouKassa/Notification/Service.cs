@@ -19,10 +19,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
             if (request.@object.status != "succeeded")
                 throw new Exception($"Статус платежа не равен succeeded | {request.@object.status} | {request.@object.id}");
 
-            if (user.AccessEndDate < DateTime.Now)
-                user.AccessEndDate = DateTime.Now.AddMonths(accessPosition.MonthCount);
-            else
-                user.AccessEndDate = user.AccessEndDate?.AddMonths(accessPosition.MonthCount);
+            user.UpdateAccessEndDate(accessPosition.MonthCount);
 
             payment.State = Core.Model.User.PaymentState.Completed;
 

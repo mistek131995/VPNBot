@@ -6,7 +6,7 @@ using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.User.Register
 {
-    internal class Service(IRepositoryProvider repositoryProvider, IConfiguration configuration) : IControllerService<Request, bool>
+    public class Service(IRepositoryProvider repositoryProvider, IConfiguration configuration) : IControllerService<Request, bool>
     {
         public async Task<bool> HandlingAsync(Request request)
         {
@@ -31,25 +31,18 @@ namespace Service.ControllerService.Service.User.Register
             if (user != null)
                 throw new HandledException("Пользователь с таким адресом электронной почты уже зарегистрирован");
 
-            var newUser = new Core.Model.User.User()
-            {
-                Login = request.Login.Trim().ToLower(),
-                Email = request.Email.Trim().ToLower(),
-                Password = request.Password,
-                Role = Core.Model.User.UserRole.User,
-                RegisterDate = DateTime.Now,
-                Sost = UserSost.NotActive,
-                Guid = Guid.NewGuid(),
-                SubscribeToken = string.Empty,
-            };
-
+            //Реферальная программа
+            var parentId = 0;
             if (request.Guid != null)
             {
                 var parentUser = await repositoryProvider.UserRepository.GetByGuidAsync(request.Guid ?? new Guid())
                     ?? throw new HandledException("Не удалось найти пользователя для привязки реферальной программы.");
 
-                newUser.ParentUserId = parentUser.Id;
+                parentId = parentUser.Id;
             }
+
+
+            var newUser = new Core.Model.User.User(request.Login, request.Email, request.Password, UserSost.NotActive, parentId);
 
             //Добавляем пользователя
             newUser = await repositoryProvider.UserRepository.AddAsync(newUser);

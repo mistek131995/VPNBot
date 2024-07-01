@@ -11,11 +11,11 @@ namespace Service.ControllerService.Service.Admin.Finance.UpdateAccessPosition
             var position = await repositoryProvider.AccessPositionRepository.GetByIdAsync(request.Id)
                 ?? throw new HandledException("Позиция не найдена");
 
-            position.Name = request.Name;
-            position.Description = request.Description;
-            position.Price = request.Price;
-            position.GooglePlayIdentifier = request.GooglePlayIdentifier;
-            position.MonthCount = request.MonthCount;
+            position.UpdateName(request.Name);
+            position.UpdateDescription(request.Description);
+            position.UpdatePrice(request.Price);
+            position.UpdateMonthCount(request.MonthCount);
+            //position.GooglePlayIdentifier = request.GooglePlayIdentifier;
 
             await repositoryProvider.AccessPositionRepository.UpdateAsync(position);
 

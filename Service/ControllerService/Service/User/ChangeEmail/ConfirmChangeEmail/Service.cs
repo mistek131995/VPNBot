@@ -11,8 +11,8 @@ namespace Service.ControllerService.Service.User.ChangeEmail.ConfirmChangeEmail
             var user = await repositoryProvider.UserRepository.GetByChangeEmailRequestGuidAsync(Guid.Parse(request.Guid))
                 ?? throw new HandledException("Запрос на изменение электронной почты не найден");
 
-            user.Email = user.ChangeEmailRequest.Email;
-            user.ChangeEmailRequest = null;
+            user.UpdateEmail(user.ChangeEmailRequest.Email);
+            user.UpdateChangeEmailRequest(null);
 
             await repositoryProvider.UserRepository.UpdateAsync(user);
 

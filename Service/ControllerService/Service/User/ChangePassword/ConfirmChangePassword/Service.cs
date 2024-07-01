@@ -11,8 +11,8 @@ namespace Service.ControllerService.Service.User.ChangePassword.ConfirmChangePas
             var user = await repositoryProvider.UserRepository.GetByChangePasswordRequestGuidAsync(Guid.Parse(request.Guid))
                 ?? throw new HandledException("Запрос на изменение пароля не найден");
 
-            user.Password = user.ChangePasswordRequest.Password;
-            user.ChangePasswordRequest = null;
+            user.UpdatePassword(user.ChangePasswordRequest.Password);
+            user.UpdateChangePasswordRequest(null);
 
             await repositoryProvider.UserRepository.UpdateAsync(user);
 

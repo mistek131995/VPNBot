@@ -11,10 +11,10 @@ namespace Service.ControllerService.Service.Admin.Users.Update
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.Id)
                 ?? throw new HandledException("Пользователь не найден");
 
-            user.AccessEndDate = request.AccessEndDate;
+            user.UpdateAccessEndDate(request.AccessEndDate);
 
             if (!string.IsNullOrEmpty(request.Password))
-                user.Password = request.Password;
+                user.UpdatePassword(request.Password);
 
             await repositoryProvider.UserRepository.UpdateAsync(user);
 

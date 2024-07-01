@@ -1,11 +1,5 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.ControllerService.Service.Payment.CryptoCloud.Notification
 {
@@ -25,10 +19,7 @@ namespace Service.ControllerService.Service.Payment.CryptoCloud.Notification
             if (request.status != "success")
                 throw new Exception("Статус платежа не равен success");
 
-            if (user.AccessEndDate < DateTime.Now)
-                user.AccessEndDate = DateTime.Now.AddMonths(accessPosition.MonthCount);
-            else
-                user.AccessEndDate = user.AccessEndDate?.AddMonths(accessPosition.MonthCount);
+            user.UpdateAccessEndDate(accessPosition.MonthCount);
 
             payment.State = Core.Model.User.PaymentState.Completed;
 

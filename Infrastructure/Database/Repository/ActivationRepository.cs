@@ -1,11 +1,12 @@
 ﻿using Core.Model.User;
 using Core.Repository;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Infrastructure.Database.Repository
 {
-    internal class ActivationRepository(Context context) : IActivationRepository
+    internal class ActivationRepository(ContextFactory context) : IActivationRepository
     {
         public async Task AddAsync(Activation activation)
         {

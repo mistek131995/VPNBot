@@ -1,17 +1,10 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 using Core.Model.User;
-using Infrastructure.Common;
 using Newtonsoft.Json;
 using Service.ControllerService.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text;
-using System.Threading.Tasks;
-using static Service.ControllerService.Service.Payment.CryptoCloud.GetLink.Result;
 
 namespace Service.ControllerService.Service.Payment.CryptoCloud.GetLink
 {
@@ -64,19 +57,7 @@ namespace Service.ControllerService.Service.Payment.CryptoCloud.GetLink
                 var resultString = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<Result>(resultString);
 
-                var newPayment = new Core.Model.User.Payment()
-                {
-                    AccessPositionId = accessPosition.Id,
-                    Amount = accessPosition.Price,
-                    Date = DateTime.Now,
-                    State = PaymentState.NotCompleted,
-                    UserId = request.UserId,
-                    PromoCodeId = promoCode?.Id ?? 0,
-                    Guid = orderGuid,
-                    PaymentMethod = PaymentMethod.CryptoCloud
-                };
-
-                user.Payments.Add(newPayment);
+                user.Payments.Add(new Core.Model.User.Payment(accessPosition.Id, accessPosition.Price, DateTime.Now, PaymentState.NotCompleted, promoCode?.Id, orderGuid, PaymentMethod.CryptoCloud));
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 return result.result.link;

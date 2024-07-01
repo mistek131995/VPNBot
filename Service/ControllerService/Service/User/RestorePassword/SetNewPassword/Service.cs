@@ -14,7 +14,7 @@ namespace Service.ControllerService.Service.User.RestorePassword.SetNewPassword
             var user = await repositoryProvider.UserRepository.GetByIdAsync(resetPassword.UserId) 
                 ?? throw new HandledException("Пользователь не найден");
 
-            user.Password = request.Password;
+            user.UpdatePassword(request.Password);
             await repositoryProvider.UserRepository.UpdateAsync(user);
 
             await repositoryProvider.ResetPasswordRepository.DeleteAsync(request.Guid);

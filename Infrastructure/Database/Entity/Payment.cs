@@ -14,11 +14,11 @@ namespace Infrastructure.Database.Entity
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
         public PaymentState State { get; set; }
-        public int PromoCodeId { get; set; }
+        public int? PromoCodeId { get; set; }
         public Guid Guid { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
 
         public AccessPosition AccessPosition { get; set; }
-        public PromoCode PromoCode { get; set; }
+        public PromoCode? PromoCode { get; set; }
     }
 }

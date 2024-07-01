@@ -1,10 +1,11 @@
 ﻿using Core.Repository;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using File = Core.Model.File.File;
 
 namespace Infrastructure.Database.Repository
 {
-    public class FileRepository(Context context) : IFileRepository
+    public class FileRepository(ContextFactory context) : IFileRepository
     {
         public async Task<int> AddAsync(File file)
         {

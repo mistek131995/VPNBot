@@ -18,7 +18,7 @@ namespace Service.ControllerService.Service.User.ChangePassword.AddChangePasswor
                 ?? throw new HandledException("Пользователь не найден");
 
             if(user.ChangePasswordRequest == null)
-                user.ChangePasswordRequest = new ChangePasswordRequest(Guid.NewGuid(), request.Password);
+                user.UpdateChangePasswordRequest(new ChangePasswordRequest(Guid.NewGuid(), request.Password));
             else
                 user.ChangePasswordRequest.ChangePassword(request.Password);
 

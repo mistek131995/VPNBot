@@ -1,10 +1,11 @@
 ﻿using Core.Model.Settings;
 using Core.Repository;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database.Repository
 {
-    public class SettingsRepository(Context context) : ISettingsRepositroy
+    public class SettingsRepository(ContextFactory context) : ISettingsRepositroy
     {
         public async Task<Settings> GetSettingsAsync()
         {

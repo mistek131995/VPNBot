@@ -22,7 +22,7 @@ namespace Service.ControllerService.Service.User.ChangeEmail.AddChangeEmailReque
             if(user.ChangeEmailRequest != null)
                 user.ChangeEmailRequest.ChangeEmail(request.Email);
             else
-                user.ChangeEmailRequest = new ChangeEmailRequest(request.Email);
+                user.UpdateChangeEmailRequest(new ChangeEmailRequest(request.Email));
 
 
             await repositoryProvider.UserRepository.UpdateAsync(user);

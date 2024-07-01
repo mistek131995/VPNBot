@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Database.Entity
 {
-    internal class ResetPassword
+    public class ResetPassword
     {
         [Key]
         public int Id { get; set; }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Database.Entity
 {
-    internal class Ticket
+    public class Ticket
     {
         [Key]
         public int Id { get; set; }

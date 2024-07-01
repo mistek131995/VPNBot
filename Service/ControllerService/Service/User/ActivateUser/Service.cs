@@ -13,8 +13,8 @@ namespace Service.ControllerService.Service.ActivateUser
                 return false;
 
             var user = await repositoryProvider.UserRepository.GetByIdAsync(activation.UserId);
-            user.Sost = UserSost.Active;
-            user.AccessEndDate = DateTime.Now.AddDays(-1);
+            user.UpdateSost(UserSost.Active);
+
             await repositoryProvider.UserRepository.UpdateAsync(user);
 
             await repositoryProvider.ActivationRepository.DeleteByGuid(request.Guid);

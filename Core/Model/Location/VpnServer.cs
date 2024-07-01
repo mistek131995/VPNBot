@@ -24,5 +24,15 @@
             Password = password;
             Statistics = statistics;
         }
+
+        public VpnServer(string ip, string name, string description, int port, string userName, string password)
+        {
+            Ip = ip;
+            Name = name;
+            Description = description;
+            Port = port;
+            UserName = userName;
+            Password = password;
+        }
     }
 }

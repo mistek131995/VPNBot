@@ -114,26 +114,14 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                     //Остальные настройки
                     var streamSettings = JsonConvert.DeserializeObject<StreamSettings>(JObject.Parse(inboundResult)["streamSettings"].ToString());
 
-                    userConnection = new UserConnection()
-                    {
-                        VpnServerId = server.Id,
-                        Port = port,
-                        Network = streamSettings.Network,
-                        Protocol = protocol,
-                        Security = streamSettings.Security,
-                        PublicKey = streamSettings.RealitySettings.Settings.PublicKey,
-                        Fingerprint = streamSettings.RealitySettings.Settings.Fingerprint,
-                        ServerName = streamSettings.RealitySettings.ServerNames.FirstOrDefault(),
-                        ShortId = streamSettings.RealitySettings.ShortIds.FirstOrDefault(),
-                        ConnectionType = ConnectionType.Free,
-
-                        AccessEndDate = DateTime.MinValue
-                    };
+                    userConnection = new UserConnection(server.Id, port, streamSettings.Network, protocol, streamSettings.Security, streamSettings.RealitySettings.Settings.PublicKey, 
+                        streamSettings.RealitySettings.Settings.Fingerprint, streamSettings.RealitySettings.ServerNames.FirstOrDefault(), streamSettings.RealitySettings.ShortIds.FirstOrDefault(),
+                        DateTime.MinValue, ConnectionType.Free);
 
                     user.UserConnections.Add(userConnection);
                 }
 
-                user.LastConnection = DateTime.Now;
+                user.UpdateLastConnectionDate(DateTime.Now);
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 var todayStatistic = server.Statistics.FirstOrDefault(x => x.Date.Date == DateTime.Now.Date);
@@ -257,26 +245,13 @@ namespace Service.ControllerService.Service.App.GetConnectionByIP
                     //Остальные настройки
                     var streamSettings = JsonConvert.DeserializeObject<StreamSettings>(JObject.Parse(inboundResult)["streamSettings"].ToString());
 
-                    userConnection = new UserConnection()
-                    {
-                        VpnServerId = server.Id,
-                        Port = port,
-                        Network = streamSettings.Network,
-                        Protocol = protocol,
-                        Security = streamSettings.Security,
-                        PublicKey = streamSettings.RealitySettings.Settings.PublicKey,
-                        Fingerprint = streamSettings.RealitySettings.Settings.Fingerprint,
-                        ServerName = streamSettings.RealitySettings.ServerNames.FirstOrDefault(),
-                        ShortId = streamSettings.RealitySettings.ShortIds.FirstOrDefault(),
-                        ConnectionType = ConnectionType.Paid,
-
-                        AccessEndDate = user.AccessEndDate ?? throw new Exception("Доступ не может быть пустым")
-                    };
+                    userConnection = new UserConnection(server.Id, port, streamSettings.Network, protocol, streamSettings.Security, streamSettings.RealitySettings.Settings.PublicKey, streamSettings.RealitySettings.Settings.Fingerprint,
+                        streamSettings.RealitySettings.ServerNames.FirstOrDefault(), streamSettings.RealitySettings.ShortIds.FirstOrDefault(), user.AccessEndDate ?? throw new Exception("Доступ не может быть пустым"), ConnectionType.Paid);
 
                     user.UserConnections.Add(userConnection);
                 }
 
-                user.LastConnection = DateTime.Now;
+                user.UpdateLastConnectionDate(DateTime.Now);
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 var todayStatistic = server.Statistics.FirstOrDefault(x => x.Date.Date == DateTime.Now.Date);

@@ -91,19 +91,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.GetLink
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var newPayment = new Core.Model.User.Payment()
-                    {
-                        AccessPositionId = accessPosition.Id,
-                        Amount = accessPosition.Price,
-                        Date = DateTime.Now,
-                        State = PaymentState.NotCompleted,
-                        UserId = request.UserId,
-                        PromoCodeId = promoCode?.Id ?? 0,
-                        Guid = Guid.Parse(result.id),
-                        PaymentMethod = PaymentMethod.YouKassa
-                    };
-
-                    user.Payments.Add(newPayment);
+                    user.Payments.Add(new Core.Model.User.Payment(accessPosition.Id, accessPosition.Price, DateTime.Now, PaymentState.NotCompleted, promoCode?.Id, Guid.Parse(result.id), PaymentMethod.YouKassa));
                     await repositoryProvider.UserRepository.UpdateAsync(user);
 
                     return result.confirmation.confirmation_url;
