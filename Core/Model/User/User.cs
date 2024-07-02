@@ -30,8 +30,11 @@ namespace Core.Model.User
         public List<UserConnection> UserConnections { get;  private set; }
         public ChangePasswordRequest ChangePasswordRequest { get;  private set; }
         public ChangeEmailRequest ChangeEmailRequest { get;  private set; }
+        public UserSetting UserSetting { get; private set; }
 
-        public User(int id, long telegramUserId, long telegramChatId, string login, string email, string password, UserRole role, DateTime registerDate, DateTime? accessEndDate, UserSost sost, Guid guid, int parentUserId, decimal balance, DateTime? lastConnection, SubscribeType subscribeType, string subscribeToken, List<Payment> payments, List<UserConnection> userConnections, ChangePasswordRequest changePasswordRequest = null, ChangeEmailRequest changeEmailRequest = null)
+        public User(int id, long telegramUserId, long telegramChatId, string login, string email, string password, UserRole role, DateTime registerDate, DateTime? accessEndDate, UserSost sost, Guid guid, 
+            int parentUserId, decimal balance, DateTime? lastConnection, SubscribeType subscribeType, string subscribeToken, List<Payment> payments, List<UserConnection> userConnections, UserSetting userSetting,
+            ChangePasswordRequest changePasswordRequest = null, ChangeEmailRequest changeEmailRequest = null)
         {
             if(id == 0)
                 throw new Exception("Нельзя использовать этот конструктор для создания сущности");
@@ -54,11 +57,14 @@ namespace Core.Model.User
             SubscribeToken = subscribeToken;
             Payments = payments;
             UserConnections = userConnections;
+            UserSetting = userSetting;
             ChangePasswordRequest = changePasswordRequest;
             ChangeEmailRequest = changeEmailRequest;
         }
 
-        public User(long telegramUserId, long telegramChatId, string login, string email, string password, UserRole role, DateTime registerDate, DateTime? accessEndDate, UserSost sost, Guid guid, int parentUserId, decimal balance, DateTime? lastConnection, SubscribeType subscribeType, string subscribeToken, List<Payment> payments, List<UserConnection> userConnections, ChangePasswordRequest changePasswordRequest, ChangeEmailRequest changeEmailRequest)
+        public User(long telegramUserId, long telegramChatId, string login, string email, string password, UserRole role, DateTime registerDate, DateTime? accessEndDate, UserSost sost, Guid guid, 
+            int parentUserId, decimal balance, DateTime? lastConnection, SubscribeType subscribeType, string subscribeToken, List<Payment> payments, List<UserConnection> userConnections, UserSetting userSetting,
+            ChangePasswordRequest changePasswordRequest, ChangeEmailRequest changeEmailRequest)
         {
             UpdateEmail(email);
 
@@ -78,11 +84,12 @@ namespace Core.Model.User
             SubscribeToken = subscribeToken;
             Payments = payments;
             UserConnections = userConnections;
+            UserSetting = userSetting;
             ChangePasswordRequest = changePasswordRequest;
             ChangeEmailRequest = changeEmailRequest;
         }
 
-        public User(string login, string email, string password, UserSost sost, int parentUserId = 0)
+        public User(string login, string email, string password, UserSost sost, UserSetting userSetting, int parentUserId = 0)
         {
             UpdateEmail(email);
 

@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Core.Model.User;
 using Google.Apis.Auth;
 using MD5Hash;
 using Microsoft.Extensions.Configuration;
@@ -38,7 +39,7 @@ namespace Service.ControllerService.Service.User.AuthWithGoogle
 
                 var password = string.Join("", validPayload.Email.GetMD5().Take(8)).GetMD5();
 
-                user = await repositoryProvider.UserRepository.AddAsync(new Core.Model.User.User(login, validPayload.Email, password, UserSost.Active));
+                user = await repositoryProvider.UserRepository.AddAsync(new Core.Model.User.User(login, validPayload.Email, password, UserSost.Active, new UserSetting(false)));
             }
 
             return Helper.CreateJwtToken(user, configuration);

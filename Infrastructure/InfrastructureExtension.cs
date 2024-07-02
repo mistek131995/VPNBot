@@ -1,7 +1,7 @@
 ﻿using Core.Common;
 using Infrastructure.Common;
 using Infrastructure.Database;
-using Infrastructure.WorkerService.Telegram;
+//using Infrastructure.WorkerService.Telegram;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +17,7 @@ namespace Infrastructure
             services.AddScoped<IRepositoryProvider, RepositoryProvider>();
             services.AddDbContext<Context>(options => options.UseSqlServer(connectionString, options => options.EnableRetryOnFailure()));
 
-            services.AddHostedService<TelegramWorker>();
+            //services.AddHostedService<TelegramWorker>();
 
             return services;
         }

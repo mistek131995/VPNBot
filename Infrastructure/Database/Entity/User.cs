@@ -31,5 +31,6 @@ namespace Infrastructure.Database.Entity
         public List<UserConnection> UserConnections { get; set; }
         public ChangePasswordRequest ChangePasswordRequest { get; set; }
         public ChangeEmailRequest ChangeEmailRequest { get; set; }
+        public UserSetting UserSetting { get; set; }
     }
 }

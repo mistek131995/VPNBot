@@ -1,5 +1,6 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
+using Core.Model.User;
 using Infrastructure.MailService;
 using Microsoft.Extensions.Configuration;
 using Service.ControllerService.Common;
@@ -42,7 +43,7 @@ namespace Service.ControllerService.Service.User.Register
             }
 
 
-            var newUser = new Core.Model.User.User(request.Login, request.Email, request.Password, UserSost.NotActive, parentId);
+            var newUser = new Core.Model.User.User(request.Login, request.Email, request.Password, UserSost.NotActive, new UserSetting(false), parentId);
 
             //Добавляем пользователя
             newUser = await repositoryProvider.UserRepository.AddAsync(newUser);

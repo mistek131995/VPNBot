@@ -14,6 +14,7 @@ namespace Infrastructure.Common
         }
 
         internal DbSet<User> Users { get; set; }
+        internal DbSet<UserSetting> UserSettings { get; set; }
         internal DbSet<VpnServer> VpnServers { get; set; }
         internal DbSet<Setting> Settings { get; set; }
         internal DbSet<Payment> Payments { get; set; }
