@@ -1,10 +1,11 @@
 ﻿using Application.ControllerService.Common;
 using Core.Common;
 using Infrastructure.MailService;
+using Infrastructure.TelegramService;
 
 namespace Service.ControllerService.Service.Admin.TicketManagement.AddMessage
 {
-    internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
+    internal class Service(IRepositoryProvider repositoryProvider, ITelegramNotificationService telegramNotificationService) : IControllerService<Request, bool>
     {
         public async Task<bool> HandlingAsync(Request request)
         {
@@ -31,6 +32,19 @@ namespace Service.ControllerService.Service.Admin.TicketManagement.AddMessage
                     </br>
                     <a href='https://lockvpn.me/ticket/{ticket.Id}'>Перейти к тикету</a>
                 ");
+
+            if (user.TelegramChatId > 0)
+                await telegramNotificationService.SendNotificationAsync($@"
+
+В тикет {ticket.Id} пришло новое сообщение.
+
+----
+{request.Message}
+----
+
+Перейти к тикету - https://lockvpn.me/ticket/{ticket.Id}
+
+                    ", user.TelegramChatId);
 
             return true;
         }
