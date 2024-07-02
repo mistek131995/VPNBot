@@ -34,17 +34,9 @@ namespace Service.ControllerService.Service.Admin.TicketManagement.AddMessage
                 ");
 
             if (user.TelegramChatId > 0)
-                await telegramNotificationService.SendNotificationAsync($@"
-
-В тикет {ticket.Id} пришло новое сообщение.
-
-----
-{request.Message}
-----
-
-Перейти к тикету - https://lockvpn.me/ticket/{ticket.Id}
-
-                    ", user.TelegramChatId);
+                await telegramNotificationService
+                    .AddText($"В тикет {ticket.Id} пришло новое сообщение.\n----\n{request.Message}\n----")
+                    .SendNotificationAsync(user.TelegramChatId);
 
             return true;
         }

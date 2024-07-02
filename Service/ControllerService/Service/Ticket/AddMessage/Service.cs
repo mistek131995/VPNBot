@@ -47,15 +47,10 @@ namespace Service.ControllerService.Service.Ticket.AddMessage
                 if(admin.TelegramChatId == 0)
                     continue;
 
-                await telegramNotificationService.SendNotificationAsync(@$"
-В тикет {ticket.Id} пришло новое сообщение.
-
-----
-{request.Message}
-----
-
-Перейти к тикету - https://lockvpn.me/admin/ticket/{ticket.Id}
-                ", admin.TelegramChatId);
+                await telegramNotificationService
+                    .AddText($"В тикет {ticket.Id} пришло новое сообщение:\n\n{request.Message}")
+                    .AddButtonWithLink("Перейти в тикет", $"https://lockvpn.me/admin/ticket/{ticket.Id}")
+                    .SendNotificationAsync(admin.TelegramChatId);
             }
 
             return true;

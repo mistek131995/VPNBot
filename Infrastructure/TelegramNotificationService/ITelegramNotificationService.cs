@@ -4,6 +4,8 @@ namespace Infrastructure.TelegramService
 {
     public interface ITelegramNotificationService
     {
-        Task SendNotificationAsync(string message, long telegramChatId);
+        ITelegramNotificationService AddText(string text);
+        ITelegramNotificationService AddButtonWithLink(string text, string link);
+        Task SendNotificationAsync(long telegramChatId);
     }
 }
