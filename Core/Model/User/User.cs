@@ -104,6 +104,8 @@ namespace Core.Model.User
             Role = UserRole.User;
             SubscribeToken = string.Empty;
             SubscribeType = SubscribeType.None;
+
+            UserSetting = userSetting;
         }
 
         public void UpdateEmail(string email)
