@@ -167,5 +167,11 @@ namespace Core.Model.User
         {
             ChangePasswordRequest = request;
         }
+
+        public void AttachTelegram(long telegramId)
+        {
+            TelegramChatId = telegramId;
+            TelegramUserId = TelegramUserId;
+        }
     }
 }

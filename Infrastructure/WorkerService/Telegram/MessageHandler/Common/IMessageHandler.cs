@@ -5,7 +5,6 @@ namespace Infrastructure.WorkerService.Telegram.MessageHandler.Common
 {
     internal interface IMessageHandler
     {
-        record Result(string Message, InlineKeyboardMarkup InlineKeyboard);
-        Task<Result> Handle(Update update);
+        Task Handle();
     }
 }

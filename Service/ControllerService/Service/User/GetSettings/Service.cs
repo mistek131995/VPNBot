@@ -9,10 +9,11 @@ namespace Service.ControllerService.Service.User.GetSettings
         public async Task<Result> HandlingAsync(Request request)
         {
             var result = new Result();
-            var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UsertId) 
+            var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) 
                 ?? throw new HandledException("Пользователь не найден");
 
             result.Email = user.Email;
+            result.TelegramId = user.TelegramChatId;
 
             return result;
         }

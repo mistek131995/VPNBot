@@ -10,27 +10,34 @@ using Telegram.Bot.Types.Enums;
 
 namespace Infrastructure.WorkerService.Telegram
 {
-    internal class TelegramWorker(IServiceScopeFactory scopeFactory) : BackgroundService
+    internal class TelegramWorker : BackgroundService
     {
+        private IRepositoryProvider _repositoryProvider;
+        private IServiceScopeFactory _serviceScopeFactory;
+
+        public TelegramWorker(IServiceScopeFactory serviceScopeFactory)
+        {
+            _serviceScopeFactory = serviceScopeFactory;
+            var scope = serviceScopeFactory.CreateScope();
+            _repositoryProvider = scope.ServiceProvider.GetRequiredService<IRepositoryProvider>();
+        }
+
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            using (var scope = scopeFactory.CreateScope())
+            var settings = await _repositoryProvider.SettingsRepositroy.GetSettingsAsync();
+
+            var botClient = new TelegramBotClient(settings.TelegramToken);
+            var receiverOptions = new ReceiverOptions // Также присваем значение настройкам бота
             {
-                var repositoryProvider = scope.ServiceProvider.GetRequiredService<IRepositoryProvider>();
-                var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
-
-                var botClient = new TelegramBotClient(settings.TelegramToken);
-                var receiverOptions = new ReceiverOptions // Также присваем значение настройкам бота
+                AllowedUpdates = new[] // Тут указываем типы получаемых Update`ов, о них подробнее расказано тут https://core.telegram.org/bots/api#update
                 {
-                    AllowedUpdates = new[] // Тут указываем типы получаемых Update`ов, о них подробнее расказано тут https://core.telegram.org/bots/api#update
-                    {
-                        UpdateType.Message, // Сообщения (текст, фото/видео, голосовые/видео сообщения и т.д.)
-                        UpdateType.CallbackQuery
-                    },
-                };
+                    UpdateType.Message, // Сообщения (текст, фото/видео, голосовые/видео сообщения и т.д.)
+                    UpdateType.CallbackQuery
+                },
+            };
 
-                botClient.StartReceiving(UpdateHandler, ErrorHandler, receiverOptions: receiverOptions);
-            }
+            botClient.StartReceiving(UpdateHandler, ErrorHandler, receiverOptions: receiverOptions);
         }
 
         public void UpdateHandler(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -41,8 +48,8 @@ namespace Infrastructure.WorkerService.Telegram
 
                 if(update.Message.Text == "/start")
                 {
-                    handler = new Start();
-                    handler.Handle(update);
+                    handler = new Start(botClient, update, _repositoryProvider);
+                    handler.Handle();
                 }
             }
             else if (update.Type == UpdateType.CallbackQuery)

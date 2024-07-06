@@ -108,6 +108,7 @@ namespace Infrastructure.Database.Repository
 
             dbUser.UserSetting = new Entity.UserSetting()
             {
+                Id = user.UserSetting.Id,
                 UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage
             };
 
@@ -192,6 +193,7 @@ namespace Infrastructure.Database.Repository
 
                 dbUser.UserSetting = new Entity.UserSetting()
                 {
+                    Id = user.UserSetting.Id,
                     UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage
                 };
 

@@ -4,6 +4,6 @@ namespace Service.ControllerService.Service.User.GetSettings
 {
     public class Request : IRequest<Result>
     {
-        public int UsertId { get; set; }
+        public int UserId { get; set; }
     }
 }
