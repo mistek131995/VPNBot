@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 	ProjectSection(SolutionItems) = preProject
 		Dockerfile = Dockerfile
 		Jenkinsfile = Jenkinsfile
+		nuget.config = nuget.config
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{C01B593B-C0E8-4688-881A-F114702F34DD}"
@@ -26,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryUnitTests", "xUni
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{FC92A864-D270-42FD-9E4C-4BE70B406901}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceUnitTest", "ServiceUnitTest\ServiceUnitTest.csproj", "{54489D86-8255-45C0-93D6-8DA8DF64B4FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceUnitTest", "ServiceUnitTest\ServiceUnitTest.csproj", "{54489D86-8255-45C0-93D6-8DA8DF64B4FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
