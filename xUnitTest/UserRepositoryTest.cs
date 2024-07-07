@@ -74,12 +74,27 @@ namespace xUnitTest
             await repositoryPrvider.LocationRepository.AddAsync(VpnLocationTemplate.LocationWithServer);
             var user = await repositoryPrvider.UserRepository.AddAsync(UserTemplate.NewUser);
 
-            var test = repositoryPrvider.LocationRepository.GetAllAsync();
-
             user.UserConnections.Add(UserTemplate.Connection1);
             user = await repositoryPrvider.UserRepository.UpdateAsync(user);
 
             Assert.NotEmpty(user.UserConnections);
+        }
+
+        [Fact]
+        public async Task UpdateUserSettingsTest()
+        {
+            var repositoryPrvider = new RepositoryProvider(context);
+            var user = await repositoryPrvider.UserRepository.AddAsync(UserTemplate.NewUser);
+
+            user.UserSetting.UseTelegramNotificationTicketMessage = true;
+            user.UserSetting.UseTelegramNotificationLoginInError = true;
+            user.UserSetting.UseTelegramNotificationAboutNews = true;
+
+            user = await repositoryPrvider.UserRepository.UpdateAsync(user);
+
+            Assert.True(user.UserSetting.UseTelegramNotificationTicketMessage);
+            Assert.True(user.UserSetting.UseTelegramNotificationLoginInError);
+            Assert.True(user.UserSetting.UseTelegramNotificationLoginInError);
         }
     }
 }
