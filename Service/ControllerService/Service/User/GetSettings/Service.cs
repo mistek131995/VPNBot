@@ -15,6 +15,10 @@ namespace Service.ControllerService.Service.User.GetSettings
             result.Email = user.Email;
             result.TelegramId = user.TelegramChatId;
 
+            result.UseTelegramNotificationAboutNews = user.UserSetting.UseTelegramNotificationAboutNews;
+            result.UseTelegramNotificationLoginInError = user.UserSetting.UseTelegramNotificationLoginInError;
+            result.UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage;
+
             return result;
         }
     }

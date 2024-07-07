@@ -77,7 +77,9 @@ namespace Infrastructure.Database.Repository
                 SubscribeToken = user.SubscribeToken,
                 UserSetting = new Entity.UserSetting()
                 {
-                    UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage
+                    UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage,
+                    UseTelegramNotificationLoginInError = user.UserSetting.UseTelegramNotificationLoginInError,
+                    UseTelegramNotificationAboutNews = user.UserSetting.UseTelegramNotificationAboutNews
                 }
             };
 
@@ -108,7 +110,9 @@ namespace Infrastructure.Database.Repository
             dbUser.UserSetting = new Entity.UserSetting()
             {
                 Id = user.UserSetting.Id,
-                UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage
+                UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage,
+                UseTelegramNotificationLoginInError = user.UserSetting.UseTelegramNotificationLoginInError,
+                UseTelegramNotificationAboutNews = user.UserSetting.UseTelegramNotificationAboutNews
             };
 
             dbUser.ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new Entity.ChangePasswordRequest()
@@ -193,7 +197,9 @@ namespace Infrastructure.Database.Repository
                 dbUser.UserSetting = new Entity.UserSetting()
                 {
                     Id = user.UserSetting.Id,
-                    UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage
+                    UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage,
+                    UseTelegramNotificationLoginInError = user.UserSetting.UseTelegramNotificationLoginInError,
+                    UseTelegramNotificationAboutNews = user.UserSetting.UseTelegramNotificationAboutNews
                 };
 
                 dbUser.ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new Entity.ChangePasswordRequest()
