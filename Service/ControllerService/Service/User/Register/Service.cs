@@ -43,7 +43,7 @@ namespace Service.ControllerService.Service.User.Register
             }
 
 
-            var newUser = new Core.Model.User.User(request.Login, request.Email, request.Password, UserSost.NotActive, new UserSetting(false, false, false), parentId);
+            var newUser = new Core.Model.User.User(request.Login, request.Email, request.Password, UserSost.NotActive, new UserSetting(false, false, false, true, true, true), parentId);
 
             //Добавляем пользователя
             newUser = await repositoryProvider.UserRepository.AddAsync(newUser);

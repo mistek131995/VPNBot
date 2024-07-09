@@ -2,6 +2,7 @@
 using Core.Repository;
 using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Infrastructure.Database.Repository
 {
@@ -25,7 +26,14 @@ namespace Infrastructure.Database.Repository
                 user.AccessEndDate, user.Sost, user.Guid, user.ParentUserId, user.Balance, user.LastConnection, user.SubscribeType, user.SubscribeToken,
                 user.Payments.Select(x => new Payment(x.Id, x.AccessPositionId, x.Amount, x.Date, x.State, x.PromoCodeId, x.Guid, x.PaymentMethod)).ToList(),
                 user.UserConnections.Select(x => new UserConnection(x.Id, x.VpnServerId, x.Port, x.Network, x.Protocol, x.Security, x.PublicKey, x.Fingerprint, x.ServerName, x.ShortId, x.AccessEndDate, x.ConnectionType)).ToList(),
-                new UserSetting(user.UserSetting.Id, user.UserSetting.UseTelegramNotificationTicketMessage, user.UserSetting.UseTelegramNotificationAboutNews, user.UserSetting.UseTelegramNotificationLoginInError),
+                new UserSetting(
+                    user.UserSetting.Id, 
+                    user.UserSetting.UseTelegramNotificationTicketMessage, 
+                    user.UserSetting.UseTelegramNotificationAboutNews,
+                    user.UserSetting.UseTelegramNotificationLoginInError,
+                    user.UserSetting.UseEmailNotificationTicketMessage,
+                    user.UserSetting.UseEmailNotificationAboutNews,
+                    user.UserSetting.UseEmailNotificationLoginInError),
                 user.ChangePasswordRequest == null ? null : new ChangePasswordRequest(user.ChangePasswordRequest.Id, user.ChangePasswordRequest.Guid, user.ChangePasswordRequest.Password),
                 user.ChangeEmailRequest == null ? null : new ChangeEmailRequest(user.ChangeEmailRequest.Id, user.ChangeEmailRequest.Guid, user.ChangeEmailRequest.Email));
         }
@@ -43,7 +51,14 @@ namespace Infrastructure.Database.Repository
                 u.AccessEndDate, u.Sost, u.Guid, u.ParentUserId, u.Balance, u.LastConnection, u.SubscribeType, u.SubscribeToken,
                 u.Payments.Select(x => new Payment(x.Id, x.AccessPositionId, x.Amount, x.Date, x.State, x.PromoCodeId, x.Guid, x.PaymentMethod)).ToList(),
                 u.UserConnections.Select(x => new UserConnection(x.Id, x.VpnServerId, x.Port, x.Network, x.Protocol, x.Security, x.PublicKey, x.Fingerprint, x.ServerName, x.ShortId, x.AccessEndDate, x.ConnectionType)).ToList(),
-                new UserSetting(u.UserSetting.Id, u.UserSetting.UseTelegramNotificationTicketMessage, u.UserSetting.UseTelegramNotificationAboutNews, u.UserSetting.UseTelegramNotificationLoginInError),
+                new UserSetting(
+                    u.UserSetting.Id, 
+                    u.UserSetting.UseTelegramNotificationTicketMessage, 
+                    u.UserSetting.UseTelegramNotificationAboutNews, 
+                    u.UserSetting.UseTelegramNotificationLoginInError, 
+                    u.UserSetting.UseEmailNotificationTicketMessage, 
+                    u.UserSetting.UseEmailNotificationAboutNews, 
+                    u.UserSetting.UseEmailNotificationLoginInError),
                 u.ChangePasswordRequest == null ? null : new ChangePasswordRequest(u.ChangePasswordRequest.Id, u.ChangePasswordRequest.Guid, u.ChangePasswordRequest.Password),
                 u.ChangeEmailRequest == null ? null : new ChangeEmailRequest(u.ChangeEmailRequest.Id, u.ChangeEmailRequest.Guid, u.ChangeEmailRequest.Email))).ToListAsync();
         }
@@ -79,7 +94,10 @@ namespace Infrastructure.Database.Repository
                 {
                     UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage,
                     UseTelegramNotificationLoginInError = user.UserSetting.UseTelegramNotificationLoginInError,
-                    UseTelegramNotificationAboutNews = user.UserSetting.UseTelegramNotificationAboutNews
+                    UseTelegramNotificationAboutNews = user.UserSetting.UseTelegramNotificationAboutNews,
+                    UseEmailNotificationTicketMessage = user.UserSetting.UseEmailNotificationTicketMessage,
+                    UseEmailNotificationAboutNews = user.UserSetting.UseEmailNotificationAboutNews,
+                    UseEmailNotificationLoginInError = user.UserSetting.UseEmailNotificationLoginInError
                 }
             };
 
@@ -112,7 +130,10 @@ namespace Infrastructure.Database.Repository
                 Id = user.UserSetting.Id,
                 UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage,
                 UseTelegramNotificationLoginInError = user.UserSetting.UseTelegramNotificationLoginInError,
-                UseTelegramNotificationAboutNews = user.UserSetting.UseTelegramNotificationAboutNews
+                UseTelegramNotificationAboutNews = user.UserSetting.UseTelegramNotificationAboutNews,
+                UseEmailNotificationTicketMessage = user.UserSetting.UseEmailNotificationTicketMessage,
+                UseEmailNotificationAboutNews = user.UserSetting.UseEmailNotificationAboutNews,
+                UseEmailNotificationLoginInError = user.UserSetting.UseEmailNotificationLoginInError
             };
 
             dbUser.ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new Entity.ChangePasswordRequest()
@@ -199,7 +220,10 @@ namespace Infrastructure.Database.Repository
                     Id = user.UserSetting.Id,
                     UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage,
                     UseTelegramNotificationLoginInError = user.UserSetting.UseTelegramNotificationLoginInError,
-                    UseTelegramNotificationAboutNews = user.UserSetting.UseTelegramNotificationAboutNews
+                    UseTelegramNotificationAboutNews = user.UserSetting.UseTelegramNotificationAboutNews,
+                    UseEmailNotificationTicketMessage = user.UserSetting.UseEmailNotificationTicketMessage,
+                    UseEmailNotificationAboutNews = user.UserSetting.UseEmailNotificationAboutNews,
+                    UseEmailNotificationLoginInError = user.UserSetting.UseEmailNotificationLoginInError
                 };
 
                 dbUser.ChangePasswordRequest = user.ChangePasswordRequest == null ? null : new Entity.ChangePasswordRequest()

@@ -89,12 +89,18 @@ namespace xUnitTest
             user.UserSetting.UseTelegramNotificationTicketMessage = true;
             user.UserSetting.UseTelegramNotificationLoginInError = true;
             user.UserSetting.UseTelegramNotificationAboutNews = true;
+            user.UserSetting.UseEmailNotificationLoginInError = true;
+            user.UserSetting.UseEmailNotificationAboutNews = true;
+            user.UserSetting.UseEmailNotificationTicketMessage = true;
 
             user = await repositoryPrvider.UserRepository.UpdateAsync(user);
 
             Assert.True(user.UserSetting.UseTelegramNotificationTicketMessage);
             Assert.True(user.UserSetting.UseTelegramNotificationLoginInError);
             Assert.True(user.UserSetting.UseTelegramNotificationLoginInError);
+            Assert.True(user.UserSetting.UseEmailNotificationLoginInError);
+            Assert.True(user.UserSetting.UseEmailNotificationAboutNews);
+            Assert.True(user.UserSetting.UseEmailNotificationTicketMessage);
         }
     }
 }

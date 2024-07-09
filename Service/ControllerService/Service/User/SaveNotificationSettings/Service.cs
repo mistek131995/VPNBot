@@ -14,9 +14,9 @@ namespace Service.ControllerService.Service.User.SaveNotificationSettings
             user.UserSetting.UseTelegramNotificationTicketMessage = request.UseTelegramNotificationTicketMessage;
             user.UserSetting.UseTelegramNotificationLoginInError = request.UseTelegramNotificationLoginInError;
             user.UserSetting.UseTelegramNotificationAboutNews = request.UseTelegramNotificationAboutNews;
-            user.UserSetting.EmailNotificationTicketMessage = request.EmailNotificationTicketMessage;
-            user.UserSetting.EmailNotificationLoginInError = request.EmailNotificationLoginInError;
-            user.UserSetting.EmailNotificationAboutNews = request.EmailNotificationAboutNews;
+            user.UserSetting.UseEmailNotificationTicketMessage = request.EmailNotificationTicketMessage;
+            user.UserSetting.UseEmailNotificationLoginInError = request.EmailNotificationLoginInError;
+            user.UserSetting.UseEmailNotificationAboutNews = request.EmailNotificationAboutNews;
 
             await repositoryProvider.UserRepository.UpdateAsync(user);
 

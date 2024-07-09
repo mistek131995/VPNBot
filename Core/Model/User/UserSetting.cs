@@ -6,23 +6,31 @@
         public bool UseTelegramNotificationTicketMessage { get; set; }
         public bool UseTelegramNotificationAboutNews {  get; set; }
         public bool UseTelegramNotificationLoginInError { get; set; }
-        public bool EmailNotificationTicketMessage { get; set; }
-        public bool EmailNotificationAboutNews { get; set; }
-        public bool EmailNotificationLoginInError { get; set; }
+        public bool UseEmailNotificationTicketMessage { get; set; }
+        public bool UseEmailNotificationAboutNews { get; set; }
+        public bool UseEmailNotificationLoginInError { get; set; }
 
-        public UserSetting(int id, bool useTelegramNotificationTicketMessage, bool useTelegramNotificationAboutNews, bool useTelegramNotificationLoginInError)
+        public UserSetting(int id, bool useTelegramNotificationTicketMessage, bool useTelegramNotificationAboutNews, bool useTelegramNotificationLoginInError, 
+            bool useEmailNotificationTicketMessage, bool useEmailNotificationAboutNews, bool useEmailNotificationLoginInError)
         {
             Id = id;
             UseTelegramNotificationTicketMessage = useTelegramNotificationTicketMessage;
             UseTelegramNotificationAboutNews = useTelegramNotificationAboutNews;
             UseTelegramNotificationLoginInError = useTelegramNotificationLoginInError;
+            UseEmailNotificationAboutNews = useEmailNotificationAboutNews;
+            UseEmailNotificationLoginInError = useEmailNotificationLoginInError;
+            UseEmailNotificationTicketMessage = useEmailNotificationTicketMessage;
         }
 
-        public UserSetting(bool useTelegramNotificationTicketMessage, bool useTelegramNotificationAboutNews, bool useTelegramNotificationLoginInError)
+        public UserSetting(bool useTelegramNotificationTicketMessage, bool useTelegramNotificationAboutNews, bool useTelegramNotificationLoginInError,
+            bool useEmailNotificationTicketMessage, bool useEmailNotificationAboutNews, bool useEmailNotificationLoginInError)
         {
             UseTelegramNotificationTicketMessage = useTelegramNotificationTicketMessage;
             UseTelegramNotificationAboutNews = useTelegramNotificationAboutNews;
             UseTelegramNotificationLoginInError = useTelegramNotificationLoginInError;
+            UseEmailNotificationAboutNews = useEmailNotificationAboutNews;
+            UseEmailNotificationLoginInError = useEmailNotificationLoginInError;
+            UseEmailNotificationTicketMessage = useEmailNotificationTicketMessage;
         }
     }
 }

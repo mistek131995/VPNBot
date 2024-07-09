@@ -39,7 +39,7 @@ namespace Service.ControllerService.Service.User.AuthWithGoogle
 
                 var password = string.Join("", validPayload.Email.GetMD5().Take(8)).GetMD5();
 
-                user = await repositoryProvider.UserRepository.AddAsync(new Core.Model.User.User(login, validPayload.Email, password, UserSost.Active, new UserSetting(false, false, false)));
+                user = await repositoryProvider.UserRepository.AddAsync(new Core.Model.User.User(login, validPayload.Email, password, UserSost.Active, new UserSetting(false, false, false, true, true, true)));
             }
 
             return Helper.CreateJwtToken(user, configuration);
