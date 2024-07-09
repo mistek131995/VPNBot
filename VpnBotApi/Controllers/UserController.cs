@@ -11,6 +11,7 @@ using AuthWithGoogle = Service.ControllerService.Service.User.AuthWithGoogle;
 using CreateResetPasswordLink = Service.ControllerService.Service.User.RestorePassword.CreateResetPasswordLink;
 using SetNewPassword = Service.ControllerService.Service.User.RestorePassword.SetNewPassword;
 using GetSettings = Service.ControllerService.Service.User.GetSettings;
+using SaveNotificationSettings = Service.ControllerService.Service.User.SaveNotificationSettings;
 using DeattachTelegram = Service.ControllerService.Service.User.DeattachTelegram;
 
 using AddChangePasswordRequest = Service.ControllerService.Service.User.ChangePassword.AddChangePasswordRequest;
@@ -156,6 +157,17 @@ namespace VpnBotApi.Controllers
             {
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             });
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<JsonResult> SaveNotificationSettings([FromBody] SaveNotificationSettings.Request request)
+        {
+            request.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
+
+            var response = await dispatcher.GetService<bool, SaveNotificationSettings.Request>(request);
 
             return Json(response);
         }
