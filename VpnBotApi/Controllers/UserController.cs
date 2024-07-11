@@ -55,7 +55,6 @@ namespace VpnBotApi.Controllers
         {
             var query = new GetIndex.Request()
             {
-
                 UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
             };
 
