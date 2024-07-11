@@ -1,5 +1,6 @@
 using Infrastructure;
 using Infrastructure.Database;
+using Infrastructure.MailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -35,6 +36,7 @@ namespace VpnBotApi
             builder.Services.AddService();
             builder.Services.AddSingleton<ExchangeRateService>();
             builder.Services.AddSingleton<LoginInFailureService>();
+            builder.Services.AddScoped<MailService>();
 
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

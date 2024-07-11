@@ -19,6 +19,10 @@ namespace Service.ControllerService.Service.User.GetSettings
             result.UseTelegramNotificationLoginInError = user.UserSetting.UseTelegramNotificationLoginInError;
             result.UseTelegramNotificationTicketMessage = user.UserSetting.UseTelegramNotificationTicketMessage;
 
+            result.UseEmailNotificationTicketMessage = user.UserSetting.UseEmailNotificationTicketMessage;
+            result.UseEmailNotificationAboutNews = user.UserSetting.UseEmailNotificationAboutNews;
+            result.UseEmailNotificationLoginInError = user.UserSetting.UseEmailNotificationLoginInError;
+
             return result;
         }
     }
