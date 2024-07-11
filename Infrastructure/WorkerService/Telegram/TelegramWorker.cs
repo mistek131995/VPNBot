@@ -46,7 +46,7 @@ namespace Infrastructure.WorkerService.Telegram
             {
                 IMessageHandler handler;
 
-                if(update.Message.Text == "/start")
+                if(update.Message.Text == "/start" || update.Message.Text.ToLower() == "test")
                 {
                     handler = new Start(botClient, update, _repositoryProvider);
                     handler.Handle();

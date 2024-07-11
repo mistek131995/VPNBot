@@ -44,13 +44,13 @@ namespace Service.ControllerService.Service.Ticket.AddMessage
 
             foreach(var admin in adminUsers)
             {
-                if(admin.TelegramChatId == 0)
+                if(admin.TelegramUserId == 0)
                     continue;
 
                 await telegramNotificationService
                     .AddText($"В тикет {ticket.Id} пришло новое сообщение:\n\n{request.Message}")
                     .AddButtonWithLink("Перейти в тикет", $"https://lockvpn.me/admin/ticket/{ticket.Id}")
-                    .SendNotificationAsync(admin.TelegramChatId);
+                    .SendNotificationAsync(admin.TelegramUserId);
             }
 
             return true;

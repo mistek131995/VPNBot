@@ -22,7 +22,7 @@ namespace Infrastructure.Database.Repository
             if (user == null)
                 return null;
 
-            return new User(user.Id, user.TelegramUserId, user.TelegramChatId, user.Login, user.Email, user.Password, user.Role, user.RegisterDate,
+            return new User(user.Id, user.TelegramUserId, user.Login, user.Email, user.Password, user.Role, user.RegisterDate,
                 user.AccessEndDate, user.Sost, user.Guid, user.ParentUserId, user.Balance, user.LastConnection, user.SubscribeType, user.SubscribeToken,
                 user.Payments.Select(x => new Payment(x.Id, x.AccessPositionId, x.Amount, x.Date, x.State, x.PromoCodeId, x.Guid, x.PaymentMethod)).ToList(),
                 user.UserConnections.Select(x => new UserConnection(x.Id, x.VpnServerId, x.Port, x.Network, x.Protocol, x.Security, x.PublicKey, x.Fingerprint, x.ServerName, x.ShortId, x.AccessEndDate, x.ConnectionType)).ToList(),
@@ -47,7 +47,7 @@ namespace Infrastructure.Database.Repository
                 .Include(x => x.ChangeEmailRequest)
                 .Include(x => x.ChangePasswordRequest)
                 .AsNoTracking()
-                .Select(u => new User(u.Id, u.TelegramUserId, u.TelegramChatId, u.Login, u.Email, u.Password, u.Role, u.RegisterDate,
+                .Select(u => new User(u.Id, u.TelegramUserId, u.Login, u.Email, u.Password, u.Role, u.RegisterDate,
                 u.AccessEndDate, u.Sost, u.Guid, u.ParentUserId, u.Balance, u.LastConnection, u.SubscribeType, u.SubscribeToken,
                 u.Payments.Select(x => new Payment(x.Id, x.AccessPositionId, x.Amount, x.Date, x.State, x.PromoCodeId, x.Guid, x.PaymentMethod)).ToList(),
                 u.UserConnections.Select(x => new UserConnection(x.Id, x.VpnServerId, x.Port, x.Network, x.Protocol, x.Security, x.PublicKey, x.Fingerprint, x.ServerName, x.ShortId, x.AccessEndDate, x.ConnectionType)).ToList(),
@@ -77,7 +77,6 @@ namespace Infrastructure.Database.Repository
             var newUser = new Entity.User()
             {
                 TelegramUserId = user.TelegramUserId,
-                TelegramChatId = user.TelegramChatId,
                 RegisterDate = user.RegisterDate,
                 AccessEndDate = user.AccessEndDate,
                 Role = UserRole.User,
@@ -116,7 +115,6 @@ namespace Infrastructure.Database.Repository
                 .FirstOrDefaultAsync(x => x.Id == user.Id);
 
             dbUser.TelegramUserId = user.TelegramUserId;
-            dbUser.TelegramChatId = user.TelegramChatId;
             dbUser.Password = user.Password;
             dbUser.Email = user.Email;
             dbUser.Role = user.Role;
@@ -206,7 +204,6 @@ namespace Infrastructure.Database.Repository
                 var user = users.FirstOrDefault(x => x.Id == dbUser.Id);
 
                 dbUser.TelegramUserId = user.TelegramUserId;
-                dbUser.TelegramChatId = user.TelegramChatId;
                 dbUser.Password = user.Password;
                 dbUser.Email = user.Email;
                 dbUser.Role = user.Role;

@@ -9,7 +9,6 @@ namespace Infrastructure.Database.Entity
         [Key]
         public int Id { get; set; }
         public long TelegramUserId { get; set; }
-        public long TelegramChatId { get; set; }
         public string Login {  get; set; }
         public string Email { get; set; }
         public string Password { get; set; }

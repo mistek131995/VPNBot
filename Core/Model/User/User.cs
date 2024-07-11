@@ -10,7 +10,6 @@ namespace Core.Model.User
         public int Id { get; private set; }
 
         public long TelegramUserId { get;  private set; }
-        public long TelegramChatId { get;  private set; }
         public string Login { get;  private set; }
         public string Email { get;  private set; }
         public string Password { get;  private set; }
@@ -32,7 +31,7 @@ namespace Core.Model.User
         public ChangeEmailRequest ChangeEmailRequest { get;  private set; }
         public UserSetting UserSetting { get; private set; }
 
-        public User(int id, long telegramUserId, long telegramChatId, string login, string email, string password, UserRole role, DateTime registerDate, DateTime? accessEndDate, UserSost sost, Guid guid, 
+        public User(int id, long telegramUserId, string login, string email, string password, UserRole role, DateTime registerDate, DateTime? accessEndDate, UserSost sost, Guid guid, 
             int parentUserId, decimal balance, DateTime? lastConnection, SubscribeType subscribeType, string subscribeToken, List<Payment> payments, List<UserConnection> userConnections, UserSetting userSetting,
             ChangePasswordRequest changePasswordRequest = null, ChangeEmailRequest changeEmailRequest = null)
         {
@@ -41,7 +40,6 @@ namespace Core.Model.User
 
             Id = id;
             TelegramUserId = telegramUserId;
-            TelegramChatId = telegramChatId;
             Login = login.Trim().ToLower();
             Email = email.Trim().ToLower();
             Password = password;
@@ -62,14 +60,13 @@ namespace Core.Model.User
             ChangeEmailRequest = changeEmailRequest;
         }
 
-        public User(long telegramUserId, long telegramChatId, string login, string email, string password, UserRole role, DateTime registerDate, DateTime? accessEndDate, UserSost sost, Guid guid, 
+        public User(long telegramUserId, string login, string email, string password, UserRole role, DateTime registerDate, DateTime? accessEndDate, UserSost sost, Guid guid, 
             int parentUserId, decimal balance, DateTime? lastConnection, SubscribeType subscribeType, string subscribeToken, List<Payment> payments, List<UserConnection> userConnections, UserSetting userSetting,
             ChangePasswordRequest changePasswordRequest, ChangeEmailRequest changeEmailRequest)
         {
             UpdateEmail(email);
 
             TelegramUserId = telegramUserId;
-            TelegramChatId = telegramChatId;
             Login = login.Trim().ToLower();
             Password = password;
             Role = role;
@@ -172,7 +169,9 @@ namespace Core.Model.User
 
         public void AttachTelegram(long telegramId)
         {
-            TelegramChatId = telegramId;
+            if (telegramId <= 0)
+                throw new HandledException("ID пользователя телеграм должен быть больше 0");
+
             TelegramUserId = TelegramUserId;
         }
     }

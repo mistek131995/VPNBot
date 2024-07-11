@@ -33,10 +33,10 @@ namespace Service.ControllerService.Service.Admin.TicketManagement.AddMessage
                     <a href='https://lockvpn.me/ticket/{ticket.Id}'>Перейти к тикету</a>
                 ");
 
-            if (user.TelegramChatId > 0)
+            if (user.TelegramUserId > 0)
                 await telegramNotificationService
                     .AddText($"В тикет {ticket.Id} пришло новое сообщение.\n----\n{request.Message}\n----")
-                    .SendNotificationAsync(user.TelegramChatId);
+                    .SendNotificationAsync(user.TelegramUserId);
 
             return true;
         }

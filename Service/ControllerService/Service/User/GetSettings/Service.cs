@@ -13,7 +13,7 @@ namespace Service.ControllerService.Service.User.GetSettings
                 ?? throw new HandledException("Пользователь не найден");
 
             result.Email = user.Email;
-            result.TelegramId = user.TelegramChatId;
+            result.TelegramId = user.TelegramUserId;
 
             result.UseTelegramNotificationAboutNews = user.UserSetting.UseTelegramNotificationAboutNews;
             result.UseTelegramNotificationLoginInError = user.UserSetting.UseTelegramNotificationLoginInError;
