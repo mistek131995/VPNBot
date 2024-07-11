@@ -3,7 +3,6 @@ using Infrastructure.WorkerService.Telegram.MessageHandler.Common;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Infrastructure.WorkerService.Telegram.MessageHandler
 {
@@ -19,7 +18,7 @@ namespace Infrastructure.WorkerService.Telegram.MessageHandler
 
 
                 await botClient.SendTextMessageAsync(
-                    chatId: update.Message.From.Id, 
+                    chatId: update.Message.From.Id,
                     text: "Это вспомогательный бот нашего проекта, из него вы смоежете получать срочные новости и оповещения. " +
                     "Бот призван упростить коммуникацию с нашими пользователями. " +
                     $"Для привязки телеграма к вашему аккаунту, скопируйте и вставьте код в настройках личного кабинета - <code>{update.Message.From.Id}</code>", parseMode: ParseMode.Html);

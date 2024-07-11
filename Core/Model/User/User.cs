@@ -167,12 +167,12 @@ namespace Core.Model.User
             ChangePasswordRequest = request;
         }
 
-        public void AttachTelegram(long telegramId)
+        public void UpdateTelegram(long telegramId)
         {
-            if (telegramId <= 0)
-                throw new HandledException("ID пользователя телеграм должен быть больше 0");
+            if (telegramId < 0)
+                throw new HandledException("ID пользователя телеграм не может быть меньше 0");
 
-            TelegramUserId = TelegramUserId;
+            TelegramUserId = telegramId;
         }
     }
 }

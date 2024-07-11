@@ -12,7 +12,7 @@ using CreateResetPasswordLink = Service.ControllerService.Service.User.RestorePa
 using SetNewPassword = Service.ControllerService.Service.User.RestorePassword.SetNewPassword;
 using GetSettings = Service.ControllerService.Service.User.GetSettings;
 using SaveNotificationSettings = Service.ControllerService.Service.User.SaveNotificationSettings;
-using DeattachTelegram = Service.ControllerService.Service.User.DeattachTelegram;
+using SaveTelegramId = Service.ControllerService.Service.User.SaveTelegramId;
 
 using AddChangePasswordRequest = Service.ControllerService.Service.User.ChangePassword.AddChangePasswordRequest;
 using ConfirmChangePassword = Service.ControllerService.Service.User.ChangePassword.ConfirmChangePassword;
@@ -174,12 +174,11 @@ namespace VpnBotApi.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> DeattachTelegram()
+        public async Task<JsonResult> SaveTelegramId([FromBody] SaveTelegramId.Request request)
         {
-            var response = await dispatcher.GetService<bool, DeattachTelegram.Request>(new DeattachTelegram.Request()
-            {
-                UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value)
-            });
+            request.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
+
+            var response = await dispatcher.GetService<bool, SaveTelegramId.Request>(request);
 
             return Json(response);
         }

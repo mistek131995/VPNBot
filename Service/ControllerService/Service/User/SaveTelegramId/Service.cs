@@ -2,7 +2,7 @@
 using Core.Common;
 using Service.ControllerService.Common;
 
-namespace Service.ControllerService.Service.User.DeattachTelegram
+namespace Service.ControllerService.Service.User.SaveTelegramId
 {
     internal class Service(IRepositoryProvider repositoryProvider) : IControllerService<Request, bool>
     {
@@ -11,7 +11,7 @@ namespace Service.ControllerService.Service.User.DeattachTelegram
             var user = await repositoryProvider.UserRepository.GetByIdAsync(request.UserId) 
                 ?? throw new HandledException("Пользователь не найден");
 
-            user.AttachTelegram(0);
+            user.UpdateTelegram(request.TelegramId);
 
             await repositoryProvider.UserRepository.UpdateAsync(user);
 
