@@ -9,23 +9,8 @@ namespace Service.ControllerService.Service.AddTicket
     {
         public async Task<int> HandlingAsync(Request request)
         {
-            var newTicket = new Core.Model.Ticket.Ticket()
-            {
-                Title = request.Title,
-                CategoryId = request.CategoryId,
-                Condition = TicketCondition.Open,
-                CreateDate = DateTime.Now,
-                UserId = request.UserId,
-                TicketMessages = new List<TicketMessage>()
-            };
-
-            newTicket.TicketMessages.Add(new TicketMessage
-            {
-                Message = request.Message,
-                Condition = TicketMessageCondition.New,
-                SendDate = DateTime.Now,
-                UserId = request.UserId,
-            });
+            var newTicket = new Core.Model.Ticket.Ticket(request.Title, request.CategoryId, DateTime.Now, TicketCondition.Open, request.UserId);
+            newTicket.AddMessage(new TicketMessage(request.UserId, request.Message, TicketMessageCondition.New, new List<MessageFile>()));
 
             var ticketId =  await repositoryProvider.TicketRepository.AddAsync(newTicket);
 

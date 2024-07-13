@@ -62,9 +62,10 @@ namespace VpnBotApi.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> AddMessage([FromBody] AddMessage.Request request)
+        public async Task<JsonResult> AddMessage([FromForm] AddMessage.Request request)
         {
             request.UserId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "id").Value);
+            request.FormFiles = HttpContext.Request.Form.Files;
 
             var response = await dispatcher.GetService<bool, AddMessage.Request>(request);
 

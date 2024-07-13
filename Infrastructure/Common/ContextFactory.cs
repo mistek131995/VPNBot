@@ -26,6 +26,7 @@ namespace Infrastructure.Common
         internal DbSet<TicketCategory> TicketCategories { get; set; }
         internal DbSet<TicketMessage> TicketMessages { get; set; }
         internal DbSet<Ticket> Tickets { get; set; }
+        internal DbSet<MessageFile> MessageFiles { get; set; }
         internal DbSet<ResetPassword> ResetPasswords { get; set; }
         internal DbSet<UserConnection> UserConnections { get; set; }
         internal DbSet<PromoCode> PromoCodes { get; set; }

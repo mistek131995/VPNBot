@@ -292,6 +292,29 @@ namespace Infrastructure.Migrations
                     b.ToTable("Logs");
                 });
 
+            modelBuilder.Entity("Infrastructure.Database.Entity.MessageFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("TicketMessageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TicketMessageId");
+
+                    b.ToTable("MessageFiles");
+                });
+
             modelBuilder.Entity("Infrastructure.Database.Entity.Payment", b =>
                 {
                     b.Property<int>("Id")
@@ -755,6 +778,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("VpnServer");
                 });
 
+            modelBuilder.Entity("Infrastructure.Database.Entity.MessageFile", b =>
+                {
+                    b.HasOne("Infrastructure.Database.Entity.TicketMessage", "TicketMessage")
+                        .WithMany("MessageFiles")
+                        .HasForeignKey("TicketMessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TicketMessage");
+                });
+
             modelBuilder.Entity("Infrastructure.Database.Entity.Payment", b =>
                 {
                     b.HasOne("Infrastructure.Database.Entity.AccessPosition", "AccessPosition")
@@ -870,6 +904,11 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Database.Entity.TicketCategory", b =>
                 {
                     b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("Infrastructure.Database.Entity.TicketMessage", b =>
+                {
+                    b.Navigation("MessageFiles");
                 });
 
             modelBuilder.Entity("Infrastructure.Database.Entity.User", b =>

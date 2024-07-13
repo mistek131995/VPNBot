@@ -2,7 +2,6 @@
 using Core.Repository;
 using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Infrastructure.Database.Repository
 {
@@ -17,8 +16,8 @@ namespace Infrastructure.Database.Repository
                 Condition = ticket.Condition,
                 TicketCategoryId = ticket.CategoryId,
                 UserId = ticket.UserId,
-                TicketMessages = ticket.TicketMessages.Select(x =>  new Entity.TicketMessage() 
-                { 
+                TicketMessages = ticket.TicketMessages.Select(x => new Entity.TicketMessage()
+                {
                     Message = x.Message,
                     Condition = x.Condition,
                     SendDate = x.SendDate,
@@ -48,29 +47,16 @@ namespace Infrastructure.Database.Repository
             var ticket = await context.Tickets
                 .Include(x => x.TicketCategory)
                 .Include(x => x.TicketMessages)
+                .ThenInclude(x => x.MessageFiles)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (ticket == null)
                 return null;
 
-            return new Ticket()
-            {
-                Id = ticket.Id,
-                Title = ticket.Title,
-                CategoryName = ticket.TicketCategory.Name,
-                Condition = ticket.Condition,
-                CreateDate = ticket.CreateDate,
-                UserId = ticket.UserId,
-                TicketMessages = ticket.TicketMessages.Select(x => new TicketMessage()
-                {
-                    Id = x.Id,
-                    Condition = x.Condition,
-                    Message = x.Message,
-                    SendDate = x.SendDate,
-                    UserId = x.UserId,
-                }).ToList(),
-            };
+            return new Ticket(ticket.Id, ticket.Title, ticket.TicketCategoryId, ticket.TicketCategory.Name, ticket.CreateDate, ticket.Condition, ticket.UserId,
+                ticket.TicketMessages.Select(m => new TicketMessage(m.Id, m.UserId, m.Message, m.SendDate, m.Condition,
+                    m.MessageFiles.Select(f => new MessageFile(f.Id, f.Path)).ToList())).ToList());
         }
 
         public async Task<List<Ticket>> GetByIdsAsync(List<int> ids)
@@ -78,26 +64,14 @@ namespace Infrastructure.Database.Repository
             var tickets = await context.Tickets
                 .Include(x => x.TicketCategory)
                 .Include(x => x.TicketMessages)
+                .ThenInclude(x => x.MessageFiles)
                 .AsNoTracking()
                 .Where(x => ids.Contains(x.Id))
                 .ToListAsync();
 
-            return tickets.Select(x => new Ticket() { 
-                Id = x.Id,
-                Title = x.Title,
-                CategoryName = x.TicketCategory.Name,
-                Condition = x.Condition,
-                CreateDate = x.CreateDate,
-                UserId = x.UserId,
-                TicketMessages = x.TicketMessages.Select(m => new TicketMessage()
-                {
-                    Id = m.Id,
-                    Message = m.Message,
-                    Condition = m.Condition,
-                    SendDate = m.SendDate,
-                    UserId = m.UserId
-                }).ToList()
-            }).ToList();
+            return tickets.Select(t => new Ticket(t.Id, t.Title, t.TicketCategoryId, t.TicketCategory.Name, t.CreateDate, t.Condition, t.UserId,
+                t.TicketMessages.Select(m => new TicketMessage(m.Id, m.UserId, m.Message, m.SendDate, m.Condition,
+                    m.MessageFiles.Select(f => new MessageFile(f.Id, f.Path)).ToList())).ToList())).ToList();
         }
 
         public async Task<Ticket> GetByTicketIdAndUserIdAsync(int ticketId, int userId)
@@ -136,7 +110,11 @@ namespace Infrastructure.Database.Repository
                     UserId = m.UserId,
                     Condition = m.Condition,
                     SendDate = m.SendDate,
-                    TicketId = ticket.Id,
+                    MessageFiles = m.MessageFiles.Select(f => new Entity.MessageFile()
+                    {
+                        Id = f.Id,
+                        Path = f.Path
+                    }).ToList()
                 })
                 .ToList();
 

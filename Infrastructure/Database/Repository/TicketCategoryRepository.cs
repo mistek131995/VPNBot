@@ -11,11 +11,7 @@ namespace Infrastructure.Database.Repository
         {
             return await context.TicketCategories
                 .AsNoTracking()
-                .Select(c => new TicketCategory()
-                {
-                    Id = c.Id,
-                    Name = c.Name
-                })
+                .Select(c => new TicketCategory(c.Id, c.Name))
                 .ToListAsync();
         }
     }

@@ -10,13 +10,7 @@ namespace Service.ControllerService.Service.Admin.TicketManagement.AddMessage
         public async Task<bool> HandlingAsync(Request request)
         {
             var ticket = await repositoryProvider.TicketRepository.GetByIdAsync(request.TicketId);
-            ticket.TicketMessages.Add(new Core.Model.Ticket.TicketMessage()
-            {
-                Message = request.Message,
-                Condition = Core.Model.Ticket.TicketMessageCondition.New,
-                SendDate = DateTime.Now,
-                UserId = request.UsertId
-            });
+            var newMessage = new Core.Model.Ticket.TicketMessage(request.UsertId, request.Message, Core.Model.Ticket.TicketMessageCondition.New, new List<Core.Model.Ticket.MessageFile>());
 
             await repositoryProvider.TicketRepository.UpdateAsync(ticket);
 

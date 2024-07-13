@@ -14,5 +14,6 @@ namespace Infrastructure.Database.Entity
         public TicketMessageCondition Condition { get; set; }
 
         public Ticket Ticket { get; set; }
+        public List<MessageFile> MessageFiles { get; set; }
     }
 }

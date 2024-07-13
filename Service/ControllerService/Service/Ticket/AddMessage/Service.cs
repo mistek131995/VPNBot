@@ -3,7 +3,7 @@ using Core.Common;
 using Core.Model.Ticket;
 using Infrastructure.MailService;
 using Infrastructure.TelegramService;
-using Telegram.Bot;
+using Service.ControllerService.Common;
 
 namespace Service.ControllerService.Service.Ticket.AddMessage
 {
@@ -11,17 +11,29 @@ namespace Service.ControllerService.Service.Ticket.AddMessage
     {
         public async Task<bool> HandlingAsync(Request request)
         {
+            if (request.FormFiles.Any(x => x.Length > 2097152))
+                throw new HandledException("Размер файла не должен превышать 2мб");
+
             var ticket = await repositoryProvider.TicketRepository.GetByTicketIdAndUserIdAsync(request.TicketId, request.UserId);
             var settings = await repositoryProvider.SettingsRepositroy.GetSettingsAsync();
             var admins = await repositoryProvider.UserRepository.GetAllAdminsAsync();
 
-            ticket.TicketMessages.Add(new TicketMessage()
+            var newMessage = new TicketMessage(request.UserId, request.Message, TicketMessageCondition.New, new List<MessageFile>());
+
+            foreach (var file in request.FormFiles)
             {
-                Condition = TicketMessageCondition.New,
-                Message = request.Message,
-                SendDate = DateTime.Now,
-                UserId = request.UserId,
-            });
+                var fileStream = file.OpenReadStream();
+                var bytes = new byte[file.Length];
+                fileStream.Read(bytes, 0, (int)file.Length);
+                //files.Add(bytes);
+
+                var filePath = $"/home/build/wwwroot/files/tickets/{request.TicketId}/{Guid.NewGuid()}.{file.FileName.Split(".")[1]}";
+
+                await File.WriteAllBytesAsync(filePath, bytes);
+                newMessage.AddFile(new MessageFile(filePath));
+            }
+
+            ticket.TicketMessages.Add(newMessage);
 
             await repositoryProvider.TicketRepository.UpdateAsync(ticket);
 
@@ -42,9 +54,9 @@ namespace Service.ControllerService.Service.Ticket.AddMessage
                 <a href='https://lockvpn.me/admin/ticket/{ticket.Id}'>Перейти к тикету</a>
             ");
 
-            foreach(var admin in adminUsers)
+            foreach (var admin in adminUsers)
             {
-                if(admin.TelegramUserId == 0)
+                if (admin.TelegramUserId == 0)
                     continue;
 
                 await telegramNotificationService
