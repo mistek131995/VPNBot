@@ -60,7 +60,7 @@ namespace xUnitTest
 
 
             var user = await repositoryPrvider.UserRepository.GetByIdAsync(1);
-            user.Payments.Add(new Payment(1, 100, DateTime.Now, PaymentState.Completed, null, Guid.NewGuid(), PaymentMethod.YouKassa));
+            user.Payments.Add(new Payment(1, 100, DateTime.Now, PaymentState.Completed, 0, Guid.NewGuid(), PaymentMethod.YouKassa));
             user = await repositoryPrvider.UserRepository.UpdateAsync(user);
 
 

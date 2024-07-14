@@ -57,7 +57,7 @@ namespace Service.ControllerService.Service.Payment.CryptoCloud.GetLink
                 var resultString = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<Result>(resultString);
 
-                user.Payments.Add(new Core.Model.User.Payment(accessPosition.Id, accessPosition.Price, DateTime.Now, PaymentState.NotCompleted, promoCode?.Id, orderGuid, PaymentMethod.CryptoCloud));
+                user.Payments.Add(new Core.Model.User.Payment(accessPosition.Id, accessPosition.Price, DateTime.Now, PaymentState.NotCompleted, promoCode?.Id ?? 0, orderGuid, PaymentMethod.CryptoCloud));
                 await repositoryProvider.UserRepository.UpdateAsync(user);
 
                 return result.result.link;

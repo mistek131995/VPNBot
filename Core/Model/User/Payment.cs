@@ -9,11 +9,11 @@ namespace Core.Model.User
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
         public PaymentState State { get; set; }
-        public int? PromoCodeId { get; set; }
+        public int PromoCodeId { get; set; }
         public Guid Guid { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
 
-        public Payment(int id, int accessPositionId, decimal amount, DateTime date, PaymentState state, int? promoCodeId, Guid guid, PaymentMethod paymentMethod)
+        public Payment(int id, int accessPositionId, decimal amount, DateTime date, PaymentState state, int promoCodeId, Guid guid, PaymentMethod paymentMethod)
         {
             if (id == 0)
                 throw new Exception("Нельзя использовать этот конструктор для создания сущности");
@@ -28,7 +28,7 @@ namespace Core.Model.User
             PaymentMethod = paymentMethod;
         }
 
-        public Payment(int accessPositionId, decimal amount, DateTime date, PaymentState state, int? promoCodeId, Guid guid, PaymentMethod paymentMethod)
+        public Payment(int accessPositionId, decimal amount, DateTime date, PaymentState state, int promoCodeId, Guid guid, PaymentMethod paymentMethod)
         {
             AccessPositionId = accessPositionId;
             Amount = amount;

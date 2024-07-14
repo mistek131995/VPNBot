@@ -24,7 +24,7 @@ namespace Infrastructure.Database.Repository
 
             return new User(user.Id, user.TelegramUserId, user.Login, user.Email, user.Password, user.Role, user.RegisterDate,
                 user.AccessEndDate, user.Sost, user.Guid, user.ParentUserId, user.Balance, user.LastConnection, user.SubscribeType, user.SubscribeToken,
-                user.Payments.Select(x => new Payment(x.Id, x.AccessPositionId, x.Amount, x.Date, x.State, x.PromoCodeId, x.Guid, x.PaymentMethod)).ToList(),
+                user.Payments.Select(x => new Payment(x.Id, x.AccessPositionId, x.Amount, x.Date, x.State, x.PromoCodeId ?? 0, x.Guid, x.PaymentMethod)).ToList(),
                 user.UserConnections.Select(x => new UserConnection(x.Id, x.VpnServerId, x.Port, x.Network, x.Protocol, x.Security, x.PublicKey, x.Fingerprint, x.ServerName, x.ShortId, x.AccessEndDate, x.ConnectionType)).ToList(),
                 new UserSetting(
                     user.UserSetting.Id, 
@@ -49,7 +49,7 @@ namespace Infrastructure.Database.Repository
                 .AsNoTracking()
                 .Select(u => new User(u.Id, u.TelegramUserId, u.Login, u.Email, u.Password, u.Role, u.RegisterDate,
                 u.AccessEndDate, u.Sost, u.Guid, u.ParentUserId, u.Balance, u.LastConnection, u.SubscribeType, u.SubscribeToken,
-                u.Payments.Select(x => new Payment(x.Id, x.AccessPositionId, x.Amount, x.Date, x.State, x.PromoCodeId, x.Guid, x.PaymentMethod)).ToList(),
+                u.Payments.Select(x => new Payment(x.Id, x.AccessPositionId, x.Amount, x.Date, x.State, x.PromoCodeId ?? 0, x.Guid, x.PaymentMethod)).ToList(),
                 u.UserConnections.Select(x => new UserConnection(x.Id, x.VpnServerId, x.Port, x.Network, x.Protocol, x.Security, x.PublicKey, x.Fingerprint, x.ServerName, x.ShortId, x.AccessEndDate, x.ConnectionType)).ToList(),
                 new UserSetting(
                     u.UserSetting.Id, 
