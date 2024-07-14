@@ -1,11 +1,13 @@
-﻿using Service.ControllerService.Common;
+﻿using Core.Common;
+using Infrastructure.TelegramService;
+using Service.ControllerService.Common;
 using System.Net;
 
 namespace VpnBotApi.Common.Middleware
 {
     public class ExceptionMiddleware(RequestDelegate next, Serilog.ILogger logger)
     {
-        public async Task InvokeAsync(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext, IRepositoryProvider repositoryProvider, ITelegramNotificationService telegramNotificationService)
         {
             try
             {
@@ -25,8 +27,14 @@ namespace VpnBotApi.Common.Middleware
                 else
                 {
                     logger.Error(ex, ex.StackTrace);
-                    Console.WriteLine(ex.Message);
                     await HandleExceptionAsync(httpContext, new HandledException("Произошла непредвиденная ошибка, мы уже работаем над ее устранением."));
+
+                    var admins = await repositoryProvider.UserRepository.GetAllAdminsAsync();
+
+                    foreach (var admin in admins)
+                    {
+                        await telegramNotificationService.AddText(ex.Message).SendNotificationAsync(admin.TelegramUserId);
+                    }
                 }
             }
         }
