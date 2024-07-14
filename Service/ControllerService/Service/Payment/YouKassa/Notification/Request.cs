@@ -7,6 +7,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
         //public string type { get; set; }
         //public string @event { get; set; }
         public Object @object { get; set; }
+        public string? IP {  get; set; }
 
         public class Object
         {

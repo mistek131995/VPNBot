@@ -8,7 +8,7 @@ namespace Service.ControllerService.Service.Payment.YouKassa.Notification
         public async Task<bool> HandlingAsync(Request request)
         {
             var user = await repositoryProvider.UserRepository.GetByPaymentGuidAsync(request.@object.id) ??
-                throw new Exception($"Не найден пользователь по платежу {request.@object.id}");
+                throw new Exception($"Не найден пользователь по платежу {request.@object.id} ({request.IP})");
 
             var payment = user.Payments.FirstOrDefault(x => x.Guid == request.@object.id) ??
                 throw new Exception("Платеж не найден");

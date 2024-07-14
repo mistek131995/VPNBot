@@ -89,6 +89,8 @@ namespace VpnBotApi.Controllers
                 throw new Exception("IP адреса нет в разрешенном списке");
             }
 
+            request.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+
             return await dispatcher.GetService<bool, YouKassaNotification.Request>(request);
         }
 
