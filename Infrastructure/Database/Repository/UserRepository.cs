@@ -358,6 +358,9 @@ namespace Infrastructure.Database.Repository
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Guid == guid);
 
+            if (payment == null)
+                return null;
+
             return await GetByIdAsync(payment.UserId);
         }
 
