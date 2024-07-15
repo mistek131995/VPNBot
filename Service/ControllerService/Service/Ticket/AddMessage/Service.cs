@@ -20,9 +20,6 @@ namespace Service.ControllerService.Service.Ticket.AddMessage
 
             var newMessage = new TicketMessage(request.UserId, request.Message, TicketMessageCondition.New, new List<MessageFile>());
 
-            if (!Directory.Exists($"/home/build/wwwroot/files/tickets/{request.TicketId}/"))
-                Directory.CreateDirectory($"/home/build/wwwroot/files/tickets/{request.TicketId}/");
-
             foreach (var file in request.FormFiles)
             {
                 var fileStream = file.OpenReadStream();

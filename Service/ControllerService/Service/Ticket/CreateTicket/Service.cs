@@ -14,6 +14,9 @@ namespace Service.ControllerService.Service.AddTicket
 
             var ticketId =  await repositoryProvider.TicketRepository.AddAsync(newTicket);
 
+            if (!Directory.Exists($"/home/build/wwwroot/files/tickets/{ticketId}/"))
+                Directory.CreateDirectory($"/home/build/wwwroot/files/tickets/{ticketId}/");
+
             //Тут оповещение админа о новом тикете
             var adminUsers = await repositoryProvider.UserRepository.GetAllAdminsAsync();
             var adminEmails = adminUsers
