@@ -13,7 +13,14 @@
             public string Message { get; set; }
             public DateTime Date { get; set; }
 
-            public List<string> Files { get; set; }
+            public List<File> Files { get; set; }
+        }
+
+        public class File
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Path { get; set; }
         }
     }
 }
