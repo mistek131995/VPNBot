@@ -20,7 +20,8 @@ namespace Service.ControllerService.Service.Ticket.GetTicket
                 Id = x.Id,
                 Message = x.Message,
                 Date = x.SendDate,
-                UserId = x.UserId
+                UserId = x.UserId,
+                Files = x.MessageFiles.Select(x => x.Path.Replace("/home/build/wwwroot", "")).ToList()
             }).ToList();
 
             return result;

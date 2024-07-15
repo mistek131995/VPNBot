@@ -12,6 +12,8 @@
             public int UserId { get; set; }
             public string Message { get; set; }
             public DateTime Date { get; set; }
+
+            public List<string> Files { get; set; }
         }
     }
 }
