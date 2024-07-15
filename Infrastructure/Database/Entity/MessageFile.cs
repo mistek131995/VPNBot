@@ -8,6 +8,8 @@ namespace Infrastructure.Database.Entity
         public int Id { get; set; }
         public int TicketMessageId { get; set; }
         [MaxLength(255)]
+        public string FileName { get; set; }
+        [MaxLength(255)]
         public string Path { get; set; }
 
         public TicketMessage TicketMessage { get; set; }

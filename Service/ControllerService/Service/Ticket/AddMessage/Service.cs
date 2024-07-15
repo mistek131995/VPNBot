@@ -30,7 +30,7 @@ namespace Service.ControllerService.Service.Ticket.AddMessage
                 var filePath = $"/home/build/wwwroot/files/tickets/{request.TicketId}/{Guid.NewGuid()}.{file.FileName.Split(".")[1]}";
 
                 await File.WriteAllBytesAsync(filePath, bytes);
-                newMessage.AddFile(new MessageFile(filePath));
+                newMessage.AddFile(new MessageFile(file.FileName, filePath));
             }
 
             ticket.TicketMessages.Add(newMessage);

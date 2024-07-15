@@ -56,7 +56,7 @@ namespace Infrastructure.Database.Repository
 
             return new Ticket(ticket.Id, ticket.Title, ticket.TicketCategoryId, ticket.TicketCategory.Name, ticket.CreateDate, ticket.Condition, ticket.UserId,
                 ticket.TicketMessages.Select(m => new TicketMessage(m.Id, m.UserId, m.Message, m.SendDate, m.Condition,
-                    m.MessageFiles.Select(f => new MessageFile(f.Id, f.Path)).ToList())).ToList());
+                    m.MessageFiles.Select(f => new MessageFile(f.Id, f.FileName, f.Path)).ToList())).ToList());
         }
 
         public async Task<List<Ticket>> GetByIdsAsync(List<int> ids)
@@ -71,7 +71,7 @@ namespace Infrastructure.Database.Repository
 
             return tickets.Select(t => new Ticket(t.Id, t.Title, t.TicketCategoryId, t.TicketCategory.Name, t.CreateDate, t.Condition, t.UserId,
                 t.TicketMessages.Select(m => new TicketMessage(m.Id, m.UserId, m.Message, m.SendDate, m.Condition,
-                    m.MessageFiles.Select(f => new MessageFile(f.Id, f.Path)).ToList())).ToList())).ToList();
+                    m.MessageFiles.Select(f => new MessageFile(f.Id, f.FileName, f.Path)).ToList())).ToList())).ToList();
         }
 
         public async Task<Ticket> GetByTicketIdAndUserIdAsync(int ticketId, int userId)
@@ -113,6 +113,7 @@ namespace Infrastructure.Database.Repository
                     MessageFiles = m.MessageFiles.Select(f => new Entity.MessageFile()
                     {
                         Id = f.Id,
+                        FileName = f.FileName,
                         Path = f.Path
                     }).ToList()
                 })
