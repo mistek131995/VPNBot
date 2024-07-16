@@ -172,6 +172,13 @@ namespace Core.Model.User
             if (telegramId < 0)
                 throw new HandledException("ID пользователя телеграм не может быть меньше 0");
 
+            if(telegramId == 0)
+            {
+                UserSetting.UseTelegramNotificationTicketMessage = false;
+                UserSetting.UseTelegramNotificationLoginInError = false;
+                UserSetting.UseTelegramNotificationAboutNews = false;
+            }
+
             TelegramUserId = telegramId;
         }
     }
