@@ -31,7 +31,7 @@ namespace VpnBotApi.Common.Middleware
 
                     var admins = await repositoryProvider.UserRepository.GetAllAdminsAsync();
 
-                    foreach (var admin in admins)
+                    foreach (var admin in admins.Where(x => x.TelegramUserId > 0))
                     {
                         await telegramNotificationService.AddText(ex.Message).SendNotificationAsync(admin.TelegramUserId);
                     }
